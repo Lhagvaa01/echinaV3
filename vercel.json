@@ -9,15 +9,18 @@
     "proxies": [
       {
         "source": "/api/(.*)",
-        "destination": "https://api.echina.mn/api/$1"
+        "destination": "https://api.echina.mn/api/$1",
+        "permanent": true
       },
       {
         "source": "/api/search/(.*)",
-        "destination": "http://api.airkacc.mn/api/search/$1"
+        "destination": "http://api.airkacc.mn/api/search/$1",
+        "permanent": true
       },
       {
         "source": "/api/prebooking/(.*)",
-        "destination": "http://api.airkacc.mn/api/prebooking/$1"
+        "destination": "http://api.airkacc.mn/api/prebooking/$1",
+        "permanent": true
       }
     ]
   }
