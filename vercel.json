@@ -6,7 +6,7 @@
         "use": "@vercel/node"
       }
     ],
-    "proxies": [
+    "redirects": [
       {
         "source": "/api/(.*)",
         "destination": "https://api.echina.mn/api/$1",
