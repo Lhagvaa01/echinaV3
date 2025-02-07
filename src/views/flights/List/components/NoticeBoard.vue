@@ -1,61 +1,74 @@
 <template>
   <section class="pt-0">
-    <b-container class="position-relative">
-      <b-row>
-        <b-col cols="12">
-          <div class="d-sm-flex justify-content-sm-between align-items-center">
-            <div class="mb-3 mb-sm-0">
-              <h1 class="fs-3">09 Flight Available</h1>
+    <div v-if="filteredData.length > 0">
+      <b-container class="position-relative">
+        <b-row>
+          <b-col cols="12">
+            <div class="d-sm-flex justify-content-sm-between align-items-center">
+              <div class="mb-3 mb-sm-0">
+                <h1 class="fs-3">
+                  {{ StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
+                    getFirstDeparture(0)).City }}
+                  ({{ StoreAirPorts.find((AirPorts: any) =>
+                    AirPorts.Iata ===
+                    getFirstDeparture(0)).Name }})
+                  <PlaneTakeoff :size="40" color="#3949AB" class="mb-3 mx-3" /> {{ StoreAirPorts.find((AirPorts: any) =>
+                    AirPorts.Iata ===
+                    getLastArrival(0)).City }}
+                  ({{ StoreAirPorts.find((AirPorts: any) =>
+                    AirPorts.Iata ===
+                    getLastArrival(0)).Name }})
+                  <!-- {{ getFirstDeparture(0) }} - {{ getLastArrival(0) }} -->
+                </h1>
+                <h5>Явах: {{ formatDate(getFirstDepartureTime(0)) }}</h5>
+                <div class="d-flex flex-row justify-content-start align-items-center">
+                  <h5 class="me-3">
+                    <Plane :size="30" color="#3949AB" /> Нийт: {{ filteredData.length }} нислэг
+                  </h5>
+                  <h5>
+                    <TicketsPlane :size="30" color="#3949AB" /> {{ StoreAirCompany.length }} airlines
+                  </h5>
+                </div>
+                <!-- <h1 class="fs-3">09 Flight Available</h1>
               <ul class="nav nav-divider h6 mb-0">
                 <li class="nav-item">25 Jan</li>
                 <li class="nav-item">1 Stop</li>
-              </ul>
+              </ul> -->
+              </div>
+              <button @click="toggleOffcanvas" class="btn btn-primary d-xl-none mb-0" type="button"
+                data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+                <font-awesome-icon :icon="faSlidersH" class="me-1" />
+                Show filters
+              </button>
             </div>
-            <button
-              @click="toggleOffcanvas"
-              class="btn btn-primary d-xl-none mb-0"
-              type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#offcanvasSidebar"
-              aria-controls="offcanvasSidebar"
-            >
-              <font-awesome-icon :icon="faSlidersH" class="me-1" />
-              Show filters
-            </button>
-          </div>
-        </b-col>
-      </b-row>
-
-      <div class="bg-primary bg-opacity-10 rounded-3 overflow-hidden mt-4 p-4">
-        <b-row class="g-4 align-items-center">
-          <b-col cols="6" md="3" class="text-center order-1">
-            <img :src="element11" class="mb-n5" alt="" />
-          </b-col>
-
-          <b-col md="6" class="order-md-2">
-            <h4>International Guideline</h4>
-            <p class="mb-2">
-              COVID safety measures adopted by various countries including VISA restrictions,
-              quarantine rules, etc.
-            </p>
-            <a href="#" class="btn btn-sm btn-primary mb-0">View Guidelines</a>
-          </b-col>
-
-          <b-col cols="6" md="3" class="text-center order-3">
-            <img :src="element10" class="mb-n5" alt="" />
           </b-col>
         </b-row>
-      </div>
-    </b-container>
+
+        <div class="bg-primary bg-opacity-10 rounded-3 overflow-hidden mt-4 p-4">
+          <b-row class="g-4 align-items-center">
+            <b-col cols="6" md="3" class="text-center order-1">
+              <img :src="element11" class="mb-n5" alt="" />
+            </b-col>
+
+            <b-col md="6" class="order-md-2">
+              <h4>International Guideline</h4>
+              <p class="mb-2">
+                COVID safety measures adopted by various countries including VISA restrictions,
+                quarantine rules, etc.
+              </p>
+              <a href="#" class="btn btn-sm btn-primary mb-0">View Guidelines</a>
+            </b-col>
+
+            <b-col cols="6" md="3" class="text-center order-3">
+              <img :src="element10" class="mb-n5" alt="" />
+            </b-col>
+          </b-row>
+        </div>
+      </b-container>
+    </div>
   </section>
 
-  <b-offcanvas
-    body-class="m-0 p-0"
-    size="xl"
-    title="Advance Filters"
-    placement="end"
-    v-model="show"
-  >
+  <b-offcanvas body-class="m-0 p-0" size="xl" title="Advance Filters" placement="end" v-model="show">
     <div class="flex-column p-3 p-xl-0">
       <FlightListFilter />
     </div>
@@ -67,11 +80,44 @@ import element10 from '@/assets/images/element/10.svg'
 import element11 from '@/assets/images/element/11.svg'
 import { faSlidersH } from '@fortawesome/free-solid-svg-icons'
 
-import { ref } from 'vue'
+import { useFlightStore } from '@/stores/flight';
+
+import { ref, computed } from 'vue'
+
+import { ChevronDown, Briefcase, Luggage, User, PlaneTakeoff, TicketsPlane, Plane } from 'lucide-vue-next';
 
 import FlightListFilter from '@/views/flights/List/components/FlightListFilter.vue'
 
 const show = ref(false)
+
+const flightStore = useFlightStore();
+
+const StoreflightInfos = computed(() => flightStore.flightInfos ?? []);
+// console.log(flightStore.flightInfos.FlightData[0].Offers.OfferInfo[0].Segments.OfferSegment[0].AirCraft)
+const StoreAirCompany = computed(() => flightStore.AirCompany);
+const StoreAirPorts = computed(() => flightStore.AirPorts);
+// let filteredData = computed(() => flightStore.firstAdultPrice || []);
+const filteredData = computed(() => flightStore.firstAdultPrice.length > 0 ? flightStore.firstAdultPrice : flightStore.flightInfos);
+
+
+const getFlightData = (index: number) => {
+  return filteredData.value[index] || { Offers: { OfferInfo: [] } };
+};
+
+const getAllSegments = (index: number) => {
+  // console.log(index, getFlightData(index).Offers.OfferInfo.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments.OfferSegment) || [])
+  return getFlightData(index).Offers.OfferInfo.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments.OfferSegment) || [];
+};
+
+const getFirstDeparture = (index: number) => getAllSegments(index)[0]?.Departure.Iata || "N/A";
+const getLastArrival = (index: number) => getAllSegments(index).slice(-1)[0]?.Arrival.Iata || "N/A";
+const getFirstDepartureTime = (index: number) => getAllSegments(index)[0]?.Departure.Date || "N/A";
+
+function formatDate(input: string): string {
+  const [day, month, yearAndTime] = input.split(".");
+  const [year, time] = yearAndTime.split(" ");
+  return `${year}-${month}-${day}`;
+}
 
 const toggleOffcanvas = () => {
   show.value = !show.value

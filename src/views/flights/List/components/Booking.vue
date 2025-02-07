@@ -21,13 +21,13 @@
                       Round Trip
                     </button>
                   </li>
-                  <li class="nav-item" role="presentation">
+                  <!-- <li class="nav-item" role="presentation">
                     <button class="nav-link rounded-end rounded-0 mb-0" :class="show == 3 && 'active'"
                       id="pills-round-trip-tab" data-bs-toggle="pill" data-bs-target="#pills-multi-trip" type="button"
                       role="tab" aria-selected="false" @click="show = 3">
                       Multi trip
                     </button>
-                  </li>
+                  </li> -->
                 </ul>
               </b-col>
 
@@ -48,7 +48,7 @@
             </b-row>
 
             <div class="tab-content mt-4" id="pills-tabContent">
-              <div class="tab-pane fade" :class="show && 'show active'" id="pills-one-way" role="tabpanel"
+              <div class="tab-pane fade" :class="show == 1 && 'show active'" id="pills-one-way" role="tabpanel"
                 aria-labelledby="pills-one-way-tab">
                 <b-row class="g-4">
                   <b-col md="6" lg="4" class="position-relative">
@@ -111,18 +111,18 @@
                 </b-row>
               </div>
 
-              <div class="tab-pane fade" :class="!show && 'show active'" id="pills-round-trip" role="tabpanel"
+              <div class="tab-pane fade" :class="show == 2 && 'show active'" id="pills-round-trip" role="tabpanel"
                 aria-labelledby="pills-round-trip-tab">
                 <b-row class="g-4">
                   <b-col md="6" xl="3" class="position-relative">
                     <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
                       <label class="mb-1">
                         <BIconGeoAlt class="me-2" />
-                        Хаанаас
+                        R Хаанаас
                       </label>
-                      <div v-if="destinationOptions.length > 0">
-                        <AirportsFormInput id="from" v-model="selectedDestination" :options="destinationOptions"
-                          :choice-options="{ searchEnabled: true }" />
+                      <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
+                        <AirportsFormInput id="round-from" v-model="selectedDestination3"
+                          :options="destinationOptionsRound" :choice-options="{ searchEnabled: true }" />
                       </div>
                       <div v-else>
                         Loading airports...
@@ -143,9 +143,9 @@
                         <BIconSend class="me-2" />
                         Хаашаа
                       </label>
-                      <div v-if="destinationOptions.length > 0">
-                        <AirportsFormInput id="to" v-model="selectedDestination2" :options="destinationOptions"
-                          :choice-options="{ searchEnabled: true }" />
+                      <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
+                        <AirportsFormInput id="round-to" v-model="selectedDestination4"
+                          :options="destinationOptionsRound" :choice-options="{ searchEnabled: true }" />
                       </div>
                       <div v-else>
                         Loading airports...
@@ -158,9 +158,9 @@
                     <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
                       <label class="mb-1">
                         <BIconCalendar class="me-2" />
-                        Хэзээ
+                        Явах огноо
                       </label>
-                      <CustomFlatpicker id="departureDate" placeholder="Select date" v-model="departureDate"
+                      <CustomFlatpicker id="round-departureDate" placeholder="Select date" v-model="departureDate"
                         :options="{ dateFormat: 'd.m.Y' }" />
                     </div>
                   </b-col>
@@ -169,15 +169,15 @@
                     <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
                       <label class="mb-1">
                         <BIconCalendar class="me-2" />
-                        Return
+                        Буцах огноо
                       </label>
-                      <CustomFlatpicker id="returnDate" placeholder="Select date" v-model="returnDate"
-                        :options="{ dateFormat: 'd M Y' }" />
+                      <CustomFlatpicker id="round-returnDate" placeholder="Select date" v-model="returnDate"
+                        :options="{ dateFormat: 'd.m.Y' }" />
                     </div>
                   </b-col>
 
                   <b-col cols="12" class="text-end pt-0">
-                    <a class="btn btn-primary mb-n" :href="generateTicketUrl">
+                    <a class="btn btn-primary mb-n" :href="generateTicketUrlRound">
                       Find ticket
                       <BIconArrowRight class="ps-3 w-25" />
                     </a>
@@ -186,7 +186,7 @@
               </div>
 
 
-              <div class="tab-pane fade" :class="!show && 'show active'" id="pills-multi-trip" role="tabpanel"
+              <!-- <div class="tab-pane fade" :class="!show && 'show active'" id="pills-multi-trip" role="tabpanel"
                 aria-labelledby="pills-multi-trip-tab">
                 <b-row class="g-4">
                   <b-col md="6" xl="3" class="position-relative">
@@ -258,7 +258,7 @@
                     </a>
                   </b-col>
                 </b-row>
-              </div>
+              </div> -->
             </div>
           </b-form>
         </b-col>
@@ -276,15 +276,18 @@ import { computed, watch, ref } from 'vue'
 import GuestAndRoomForm from '@/components/GuestAndRoomForm.vue'
 import type { GuestAndRoomFormType } from '@/types'
 
-const show = ref(1)
+
+const show = ref<number>(Number(localStorage.getItem("flight")) || 1);
 
 import { defineEmits, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
+const route = useRoute();
+
 const formValue = ref<GuestAndRoomFormType>({
   guests: {
-    adults: 1,
-    children: 0
+    adults: Number(route.query.adults) || 1,
+    children: Number(route.query.childs) || 0
   }
 })
 
@@ -293,14 +296,18 @@ const formValue = ref<GuestAndRoomFormType>({
 
 // const selectedDestination = ref(route.query.dpt || 'UBN')
 // const selectedDestination2 = ref(route.query.arr || 'PEK')
-const selectedDestination3 = ref('select-location')
-const selectedDestination4 = ref('select-location')
+// const selectedDestination3 = ref('select-location')
+// const selectedDestination4 = ref('select-location')
 const selectedClass = ref('select-class')
 const selectedTravelers = ref('select-travelers')
 
 
 const generateTicketUrl = computed(() => {
   return `/flights/list/?dpt=${selectedDestination.value}&arr=${selectedDestination2.value}&date=${departureDate.value}&fclass=Econom&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
+});
+
+const generateTicketUrlRound = computed(() => {
+  return `/flights/list/?dpt=${selectedDestination.value}&arr=${selectedDestination2.value}&date=${departureDate.value}&backDate=${returnDate.value}&fclass=Econom&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
 });
 
 
@@ -329,7 +336,7 @@ const travelerOptions = [
 
 
 
-const returnDate = ref()
+
 
 
 // const emit = defineEmits(['search-flights']);
@@ -353,6 +360,7 @@ const airportStore = useAirportStore();
 // });
 
 const destinationOptions = computed(() => airportStore.destinationOptions || []);
+const destinationOptionsRound = computed(() => airportStore.destinationOptions || []);
 
 
 const findOptionValue = (value: string | null): string | undefined => {
@@ -369,7 +377,6 @@ const findOptionValue = (value: string | null): string | undefined => {
 };
 
 const emit = defineEmits(['search-flights']);
-const route = useRoute();
 
 // Утгуудыг тохируулах
 // let selectedDestination = ref(findOptionValue(route.query.dpt as string | null) || "UBN");
@@ -382,15 +389,30 @@ const departureDate = ref<string | undefined>(
     : route.query.date ?? undefined   // Хэрэв string эсвэл null бол зөв хувиргана
 );
 
+const returnDate = ref<string | undefined>(
+  Array.isArray(route.query.backDate)
+    ? route.query.backDate[0] ?? undefined // Хэрэв массив бол эхний элементийг авна
+    : route.query.backDate ?? undefined   // Хэрэв string эсвэл null бол зөв хувиргана
+);
+
 function searchFlights() {
   // URL-ээс параметрүүдийг авах
   const from = route.query.dpt || "UBN";
   const to = route.query.arr || "PEK";
   const date = route.query.date || "25.01.2025";
-  const travelers = route.query.adults || "1";
+  const backDate = route.query.backDate || "25.01.2025";
+  // const travelers = route.query.adults || "1" && route.query.adults || '0';
+  // const travelers = [route.query.adults, route.query.childs];
+  const travelers = {
+    adults: route.query.adults ? Number(route.query.adults) : 1, // Default 1 adult
+    childs: route.query.childs ? Number(route.query.childs) : 0  // Default 0 children
+  };
+
+  // const isRound = show.value == 1 ? 1 : 2;
+  const isRound = show.value;
 
   // Эмит функцээр дамжуулах
-  emit('search-flights', { from, to, date, travelers });
+  emit('search-flights', { from, to, date, backDate, travelers, isRound });
 }
 // onMounted(async () => {
 //   await airportStore.getAirports();
@@ -399,10 +421,13 @@ function searchFlights() {
 //   console.log(selectedDestination)
 // });
 
-const selectedDestination = ref("UBN"
+const selectedDestination = ref(localStorage.getItem("selectedDestination") || "UBN");
+const selectedDestination2 = ref(localStorage.getItem("selectedDestination2") || "PEK");
+
+const selectedDestination3 = ref("UBN"
 );
 
-const selectedDestination2 = ref("PEK"
+const selectedDestination4 = ref("PEK"
 );
 
 onMounted(() => {
@@ -417,5 +442,22 @@ onMounted(() => {
 // watch(selectedDestination2, (newValue, oldValue) => {
 //   console.log("Selected value changed from:", oldValue, "to:", newValue);
 // });
+
+
+
+// Сонгогдсон утгуудыг localStorage-д хадгалах
+watch(selectedDestination, (newValue) => {
+  localStorage.setItem("selectedDestination", newValue);
+});
+
+watch(selectedDestination2, (newValue) => {
+  localStorage.setItem("selectedDestination2", newValue);
+});
+
+
+watch(show, (newValue) => {
+  localStorage.setItem("flight", newValue.toString()); // number → string хөрвүүлж хадгалах
+});
+
 
 </script>

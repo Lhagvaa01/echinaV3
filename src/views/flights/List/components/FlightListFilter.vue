@@ -48,18 +48,18 @@
       <h6 class="mb-2">Onward Stops</h6>
       <ul class="list-inline mb-0 g-3">
         <li class="list-inline-item mb-0">
-          <input type="checkbox" class="btn-check" id="btn-check-c1" />
-          <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c1">Шууд нислэг ({{ direct
+          <input type="checkbox" class="btn-check" id="btn-check-c1" :value="1" v-model="filters.preferredStops" />
+          <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c1">Шууд нислэг ({{ direct.length
             }})</label>
         </li>
         <li class="list-inline-item mb-0">
-          <input type="checkbox" class="btn-check" id="btn-check-c2" />
-          <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c2">1 Зогсолт ({{ OneStop
+          <input type="checkbox" class="btn-check" id="btn-check-c2" :value="2" v-model="filters.preferredStops" />
+          <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c2">1 Зогсолт ({{ OneStop.length
             }})</label>
         </li>
         <li class="list-inline-item mb-0">
-          <input type="checkbox" class="btn-check" id="btn-check-c3" />
-          <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c3">2+ Зогсолт ({{ TwoStop
+          <input type="checkbox" class="btn-check" id="btn-check-c3" :value="3" v-model="filters.preferredStops" />
+          <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c3">2+ Зогсолт ({{ TwoStop.length
             }})</label>
         </li>
       </ul>
@@ -86,6 +86,29 @@
       </ul>
     </b-card> -->
 
+
+
+    <!-- <hr class="my-0" />
+    <b-card no-body class="card-body rounded-0 p-4">
+      <h6 class="mb-2">Preferred Airline</h6>
+      <b-col cols="12">
+        <div v-if="Array.isArray(StoreAirCompany)">
+          <div v-for="(comp, index) in StoreAirCompany.slice(0, 5)" :key="index" class="form-check">
+            <div v-if="comp">
+              <input class="form-check-input" type="checkbox" :value="comp.Code" :id="'airlineType' + index"
+                v-model="flightStore.filters.preferredAirline" />
+              <label class="form-check-label" :for="'airlineType' + index">
+                <img :src="comp.Code ? 'https://api.echina.mn/assets/d/' + comp.Code + '.png' : element12"
+                  alt="Airline logo" class="h-15px fa-fw me-2" />
+                {{ comp.Value }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </b-col>
+    </b-card> -->
+
+
     <hr class="my-0" />
 
     <!-- Preferred Airline -->
@@ -96,8 +119,11 @@
         <div v-if="Array.isArray(StoreAirCompany)">
           <div v-for="(comp, index) in StoreAirCompany.slice(0, 5)" :key="index" class="form-check">
             <div v-if="comp">
-              <input class="form-check-input" type="checkbox" value="" id="airlineType1" />
-              <label class="form-check-label" for="airlineType1">
+              <!-- <input class="form-check-input" type="checkbox" :value="comp.Code" :id="'airlineType' + index" />
+              <label class="form-check-label" for="airlineType1"> -->
+              <input class="form-check-input" type="checkbox" :value="comp.Code" :id="'airlineType' + index"
+                v-model="filters.preferredAirlines" />
+              <label :for="'airlineType' + index">
                 <img :src="comp.Code
                   ? 'https://api.echina.mn/assets/d/' + comp.Code + '.png'
                   : element12" alt="Airline logo" class="h-15px fa-fw me-2" />{{ comp.Value }}
@@ -112,12 +138,12 @@
           <div v-if="Array.isArray(StoreAirCompany)">
             <div v-for="(comp, index) in StoreAirCompany.slice(5)" :key="'collapsed-' + index" class="form-check">
               <div v-if="comp">
-                <input class="form-check-input" type="checkbox" value="" id="airlineType1" />
-                <label class="form-check-label" for="airlineType1">
+                <input class="form-check-input" type="checkbox" :value="comp.Code" :id="'airlineType' + index"
+                  v-model="filters.preferredAirlines" />
+                <label :for="'airlineType' + index">
                   <img :src="comp.Code
                     ? 'https://api.echina.mn/assets/d/' + comp.Code + '.png'
                     : element12" alt="Airline logo" class="h-15px fa-fw me-2" />{{ comp.Value }}
-                  <!-- <img :src="element12" class="h-15px fa-fw me-2" alt="" />{{ comp.Value }} -->
                 </label>
               </div>
             </div>
@@ -142,10 +168,18 @@
 
         <div v-if="Array.isArray(StoreAirport)">
           <div v-for="(comp, index) in StoreAirport.slice(0, 5)" :key="index" class="form-check">
-            <div v-if="comp">
+            <div v-if="comp" class=" px-4">
+              <input class="form-check-input" type="checkbox" :value="comp.Iata" :id="'airportType' + index"
+                v-model="filters.preferredAirPorts" />
               <div class="d-flex justify-content-between align-items-center">
-                <b-form-checkbox id="layoverType1">{{ comp.Name }}</b-form-checkbox>
-                <span class="small">{{ comp.Iata }}</span>
+
+                <label :for="'airportType' + index">
+                  {{ comp.Name }}
+                </label>
+
+                {{ comp.Iata }}
+                <!-- <b-form-checkbox id="layoverType1">{{ comp.Name }}</b-form-checkbox>
+                <span class="small">{{ comp.Iata }}</span> -->
               </div>
             </div>
           </div>
@@ -175,8 +209,20 @@
 
   <div class="d-flex justify-content-between p-2 p-xl-0 mt-xl-4">
     <b-button variant="link" class="p-0 mb-0">Clear all</b-button>
-    <b-button variant="primary" class="mb-0">Filter Result</b-button>
+    <b-button variant="primary" class="mb-0" @click="applyFilter('223')">Filter Result</b-button>
   </div>
+  <p>Сонгогдсон Airlines: {{ selectedAirlines }}</p>
+  <p>Сонгогдсон AirPorts: {{ selectedAirPorts }}</p>
+  <p>Сонгогдсон stops: {{ selectedStops }}</p>
+  <!-- <h4>{{ test }}</h4> -->
+  <!-- <div>
+    <h2>Filtered Flightss</h2>
+    <ul>
+      <li v-for="flight in filteredFlights" :key="flight.FlightNum">
+        {{ flight.FlightNum }}
+      </li>
+    </ul>
+  </div> -->
 </template>
 
 <script lang="ts" setup>
@@ -206,28 +252,158 @@ type Airport = {
 // const StoreAirCompany = computed(() => flightStore.filters.AirCompany.CodeValue || []);
 // console.log(StoreAirCompany[1].Value)
 
-const StoreAirCompany = computed<AirCompany[]>(() => flightStore.AirCompany.CodeValue || []);
-const StoreAirport = computed<Airport[]>(() => flightStore.AirPorts.AirPortInfo || []);
-const StoreflightInfos = computed(() => flightStore.flightInfos.FlightData || []);
+const StoreAirCompany = computed<AirCompany[]>(() => flightStore.AirCompany || []);
+const StoreAirport = computed<Airport[]>(() => flightStore.AirPorts || []);
+const StoreflightInfos = computed(() => flightStore.flightInfos || []);
+
+const filteredData = computed(() => flightStore.firstAdultPrice || []);
+
+const applyFilter = (filter: string) => {
+
+  console.log(filter)
+  filterByAirline(filter);
+  console.log("Store:", flightStore.filterAirline)
+};
+
+const filterByAirline = (airlineCode: string) => {
+  const filteredData = StoreflightInfos.value.filter((flight: { Offers: { OfferInfo: any[] } }) =>
+    flight.Offers.OfferInfo.some((offer: { Segments: { OfferSegment: any[] } }) =>
+      offer.Segments.OfferSegment.some(
+        (segment: { MarketingAirline: string }) => segment.MarketingAirline === airlineCode
+      )
+    )
+  );
+
+  flightStore.setAirline(filteredData);  // Store-д хандаж setAirline дуудах
+};
+
+const filterByAirPort = (AirPortCode: string) => {
+  const filteredData = StoreflightInfos.value.filter((flight: { Offers: { OfferInfo: any[] } }) =>
+    flight.Offers.OfferInfo.some((offer: { Segments: { OfferSegment: any[] } }) =>
+      offer.Segments.OfferSegment.some(
+        (segment: { Arrival: any }) => segment.Arrival.Iata === AirPortCode
+      )
+    )
+  );
+
+  flightStore.setAirline(filteredData);  // Store-д хандаж setAirline дуудах
+};
 
 
-const direct = ref(0);
-const OneStop = ref(0);
-const TwoStop = ref(0);
+const getFlightData = (index: number) => {
+  return StoreflightInfos.value[index] || { Offers: { OfferInfo: [] } };
+};
 
-StoreflightInfos.value.forEach((flight: any) => {
+const getAllSegments = (index: number) => {
+  return getFlightData(index).Offers.OfferInfo.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments.OfferSegment) || [];
+};
+
+const direct = ref<any[]>([]);  // Шууд нислэгийн массив
+const OneStop = ref<any[]>([]);  // 1 зогсолттой нислэгийн массив
+const TwoStop = ref<any[]>([]);  // Олон зогсолттой нислэгийн массив
+
+
+
+StoreflightInfos.value.forEach((flight: any, index: number) => {
   if (flight.Offers) {
-    if (Array.isArray(flight.Offers.OfferInfo.OfferSegment)) {
-      if (flight.Offers.OfferInfo.OfferSegment.length == 2) {
-        OneStop.value += 1; // 1 зогсолттой нислэгийн тоог нэмнэ
-      } else {
-        TwoStop.value += 1; // Шууд нислэгийн тоог нэмнэ
-      }
+    const segments = getAllSegments(index);  // Нислэгийн бүх сегментүүд
+    // console.log(index, segments)
+    const stops = segments.length;  // Зогсолтын тоо
+
+    if (stops === 1) {
+      direct.value.push(flight);  // Шууд нислэгийн сегментүүдийг нэмнэ
+    } else if (stops === 2) {
+      OneStop.value.push(flight);  // 1 зогсолттой нислэгийн сегментүүдийг нэмнэ
     } else {
-      direct.value += 1; // Шууд нислэгийн тоог нэмнэ
+      TwoStop.value.push(flight);  // Олон зогсолттой нислэгийн сегментүүдийг нэмнэ
     }
   }
 });
+
+const filters = ref({
+  preferredAirlines: [],
+  preferredAirPorts: [],
+  preferredStops: [],
+});
+
+const selectedAirlines = computed(() => filters.value.preferredAirlines);
+const selectedAirPorts = computed(() => filters.value.preferredAirPorts);
+const selectedStops = computed(() => filters.value.preferredStops);
+
+watch(selectedAirlines, (newValue, oldValue) => {
+  console.log("filteredData өөрчлөгдлөө:", oldValue, "->", newValue);
+  // filteredData = newValue;
+
+  filterByAirline(newValue[0]);
+
+});
+
+
+
+watch(selectedStops, (newValue, oldValue) => {
+  console.log("selectedStops өөрчлөгдлөө:", oldValue, "->", newValue);
+  let flights = ref<any[]>([]);
+  if (newValue[0] == 1) {
+    flights = direct
+  } else if (newValue[0] == 2) {
+    flights = OneStop
+  } else if (newValue[0] == 3) {
+    flights = TwoStop
+  } else {
+    flights = ref<any[]>([])
+  }
+
+  flightStore.setAirline(flights)
+  console.log(flightStore.firstAdultPrice);
+
+});
+
+// watch(selectedAirPorts, (newValue, oldValue) => {
+//   console.log("filteredData өөрчлөгдлөө:", oldValue, "->", newValue);
+//   // filteredData = newValue;
+
+//   // filterByAirline(newValue.preferredAirlines[0]);
+//   filterByAirPort(newValue[0]);
+
+// });
+
+
+watch(
+  () => StoreflightInfos.value, // StoreflightInfos өөрчлөгдөхийг хянах
+  (newFlights) => {
+    if (!Array.isArray(newFlights)) return;
+
+    // Тоолуурын утгыг эхлүүлэх
+    direct.value = [];
+    OneStop.value = [];
+    TwoStop.value = [];
+
+    newFlights.forEach((flight: any, index: number) => {
+      if (flight.Offers) {
+        const segments = getAllSegments(index);
+        const stops = segments.length;  // Зогсолтын тоо
+
+        if (stops === 1) {
+          direct.value.push(flight); // Шууд нислэг
+        } else if (stops === 2) {
+          OneStop.value.push(flight); // 1 зогсолттой нислэг
+        } else {
+          TwoStop.value.push(flight); // 2+ зогсолттой нислэг
+        }
+      }
+    });
+
+    console.log("🚀 Нислэгийн тоолол шинэчлэгдлээ:", {
+      direct: direct.value,
+      OneStop: OneStop.value,
+      TwoStop: TwoStop.value,
+    });
+  },
+  { deep: true } // Массивын доторх объект өөрчлөгдөхөд ажиллах
+);
+
+
+
 
 
 // `StoreAirCompany` утгыг шалгаж ашиглах
@@ -249,32 +425,4 @@ const processStyle = {
 const railStyle = {
   backgroundColor: 'rgb(81, 67, 217, 0.1)'
 }
-
-
-watch(
-  StoreflightInfos,
-  (newFlights: any[]) => {
-    // Тоолуурыг дахин тохируулах
-    direct.value = 0;
-    OneStop.value = 0;
-    TwoStop.value = 0;
-
-    newFlights.forEach((flight: any) => {
-      if (flight.Offers && flight.Offers.OfferInfo.OfferSegment) {
-        const segments = flight.Offers.OfferInfo.OfferSegment;
-
-        if (Array.isArray(segments)) {
-          if (segments.length === 2) {
-            OneStop.value += 1; // Шууд нислэгийн тоо нэмэгдэнэ
-          } else if (segments.length > 2) {
-            TwoStop.value += 1; // 1 зогсолттой нислэгийн тоо нэмэгдэнэ
-          }
-        } else {
-          direct.value += 1;
-        }
-      }
-    });
-  },
-  { immediate: true } // Анх ачаалахад автоматаар ажиллана
-);
 </script>
