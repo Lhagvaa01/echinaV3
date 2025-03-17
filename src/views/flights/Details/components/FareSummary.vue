@@ -2,45 +2,65 @@
   <b-col md="6" xl="12">
     <b-card no-body class="bg-light rounded-2">
       <b-card-header class="border-bottom bg-light">
-        <b-card-title tag="h5" class="mb-0">Fare Summary</b-card-title>
+        <b-card-title tag="h5" class="mb-0">Төлбөрийн мэдээлэл</b-card-title>
       </b-card-header>
 
       <b-card-body>
         <ul class="list-group list-group-borderless">
           <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span class="h6 fw-normal mb-0"
-              >Base Fare
-              <a
-                href="#"
-                tabindex="0"
-                v-b-popover.focus.bottom="'COVID-19 test required Vaccinated travelers can visit'"
-              >
+            <span class="h6 fw-normal mb-0">Том хүн
+              <a href="#" tabindex="0"
+                v-b-popover.focus.bottom="'COVID-19 test required Vaccinated travelers can visit'">
                 <BIconInfoCircle />
               </a>
             </span>
-            <span class="fs-5">{{ currency }}38,660</span>
+            <span class="fs-5">{{ currency }}{{ getOptionPrice().AdultPrice || "" }}</span>
           </li>
-          <li class="list-group-item d-flex justify-content-between align-items-center">
+          <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
             <span class="h6 fw-normal mb-0">Discount</span>
             <span class="fs-6 text-success">+{{ currency }}2,560</span>
-          </li>
+          </li> -->
           <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span class="h6 fw-normal mb-0">Other Services</span>
-            <span class="fs-5">{{ currency }}20</span>
+            <span class="h6 fw-normal mb-0">Үйлчилгээний хөлс</span>
+            <span class="fs-5">{{ currency }}7000</span>
           </li>
         </ul>
       </b-card-body>
 
       <b-card-footer class="border-top bg-light">
         <div class="d-flex justify-content-between align-items-center">
-          <span class="h5 fw-normal mb-0">Total Fare</span>
-          <span class="h5 fw-normal mb-0">{{ currency }}36,500</span>
+          <span class="h5 fw-normal mb-0">Нийт Төлбөр</span>
+          <span class="h5 fw-normal mb-0">{{ currency }}{{ Number(getOptionPrice()?.AdultPrice) + 7000 || "" }}</span>
         </div>
       </b-card-footer>
     </b-card>
   </b-col>
 </template>
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import { currency } from '@/helpers/constants'
 import { BIconInfoCircle } from 'bootstrap-icons-vue'
+import { useOptionStore } from '@/stores/optionStore'
+
+
+const optionStore = useOptionStore();
+
+const infos = computed(() => {
+  return optionStore.optionInfos?.result?.Body?.AeroPrebookResponse?.AeroPrebookResult || [];
+});
+
+
+const getOptionPrice = () => {
+  return optionStore.optionInfos?.result?.Body?.AeroPrebookResponse?.AeroPrebookResult?.TariffInfo || [];
+};
+
+
+const getFlightData = () => {
+  return infos.value || { Offers: { OfferInfo: [] } };
+};
+
+const getAllSegments = () => {
+  // console.log(getFlightData(index).Offers.OfferInfo.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments.OfferSegment) || [])
+  return getFlightData().Offers.OfferInfo.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments.OfferSegment) || [];
+};
 </script>

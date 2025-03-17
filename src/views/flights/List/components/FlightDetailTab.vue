@@ -18,13 +18,13 @@
                       : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
 
                     <h6 class="fw-normal mb-0">
-                      {{ StoreAirCompany.find((airline: any) => airline.Code ===
-                        offerSegment.MarketingAirline).Value }}
+                      {{Array.isArray(StoreAirCompany.value) ? StoreAirCompany?.find((airline: any) => airline.Code ===
+                        offerSegment.MarketingAirline).Value : null}}
                       ({{ offerSegment.FlightNum || 'SA-1254' }})
                     </h6>
                   </div>
                   <h6 class="fw-normal mb-0"><span class="text-body">Ангилал:</span> {{ offerSegment.FlightClass
-                    }}
+                  }}
                   </h6>
                 </div>
               </b-card-header>
@@ -39,17 +39,17 @@
                       formatDate(offerSegment.Departure.Date) }}
                     </p>
                     <p class="mb-0">{{ offerSegment.Departure.Iata
-                      }}<span v-if="offerSegment.Departure.Terminal">-Терминал</span> {{
+                    }}<span v-if="offerSegment.Departure.Terminal">-Терминал</span> {{
                         offerSegment.Departure.Terminal || '' }}
                     </p>
-                    <p class="mb-0">{{ StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                      offerSegment.Departure.Iata).City }}</p>
+                    <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
+                      offerSegment.Departure.Iata).City}}</p>
 
                   </b-col>
 
                   <b-col sm="4" class="my-sm-auto text-center">
                     <h5>{{ convertTimeText(offerSegment.FlightTime)
-                      }}
+                    }}
                     </h5>
                     <div class="position-relative my-4">
                       <hr class="bg-primary opacity-5 position-relative" />
@@ -70,7 +70,7 @@
 
                   <b-col sm="4">
                     <h4> {{ offerSegment.Arrival.Date.split(" ")[1]
-                      }}
+                    }}
                     </h4>
                     <p class="fw-bold text-black mb-0">{{
                       formatDate(offerSegment.Arrival.Date) }}</p>
@@ -79,8 +79,8 @@
                       {{
                         offerSegment.Arrival.Terminal || '' }}
                     </p>
-                    <p class="mb-0">{{ StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                      offerSegment.Arrival.Iata).City }}</p>
+                    <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
+                      offerSegment.Arrival.Iata).City}}</p>
                   </b-col>
                 </b-row>
 
@@ -98,6 +98,7 @@
                 </div>
 
               </b-card-body>
+
             </div>
           </div>
           <div v-else v-for="(offerSegment, segidxs) in getAllSegments(index)" :key="segidxs">
@@ -128,13 +129,13 @@
                         : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
 
                       <h6 class="fw-normal mb-0">
-                        {{ Array.isArray(StoreAirCompany) ? StoreAirCompany.find((airline: any) => airline.Code ===
-                          offerSegment.MarketingAirline).Value : StoreAirCompany.Value }}
+                        {{Array.isArray(StoreAirCompany) ? StoreAirCompany.find((airline: any) => airline.Code ===
+                          offerSegment.MarketingAirline).Value : StoreAirCompany.Value}}
                         ({{ offerSegment.FlightNum || 'SA-1254' }})
                       </h6>
                     </div>
                     <h6 class="fw-normal mb-0"><span class="text-body">Ангилал:</span> {{ offerSegment.FlightClass
-                      }}
+                    }}
                     </h6>
                   </div>
                 </b-card-header>
@@ -149,17 +150,17 @@
                         formatDate(offerSegment.Departure.Date) }}
                       </p>
                       <p class="mb-0">{{ offerSegment.Departure.Iata
-                        }}<span v-if="offerSegment.Departure.Terminal">-Терминал</span> {{
+                      }}<span v-if="offerSegment.Departure.Terminal">-Терминал</span> {{
                           offerSegment.Departure.Terminal || '' }}
                       </p>
-                      <p class="mb-0">{{ StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                        offerSegment.Departure.Iata).City }}</p>
+                      <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
+                        offerSegment.Departure.Iata).City}}</p>
 
                     </b-col>
 
                     <b-col sm="4" class="my-sm-auto text-center">
                       <h5>{{ convertTimeText(offerSegment.FlightTime)
-                        }}
+                      }}
                       </h5>
                       <div class="position-relative my-4">
                         <hr class="bg-primary opacity-5 position-relative" />
@@ -180,7 +181,7 @@
 
                     <b-col sm="4">
                       <h4> {{ offerSegment.Arrival.Date.split(" ")[1]
-                        }}
+                      }}
                       </h4>
                       <p class="fw-bold text-black mb-0">{{
                         formatDate(offerSegment.Arrival.Date) }}</p>
@@ -189,8 +190,8 @@
                         {{
                           offerSegment.Arrival.Terminal || '' }}
                       </p>
-                      <p class="mb-0">{{ StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                        offerSegment.Arrival.Iata).City }}</p>
+                      <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
+                        offerSegment.Arrival.Iata).City}}</p>
                     </b-col>
                   </b-row>
 
@@ -215,7 +216,7 @@
                   class="card-footer pt-0 pb-4 d-flex align-items-center mw-100">
                   <div class="d-flex flex-row bg-light rounded-2 w-100 justify-content-between">
                     <div class="text-start fw-normal rounded-2 p-2 text-orange">
-                      {{ StoreAirPorts.find((AirPorts: any) => AirPorts.Iata === offerSegment.Arrival.Iata).City }} дээр
+                      {{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata === offerSegment.Arrival.Iata).City}} дээр
                       {{ timeDifference(offerSegment.Arrival.Date, getAllSegmentsDates(index)[segidxs +
                         1].Departure.Date)
                       }}
@@ -231,6 +232,16 @@
                         <span class="fst-normal">(Self-transfer baggage)</span>
                       </h6>
                     </div>
+                  </div>
+                </div>
+                <div v-else><!-- Ачаа өөрөө авах шаардлагатай бол нэмэлт анхааруулга -->
+                  <div v-if="offerSegment.SelfConnect == 'true'"
+                    class=" fw-normal  mt-1 p-2 d-flex text-center align-items-center justify-content-sm-end">
+                    <TriangleAlert :size="24" />
+                    <h6 class="fw-light mb-0">
+                      Ачаагаа өөрөө авч, дахин бүртгүүлэх шаардлагатай <br />
+                      <span class="fst-normal">(Self-transfer baggage)</span>
+                    </h6>
                   </div>
                 </div>
               </div>
@@ -430,8 +441,8 @@ const flightStore = useFlightStore();
 
 // Access state
 const StoreflightInfos = computed(() => flightStore.flightInfos || []);
-const StoreAirCompany = computed(() => flightStore.AirCompany);
-const StoreAirPorts = computed(() => flightStore.AirPorts);
+const StoreAirCompany = computed(() => flightStore.AirCompany || []);
+const StoreAirPorts = computed(() => flightStore.AirPorts || []);
 
 const getFlightData = (index: number) => {
   return StoreflightInfos.value[index] || { Offers: { OfferInfo: [] } };

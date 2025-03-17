@@ -6,21 +6,33 @@
           <b-col cols="12">
             <div class="d-sm-flex justify-content-sm-between align-items-center">
               <div class="mb-3 mb-sm-0">
-                <h1 class="fs-3">
+                <h1 class="d-flex fs-3">
                   {{ StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
                     getFirstDeparture(0)).City }}
                   ({{ StoreAirPorts.find((AirPorts: any) =>
                     AirPorts.Iata ===
                     getFirstDeparture(0)).Name }})
-                  <PlaneTakeoff :size="40" color="#3949AB" class="mb-3 mx-3" /> {{ StoreAirPorts.find((AirPorts: any) =>
-                    AirPorts.Iata ===
-                    getLastArrival(0)).City }}
-                  ({{ StoreAirPorts.find((AirPorts: any) =>
-                    AirPorts.Iata ===
-                    getLastArrival(0)).Name }})
-                  <!-- {{ getFirstDeparture(0) }} - {{ getLastArrival(0) }} -->
+                  <PlaneTakeoff :size="40" color="#3949AB" class="mb-3 mx-3" />
+                  <div v-if="showRound === 2">
+                    {{ StoreAirPorts.find((AirPorts: any) =>
+                      AirPorts.Iata ===
+                      returnFlights(0)[0].Departure.Iata).City }}
+                    ({{ StoreAirPorts.find((AirPorts: any) =>
+                      AirPorts.Iata ===
+                      returnFlights(0)[0].Departure.Iata).Name }})
+                  </div>
+                  <div v-else>
+                    {{ StoreAirPorts.find((AirPorts: any) =>
+                      AirPorts.Iata ===
+                      getLastArrival(0)).City }}
+                    ({{ StoreAirPorts.find((AirPorts: any) =>
+                      AirPorts.Iata ===
+                      getLastArrival(0)).Name }})
+                  </div>
+
                 </h1>
                 <h5>Явах: {{ formatDate(getFirstDepartureTime(0)) }}</h5>
+                <h5 v-if="showRound === 2">Очих: {{ formatDate(returnFlights(0)[0].Departure.Date) }}</h5>
                 <div class="d-flex flex-row justify-content-start align-items-center">
                   <h5 class="me-3">
                     <Plane :size="30" color="#3949AB" /> Нийт: {{ filteredData.length }} нислэг
@@ -29,11 +41,6 @@
                     <TicketsPlane :size="30" color="#3949AB" /> {{ StoreAirCompany.length }} airlines
                   </h5>
                 </div>
-                <!-- <h1 class="fs-3">09 Flight Available</h1>
-              <ul class="nav nav-divider h6 mb-0">
-                <li class="nav-item">25 Jan</li>
-                <li class="nav-item">1 Stop</li>
-              </ul> -->
               </div>
               <button @click="toggleOffcanvas" class="btn btn-primary d-xl-none mb-0" type="button"
                 data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
@@ -89,6 +96,7 @@ import { ChevronDown, Briefcase, Luggage, User, PlaneTakeoff, TicketsPlane, Plan
 import FlightListFilter from '@/views/flights/List/components/FlightListFilter.vue'
 
 const show = ref(false)
+const showRound = ref<number>(Number(sessionStorage.getItem("flight")) || 1);
 
 const flightStore = useFlightStore();
 
@@ -118,6 +126,50 @@ function formatDate(input: string): string {
   const [year, time] = yearAndTime.split(" ");
   return `${year}-${month}-${day}`;
 }
+
+const getFlightDataNew = (index: number) => {
+  return filteredData.value[index]?.Offers?.OfferInfo || [];
+};
+
+
+const departureFlights = (index: number) => {
+  const data = getFlightDataNew(index);
+  let filter = []
+  // Rph !== "2" байгаа Offer-г шалгаж байгаа нөхцөл
+  if (data.some((offer: { Rph: string }) => offer.Rph === "2")) {
+    filter = data
+      .filter((offer: { Rph: string }) => offer.Rph === "1")
+      .flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments.OfferSegment);
+
+
+  } else {
+    filter = data
+      .flatMap((offer: { Segments?: { OfferSegment?: any[] } }) => offer.Segments?.OfferSegment || [])
+      .filter((segment: { Rph: string }) => segment.Rph === "1");
+
+  }
+  return filter;
+};
+
+const returnFlights = (index: number) => {
+  const data = getFlightDataNew(index);
+
+  let filter = []
+  // Rph !== "2" байгаа Offer-г шалгаж байгаа нөхцөл
+  if (data.some((offer: { Rph: string }) => offer.Rph === "2")) {
+    filter = data
+      .filter((offer: { Rph: string }) => offer.Rph === "2")
+      .flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments.OfferSegment);
+
+
+  } else {
+    filter = data
+      .flatMap((offer: { Segments?: { OfferSegment?: any[] } }) => offer.Segments?.OfferSegment || [])
+      .filter((segment: { Rph: string }) => segment.Rph === "2");
+
+  }
+  return filter;
+};
 
 const toggleOffcanvas = () => {
   show.value = !show.value

@@ -6,6 +6,7 @@ interface FlightState {
     AirPorts: any;
     filters: any;
     filterAirline: any;
+    SearchGuid: "";
 }
 export const useFlightStore = defineStore({
   id: 'flightStore',
@@ -15,78 +16,85 @@ export const useFlightStore = defineStore({
     AirPorts: [],
     filters: [],
     filterAirline: [],
+    SearchGuid: "",
   }),
-  // state: () => ({
-  //   flightInfos: [],
-  //   AirCompany: [],
-  //   AirPorts: [],
-  //   filters: [],
-  // }),
+
   actions: {
-    fetchFlights(filters: { from: string; to: string; date: string; backDate: string; travelers: { adults: number; childs: number }; isRound: number }) {
-      let url = "";
-      if(filters.isRound == 1){
-        url = `http://api.airkacc.mn/api/search/mn/?dpt=${filters.from}&arr=${filters.to}&date=${filters.date}&fclass=Econom&adults=${filters.travelers.adults}&childs=${filters.travelers.childs}&infants=0`;
-      }else if(filters.isRound == 2){
-        url = `http://api.airkacc.mn/api/search/mn/?dpt=${filters.from}&arr=${filters.to}&date=${filters.date}&backDate=${filters.backDate}&fclass=Econom&adults=${filters.travelers.adults}&childs=${filters.travelers.childs}&infants=0`;
-      }
-      console.log(url)
-      fetch(url)
-        .then(response => response.json())
-        .then((data: any) => {
-          if (data.status === 'SUCCESS') {
-            this.flightInfos = data.result.Body.AeroSearchResponse.AeroSearchResult.FlightData.FlightData || [];
-            this.AirCompany = data.result.Body.AeroSearchResponse.AeroSearchResult.AirCompany.CodeValue || [];
-            this.AirPorts = data.result.Body.AeroSearchResponse.AeroSearchResult.AirPorts.AirPortInfo || [];
-            this.filters = data.result.Body.AeroSearchResponse.AeroSearchResult || [];
-            console.log(data)
-          } else {
-            console.error('API returned an unexpected structure:', data);
+    async fetchFlights(filters: {
+      trips: Array<{ from: string; to: string; date: string }>;
+      travelers: { adults: number; childs: number };
+      isRound: number; // 1: Нэг чиглэл | 2: Хоёр чиглэл | 3: Олон чиглэл
+    }) {
+      try {
+        let url = "http://api.airkacc.mn/api/search/mn/";
+        const params = [];
+
+        // 📌 Анхны чиглэлийн нислэг (заавал байх)
+        const firstTrip = filters.trips[0];
+        params.push(`dpt=${firstTrip.from}`);
+        params.push(`arr=${firstTrip.to}`);
+        params.push(`date=${firstTrip.date}`);
+        params.push(`fclass=Econom`);
+        params.push(`adults=${filters.travelers.adults}`);
+        params.push(`childs=${filters.travelers.childs}`);
+        params.push(`infants=0`);
+
+        console.log("filters.isRound")
+        console.log(filters.isRound)
+
+        if (filters.isRound === 2 && filters.trips.length > 1) {
+          // 📌 Хоёр чиглэлтэй нислэгийн буцах чиглэлийг нэмэх
+          const returnTrip = filters.trips[1];
+          params.push(`backDate=${returnTrip.date}`);
+        } else if (filters.isRound === 3) {
+          // 📌 Олон чиглэлт нислэгийн нэмэлт чиглэлүүд
+          filters.trips.slice(1).forEach((trip, index) => {
+            params.push(`mdate${index + 1}=${trip.date}`);
+            params.push(`from${index + 1}=${trip.from}`);
+            params.push(`to${index + 1}=${trip.to}`);
+          });
+          console.log(filters)
+          console.log(params)
+        }
+
+        // Бүтэн URL үүсгэх
+        const fullUrl = `${url}?${params.join("&")}`;
+        console.log("Generated URL:", fullUrl);
+
+        // 📌 API дуудах
+        const response = await fetch(fullUrl);
+        const data = await response.json();
+
+        // 📌 API хариуг шалгах
+        if (data.status === "SUCCESS" && data.result?.Body?.AeroSearchResponse?.AeroSearchResult) {
+          const result = data.result.Body.AeroSearchResponse.AeroSearchResult;
+
+          this.flightInfos = result.FlightData?.FlightData || [];
+          this.AirCompany = result.AirCompany?.CodeValue || [];
+          this.AirPorts = result.AirPorts?.AirPortInfo || [];
+          this.filters = result || {};
+          this.SearchGuid = result.SearchGuid || "";
+          if(Array.isArray(this.AirCompany)){
+            
+          }else{
+            this.AirCompany = this.AirCompany ? [this.AirCompany] : [];
           }
-        })
-        .catch(error => {
-          console.error('API call error:', error);
-        });
+console.log(this.AirCompany)
+          console.log("Fetched flights:", this.flightInfos);
+        } else {
+          console.error("Unexpected API response:", data);
+        }
+      } catch (error) {
+        console.error("API call error:", error);
+      }
     },
-    
-    setAirline(filter: any){
+
+    setAirline(filter: any) {
       this.filterAirline = filter;
-    }
-    
-    
-    // applyFilters() {
-    //   return this.filters.filter((flight: any) => {
-    //     // // Refundable шүүлт
-    //     // if (this.filters.refundable && !flight.Refundable) return false;
-
-    //     // Price шүүлт
-    //     const price = parseFloat(flight.TotalPrice);
-    //     if (price < this.filters.priceRange[0] || price > this.filters.priceRange[1]) return false;
-
-    //     // // Stops шүүлт
-    //     // if (
-    //     //   this.filters.stops.length > 0 &&
-    //     //   !this.filters.stops.includes(flight.Offers.OfferInfo.Segments.OfferSegment.FlightNum)
-    //     // ) {
-    //     //   return false;
-    //     // }
-
-    //     // // Preferred Airline шүүлт
-    //     // if (
-    //     //   this.filters.preferredAirline.length > 0 &&
-    //     //   !this.filters.preferredAirline.includes(flight.Offers.OfferInfo.MarketingAirline)
-    //     // ) {
-    //     //   return false;
-    //     // }
-
-    //     return true;
-    //   });
-    // },
-  },
-  getters: {
-    firstAdultPrice: (state) => {
-      
-      return state.filterAirline || [];  // Fallback value
     },
+  },
+
+  getters: {
+    firstAdultPrice: (state) => state.filterAirline || [],
   },
 });

@@ -13,181 +13,624 @@
       </div>
 
       <div class="text-end mb-3">
-        <a href="#" class="btn btn-primary-soft mb-0">Add New Adult</a>
+        <a href="#" class="btn btn-primary-soft mb-0" @click.prevent="addTraveler">Зорчигч нэмэх</a>
       </div>
 
       <b-accordion class="accordion-icon accordion-bg-light">
-        <b-accordion-item
-          header-tag="h6"
-          header-class="font-base"
-          button-class="fw-bold"
-          title="Adult 1"
-          body-class="mt-3"
-          class="mb-3"
-          visible
-        >
+        <b-accordion-item v-for="(traveler, index) in travelers" :key="traveler.id" :header-tag="'h6'"
+          header-class="font-base" button-class="fw-bold" :title="`Adult ${index + 1}`" body-class="mt-3" class="mb-3"
+          :visible="index === 0">
           <b-row class="g-4">
+
             <b-col md="3">
-              <SelectFormInput
-                id="title"
-                label="Title"
-                v-model="selectedTitle"
-                :options="titleOptions"
-                :choice-options="{ searchEnabled: false }"
-              />
+              <b-form-group label="Пасспортын дугаар">
+                <b-form-input type="text" placeholder="Пасспортын дугаар оруулна уу" v-model="traveler.document"
+                  :state="isPassportValid(traveler.document)" />
+                <b-form-invalid-feedback v-if="!isPassportValid(traveler.document)">
+                  Пасспортын дугаар буруу байна.
+                </b-form-invalid-feedback>
+              </b-form-group>
             </b-col>
 
-            <b-col md="9">
-              <label class="form-label">Full name</label>
+            <!-- <b-col md="9">
+              <label class="form-label">Бүтэн нэр</label>
               <div class="input-group">
-                <b-form-input type="text" placeholder="First name" />
-                <b-form-input type="text" placeholder="Last name" />
+                <b-form-input type="text" placeholder="Эцэг(Эх)-ийн нэр" v-model="traveler.lastName" />
+                <b-form-input type="text" placeholder="Өөрийн нэр" v-model="traveler.firstName" />
+              </div>
+            </b-col> -->
+            <b-col md="9">
+              <b-form-group label="Бүтэн нэр">
+                <div class="input-group">
+                  <b-form-input type="text" placeholder="Эцэг(Эх)-ийн нэр" v-model="traveler.surname"
+                    :state="isNameValid(traveler.name, traveler.surname) ? true : false" />
+                  <b-form-input type="text" placeholder="Өөрийн нэр" v-model="traveler.name"
+                    :state="isNameValid(traveler.name, traveler.surname) ? true : false" />
+                </div>
+                <div class="invalid-feedback d-block text-danger" v-if="!isNameValid(traveler.name, traveler.name)">
+                  Нэрийн бүх талбарыг бөглөнө үү. Зөвхөн үсэг бичнэ!
+                </div>
+              </b-form-group>
+
+            </b-col>
+
+            <!-- <b-col md="6">
+              <SelectFormInput id="nationality" label="Иргэний харьяалал" v-model="traveler.nationality"
+                :options="nationalityOptions" :choice-options="{ searchEnabled: false }" />
+            </b-col> -->
+            <!-- Харьяалал -->
+            <b-col md="6">
+              <SelectFormInput id="nationality" label="Иргэний харьяалал" v-model="traveler.birthISO"
+                :options="nationalityOptions" :choice-options="{ searchEnabled: false }"
+                :state="isNationalityValid(traveler.birthISO)" />
+              <!-- <b-form-invalid-feedback v-if="!isNationalityValid(traveler.nationality)">
+                Харьяаллаа сонгоно уу.
+              </b-form-invalid-feedback> -->
+              <div class="invalid-feedback d-block text-danger" v-if="!isNationalityValid(traveler.birthISO)">
+                Харьяаллаа сонгоно уу.
               </div>
             </b-col>
 
-            <b-col md="6">
-              <label class="form-label">Date Of Birth</label>
+            <!-- <b-col md="6">
+              <label class="form-label">Төрсөн өдөр, сар, он/Date of birth</label>
               <b-row class="g-0">
                 <b-col cols="4">
                   <div class="choice-radius-end">
-                    <SelectFormInput
-                      id="date"
-                      v-model="selectedDate"
-                      :options="dateOptions"
-                      :choice-options="{ searchEnabled: false }"
-                      custom-class="z-index-9 rounded-start"
-                    />
+                    <SelectFormInput id="date" v-model="traveler.dateOfBirth" :options="dateOptions"
+                      :choice-options="{ searchEnabled: false }" custom-class="z-index-9 rounded-start" />
                   </div>
                 </b-col>
                 <b-col cols="4">
                   <div class="choice-radius-0">
-                    <SelectFormInput
-                      id="month"
-                      v-model="selectedMonth"
-                      :options="monthOptions"
+                    <SelectFormInput id="month" v-model="traveler.dateOfBirth" :options="monthOptions"
                       :choice-options="{ searchEnabled: false }"
-                      custom-class="choice-radius-0 z-index-9 border-0 bg-light"
-                    />
+                      custom-class="choice-radius-0 z-index-9 border-0 bg-light" />
                   </div>
                 </b-col>
                 <b-col cols="4">
                   <div class="choice-radius-start">
-                    <SelectFormInput
-                      id="year"
-                      v-model="selectedYear"
-                      :options="yearOptions"
-                      :choice-options="{ searchEnabled: false }"
-                      custom-class="z-index-9 border-0 bg-light"
-                    />
+                    <SelectFormInput id="year" v-model="traveler.dateOfBirth" :options="yearOptions"
+                      :choice-options="{ searchEnabled: false }" custom-class="z-index-9 border-0 bg-light" />
                   </div>
                 </b-col>
               </b-row>
+            </b-col> -->
+            <!-- Төрсөн огноо -->
+            <b-col md="6">
+              <label class="form-label">Төрсөн өдөр, сар, он</label>
+              <b-row class="g-0">
+                <b-col cols="4">
+                  <SelectFormInput id="date" v-model="traveler.birthDay.day" :options="dateOptions" />
+                </b-col>
+                <b-col cols="4">
+                  <SelectFormInput id="month" v-model="traveler.birthDay.month" :options="monthOptions" />
+                </b-col>
+                <b-col cols="4">
+                  <SelectFormInput id="year" v-model="traveler.birthDay.year" :options="yearOptions" />
+                </b-col>
+              </b-row>
+              <!-- <b-form-invalid-feedback v-if="!isDateValid(traveler.dateOfBirth)">
+                Бүрэн бөглөнө үү.
+              </b-form-invalid-feedback> -->
+              <div class="invalid-feedback d-block text-danger" v-if="!isDateValid(traveler.birthDay)">
+                Төрсөн он, сар, өдөр бүрэн бөглөнө үү.
+              </div>
             </b-col>
 
+
+            <!-- <b-col md="6">
+              <SelectFormInput id="gender" label="Хүйс" v-model="traveler.gender" :options="titleOptions"
+                :choice-options="{ searchEnabled: false }" />
+            </b-col> -->
+            <!-- Хүйс -->
             <b-col md="6">
-              <SelectFormInput
-                id="nationality"
-                label="Nationality"
-                v-model="selectedNationality"
-                :options="nationalityOptions"
-                :choice-options="{ searchEnabled: false }"
-              />
+              <SelectFormInput id="gender" label="Хүйс" v-model="traveler.gender" :options="titleOptions"
+                :choice-options="{ searchEnabled: false }" :state="isGenderValid(traveler.gender)" />
+              <!-- <b-form-invalid-feedback v-if="!isGenderValid(traveler.gender)">
+                Хүйсээ сонгоно уу.
+              </b-form-invalid-feedback> -->
+              <div class="invalid-feedback d-block text-danger" v-if="!isGenderValid(traveler.gender)">
+                Хүйсээ сонгоно уу.
+              </div>
             </b-col>
 
-            <b-col md="6">
-              <b-form-group label="Passport Number">
-                <b-form-input type="text" placeholder="Enter passport number" />
-              </b-form-group>
-            </b-col>
 
+            <!-- <b-col md="6">
+              <label class="form-label">Пасспортын дуусах хугацаа</label>
+              <b-row class="g-0">
+                <b-col cols="4">
+                  <div class="choice-radius-end">
+                    <SelectFormInput id="Pdate" v-model="traveler.DocumentExDate" :options="dateOptions"
+                      :choice-options="{ searchEnabled: false }" custom-class="z-index-9 rounded-start" />
+                  </div>
+                </b-col>
+                <b-col cols="4">
+                  <div class="choice-radius-0">
+                    <SelectFormInput id="Pmonth" v-model="traveler.DocumentExDate" :options="monthOptions"
+                      :choice-options="{ searchEnabled: false }"
+                      custom-class="choice-radius-0 z-index-9 border-0 bg-light" />
+                  </div>
+                </b-col>
+                <b-col cols="4">
+                  <div class="choice-radius-start">
+                    <SelectFormInput id="Pyear" v-model="traveler.DocumentExDate" :options="yearOptions"
+                      :choice-options="{ searchEnabled: false }" custom-class="z-index-9 border-0 bg-light" />
+                  </div>
+                </b-col>
+              </b-row>
+            </b-col> -->
+            <!-- Паспортын хугацаа -->
             <b-col md="6">
-              <SelectFormInput
-                id="country"
-                label="Passport Issuing Country"
-                v-model="selectedCountry"
-                :options="countryOptions"
-                :choice-options="{ searchEnabled: false }"
-              />
-            </b-col>
-
-            <b-col md="6">
-              <CustomFlatpicker
-                id="passportExpiry"
-                label="Passport Expiry"
-                placeholder="Enter passport date"
-                v-model="date"
-                :options="{ dateFormat: 'd M Y' }"
-              />
+              <label class="form-label">Пасспортын дуусах хугацаа</label>
+              <b-row class="g-0">
+                <b-col cols="4">
+                  <SelectFormInput id="Pdate" v-model="traveler.DocumentExDate.day" :options="dateOptions" />
+                </b-col>
+                <b-col cols="4">
+                  <SelectFormInput id="Pmonth" v-model="traveler.DocumentExDate.month" :options="monthOptions" />
+                </b-col>
+                <b-col cols="4">
+                  <SelectFormInput id="Pyear" v-model="traveler.DocumentExDate.year" :options="yearOptions" />
+                </b-col>
+              </b-row>
+              <!-- <b-form-invalid-feedback v-if="!isDateValid(traveler.DocumentExDate)">
+                Бүрэн бөглөнө үү.
+              </b-form-invalid-feedback> -->
+              <div class="invalid-feedback d-block text-danger" v-if="!isDateValid(traveler.DocumentExDate)">
+                Пасспортын дуусах он, сар, өдөр бүрэн бөглөнө үү.
+              </div>
             </b-col>
           </b-row>
         </b-accordion-item>
-        <b-accordion-item
-          header-tag="h6"
-          header-class="font-base"
-          button-class="fw-bold"
-          title="Adult 2"
-          body-class="mt-3"
-        >
-          What deal evil rent by real in. But her ready least set lived spite solid. September how
-          men saw tolerably two behavior arranging. She offices for highest and replied one venture
-          pasture. Applauded no discovery in newspaper allowance am northward. Frequently partiality
-          possession resolution at or appearance unaffected me. Engaged its was the evident pleased
-          husband. Ye goodness felicity do disposal dwelling no. First am plate jokes to began to
-          cause a scale. Subjects he prospect elegance followed no overcame possible it on. Improved
-          own provided blessing may peculiar domestic. Sight house has sex never. No visited raising
-          gravity outward subject my cottage Mr be.
-        </b-accordion-item>
       </b-accordion>
-      <h5 class="mt-4">Booking detail will be sent to</h5>
+
+
+      <ServiceInfo />
+
+      <h5 class="mt-4">Захиалгын дэлгэрэнгүй мэдээллийг илгээнэ</h5>
       <b-row class="g-3 g-md-4">
         <b-col md="6">
-          <b-form-group label="Mobile Number">
-            <b-form-input type="text" placeholder="Enter your mobile number" />
+          <b-form-group label="Утасны дугаар">
+            <b-form-input v-model="BookingInfo.phoneNumber.value" type="text" placeholder="Утасны дугаар оруулна уу"
+              :state="isPhoneNumberValid" />
+            <div class="invalid-feedback d-block text-danger" v-if="!isPhoneNumberValid">
+              Утасны дугаараа зөв оруулна уу. Зөвхөн тоо байх ёстой!
+            </div>
           </b-form-group>
         </b-col>
 
         <b-col md="6">
-          <b-form-group label="Email Address">
-            <b-form-input type="email" placeholder="Enter your email address" />
+          <b-form-group label="Email Хаяг">
+            <b-form-input v-model="BookingInfo.email.value" type="email" placeholder="Email Хаяг оруулна уу"
+              :state="isEmailValid" />
+            <div class="invalid-feedback d-block text-danger" v-if="!isEmailValid">
+              Буруу email хаяг!
+            </div>
           </b-form-group>
         </b-col>
       </b-row>
 
+
+      <!-- <div class="d-grid mt-4">
+        <a href="#" class="btn btn-primary-soft mb-0" :class="{ 'disabled-link': !isFormValid }"
+          @click.prevent="pay">Төлбөр төлөх</a>
+      </div> -->
+
       <div class="d-grid mt-4">
-        <router-link :to="{ name: 'flights.booking' }" class="btn btn-primary mb-0"
-          >Proceed To Payment</router-link
-        >
+        <!-- Төлбөр төлөх товч -->
+        <a href="#" class="btn btn-primary-soft mb-0" :class="{ 'disabled-link': !isFormValid }"
+          @click.prevent="openModal">
+          Төлбөр төлөх
+        </a>
+      </div>
+
+      <!-- Баталгаажуулах Modal -->
+      <div v-if="showModal" class="modal-overlay">
+        <div class="modal-content">
+          <h3 class="modal-title">Мэдээлэл баталгаажуулах</h3>
+
+          <!-- Анхааруулга -->
+          <div class="alert-warning">
+            <span class="warning-icon">⚠️</span>
+            <strong>Анхааруулга</strong>
+            <p>
+              Гадаад <strong>паспорт</strong> дээрх мэдээллээс <strong>үг, үсэг, тоо, хүйс</strong> зөрвөл ашиглагдах
+              боломжгүй болно!!!!
+            </p>
+          </div>
+
+          <!-- Зорчигчийн мэдээлэл -->
+          <div class="passenger-info">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Паспорт</th>
+                  <th>Овог</th>
+                  <th>Нэр</th>
+                  <th>Төрсөн өдөр</th>
+                  <th>Хүчинтэй хугацаа</th>
+                  <th>Хүйс</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(traveler, index) in travelers" :key="index">
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ traveler.document }}</td>
+                  <td>{{ traveler.surname }}</td>
+                  <td>{{ traveler.name }}</td>
+                  <td>{{ formatBirthDay(traveler.birthDay) }}</td>
+                  <td>{{ formatBirthDay(traveler.DocumentExDate) }}</td>
+                  <td>{{ traveler.gender }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Үйлчилгээний нөхцөл -->
+          <div class="p-4">
+
+            <h4>Нислэгийн Тийз Захиалгын Үйлчилгээний Нөхцөл</h4>
+          </div>
+          <div class="terms-container" @scroll="checkScroll" ref="termsContainer">
+
+            <p class="warning-text">
+            <h6>АНХААРУУЛАХ САНАМЖ</h6>
+            </p>
+            <p>
+              <strong>Гадаад паспортын мэдээлэл:</strong> Зорчигч нь өөрийн мэдээллийг сайтар шалгана уу.
+              Паспортын дугаар, овог, нэр, хүйс зэрэг мэдээллийг зөв оруулах ёстой.
+            </p>
+            <p v-for="i in 20" :key="i">Энд нөхцөлүүдийн дэлгэрэнгүй тайлбар орно...</p>
+            <h5>
+              <input type="checkbox" v-model="agreed" :disabled="!scrolledToBottom" />
+              Би үйлчилгээний нөхцөлийг уншиж танилцлаа.
+            </h5>
+          </div>
+
+          <!-- Check болон Баталгаажуулах Товч -->
+          <div class="modal-actions">
+
+            <div class="button-group">
+              <h6 class="col-6">Үргэлжлүүлэхийн тул үйлчилгээний нөхцөлийг уншиж танилцаад доош гүйлгээд "зөвшөөрөх"
+                товчийг дарна
+                уу
+              </h6>
+              <button @click="closeModal" class="btn btn-secondary col-2">Хаах</button>
+              <button @click="confirmAndPay" class="btn btn-primary-soft col-3" :disabled="!agreed">
+                Үргэлжлүүлэх
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </b-card-body>
+    <!-- Toast/Error Popup -->
+    <!-- <ErrorToast v-if="errorMessage" :message="errorMessage" /> -->
+    <!-- <div v-if="errorMessage"
+      class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-red-500 text-black px-6 py-4 rounded-lg shadow-md">
+      <p class="text-lg"> {{ errorMessage }} </p>
+    </div> -->
   </form>
 </template>
+
 <script setup lang="ts">
-import CustomFlatpicker from '@/components/CustomFlatpicker.vue'
-import { ref } from 'vue'
-import SelectFormInput from '@/components/SelectFormInput.vue'
+import { ref, computed, onMounted } from 'vue';
+import CustomFlatpicker from '@/components/CustomFlatpicker.vue';
+import SelectFormInput from '@/components/SelectFormInput.vue';
+import ServiceInfo from './ServiceInfo.vue';
+import dayjs from 'dayjs';
+// import  ErrorToast  from '@/components/ErrorToastAlert.vue';
+import { useOptionStore } from '@/stores/optionStore';
 
-const date = ref()
 
-const selectedTitle = ref('mr')
+const optionStore = useOptionStore();
+const storedData = sessionStorage.getItem("PreBooking") ? JSON.parse(sessionStorage.getItem("PreBooking") || "") : null;
+
+const infos = computed(() => {
+  if (optionStore.optionInfos?.result?.Body?.AeroPrebookResponse?.AeroPrebookResult) {
+    return optionStore.optionInfos?.result?.Body?.AeroPrebookResponse?.AeroPrebookResult || [];
+  } else {
+    return storedData?.result?.Body?.AeroPrebookResponse?.AeroPrebookResult || [];
+  }
+
+});
+
+const getFlightData = () => {
+  return infos.value || { Offers: { OfferInfo: [] } };
+};
+
+const getAllSegments = (): any[] => {
+  const data = getFlightData();
+  const offerInfo = data.Offers?.OfferInfo || [];
+
+  // OfferInfo массив биш бол шууд OfferSegment-ийг буцаах
+  if (!Array.isArray(offerInfo)) {
+    let segment = offerInfo?.Segments?.OfferSegment;
+    if (!Array.isArray(segment)) {
+      segment = segment ? [segment] : []
+
+      return segment;
+    }
+    return segment;
+  }
+
+  // OfferInfo массив бол flatMap ашиглан сегментүүдийг цуглуулах
+  return offerInfo.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments?.OfferSegment || []);
+};
+
+const travelers = ref([
+  {
+    id: 1,
+    ageType: '',
+    birthDay: { day: "", month: "", year: "" },
+    birthISO: '',
+    document: '',
+    gender: '',
+    name: '',
+    surname: '',
+    DocumentExDate: { day: "", month: "", year: "" }
+  }
+]);
+
+const BookingInfo = {
+  phoneNumber: ref(''),
+  email: ref(''),
+};
+
+const addTraveler = () => {
+  const newTraveler = {
+    id: travelers.value.length + 1,
+    ageType: '',
+    birthDay: { day: "", month: "", year: "" },
+    birthISO: '',
+    document: '',
+    gender: '',
+    name: '',
+    surname: '',
+    DocumentExDate: { day: "", month: "", year: "" }
+  };
+  travelers.value.push(newTraveler);
+};
+
+const monthNameToNumber = (month: string) => {
+  const months: Record<string, string> = {
+    jan: "01", feb: "02", mar: "03", apr: "04", may: "05", jun: "06",
+    jul: "07", aug: "08", sep: "09", oct: "10", nov: "11", dec: "12"
+  };
+  return months[month.toLowerCase()] || month; // Хэрэв сарын нэр байхгүй бол өөрчлөхгүй
+};
+
+// birthDay-г "2.2.2002" гэсэн текст форматад хөрвүүлэх функц
+const formatBirthDay = (birthDay: { month: any; day: any; year: any; }) => {
+  const monthNumber = monthNameToNumber(birthDay.month); // Сарны нэрийг тоо руу хөрвүүлнэ
+  return `${birthDay.day}.${monthNumber}.${birthDay.year}`;
+};
+
+// API руу илгээх өгөгдлийг бэлтгэх (id болон DocumentExDate-г хасах)
+const prepareDataForApi = (travelers: any[]) => {
+  return travelers.map((traveler: { [x: string]: any; birthDay?: any; id?: any; }) => {
+    const { id, ...rest } = traveler; // id болон DocumentExDate-г хасах
+    return {
+      ...rest,
+      birthDay: formatBirthDay(traveler.birthDay),
+      DocumentExDate: formatBirthDay(traveler.DocumentExDate)  // birthDay-г форматлаж өгч байна
+    };
+  });
+};
+
+// Popup харуулах эсэх
+const showModal = ref(false);
+const agreed = ref(false);
+
+const scrolledToBottom = ref(false);
+const termsContainer = ref(null);
+
+const checkScroll = () => {
+  if (!termsContainer.value) return;
+  const { scrollTop, scrollHeight, clientHeight } = termsContainer.value;
+  scrolledToBottom.value = scrollTop + clientHeight >= scrollHeight - 10;
+};
+
+// Modal нээх функц
+const openModal = () => {
+  showModal.value = true;
+};
+
+// Modal хаах функц
+const closeModal = () => {
+  showModal.value = false;
+};
+
+const show = ref(false);
+
+const errorMessage = ref('');
+
+const confirmAndPay = async () => {
+  showModal.value = false;
+
+  // Хувьсагчийг бэлтгэх
+  travelers.value.forEach(traveler => {
+    traveler.ageType = getAgeCategory(traveler.birthDay).toString();
+  });
+
+  const formattedTravelers = prepareDataForApi(travelers.value);
+
+  // POST хүсэлтийн өгөгдөл
+  const payload = {
+    offerCode: infos.value?.OfferCode,
+    searchGuid: infos.value?.SearchGuid,
+    clientRef: '976' + BookingInfo.phoneNumber.value,
+    email: BookingInfo.email.value,
+    phone: '976' + BookingInfo.phoneNumber.value,
+    passengers: formattedTravelers
+  };
+  console.log(payload)
+  try {
+    // API руу хүсэлт явуулах
+    const response = await fetch('http://api.airkacc.mn/api/booking/mn/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    // Хариуг шалгах
+    if (response.ok) {
+      const data = await response.json();
+      if (data.status != "ERROR") {
+        console.log('Амжилттай:', data);
+        sessionStorage.setItem("BookingInfo", JSON.stringify(data));
+        // Амжилттай бол /flights/booking руу шилжих
+        window.location.href = '/flights/booking';
+      } else {
+
+        sessionStorage.setItem("BookingInfo", JSON.stringify(data));
+        // Алдааны мессежийг харуулах
+        // alert(`Алдаа: ${data.message}`);
+        errorMessage.value = `Алдаа: ${data.message}`;
+        console.error(`Алдаа: ${data.message}`);
+      }
+
+    } else {
+      console.error('Алдаа гарлаа:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Алдаа:', error);
+  }
+};
+
+
+
+onMounted(() => {
+  show.value = true;
+  setTimeout(() => {
+    show.value = false;
+  }, 3000);
+});
+
+
+const isPassportValid = (passportNumber: string) => {
+  const pass_regex = /^[A-Za-z0-9]{8,9}$/;
+  return pass_regex.test(passportNumber);
+};
+
+// 🔹 Нэр шалгах (хоосон эсэх)
+const isNameValid = (firstName: string, lastName: string) => {
+  const nameRegex = /^[А-ЯӨҮЁЭа-яөүёэA-Za-z]+$/;
+  return (
+    firstName.trim() !== "" &&
+    lastName.trim() !== "" &&
+    nameRegex.test(firstName) &&
+    nameRegex.test(lastName)
+  );
+};
+
+// 🔹 Хүйс шалгах (сонгогдсон эсэх)
+const isGenderValid = (gender: string) => {
+  const invalidValues = ["", "gender", null, undefined];
+
+  return !invalidValues.includes(gender)
+};
+
+// 🔹 Харьяалал шалгах (сонгогдсон эсэх)
+const isNationalityValid = (nationality: string) => {
+  const invalidValues = ["", "select-nationality", null, undefined];
+  return !invalidValues.includes(nationality)
+};
+
+// 🔹 Төрсөн огноо болон паспортын дуусах хугацаа шалгах
+const isDateValid = (date: { day: string; month: string; year: string }) => {
+  const invalidValues = ["", "date", "month", "year", null, undefined];
+  return !invalidValues.includes(date.day) &&
+    !invalidValues.includes(date.month) &&
+    !invalidValues.includes(date.year);
+};
+
+
+const isPhoneNumberValid = computed(() => {
+  const phoneRegex = /^[0-9]{8}$/;
+  return phoneRegex.test(BookingInfo.phoneNumber.value);
+});
+
+
+const isEmailValid = computed(() => {
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  return emailRegex.test(BookingInfo.email.value);
+});
+
+// Насны ангилал шалгах функц
+function getAgeCategory(dateOfBirth: { day: string; month: string; year: string; }) {
+  let age = 0;
+  // Төрсөн өдрийг dayjs-д хөрвүүлэх
+  const birthDate = dayjs(`${dateOfBirth.year}-${dateOfBirth.month}-${dateOfBirth.day}`, 'YYYY-MM-DD');
+
+  // Try parsing the departure date with multiple formats
+  const departureDateString = formatDate(getAllSegments()[0].Departure.Date);
+
+  // First, try the expected format
+  let departureDate = dayjs(departureDateString, 'YYYY-MM-DD');
+
+
+
+  // Calculate age only if both dates are valid
+  if (birthDate.isValid() && departureDate.isValid()) {
+    age = departureDate.diff(birthDate, 'year');
+  } else {
+    console.log("Cannot calculate age due to invalid dates");
+  }
+  // Насны ангилалыг тодорхойлно
+  if (age < 0) {
+    return 'Error: Invalid birthdate';
+  } else if (age <= 2) {
+    return 'Infant'; // 0-2 нас
+  } else if (age <= 12) {
+    return 'Child'; // 3-12 нас
+  } else if (age <= 120) {
+    return 'Adult'; // 13-120 нас
+  } else {
+    return 'Error: Age exceeds 120'; // 120 наснаас дээш
+  }
+}
+
+function formatDate(input: string): string {
+  const [day, month, yearAndTime] = input.split(".");
+  const [year, time] = yearAndTime.split(" ");
+  return `${year}-${month}-${day}`;
+}
+
+const isFormValid = computed(() => {
+  return travelers.value.every(traveler =>
+    isNameValid(traveler.name, traveler.surname) &&
+    isPassportValid(traveler.document) &&
+    isDateValid(traveler.birthDay) &&
+    isDateValid(traveler.DocumentExDate) &&
+    isGenderValid(traveler.gender) &&
+    isNationalityValid(traveler.birthISO) &&
+    isPhoneNumberValid.value &&
+    isEmailValid.value
+  );
+});
+
 
 const titleOptions = [
-  { value: 'mr', text: 'Mr' },
-  { value: 'mrs', text: 'Mrs' }
-]
-
-const selectedDate = ref('date')
+  { value: 'Gender', text: 'Хүйс' },
+  { value: 'Male', text: 'Эр' },
+  { value: 'Female', text: 'Эм' }
+];
 
 const dateOptions = [
-  { value: 'date', text: 'Date' },
-  { value: '1', text: '1' },
-  { value: '2', text: '2' },
-  { value: '3', text: '3' },
-  { value: '4', text: '4' },
-  { value: '5', text: '5' },
-  { value: '6', text: '6' },
-  { value: '7', text: '7' },
-  { value: '8', text: '8' },
-  { value: '9', text: '9' },
+  { value: 'date', text: 'Өдөр' },
+  { value: '01', text: '1' },
+  { value: '02', text: '2' },
+  { value: '03', text: '3' },
+  { value: '04', text: '4' },
+  { value: '05', text: '5' },
+  { value: '06', text: '6' },
+  { value: '07', text: '7' },
+  { value: '08', text: '8' },
+  { value: '09', text: '9' },
   { value: '10', text: '10' },
   { value: '11', text: '11' },
   { value: '12', text: '12' },
@@ -210,30 +653,26 @@ const dateOptions = [
   { value: '29', text: '29' },
   { value: '30', text: '30' },
   { value: '31', text: '31' }
-]
-
-const selectedMonth = ref('month')
+];
 
 const monthOptions = [
-  { value: 'month', text: 'Month' },
-  { value: 'jan', text: 'Jan' },
-  { value: 'feb', text: 'Feb' },
-  { value: 'mar', text: 'Mar' },
-  { value: 'apr', text: 'Apr' },
-  { value: 'may', text: 'May' },
-  { value: 'jun', text: 'Jun' },
-  { value: 'jul', text: 'Jul' },
-  { value: 'aug', text: 'Aug' },
-  { value: 'sep', text: 'Sep' },
-  { value: 'oct', text: 'Oct' },
-  { value: 'nov', text: 'Nov' },
-  { value: 'dec', text: 'Dec' }
-]
-
-const selectedYear = ref('year')
+  { value: 'month', text: 'Сар' },
+  { value: '01', text: 'Jan' },
+  { value: '02', text: 'Feb' },
+  { value: '03', text: 'Mar' },
+  { value: '04', text: 'Apr' },
+  { value: '05', text: 'May' },
+  { value: '06', text: 'Jun' },
+  { value: '07', text: 'Jul' },
+  { value: '08', text: 'Aug' },
+  { value: '09', text: 'Sep' },
+  { value: '10', text: 'Oct' },
+  { value: '11', text: 'Nov' },
+  { value: '12', text: 'Dec' }
+];
 
 const yearOptions = [
-  { value: 'year', text: 'Year' },
+  { value: 'year', text: 'Жил' },
   { value: '2000', text: '2000' },
   { value: '2001', text: '2001' },
   { value: '2002', text: '2002' },
@@ -255,25 +694,117 @@ const yearOptions = [
   { value: '2018', text: '2018' },
   { value: '2019', text: '2019' },
   { value: '2020', text: '2020' }
-]
-
-const selectedNationality = ref('select-nationality')
+];
 
 const nationalityOptions = [
-  { value: 'select-nationality', text: 'Select Nationality' },
-  { value: 'indian', text: 'Indian' },
-  { value: 'mali', text: 'Mali' },
-  { value: 'japan', text: 'Japan' },
-  { value: 'jordan', text: 'Jordan' }
-]
-
-const selectedCountry = ref('select-country')
-
-const countryOptions = [
-  { value: 'select-country', text: 'Select Country' },
-  { value: 'indian', text: 'Indian' },
-  { value: 'mali', text: 'Mali' },
-  { value: 'japan', text: 'Japan' },
-  { value: 'jordan', text: 'Jordan' }
-]
+  { value: 'select-nationality', text: 'Харьяалал' },
+  { value: 'RUS', text: 'Russian' }
+];
 </script>
+
+<style lang="css" scoped>
+.disabled-link {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal content */
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 800px;
+  height: 60%;
+  max-width: 90%;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+/* Анхааруулга */
+.alert-warning {
+  background: #fff3cd;
+  padding: 10px;
+  border-left: 5px solid #ffc107;
+  margin-bottom: 15px;
+}
+
+/* Зорчигчийн мэдээлэл */
+.passenger-info table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.passenger-info th,
+.passenger-info td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+/* Үйлчилгээний нөхцөл */
+.terms-container {
+  height: 60%;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* Modal actions */
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 21px;
+}
+
+.btn {
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: #ccc;
+}
+
+.btn-primary {
+  background: #007bff;
+  color: white;
+}
+
+.btn-primary:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+</style>

@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, watch } from "vue";
 import Choices from "choices.js";
 
 // Props-ийн төрлийг тодорхойлох
@@ -25,10 +25,7 @@ type AirportsFormInput = {
 const props = defineProps<AirportsFormInput>();
 const emit = defineEmits(["update:modelValue"]);
 
-// Сонголт өөрчлөгдөх үед утга шинэчлэх функц
-const updateValue = (e: Event) => {
-    emit("update:modelValue", (e.target as HTMLSelectElement).value);
-};
+
 
 // `options`-ийг энгийн массив болгон хөрвүүлэх функц
 const normalizeOptions = (
@@ -42,6 +39,33 @@ const normalizeOptions = (
     );
 };
 
+
+
+const saveSelectedValue = (value: string | string[]) => {
+    if (props.multiple) {
+        localStorage.setItem(props.id, JSON.stringify(value));
+    } else {
+        localStorage.setItem(props.id, value as string);
+    }
+};
+
+// Сонгогдсон утгыг авах
+const getSavedValue = (): string | string[] => {
+    const savedValue = localStorage.getItem(props.id);
+    if (props.multiple) {
+        return savedValue ? JSON.parse(savedValue) : [];
+    } else {
+        return savedValue || "";
+    }
+};
+
+// Сонголт өөрчлөгдөх үед утга шинэчлэх функц
+const updateValue = (e: Event) => {
+    const value = (e.target as HTMLSelectElement).value;
+    emit("update:modelValue", value);
+    saveSelectedValue(value);
+};
+
 // Компонент mount үед `Choices.js`-ийг тохируулах
 onMounted(() => {
     const ele = document.getElementById(props.id);
@@ -49,7 +73,7 @@ onMounted(() => {
     if (ele && !ele.classList.contains('choices__input')) {
         const flatOptions = normalizeOptions(props.options || []);
 
-        new Choices(ele, {
+        const choices = new Choices(ele, {
             ...props.choiceOptions,
             placeholder: true,
             placeholderValue: "Select an option",
@@ -58,14 +82,31 @@ onMounted(() => {
             choices: flatOptions,
         });
 
+        // Хадгалагдсан утгыг авах
+        const savedValue = getSavedValue();
+        if (savedValue) {
+            if (props.multiple) {
+                choices.setValue(savedValue as string[]);
+            } else {
+                choices.setValue([savedValue as string]);
+            }
+        }
+
         ele.addEventListener("change", (event: Event) => {
             const target = event.target as HTMLSelectElement;
             const selectedValues = Array.from(target.selectedOptions).map((opt) => opt.value);
-            emit("update:modelValue", props.multiple ? selectedValues : selectedValues[0]);
+            const value = props.multiple ? selectedValues : selectedValues[0];
+            emit("update:modelValue", value);
+            saveSelectedValue(value);
         });
     } else {
         console.warn(`Choices.js is already initialized on element with id ${props.id}`);
     }
+});
+
+// `modelValue` өөрчлөгдөхөд хадгалагдсан утгыг шинэчлэх
+watch(() => props.modelValue, (newValue) => {
+    saveSelectedValue(newValue || "");
 });
 
 </script>

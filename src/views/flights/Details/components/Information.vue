@@ -4,7 +4,8 @@
       <b-card-title tag="h3" class="mb-0">Important Information</b-card-title>
     </b-card-header>
     <b-card-body class="py-4">
-      <h5 class="mb-3">
+      <div v-html="tariffRules" class="tariff-rules-content"></div>
+      <!-- <h5 class="mb-3">
         <BIconArrowRight class="rtl-flip me-1 mb-1" />
         Passengers traveling to the United States, please note
       </h5>
@@ -47,10 +48,24 @@
         responsibility of the passenger to ensure his or her eligibility to enter the destination or
         transit countries (as applicable). We accept no liability in this regard. Please check the
         travel rules of all regulatory websites before to booking as well as commencing.
-      </p>
+      </p> -->
     </b-card-body>
   </b-card>
 </template>
 <script setup lang="ts">
 import { BIconArrowRight } from 'bootstrap-icons-vue'
+const props = defineProps({
+  tariffRules: {
+    type: String,
+    required: true
+  }
+})
 </script>
+<style scoped>
+/* Илүү сайн харагдахаар CSS тохиргоо хийж болно */
+.tariff-rules-content {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
+}
+</style>

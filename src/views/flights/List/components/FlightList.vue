@@ -21,7 +21,14 @@
             </div> -->
 
 
-            <FlightCard3 />
+
+
+            <div v-if="show == 4">
+              <FlightCard3 />
+            </div>
+            <div v-else>
+              <FlightCardRound />
+            </div>
             <!-- <div v-for="(flight, index) in flightInfosD" :key="index" class="mb-3">
               <FlightCard3 :flight="flight" :AirCompany="AirCompany" />
             </div> -->
@@ -61,7 +68,8 @@ import FlightListFilter from '@/views/flights/List/components/FlightListFilter.v
 import FlightCard from '@/views/flights/List/components/FlightCard.vue'
 import FlightCard2 from '@/views/flights/List/components/FlightCard2.vue'
 import FlightCard3 from '@/views/flights/List/components/FlightCard3.vue'
-import FlightCard4 from '@/views/flights/List/components/FlightCard4.vue'
+// import FlightCardRound from '@/views/flights/List/components/FlightCardRound.vue'
+import FlightCardRound from './FlightCardRound.vue'
 import Pagination from '@/views/flights/List/components/Pagination.vue'
 import FlightDetailModal from '@/views/flights/List/components/FlightDetailModal.vue'
 
@@ -85,6 +93,8 @@ const props = defineProps({
 const flightInfosD = computed(() => props.flightInfos || [])
 const AirCompany = computed(() => props.AirCompany || [])
 const AirPorts = computed(() => props.AirPorts || [])
+
+const show = ref<number>(Number(sessionStorage.getItem("flight")) || 1);
 
 
 
