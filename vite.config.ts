@@ -22,6 +22,7 @@ export default defineConfig({
         strictPort: true,
         cors: true,  // CORS зөвшөөрнө
         origin: 'http://www.airkacc.mn',  // Алсын хандах хаягийг зөвшөөрнө
+        allowedHosts: ['airkacc.mn'],
         headers: {
             'Access-Control-Allow-Origin': '*',
         }
