@@ -24,9 +24,9 @@ export default defineConfig({
         strictPort: true,
         cors: true,         // CORS зөвшөөрнө
         allowedHosts: ['www.airkacc.mn'], // Зөвшөөрөгдсөн домэйнүүд
-        hmr: {
-            clientPort: 443 // HMR-ийг зөвшөөрнө (SSL тохируулсан бол)
-        }
+        // hmr: {
+        //     clientPort: 443 // HMR-ийг зөвшөөрнө (SSL тохируулсан бол)
+        // }
     },
     preview: {
         host: '0.0.0.0',
