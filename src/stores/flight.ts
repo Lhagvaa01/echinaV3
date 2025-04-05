@@ -26,7 +26,7 @@ export const useFlightStore = defineStore({
       isRound: number; // 1: Нэг чиглэл | 2: Хоёр чиглэл | 3: Олон чиглэл
     }) {
       try {
-        let url = "http://api.airkacc.mn/api/search/mn/";
+        let url = "https://api.airkacc.mn/api/search/mn/";
         const params = [];
 
         // 📌 Анхны чиглэлийн нислэг (заавал байх)

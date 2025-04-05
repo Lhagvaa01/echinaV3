@@ -171,6 +171,7 @@
                       segment.MarketingAirline).Value : StoreAirCompany.Value }}
                     ({{ segment.FlightNum || 'SA-1254' }})
                   </h6>
+                  
                   <!-- Tooltip -->
                   <div v-if="isHovered[inx + segment.FlightNum]" class="tooltip text-white">
                     <div v-for="segment in offer.Offers.OfferInfo.Segments.OfferSegment.slice(0)"
