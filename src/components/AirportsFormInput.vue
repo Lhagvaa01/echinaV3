@@ -1,15 +1,19 @@
 <template>
     <label class="form-label" :class="labelClass" v-if="label">{{ label }}</label>
-    <select :id="id" class="js-choice" :class="customClass" @change="updateValue">
-        <!-- Сонголтууд автоматаар нэмэгдэнэ -->
-    </select>
+    <select :id="id" class="js-choice form-select" :class="customClass" v-bind:multiple="multiple"
+        @change="updateValue"></select>
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from "vue";
+import { onMounted, watch, onBeforeUnmount, nextTick } from "vue";
 import Choices from "choices.js";
 
-// Props-ийн төрлийг тодорхойлох
+// Сонирхсон grouped option төрлийг тодорхойлох
+type GroupedOption = {
+    label: string;
+    choices: Array<{ value: string; label: string }>;
+};
+
 type AirportsFormInput = {
     label?: string;
     customClass?: string;
@@ -17,30 +21,26 @@ type AirportsFormInput = {
     id: string;
     multiple?: boolean;
     modelValue?: string | string[];
-    options?: Array<{ label: string; choices: Array<{ value: string; label: string }> }>;
+    options?: GroupedOption[];
     choiceOptions?: object;
 };
 
-// Props болон Emits тодорхойлох
 const props = defineProps<AirportsFormInput>();
 const emit = defineEmits(["update:modelValue"]);
 
+let choicesInstance: Choices | null = null;
 
-
-// `options`-ийг энгийн массив болгон хөрвүүлэх функц
-const normalizeOptions = (
-    groupedOptions: Array<{ label: string; choices: Array<{ value: string; label: string }> }>
-) => {
-    return groupedOptions.flatMap((group) =>
-        group.choices.map((choice) => ({
+// `options`-ийг энгийн массив болгон хөрвүүлэх
+const normalizeOptions = (grouped: GroupedOption[]) => {
+    return grouped.flatMap(group =>
+        group.choices.map(choice => ({
             value: choice.value,
             label: choice.label,
         }))
     );
 };
 
-
-
+// Сонгогдсон утгыг хадгалах
 const saveSelectedValue = (value: string | string[]) => {
     if (props.multiple) {
         localStorage.setItem(props.id, JSON.stringify(value));
@@ -49,64 +49,79 @@ const saveSelectedValue = (value: string | string[]) => {
     }
 };
 
-// Сонгогдсон утгыг авах
+// Хадгалагдсан утга авах
 const getSavedValue = (): string | string[] => {
-    const savedValue = localStorage.getItem(props.id);
-    if (props.multiple) {
-        return savedValue ? JSON.parse(savedValue) : [];
-    } else {
-        return savedValue || "";
-    }
+    const saved = localStorage.getItem(props.id);
+    return props.multiple ? (saved ? JSON.parse(saved) : []) : saved || "";
 };
 
-// Сонголт өөрчлөгдөх үед утга шинэчлэх функц
+// Сонголт өөрчлөгдөх үед утга шинэчлэх
 const updateValue = (e: Event) => {
-    const value = (e.target as HTMLSelectElement).value;
+    const selectEl = e.target as HTMLSelectElement;
+    const selected = Array.from(selectEl.selectedOptions).map(opt => opt.value);
+    const value = props.multiple ? selected : selected[0];
     emit("update:modelValue", value);
     saveSelectedValue(value);
 };
 
-// Компонент mount үед `Choices.js`-ийг тохируулах
+// `Choices.js`-ийг инициаллах
+const initChoices = async () => {
+    await nextTick();
+    const ele = document.getElementById(props.id) as HTMLSelectElement | null;
+
+    if (!ele) return;
+
+    // Өмнөх instance-г устгах
+    if (choicesInstance) {
+        choicesInstance.destroy();
+        choicesInstance = null;
+    }
+
+    const flatOptions = normalizeOptions(props.options || []);
+
+    choicesInstance = new Choices(ele, {
+        ...props.choiceOptions,
+        placeholder: true,
+        placeholderValue: "Select an option",
+        allowHTML: true,
+        shouldSort: false,
+        choices: flatOptions,
+    });
+
+    const savedValue = getSavedValue();
+    if (savedValue) {
+        choicesInstance.setValue(props.multiple ? (savedValue as string[]) : [savedValue as string]);
+    }
+};
+
 onMounted(() => {
-    const ele = document.getElementById(props.id);
+    initChoices(); // Mount-тай дуудах
+});
 
-    if (ele && !ele.classList.contains('choices__input')) {
-        const flatOptions = normalizeOptions(props.options || []);
+// `options` өөрчлөгдөхөд `Choices.js`-г дахин тохируулах
+watch(
+    () => props.options,
+    () => {
+        initChoices();
+    },
+    { deep: true }
+);
 
-        const choices = new Choices(ele, {
-            ...props.choiceOptions,
-            placeholder: true,
-            placeholderValue: "Select an option",
-            allowHTML: true,
-            shouldSort: false,
-            choices: flatOptions,
-        });
-
-        // Хадгалагдсан утгыг авах
-        const savedValue = getSavedValue();
-        if (savedValue) {
-            if (props.multiple) {
-                choices.setValue(savedValue as string[]);
-            } else {
-                choices.setValue([savedValue as string]);
-            }
+// `modelValue` өөрчлөгдөхөд `Choices.js`-д шинэ утга оруулах
+watch(
+    () => props.modelValue,
+    (newVal) => {
+        if (choicesInstance && newVal) {
+            choicesInstance.setValue(props.multiple ? (newVal as string[]) : [newVal as string]);
         }
+    }
+);
 
-        ele.addEventListener("change", (event: Event) => {
-            const target = event.target as HTMLSelectElement;
-            const selectedValues = Array.from(target.selectedOptions).map((opt) => opt.value);
-            const value = props.multiple ? selectedValues : selectedValues[0];
-            emit("update:modelValue", value);
-            saveSelectedValue(value);
-        });
-    } else {
-        console.warn(`Choices.js is already initialized on element with id ${props.id}`);
+// Компонент устах үед `Choices.js`-ийг устгах
+onBeforeUnmount(() => {
+    if (choicesInstance) {
+        choicesInstance.destroy();
+        choicesInstance = null;
     }
 });
-
-// `modelValue` өөрчлөгдөхөд хадгалагдсан утгыг шинэчлэх
-watch(() => props.modelValue, (newValue) => {
-    saveSelectedValue(newValue || "");
-});
-
 </script>

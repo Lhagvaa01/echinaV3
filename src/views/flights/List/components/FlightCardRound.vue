@@ -42,28 +42,37 @@
                                             </h6>
 
                                             <p v-if="flight.length > 1" class="ms-2 text-warning"
-                                                @mouseover="onMouseOver(inx + flight[0]?.FlightNum)"
-                                                @mouseleave="onMouseLeave(inx + flight[0]?.FlightNum)">
+                                                @mouseover="onMouseOver(getFlightKey(Mainindex))"
+                                                @mouseleave="onMouseLeave(getFlightKey(Mainindex))">
                                                 +{{ flight.length - 1 }} Airline
                                             </p>
                                             <!-- Tooltip -->
-                                            <div v-if="isHovered[inx + flight[0]?.FlightNum]"
-                                                class="tooltip text-white">
+                                            <div v-if="isHovered[getFlightKey(Mainindex)]"
+                                                class="bg-white border rounded shadow position-absolute p-3 start-50 "
+                                                style="z-index: 1000; min-width: 260px;">
                                                 <div v-for="segment in flight" :key="segment.FlightNum"
-                                                    class="d-flex justify-content-sm-start align-items-center">
+                                                    class="d-flex align-items-start mb-2">
                                                     <img :src="segment.MarketingAirline
                                                         ? 'https://api.echina.mn/assets/d/' + segment.MarketingAirline + '.png'
                                                         : fallbackLogo" alt="Airline logo" class="me-2"
-                                                        style="width: 30px; height: auto;" />
-                                                    <h6 class="fw-bold mb-0 text-primary">
-                                                        {{StoreAirCompany.find((airline: any) => airline.Code ===
-                                                            segment.MarketingAirline).Value}}
-                                                        ({{ segment.FlightNum || 'SA-1254' }})
-                                                    </h6>
-
-                                                    <Briefcase v-if="segment.Baggage" class="mx-2" color="#5a2dd7" />
-                                                    <Luggage v-if="segment.CabinBaggage" color="#5a2dd7" />
-
+                                                        style="width: 32px; height: auto; border-radius: 4px;" />
+                                                    <div class="d-flex gap-2">
+                                                        <div class="fw-semibold text-dark" style="font-size: 14px;">
+                                                            {{
+                                                                StoreAirCompany.find((airline: any) => airline.Code ===
+                                                                    segment.MarketingAirline)
+                                                                    ?.Value || 'Unknown Airline'
+                                                            }}
+                                                            <span class="text-muted">({{ segment.FlightNum || 'SA-1254'
+                                                                }})</span>
+                                                        </div>
+                                                        <div class="d-flex align-items-center mt-1">
+                                                            <Briefcase v-if="segment.Baggage" class="me-2"
+                                                                color="#5a2dd7" :size="16" />
+                                                            <Luggage v-if="segment.CabinBaggage" color="#5a2dd7"
+                                                                :size="16" />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -296,7 +305,7 @@ async function fetchOptions(offerCode: string, searchGuid: string) {
     if (!offerCode || !searchGuid) return;
 
     try {
-        const response = await fetch(`http://api.airkacc.mn/api/prebooking/mn/?offerCode=${offerCode}&searchGuid=${searchGuid}`);
+        const response = await fetch(`https://api.airkacc.mn/api/prebooking/mn/?offerCode=${offerCode}&searchGuid=${searchGuid}`);
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
         const data = await response.json();
@@ -347,12 +356,16 @@ const filteredData = computed(() => flightStore.firstAdultPrice.length > 0 ? fli
 
 const isHovered = ref<{ [key: string]: boolean }>({});
 
-function onMouseOver(index: string) {
-    isHovered.value[index] = true;
+function getFlightKey(index: number) {
+    return `${index}`;
 }
 
-function onMouseLeave(index: string) {
-    isHovered.value[index] = false;
+function onMouseOver(key: string) {
+    isHovered.value[key] = true;
+}
+
+function onMouseLeave(key: string) {
+    isHovered.value[key] = false;
 }
 
 
@@ -544,6 +557,7 @@ const nextPage = () => {
     opacity: 1;
     z-index: 10;
 }
+
 
 .custom-margin {
     margin-left: -8px;

@@ -1,13 +1,22 @@
 <template>
-  <label class="form-label" :class="labelClass" v-if="label">{{ label }}</label>
-  <b-form-select :id="id" :options="options" class="js-choice" :class="customClass" :multiple="multiple"
-    @change="updateValue" v-bind="$attrs" />
+  <div>
+    <label class="form-label" :class="labelClass" v-if="label">{{ label }}</label>
+    <select :id="id" class="js-choice form-select" :class="customClass" :multiple="multiple" :value="modelValue"
+      @change="updateValue" v-bind="$attrs">
+      <option v-for="(option, index) in options" :key="index" :value="option.value">
+        {{ option.text }}
+      </option>
+    </select>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, watch, ref, nextTick, onBeforeUnmount } from 'vue'
 import Choices from 'choices.js'
 
+// -----------------
+// Props
+// -----------------
 type SelectFormInput = {
   label?: string
   type?: string
@@ -16,45 +25,80 @@ type SelectFormInput = {
   labelClass?: string
   id: string
   multiple?: boolean
-  modelValue?: string
-  options?: any
+  modelValue?: string | string[]
+  options?: Array<{ value: string; text: string }>
   choiceOptions?: object
 }
 
 const props = defineProps<SelectFormInput>()
-
 const emit = defineEmits(['update:modelValue'])
 
+let choicesInstance: any = null
+
+// -----------------
+// Emit selected value
+// -----------------
 const updateValue = (e: Event) => {
-  emit('update:modelValue', (e.target as HTMLInputElement).value)
+  const target = e.target as HTMLSelectElement
+  const value = props.multiple
+    ? Array.from(target.selectedOptions).map(opt => opt.value)
+    : target.value
+  emit('update:modelValue', value)
 }
 
-// onMounted(() => {
-//   const ele = document.getElementById(props.id)
+// -----------------
+// Init Choices.js
+// -----------------
+const initChoices = async () => {
+  await nextTick()
 
-//   if (ele) {
-//     new Choices(ele, {
-//       ...props.choiceOptions,
-//       placeholder: true,
-//       placeholderValue: 'Type and hit enter',
-//       allowHTML: true,
-//       shouldSort: false
-//     })
-//   }
-// })
-
-onMounted(() => {
-  const ele = document.getElementById(props.id);
-
+  const ele = document.getElementById(props.id)
   if (ele) {
-    new Choices(ele, {
+    if (choicesInstance) choicesInstance.destroy()
+
+    choicesInstance = new Choices(ele, {
       ...props.choiceOptions,
       placeholder: true,
-      placeholderValue: "Type and hit enter",
+      placeholderValue: props.placeholder || 'Сонгоно уу',
       allowHTML: true,
-      shouldSort: false,
-      choices: props.options, // Pass grouped options directly
-    });
+      shouldSort: false
+    })
+
+    // set initial value
+    if (props.modelValue) {
+      choicesInstance.setChoiceByValue(props.modelValue)
+    }
   }
-});
+}
+
+// -----------------
+// Watch for changes
+// -----------------
+watch(
+  () => props.options,
+  () => {
+    initChoices()
+  },
+  { deep: true, immediate: true }
+)
+
+watch(
+  () => props.modelValue,
+  (val) => {
+    if (choicesInstance) {
+      choicesInstance.setChoiceByValue(val)
+    }
+  }
+)
+
+// -----------------
+// Clean up
+// -----------------
+onBeforeUnmount(() => {
+  if (choicesInstance) choicesInstance.destroy()
+})
 </script>
+
+<style scoped>
+/* Scoped style if needed */
+</style>

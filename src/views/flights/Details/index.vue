@@ -15,7 +15,7 @@
                   <ul class="list-inline mb-2">
                     <li class="list-inline-item me-2">
                       <h3 class="mb-0">{{ getAllSegments()[0].Departure?.City }}({{ getAllSegments()[0].Departure?.Iata
-                      }})</h3>
+                        }})</h3>
                     </li>
                     <li class="list-inline-item me-2">
                       <h3 class="mb-0">
@@ -25,7 +25,7 @@
                     <li class="list-inline-item me-0">
                       <h3 class="mb-0">{{ getAllSegments()[getAllSegments().length - 1].Arrival?.City }}({{
                         getAllSegments()[getAllSegments().length - 1].Arrival?.Iata
-                        }})</h3>
+                      }})</h3>
                     </li>
                   </ul>
                   <ul class="nav nav-divider h6 fw-normal text-body mb-0">
@@ -184,7 +184,7 @@ async function fetchOptions(offerCode: string, searchGuid: string) {
   if (!offerCode || !searchGuid) return;
 
   try {
-    const response = await fetch(`http://api.airkacc.mn/api/tariffrules/mn/?offerCode=${offerCode}&searchGuid=${searchGuid}`);
+    const response = await fetch(`https://api.airkacc.mn/api/tariffrules/mn/?offerCode=${offerCode}&searchGuid=${searchGuid}`);
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
     const data = await response.json();

@@ -25,7 +25,9 @@
             <b-col md="3">
               <b-form-group label="Пасспортын дугаар">
                 <b-form-input type="text" placeholder="Пасспортын дугаар оруулна уу" v-model="traveler.document"
-                  :state="isPassportValid(traveler.document)" />
+                  :state="isPassportValid(traveler.document)"
+                  @keydown.enter="autoFillTravelerByPassport(traveler.document, traveler)"
+                  @blur="autoFillTravelerByPassport(traveler.document, traveler)" />
                 <b-form-invalid-feedback v-if="!isPassportValid(traveler.document)">
                   Пасспортын дугаар буруу байна.
                 </b-form-invalid-feedback>
@@ -233,10 +235,9 @@
           <div class="alert-warning">
             <span class="warning-icon">⚠️</span>
             <strong>Анхааруулга</strong>
-            <p>
-              Гадаад <strong>паспорт</strong> дээрх мэдээллээс <strong>үг, үсэг, тоо, хүйс</strong> зөрвөл ашиглагдах
-              боломжгүй болно!!!!
-            </p>
+            <!-- <div class="scrollable-warning-message">
+              <p v-html="warningMessage"></p>
+            </div> -->
           </div>
 
           <!-- Зорчигчийн мэдээлэл -->
@@ -268,25 +269,15 @@
           </div>
 
           <!-- Үйлчилгээний нөхцөл -->
-          <div class="p-4">
+          <div class="mt-2 terms-container" @scroll="checkScroll" ref="termsContainer">
 
-            <h4>Нислэгийн Тийз Захиалгын Үйлчилгээний Нөхцөл</h4>
-          </div>
-          <div class="terms-container" @scroll="checkScroll" ref="termsContainer">
-
-            <p class="warning-text">
-            <h6>АНХААРУУЛАХ САНАМЖ</h6>
-            </p>
-            <p>
-              <strong>Гадаад паспортын мэдээлэл:</strong> Зорчигч нь өөрийн мэдээллийг сайтар шалгана уу.
-              Паспортын дугаар, овог, нэр, хүйс зэрэг мэдээллийг зөв оруулах ёстой.
-            </p>
-            <p v-for="i in 20" :key="i">Энд нөхцөлүүдийн дэлгэрэнгүй тайлбар орно...</p>
+            <p v-html="warningMessage"></p>
             <h5>
               <input type="checkbox" v-model="agreed" :disabled="!scrolledToBottom" />
               Би үйлчилгээний нөхцөлийг уншиж танилцлаа.
             </h5>
           </div>
+
 
           <!-- Check болон Баталгаажуулах Товч -->
           <div class="modal-actions">
@@ -432,10 +423,23 @@ const checkScroll = () => {
   scrolledToBottom.value = scrollTop + clientHeight >= scrollHeight - 10;
 };
 
+const warningMessage = ref(''); // Initialize with an empty string or your default value
+
 // Modal нээх функц
 const openModal = () => {
   showModal.value = true;
+  fetch('https://api.airkacc.mn/api/ref/conditionMore/mn/airkacc/')
+    .then(response => response.json())
+    .then(data => {
+      // Set the fetched data into the relevant variables
+      warningMessage.value = data.result.description; // Use `.value` to update the ref
+      // termsContent = data.result.description; // Set terms content if needed
+    })
+    .catch(error => {
+      console.error('API Error:', error);
+    });
 };
+
 
 // Modal хаах функц
 const closeModal = () => {
@@ -468,7 +472,7 @@ const confirmAndPay = async () => {
   console.log(payload)
   try {
     // API руу хүсэлт явуулах
-    const response = await fetch('http://api.airkacc.mn/api/booking/mn/', {
+    const response = await fetch('https://api.airkacc.mn/api/booking/mn/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -509,6 +513,33 @@ onMounted(() => {
     show.value = false;
   }, 3000);
 });
+
+
+const autoFillTravelerByPassport = async (passportNumber: any, traveler: { name: any; surname: any; birthISO: any; birthDay: { day: any; month: any; year: any; }; DocumentExDate: { day: any; month: any; year: any; }; gender: any; }) => {
+
+  try {
+    const res = await fetch(`https://api.airkacc.mn/api/passAutoComplete/${passportNumber}/`);
+    const data = await res.json();
+
+    if (data.status === "SUCCESS") {
+      const result = data.result;
+      const [year, month, day] = result.birthDay.split("-");
+      const [yearEx, monthEx, dayEx] = result.expireDate.split("-");
+      traveler.name = result.name;
+      traveler.surname = result.surname;
+      traveler.birthISO = result.birthISO;
+      traveler.birthDay.day = day;
+      traveler.birthDay.month = month;
+      traveler.birthDay.year = year;
+      traveler.DocumentExDate.day = dayEx;
+      traveler.DocumentExDate.month = monthEx;
+      traveler.DocumentExDate.year = yearEx;
+      traveler.gender = result.sex;
+    }
+  } catch (err) {
+    console.error("Алдаа гарлаа:", err);
+  }
+};
 
 
 const isPassportValid = (passportNumber: string) => {
@@ -614,92 +645,149 @@ const isFormValid = computed(() => {
 });
 
 
+// const titleOptions = [
+//   { value: 'Gender', text: 'Хүйс' },
+//   { value: 'Male', text: 'Эр' },
+//   { value: 'Female', text: 'Эм' }
+// ];
+
 const titleOptions = [
   { value: 'Gender', text: 'Хүйс' },
-  { value: 'Male', text: 'Эр' },
-  { value: 'Female', text: 'Эм' }
+  ...['Male', 'Female'].map(g => ({
+    value: g,
+    text: g === 'Male' ? 'Эр' : 'Эм'
+  }))
 ];
+
+// const dateOptions = [
+//   { value: 'date', text: 'Өдөр' },
+//   { value: '01', text: '1' },
+//   { value: '02', text: '2' },
+//   { value: '03', text: '3' },
+//   { value: '04', text: '4' },
+//   { value: '05', text: '5' },
+//   { value: '06', text: '6' },
+//   { value: '07', text: '7' },
+//   { value: '08', text: '8' },
+//   { value: '09', text: '9' },
+//   { value: '10', text: '10' },
+//   { value: '11', text: '11' },
+//   { value: '12', text: '12' },
+//   { value: '13', text: '13' },
+//   { value: '14', text: '14' },
+//   { value: '15', text: '15' },
+//   { value: '16', text: '16' },
+//   { value: '17', text: '17' },
+//   { value: '18', text: '18' },
+//   { value: '19', text: '19' },
+//   { value: '20', text: '20' },
+//   { value: '21', text: '21' },
+//   { value: '22', text: '22' },
+//   { value: '23', text: '23' },
+//   { value: '24', text: '24' },
+//   { value: '25', text: '25' },
+//   { value: '26', text: '26' },
+//   { value: '27', text: '27' },
+//   { value: '28', text: '28' },
+//   { value: '29', text: '29' },
+//   { value: '30', text: '30' },
+//   { value: '31', text: '31' }
+// ];
 
 const dateOptions = [
   { value: 'date', text: 'Өдөр' },
-  { value: '01', text: '1' },
-  { value: '02', text: '2' },
-  { value: '03', text: '3' },
-  { value: '04', text: '4' },
-  { value: '05', text: '5' },
-  { value: '06', text: '6' },
-  { value: '07', text: '7' },
-  { value: '08', text: '8' },
-  { value: '09', text: '9' },
-  { value: '10', text: '10' },
-  { value: '11', text: '11' },
-  { value: '12', text: '12' },
-  { value: '13', text: '13' },
-  { value: '14', text: '14' },
-  { value: '15', text: '15' },
-  { value: '16', text: '16' },
-  { value: '17', text: '17' },
-  { value: '18', text: '18' },
-  { value: '19', text: '19' },
-  { value: '20', text: '20' },
-  { value: '21', text: '21' },
-  { value: '22', text: '22' },
-  { value: '23', text: '23' },
-  { value: '24', text: '24' },
-  { value: '25', text: '25' },
-  { value: '26', text: '26' },
-  { value: '27', text: '27' },
-  { value: '28', text: '28' },
-  { value: '29', text: '29' },
-  { value: '30', text: '30' },
-  { value: '31', text: '31' }
+  ...Array.from({ length: 31 }, (_, i) => {
+    const num = String(i + 1).padStart(2, '0');
+    return { value: num, text: String(i + 1) };
+  })
 ];
+
+
+// const monthOptions = [
+//   { value: 'month', text: 'Сар' },
+//   { value: '01', text: 'Jan' },
+//   { value: '02', text: 'Feb' },
+//   { value: '03', text: 'Mar' },
+//   { value: '04', text: 'Apr' },
+//   { value: '05', text: 'May' },
+//   { value: '06', text: 'Jun' },
+//   { value: '07', text: 'Jul' },
+//   { value: '08', text: 'Aug' },
+//   { value: '09', text: 'Sep' },
+//   { value: '10', text: 'Oct' },
+//   { value: '11', text: 'Nov' },
+//   { value: '12', text: 'Dec' }
+// ];
+
+
+const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const monthOptions = [
   { value: 'month', text: 'Сар' },
-  { value: '01', text: 'Jan' },
-  { value: '02', text: 'Feb' },
-  { value: '03', text: 'Mar' },
-  { value: '04', text: 'Apr' },
-  { value: '05', text: 'May' },
-  { value: '06', text: 'Jun' },
-  { value: '07', text: 'Jul' },
-  { value: '08', text: 'Aug' },
-  { value: '09', text: 'Sep' },
-  { value: '10', text: 'Oct' },
-  { value: '11', text: 'Nov' },
-  { value: '12', text: 'Dec' }
+  ...monthNames.map((name, i) => {
+    const value = String(i + 1).padStart(2, '0');
+    return { value, text: name };
+  })
 ];
+
+
+// const yearOptions = [
+//   { value: 'year', text: 'Жил' },
+//   { value: '2000', text: '2000' },
+//   { value: '2001', text: '2001' },
+//   { value: '2002', text: '2002' },
+//   { value: '2003', text: '2003' },
+//   { value: '2004', text: '2004' },
+//   { value: '2005', text: '2005' },
+//   { value: '2006', text: '2006' },
+//   { value: '2007', text: '2007' },
+//   { value: '2008', text: '2008' },
+//   { value: '2009', text: '2009' },
+//   { value: '2010', text: '2010' },
+//   { value: '2011', text: '2011' },
+//   { value: '2012', text: '2012' },
+//   { value: '2013', text: '2013' },
+//   { value: '2014', text: '2014' },
+//   { value: '2015', text: '2015' },
+//   { value: '2016', text: '2016' },
+//   { value: '2017', text: '2017' },
+//   { value: '2018', text: '2018' },
+//   { value: '2019', text: '2019' },
+//   { value: '2020', text: '2020' }
+// ];
+
+
+const currentYear = new Date().getFullYear();
 
 const yearOptions = [
   { value: 'year', text: 'Жил' },
-  { value: '2000', text: '2000' },
-  { value: '2001', text: '2001' },
-  { value: '2002', text: '2002' },
-  { value: '2003', text: '2003' },
-  { value: '2004', text: '2004' },
-  { value: '2005', text: '2005' },
-  { value: '2006', text: '2006' },
-  { value: '2007', text: '2007' },
-  { value: '2008', text: '2008' },
-  { value: '2009', text: '2009' },
-  { value: '2010', text: '2010' },
-  { value: '2011', text: '2011' },
-  { value: '2012', text: '2012' },
-  { value: '2013', text: '2013' },
-  { value: '2014', text: '2014' },
-  { value: '2015', text: '2015' },
-  { value: '2016', text: '2016' },
-  { value: '2017', text: '2017' },
-  { value: '2018', text: '2018' },
-  { value: '2019', text: '2019' },
-  { value: '2020', text: '2020' }
+  ...Array.from({ length: currentYear - 1500 + 1 }, (_, i) => {
+    const year = 1950 + i;
+    return { value: String(year), text: String(year) };
+  })
+];
+
+
+// const nationalityOptions = [
+//   { value: 'select-nationality', text: 'Харьяалал' },
+//   { value: 'RUS', text: 'Russian' }
+// ];
+
+const nationalityList = [
+  { value: 'RUS', text: 'Russian' },
+  { value: 'MNG', text: 'Mongolian' },
+  { value: 'CHN', text: 'Chinese' },
+  { value: 'JPN', text: 'Japanese' }
+  // хүсвэл API-гаас авдаг болгож болно
 ];
 
 const nationalityOptions = [
   { value: 'select-nationality', text: 'Харьяалал' },
-  { value: 'RUS', text: 'Russian' }
+  ...nationalityList
 ];
+
+
+
 </script>
 
 <style lang="css" scoped>
@@ -806,5 +894,18 @@ const nationalityOptions = [
 .btn-primary:disabled {
   background: #aaa;
   cursor: not-allowed;
+}
+
+.scrollable-warning-message {
+  max-height: 200px;
+  /* Set the maximum height for the container */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
+  padding: 10px;
+  /* Optional: Adjust padding */
+  border: 1px solid #ccc;
+  /* Optional: Add border */
+  background-color: #f9f9f9;
+  /* Optional: Add a background color */
 }
 </style>
