@@ -37,6 +37,7 @@ export type FooterLink = {
     name: string
     link?: LinkType
     icon?: FAIconType
+    image?: string
   }[]
 }
 

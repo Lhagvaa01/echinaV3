@@ -5,7 +5,7 @@
   </div>
 
   <div v-else>
-    <div v-for="(offer, Mainindex) in filteredData " :key="Mainindex" class="mb-4">
+    <div v-for="(offer, Mainindex) in filteredData" :key="Mainindex" class="mb-4">
       <!-- {{ StoreflightInfos.length }}
       {{ filteredData.length }} -->
       <!-- <div
@@ -30,8 +30,8 @@
                     : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
 
                   <h6 class="fw-normal mb-0">
-                    {{ StoreAirCompany.find((airline: any) => airline.Code ===
-                      OfferSegment.MarketingAirline)?.Value || 'Unknown Airline' }}
+                    {{StoreAirCompany.find((airline: any) => airline.Code ===
+                      OfferSegment.MarketingAirline)?.Value || 'Unknown Airline'}}
                     ({{ OfferSegment.FlightNum || 'SA-1254' }})
                   </h6>
                   <Briefcase v-if="OfferSegment.Baggage" class="mx-2" color="#e68805" />
@@ -51,8 +51,8 @@
                     <p class="mb-0">{{ OfferSegment.Departure.Iata }}<span
                         v-if="OfferSegment.Departure.Terminal">-Терминал</span> {{
                           OfferSegment.Departure.Terminal || '' }}</p>
-                    <p class="mb-0">{{ StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                      OfferSegment.Departure.Iata).City }}</p>
+                    <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
+                      OfferSegment.Departure.Iata).City}}</p>
 
                   </b-col>
 
@@ -81,8 +81,8 @@
                     <p class="mb-0">{{ OfferSegment.Arrival.Iata }}<span
                         v-if="OfferSegment.Arrival.Terminal">-Терминал</span> {{
                           OfferSegment.Arrival.Terminal || '' }}</p>
-                    <p class="mb-0">{{ StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                      OfferSegment.Arrival.Iata).City }}</p>
+                    <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
+                      OfferSegment.Arrival.Iata).City}}</p>
                   </b-col>
 
                   <b-col md="3" class="text-md-end">
@@ -167,11 +167,11 @@
                     ? 'https://api.echina.mn/assets/d/' + segment.MarketingAirline + '.png'
                     : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
                   <h6 class="fw-normal mb-0">
-                    {{ Array.isArray(StoreAirCompany) ? StoreAirCompany.find((airline: any) => airline.Code ===
-                      segment.MarketingAirline).Value : StoreAirCompany.Value }}
+                    {{Array.isArray(StoreAirCompany) ? StoreAirCompany.find((airline: any) => airline.Code ===
+                      segment.MarketingAirline).Value : StoreAirCompany.Value}}
                     ({{ segment.FlightNum || 'SA-1254' }})
                   </h6>
-                  
+
                   <!-- Tooltip -->
                   <div v-if="isHovered[inx + segment.FlightNum]" class="tooltip text-white">
                     <div v-for="segment in offer.Offers.OfferInfo.Segments.OfferSegment.slice(0)"
@@ -180,8 +180,8 @@
                         ? 'https://api.echina.mn/assets/d/' + segment.MarketingAirline + '.png'
                         : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
                       <h6 class="fw-bold mb-0 text-primary">
-                        {{ StoreAirCompany.find((airline: any) => airline.Code ===
-                          segment.MarketingAirline).Value }}
+                        {{StoreAirCompany.find((airline: any) => airline.Code ===
+                          segment.MarketingAirline).Value}}
                         ({{ segment.FlightNum || 'SA-1254' }})
                       </h6>
 
@@ -203,8 +203,8 @@
                     <p class="fw-bold text-black mb-0">{{ formatDate(segment.Departure.Date) }}</p>
                     <p class="mb-0">{{ segment.Departure.Iata }}<span v-if="segment.Departure.Terminal">-Терминал</span>
                       {{ segment.Departure.Terminal || '' }}</p>
-                    <p class="mb-0">{{ StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                      segment.Departure.Iata).City }}</p>
+                    <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
+                      segment.Departure.Iata).City}}</p>
 
                   </b-col>
 
@@ -278,11 +278,11 @@
                           .Segments.OfferSegment[offer.Offers.OfferInfo[offer.Offers.OfferInfo.length -
                             1].Segments.OfferSegment.length - 1]
                           .Arrival.Terminal || '' }}</p>
-                    <p class="mb-0">{{ StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
+                    <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
                       offer.Offers.OfferInfo[offer.Offers.OfferInfo.length - 1]
                         .Segments.OfferSegment[offer.Offers.OfferInfo[offer.Offers.OfferInfo.length -
                           1].Segments.OfferSegment.length - 1]
-                        .Arrival.Iata).City }}</p>
+                        .Arrival.Iata).City}}</p>
 
                   </b-col>
                   <b-col md="3" class="text-md-end">
@@ -334,7 +334,7 @@
 
 
               <div>
-                <template v-for=" (segment, idx) in offer.Offers.OfferInfo" :key="'segment-' + idx">
+                <template v-for="(segment, idx) in offer.Offers.OfferInfo" :key="'segment-' + idx">
                   <div v-for="(offseg, offsegIdx) in segment.Segments.OfferSegment" :key="'offseg-' + offsegIdx">
                     <div v-if="offseg.SelfConnect == 'true'" class="card-footer pt-4">
                       <ul
@@ -454,7 +454,7 @@ async function fetchOptions(offerCode: string, searchGuid: string) {
   if (!offerCode || !searchGuid) return;
 
   try {
-    const response = await fetch(`http://api.airkacc.mn/api/prebooking/mn/?offerCode=${offerCode}&searchGuid=${searchGuid}`);
+    const response = await fetch(`https://api.airkacc.mn/api/prebooking/mn/?offerCode=${offerCode}&searchGuid=${searchGuid}`);
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
     const data = await response.json();

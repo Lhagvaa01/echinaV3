@@ -5,7 +5,7 @@
   <div v-else>
     <b-form class="rounded-3 shadow">
       <!-- Popular filters -->
-      <b-card no-body class="card-body rounded-0 rounded-top p-4">
+      <!-- <b-card no-body class="card-body rounded-0 rounded-top p-4">
         <h6 class="mb-2">Popular Filters</h6>
         <b-col cols="12">
           <div class="d-flex justify-content-between align-items-center">
@@ -28,7 +28,7 @@
             <span class="small">(2)</span>
           </div>
         </b-col>
-      </b-card>
+      </b-card> -->
 
       <hr class="my-0" />
 
@@ -54,17 +54,17 @@
           <li class="list-inline-item mb-0">
             <input type="checkbox" class="btn-check" id="btn-check-c1" :value="1" v-model="filters.preferredStops" />
             <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c1">Шууд нислэг ({{ direct.length
-              }})</label>
+            }})</label>
           </li>
           <li class="list-inline-item mb-0">
             <input type="checkbox" class="btn-check" id="btn-check-c2" :value="2" v-model="filters.preferredStops" />
             <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c2">1 Зогсолт ({{ OneStop.length
-              }})</label>
+            }})</label>
           </li>
           <li class="list-inline-item mb-0">
             <input type="checkbox" class="btn-check" id="btn-check-c3" :value="3" v-model="filters.preferredStops" />
             <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c3">2+ Зогсолт ({{ TwoStop.length
-              }})</label>
+            }})</label>
           </li>
         </ul>
       </b-card>

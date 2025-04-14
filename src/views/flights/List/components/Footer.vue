@@ -3,13 +3,15 @@
     <b-container>
       <b-row class="g-4">
         <b-col lg="3">
-          <router-link :to="{ name: 'hotels.home' }">
+          <router-link :to="{ name: 'flights.home' }">
             <img class="h-40px" :src="logoLight" alt="logo" />
           </router-link>
           <p class="my-3 text-body-secondary">
-            Departure defective arranging rapturous did believe him all had supported.
+            БНХАУ-ын дотоодын бүх Авиа компаниудыг холбосон захиалгын сүлжээнд нэгдсэн учраас та өөрийн хүссэн
+            мэдээлэлээ эх үүсвэрээс нь түргэн шуурхай авах боломжтой. Та өөрөө онлайнаар нислэгээ харах, ажлаа төлөвлөх,
+            аялалын төсөв зохиох, тийзээ худалдан авах зэрэг боломжтой болсоноор өөрийн үнэт цаг хугацаа хэмнэнэ.
           </p>
-          <p class="mb-2">
+          <!-- <p class="mb-2">
             <a href="#" class="text-body-secondary text-primary-hover">
               <BIconTelephone class="me-1 mb-1" />
               +1234 568 963
@@ -20,37 +22,66 @@
               <BIconEnvelope class="me-1 mb-1" />
               example@gmail.com
             </a>
-          </p>
+          </p> -->
         </b-col>
 
         <b-col lg="8" class="ms-auto">
-          <b-row class="g-4">
-            <b-col v-for="(item, idx) in footerLinks" :key="idx" cols="6" md="3">
-              <h5 class="text-white mb-2 mb-md-4">{{ item.title }}</h5>
-              <ul class="nav flex-column text-primary-hover">
-                <li v-for="(child, idx) in item.items" :key="idx" class="nav-item">
-                  <router-link
-                    class="nav-link text-body-secondary"
-                    :to="{ name: child.link?.name, params: child.link?.params }"
-                  >
-                    <font-awesome-icon v-if="child.icon" :icon="child.icon" class="me-1" />
-                    {{ child.name }}
-                  </router-link>
-                </li>
-              </ul>
+          <b-row class="g-2">
+            <b-col v-for="(item, idx) in footerLinks" :key="idx" cols="6" md="4">
+              <div v-if="item.title === 'Аялалын зөвлөгөө'">
+                <h5 class="text-white mb-2 fs-6">{{ item.title }}</h5>
+                <ul class="nav flex-column text-primary-hover">
+                  <li v-for="(child, cIdx) in item.items" :key="cIdx" class="nav-item">
+                    <div class="d-flex align-items-center mb-2">
+                      <!-- Зураг оруулах зөвхөн Аялалын зөвлөгөөний items дээр -->
+                      <img v-if="child.image" :src="child.image" alt="Image" class="me-3"
+                        style="width: 50px; height: 50px;" />
+                      <div>
+                        <router-link v-if="child.link" class="d-flex nav-link text-body-secondary fs-6"
+                          :to="child.link">
+                          <font-awesome-icon v-if="child.icon" :icon="child.icon" class="me-2" />
+                          {{ child.name }}
+                        </router-link>
+
+                        <div v-else class="d-flex nav-link text-body-secondary fs-6">
+                          <font-awesome-icon v-if="child.icon" :icon="child.icon" class="me-2" />
+                          {{ child.name }}
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div v-else>
+                <h5 class="text-white mb-2 mb-md-4 fs-6">{{ item.title }}</h5>
+                <ul class="nav flex-column text-primary-hover">
+                  <li v-for="(child, cIdx) in item.items" :key="cIdx" class="nav-item">
+                    <router-link v-if="child.link" class="d-flex nav-link text-body-secondary small" :to="child.link">
+                      <font-awesome-icon v-if="child.icon" :icon="child.icon" class="me-2" />
+                      {{ child.name }}
+                    </router-link>
+
+                    <div v-else class="d-flex nav-link text-body-secondary small">
+                      <font-awesome-icon v-if="child.icon" :icon="child.icon" class="me-2" />
+                      {{ child.name }}
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
             </b-col>
           </b-row>
         </b-col>
-      </b-row>
 
+
+
+      </b-row>
+      <!-- 
       <b-row class="mt-5">
         <h5 class="mb-2 text-white">Top Links</h5>
         <ul class="list-inline text-primary-hover lh-lg">
           <li v-for="(item, idx) in topLinks" :key="idx" class="list-inline-item">
-            <router-link
-              :to="{ name: item.link?.name, params: item.link?.params }"
-              class="text-body-secondary"
-            >
+            <router-link :to="{ name: item.link?.name, params: item.link?.params }" class="text-body-secondary">
               {{ item.name }}
             </router-link>
           </li>
@@ -101,19 +132,16 @@
             </li>
           </ul>
         </b-col>
-      </b-row>
+      </b-row> -->
 
       <hr class="mt-4 mb-0" />
 
       <b-row>
         <b-container>
-          <div
-            class="d-lg-flex justify-content-between align-items-center py-3 text-center text-lg-start"
-          >
+          <div class="d-lg-flex justify-content-between align-items-center py-3 text-center text-lg-start">
             <div class="text-body-secondary text-primary-hover">
-              Copyrights ©{{ currentYear }} Booking. Build by
-              <a :href="developedByLink" class="text-body-secondary">{{ developedBy }}</a
-              >.
+              Copyrights ©{{ currentYear }} www.airkacc.mn
+              <!-- <a :href="developedByLink" class="text-body-secondary">{{ developedBy }}</a>. -->
             </div>
             <div class="nav mt-2 mt-lg-0">
               <ul class="list-inline text-primary-hover mx-auto mb-0">

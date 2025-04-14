@@ -11,21 +11,21 @@
                     <button class="nav-link rounded-start rounded-0 mb-0" :class="show == 1 && 'active'"
                       id="pills-one-way-tab" data-bs-toggle="pill" data-bs-target="#pills-one-way" type="button"
                       role="tab" aria-selected="true" @click="show = 1">
-                      One Way
+                      1 Талдаа
                     </button>
                   </li>
                   <li class="nav-item" role="presentation">
                     <button class="nav-link  rounded-0 mb-0" :class="show == 2 && 'active'" id="pills-round-trip-tab"
                       data-bs-toggle="pill" data-bs-target="#pills-round-trip" type="button" role="tab"
                       aria-selected="false" @click="show = 2">
-                      Round Trip
+                      2 Талдаа
                     </button>
                   </li>
                   <li class="nav-item" role="presentation">
                     <button class="nav-link rounded-end rounded-0 mb-0" :class="show == 3 && 'active'"
                       id="pills-round-trip-tab" data-bs-toggle="pill" data-bs-target="#pills-multi-trip" type="button"
                       role="tab" aria-selected="false" @click="show = 3">
-                      Multi trip
+                      Олон хот
                     </button>
                   </li>
                 </ul>
@@ -62,7 +62,7 @@
                           :choice-options="{ searchEnabled: true }" />
                       </div>
                       <div v-else>
-                        Loading airports...
+                        Түр хүлээнэ үү...
                       </div>
 
                     </div>
@@ -85,7 +85,7 @@
                           :choice-options="{ searchEnabled: true }" />
                       </div>
                       <div v-else>
-                        Loading airports...
+                        Түр хүлээнэ үү...
                       </div>
 
                     </div>
@@ -104,8 +104,10 @@
 
                   <b-col cols="12" class="text-end pt-0">
                     <a class="btn btn-primary mb-n" :href="generateTicketUrl">
-                      Find ticket
-                      <BIconArrowRight class="ps-3 w-25" />
+                      <div class="d-flex  align-items-center">
+                        <p class="mb-0">Нислэг хайх</p>
+                        <BIconArrowRight class="ps-3 w-auto" />
+                      </div>
                     </a>
                   </b-col>
                 </b-row>
@@ -125,7 +127,7 @@
                           :options="destinationOptionsRound" :choice-options="{ searchEnabled: true }" />
                       </div>
                       <div v-else>
-                        Loading airports...
+                        Түр хүлээнэ үү...
                       </div>
 
                     </div>
@@ -148,7 +150,7 @@
                           :options="destinationOptionsRound" :choice-options="{ searchEnabled: true }" />
                       </div>
                       <div v-else>
-                        Loading airports...
+                        Түр хүлээнэ үү...
                       </div>
 
                     </div>
@@ -178,8 +180,10 @@
 
                   <b-col cols="12" class="text-end pt-0">
                     <a class="btn btn-primary mb-n" :href="generateTicketUrlRound">
-                      Find ticket
-                      <BIconArrowRight class="ps-3 w-25" />
+                      <div class="d-flex  align-items-center">
+                        <p class="mb-0">Нислэг хайх</p>
+                        <BIconArrowRight class="ps-3 w-auto" />
+                      </div>
                     </a>
                   </b-col>
                 </b-row>
@@ -202,7 +206,7 @@
                             :options="destinationOptions" :choice-options="{ searchEnabled: true }" />
                         </div>
                         <div v-else>
-                          Loading airports...
+                          Түр хүлээнэ үү...
                         </div>
                       </div>
                     </b-col>
@@ -218,7 +222,7 @@
                             :options="destinationOptions" :choice-options="{ searchEnabled: true }" />
                         </div>
                         <div v-else>
-                          Loading airports...
+                          Түр хүлээнэ үү...
                         </div>
                       </div>
                     </b-col>
@@ -252,8 +256,10 @@
                   <!-- Хайх товч -->
                   <b-col cols="12" class="text-end pt-0">
                     <a class="btn btn-primary mb-n" :href="generateTicketUrlMulti">
-                      Find ticket
-                      <BIconArrowRight class="ps-3 w-25" />
+                      <div class="d-flex  align-items-center">
+                        <p class="mb-0">Нислэг хайх</p>
+                        <BIconArrowRight class="ps-3 w-auto" />
+                      </div>
                     </a>
                   </b-col>
                 </b-row>

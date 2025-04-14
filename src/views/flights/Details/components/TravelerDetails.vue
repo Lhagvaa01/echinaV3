@@ -279,7 +279,8 @@
           <!-- Үйлдлийн хэсэг -->
           <div class="modal-actions">
             <div class="button-group">
-              <h6 class="instruction-text">Үргэлжлүүлэхийн тул Үйлчилгээний нөхцөлийг уншиж танилцана уу</h6>
+              <h6 class="instruction-text">Үргэлжлүүлэхийн тул үйлчилгээний нөхцөлийг уншиж танилцаад доош гүйлгээд
+                "зөвшөөрөх" товчийг дарна уу</h6>
               <button @click="closeModal" class="btn btn-secondary">Хаах</button>
               <button @click="confirmAndPay" class="btn btn-primary-soft" :disabled="!agreed">
                 Үргэлжлүүлэх
