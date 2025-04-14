@@ -399,7 +399,7 @@ const prepareDataForApi = (travelers: any[]) => {
     return {
       ...rest,
       birthDay: formatBirthDay(traveler.birthDay),
-      DocumentExDate: formatBirthDay(traveler.DocumentExDate)  // birthDay-г форматлаж өгч байна
+      expireDate: formatBirthDay(traveler.DocumentExDate)  // birthDay-г форматлаж өгч байна
     };
   });
 };
