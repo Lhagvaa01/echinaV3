@@ -227,6 +227,8 @@
       </div>
 
       <!-- Баталгаажуулах Modal -->
+
+
       <div v-if="showModal" class="modal-overlay">
         <div class="modal-content">
           <h3 class="modal-title">Мэдээлэл баталгаажуулах</h3>
@@ -235,9 +237,6 @@
           <div class="alert-warning">
             <span class="warning-icon">⚠️</span>
             <strong>Анхааруулга</strong>
-            <!-- <div class="scrollable-warning-message">
-              <p v-html="warningMessage"></p>
-            </div> -->
           </div>
 
           <!-- Зорчигчийн мэдээлэл -->
@@ -270,7 +269,6 @@
 
           <!-- Үйлчилгээний нөхцөл -->
           <div class="mt-2 terms-container" @scroll="checkScroll" ref="termsContainer">
-
             <p v-html="warningMessage"></p>
             <h5>
               <input type="checkbox" v-model="agreed" :disabled="!scrolledToBottom" />
@@ -278,23 +276,19 @@
             </h5>
           </div>
 
-
-          <!-- Check болон Баталгаажуулах Товч -->
+          <!-- Үйлдлийн хэсэг -->
           <div class="modal-actions">
-
             <div class="button-group">
-              <h6 class="col-6">Үргэлжлүүлэхийн тул үйлчилгээний нөхцөлийг уншиж танилцаад доош гүйлгээд "зөвшөөрөх"
-                товчийг дарна
-                уу
-              </h6>
-              <button @click="closeModal" class="btn btn-secondary col-2">Хаах</button>
-              <button @click="confirmAndPay" class="btn btn-primary-soft col-3" :disabled="!agreed">
+              <h6 class="instruction-text">Үргэлжлүүлэхийн тул Үйлчилгээний нөхцөлийг уншиж танилцана уу</h6>
+              <button @click="closeModal" class="btn btn-secondary">Хаах</button>
+              <button @click="confirmAndPay" class="btn btn-primary-soft" :disabled="!agreed">
                 Үргэлжлүүлэх
               </button>
             </div>
           </div>
         </div>
       </div>
+
     </b-card-body>
     <!-- Toast/Error Popup -->
     <!-- <ErrorToast v-if="errorMessage" :message="errorMessage" /> -->
@@ -790,6 +784,7 @@ const nationalityOptions = [
 
 </script>
 
+
 <style lang="css" scoped>
 .disabled-link {
   pointer-events: none;
@@ -818,6 +813,7 @@ const nationalityOptions = [
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 10px;
 }
 
 /* Modal content */
@@ -825,11 +821,11 @@ const nationalityOptions = [
   background: white;
   padding: 20px;
   border-radius: 8px;
-  width: 800px;
-  height: 60%;
-  max-width: 90%;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: left;
 }
 
 /* Анхааруулга */
@@ -841,8 +837,14 @@ const nationalityOptions = [
 }
 
 /* Зорчигчийн мэдээлэл */
+.passenger-info {
+  overflow-x: auto;
+  margin-bottom: 15px;
+}
+
 .passenger-info table {
   width: 100%;
+  min-width: 600px;
   border-collapse: collapse;
 }
 
@@ -851,49 +853,85 @@ const nationalityOptions = [
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
+  font-size: 14px;
 }
 
 /* Үйлчилгээний нөхцөл */
 .terms-container {
-  height: 60%;
+  max-height: 200px;
   overflow-y: auto;
   border: 1px solid #ddd;
   padding: 10px;
   margin-bottom: 10px;
+  font-size: 14px;
+  background-color: #f9f9f9;
 }
 
 /* Modal actions */
 .modal-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
+  margin-top: 10px;
 }
 
 .button-group {
   display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
   justify-content: space-between;
-  gap: 21px;
+}
+
+.instruction-text {
+  flex: 1 1 100%;
+  font-size: 14px;
 }
 
 .btn {
-  padding: 10px;
+  padding: 10px 16px;
+  font-size: 14px;
   border: none;
   cursor: pointer;
+  border-radius: 5px;
+  white-space: nowrap;
 }
 
 .btn-secondary {
   background: #ccc;
+  color: #333;
 }
 
-.btn-primary {
+.btn-primary-soft {
   background: #007bff;
   color: white;
 }
 
-.btn-primary:disabled {
+.btn-primary-soft:disabled {
   background: #aaa;
   cursor: not-allowed;
+}
+
+@media screen and (max-width: 480px) {
+  .modal-content {
+    padding: 15px;
+  }
+
+  .passenger-info th,
+  .passenger-info td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .terms-container {
+    font-size: 12px;
+  }
+
+  .btn {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+
+  .instruction-text {
+    font-size: 12px;
+  }
 }
 
 .scrollable-warning-message {

@@ -19,7 +19,7 @@ export const useOptionStore = defineStore({
   actions: {
     fetchFlights(filters: { offerCode: string; searchGuid: string; }) {
       let url = "";
-      url = `http://api.airkacc.mn/api/prebooking/mn/?offerCode=${filters.offerCode}&searchGuid=${filters.searchGuid}`;
+      url = `https://api.airkacc.mn/api/prebooking/mn/?offerCode=${filters.offerCode}&searchGuid=${filters.searchGuid}`;
       console.log(url)
       fetch(url)
         .then(response => response.json())

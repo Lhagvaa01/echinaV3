@@ -40,7 +40,7 @@ const loading = ref(true)
 // async function fetchOptions(offerCode: string, searchGuid: string) {
 //     try {
 //         loading.value = true
-//         const response = await fetch(`http://api.airkacc.mn/api/prebooking/mn/?offerCode=${offerCode}&searchGuid=${searchGuid}`)
+//         const response = await fetch(`https://api.airkacc.mn/api/prebooking/mn/?offerCode=${offerCode}&searchGuid=${searchGuid}`)
 //         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`)
 
 //         const data = await response.json()

@@ -18,7 +18,7 @@ export const useAirportStore = defineStore('airportStore', () => {
 
   const getAirports = async () => {
     try {
-      const response = await fetch('http://api.echina.mn/api/getPopularAirports/en/');
+      const response = await fetch('https://api.echina.mn/api/getPopularAirports/en/');
       const data = await response.json();
 
       if (data.status === 'SUCCESS') {

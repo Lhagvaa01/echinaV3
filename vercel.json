@@ -8,12 +8,12 @@
       },
       {
         "source": "/api/search/(.*)",
-        "destination": "http://api.airkacc.mn/api/search/$1",
+        "destination": "https://api.airkacc.mn/api/search/$1",
         "permanent": true
       },
       {
         "source": "/api/prebooking/(.*)",
-        "destination": "http://api.airkacc.mn/api/prebooking/$1",
+        "destination": "https://api.airkacc.mn/api/prebooking/$1",
         "permanent": true
       }
     ]
