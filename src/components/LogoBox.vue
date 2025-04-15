@@ -10,9 +10,9 @@
 </template>
 
 <script setup lang="ts">
-import logo from '@/assets/images/Echina.png'
-import logoLight from '@/assets/images/Echina.png'
-// ./src/assets/images/Echina.png
+import logo from '@/assets/images/logo-light.svg'
+import logoLight from '@/assets/images/logo-light.svg'
+// ./src/assets/images/logo-light.svg
 defineProps({
   customClass: String,
   onlyLight: {
