@@ -2,7 +2,6 @@
   <section class="py-0">
     <b-container>
       <div class="rounded-3 p-3 p-sm-5" :style="{
-        backgroundImage: `url(${bg01})`,
         backgroundPosition: 'center center',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover'
@@ -308,7 +307,7 @@
 </template>
 
 <script lang="ts" setup>
-import bg01 from '@/assets/images/bg/01.jpg'
+// import bg01 from '@/assets/images/bg/01.jpg'
 import SelectFormInput from '@/components/SelectFormInput.vue'
 import AirportsFormInput from '@/components/AirportsFormInput.vue'
 // import AirportSelector from '@/components/AirportSelector.vue'
