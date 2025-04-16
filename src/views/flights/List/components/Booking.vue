@@ -686,6 +686,10 @@ function searchFlights() {
 
   sessionStorage.setItem("travelers", JSON.stringify(travelers));
 
+  if (!sessionStorage.getItem("flight")) {
+    sessionStorage.setItem("flight", "1");
+  }
+
   // 📌 `trips` массив (нэг, хоёр, олон чиглэлт нислэг)
   const trips = [{ from, to, date }];
 
