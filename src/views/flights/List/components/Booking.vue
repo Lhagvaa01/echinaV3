@@ -51,22 +51,19 @@
               <div class="tab-pane fade" :class="show == 1 && 'show active'" id="pills-one-way" role="tabpanel"
                 aria-labelledby="pills-one-way-tab">
                 <b-row class="g-4">
+                  <!-- Хаанаас -->
                   <b-col md="6" lg="4" class="position-relative">
                     <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
-                      <label class="mb-1">
-                        <BIconGeoAlt class="me-2" />
-                        Хаанаас
+                      <label class="mb-1 d-flex align-items-center">
+                        <BIconGeoAlt class="me-2" /> Хаанаас
                       </label>
                       <div v-if="destinationOptions.length > 0">
-                        <AirportsFormInput id="from" v-model="selectedDestination" :options="destinationOptions"
-                          :choice-options="{ searchEnabled: true }" />
+                        <AirportSelector v-model="selectedDestination" class="w-100" />
                       </div>
-                      <div v-else>
-                        Түр хүлээнэ үү...
-                      </div>
-
+                      <div v-else class="text-muted small">Түр хүлээнэ үү...</div>
                     </div>
 
+                    <!-- Flip Icon -->
                     <div class="btn-flip-icon mt-3 mt-md-0">
                       <button class="btn btn-white shadow btn-round mb-0">
                         <font-awesome-icon :icon="faRightLeft" />
@@ -74,43 +71,41 @@
                     </div>
                   </b-col>
 
+                  <!-- Хаашаа -->
                   <b-col md="6" lg="4">
                     <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
-                      <label class="mb-1">
-                        <BIconSend class="me-2" />
-                        Хаашаа
+                      <label class="mb-1 d-flex align-items-center">
+                        <BIconSend class="me-2" /> Хаашаа
                       </label>
                       <div v-if="destinationOptions.length > 0">
-                        <AirportsFormInput id="to" v-model="selectedDestination2" :options="destinationOptions"
-                          :choice-options="{ searchEnabled: true }" />
+                        <AirportSelector v-model="selectedDestination2" class="w-100" />
                       </div>
-                      <div v-else>
-                        Түр хүлээнэ үү...
-                      </div>
-
+                      <div v-else class="text-muted small">Түр хүлээнэ үү...</div>
                     </div>
                   </b-col>
 
+                  <!-- Хэзээ -->
                   <b-col lg="4">
                     <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
-                      <label class="mb-1">
-                        <BIconCalendar class="me-2" />
-                        Хэзээ
+                      <label class="mb-1 d-flex align-items-center">
+                        <BIconCalendar class="me-2" /> Хэзээ
                       </label>
                       <CustomFlatpicker id="departureDate" placeholder="Select date" v-model="departureDate"
                         :options="{ dateFormat: 'd.m.Y' }" />
                     </div>
                   </b-col>
 
+                  <!-- Нислэг хайх -->
                   <b-col cols="12" class="text-end pt-0">
                     <a class="btn btn-primary mb-n" :href="generateTicketUrl">
-                      <div class="d-flex  align-items-center">
+                      <div class="d-flex align-items-center justify-content-end">
                         <p class="mb-0">Нислэг хайх</p>
-                        <BIconArrowRight class="ps-3 w-auto" />
+                        <BIconArrowRight class="ps-3" />
                       </div>
                     </a>
                   </b-col>
                 </b-row>
+
               </div>
 
               <div class="tab-pane fade" :class="show == 2 && 'show active'" id="pills-round-trip" role="tabpanel"
@@ -122,9 +117,12 @@
                         <BIconGeoAlt class="me-2" />
                         Хаанаас
                       </label>
-                      <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
+                      <!-- <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
                         <AirportsFormInput id="round-from" v-model="selectedDestination3"
                           :options="destinationOptionsRound" :choice-options="{ searchEnabled: true }" />
+                      </div> -->
+                      <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
+                        <AirportSelector v-model="selectedDestination3" class="w-100" />
                       </div>
                       <div v-else>
                         Түр хүлээнэ үү...
@@ -145,9 +143,12 @@
                         <BIconSend class="me-2" />
                         Хаашаа
                       </label>
-                      <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
+                      <!-- <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
                         <AirportsFormInput id="round-to" v-model="selectedDestination4"
                           :options="destinationOptionsRound" :choice-options="{ searchEnabled: true }" />
+                      </div> -->
+                      <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
+                        <AirportSelector v-model="selectedDestination4" class="w-100" />
                       </div>
                       <div v-else>
                         Түр хүлээнэ үү...
@@ -194,64 +195,67 @@
                 aria-labelledby="pills-multi-trip-tab">
                 <b-row class="g-4">
                   <!-- Хайлтын мөрүүд -->
-                  <div v-for="(trip, index) in trips" :key="index" class="d-flex justify-content-sm-between">
-                    <b-col md="6" xl="3" class="position-relative">
-                      <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
-                        <label class="mb-1">
-                          <BIconGeoAlt class="me-2" />
-                          Хаанаас
-                        </label>
-                        <div v-if="destinationOptions.length > 0">
-                          <AirportsFormInput :id="`from${index}`" v-model="trip.selectedDestination"
-                            :options="destinationOptions" :choice-options="{ searchEnabled: true }" />
+                  <div v-for="(trip, index) in trips" :key="index" class="mb-3">
+                    <b-row class="g-4 align-items-end">
+                      <!-- Хаанаас -->
+                      <b-col md="6" xl="3" class="position-relative">
+                        <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
+                          <label class="mb-1">
+                            <BIconGeoAlt class="me-2" /> Хаанаас
+                          </label>
+                          <div v-if="destinationOptions.length > 0">
+                            <AirportSelector v-model="trip.selectedDestination" class="w-100" />
+                          </div>
+                          <div v-else>Түр хүлээнэ үү...</div>
                         </div>
-                        <div v-else>
-                          Түр хүлээнэ үү...
-                        </div>
-                      </div>
-                    </b-col>
+                      </b-col>
 
-                    <b-col md="6" xl="3">
-                      <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
-                        <label class="mb-1">
-                          <BIconSend class="me-2" />
-                          Хаашаа
-                        </label>
-                        <div v-if="destinationOptions.length > 0">
-                          <AirportsFormInput :id="`to${index}`" v-model="trip.selectedDestination2"
-                            :options="destinationOptions" :choice-options="{ searchEnabled: true }" />
+                      <!-- Хаашаа -->
+                      <b-col md="6" xl="3">
+                        <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
+                          <label class="mb-1">
+                            <BIconSend class="me-2" /> Хаашаа
+                          </label>
+                          <div v-if="destinationOptions.length > 0">
+                            <AirportSelector v-model="trip.selectedDestination2" class="w-100" />
+                          </div>
+                          <div v-else>Түр хүлээнэ үү...</div>
                         </div>
-                        <div v-else>
-                          Түр хүлээнэ үү...
+                      </b-col>
+
+                      <!-- Хэзээ -->
+                      <b-col md="6" xl="3">
+                        <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
+                          <label class="mb-1">
+                            <BIconCalendar class="me-2" /> Хэзээ
+                          </label>
+                          <CustomFlatpicker :id="`departureDate${index}`" placeholder="Select date"
+                            v-model="trip.departureDate" :options="{ dateFormat: 'd.m.Y' }" />
                         </div>
-                      </div>
-                    </b-col>
+                      </b-col>
 
-                    <b-col md="6" xl="3">
-                      <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
-                        <label class="mb-1">
-                          <BIconCalendar class="me-2" />
-                          Хэзээ
-                        </label>
-                        <CustomFlatpicker :id="`departureDate${index}`" placeholder="Select date"
-                          v-model="trip.departureDate" :options="{ dateFormat: 'd.m.Y' }" />
-                      </div>
-                    </b-col>
-
-                    <!-- Хэрэглэгч эхний мөр биш бол устгах товч нэмэх -->
-                    <b-col md="6" xl="3" v-if="index > 0">
-                      <button class="btn btn-danger" @click="removeTrip(index)">
-                        Устгах
-                      </button>
-                    </b-col>
+                      <!-- Устгах товч -->
+                      <b-col md="6" xl="3" v-if="index > 0">
+                        <button class="btn btn-danger w-100" type="button" @click="removeTrip(index)">
+                          Устгах
+                        </button>
+                      </b-col>
+                    </b-row>
                   </div>
 
+
                   <!-- Шинэ мөр нэмэх товч -->
-                  <b-col cols="12">
+                  <!-- <b-col cols="12">
                     <button class="btn btn-secondary" @click="addTrip">
                       Шинэ хайлт нэмэх
                     </button>
+                  </b-col> -->
+                  <b-col cols="12">
+                    <button class="btn btn-secondary" type="button" @click="addTrip">
+                      Шинэ хайлт нэмэх
+                    </button>
                   </b-col>
+
 
                   <!-- Хайх товч -->
                   <b-col cols="12" class="text-end pt-0">
@@ -260,6 +264,7 @@
                         <p class="mb-0">Нислэг хайх</p>
                         <BIconArrowRight class="ps-3 w-auto" />
                       </div>
+
                     </a>
                   </b-col>
                 </b-row>
@@ -280,6 +285,8 @@ import { BIconGeoAlt, BIconSend, BIconCalendar, BIconArrowRight } from 'bootstra
 import { computed, watch, ref } from 'vue'
 import GuestAndRoomForm from '@/components/GuestAndRoomForm.vue'
 import type { GuestAndRoomFormType } from '@/types'
+
+import AirportSelector from '@/components/AirportSelector.vue'
 
 
 const show = ref<number>(Number(sessionStorage.getItem("flight")) || 1);
@@ -308,11 +315,14 @@ const selectedTravelers = ref('select-travelers')
 
 
 const generateTicketUrl = computed(() => {
-  return `/flights/list/?dpt=${selectedDestination.value}&arr=${selectedDestination2.value}&date=${departureDate.value}&fclass=Econom&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
+
+  sessionStorage.setItem("trips", show.value.toString());
+  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${departureDate.value}&fclass=Econom&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
 });
 
 const generateTicketUrlRound = computed(() => {
-  return `/flights/list/?dpt=${selectedDestination3.value}&arr=${selectedDestination4.value}&date=${departureDate.value}&backDate=${returnDate.value}&fclass=Econom&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
+  sessionStorage.setItem("trips", show.value.toString());
+  return `/flights/list/?dpt=${selectedDestination3.value?.airportCode}&arr=${selectedDestination4.value?.airportCode}&date=${departureDate.value}&backDate=${returnDate.value}&fclass=Econom&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
 });
 
 
@@ -430,14 +440,89 @@ const returnDate = ref<string | undefined>(
 //   console.log(selectedDestination)
 // });
 
-const selectedDestination = ref(sessionStorage.getItem("selectedDestination") || "UBN");
-const selectedDestination2 = ref(sessionStorage.getItem("selectedDestination2") || "PEK");
+// const selectedDestination = ref(sessionStorage.getItem("selectedDestination") || "UBN");
+// const selectedDestination2 = ref(sessionStorage.getItem("selectedDestination2") || "PEK");
+interface Destination {
+  airportCode: string;
+  airportName: string;
+}
 
-const selectedDestination3 = ref("UBN"
-);
+const selectedDestination = ref<Destination | null>(null);
+const selectedDestination2 = ref<Destination | null>(null);
+const selectedDestination3 = ref<Destination | null>(null);
+const selectedDestination4 = ref<Destination | null>(null);
 
-const selectedDestination4 = ref("PEK"
-);
+onMounted(() => {
+  if (sessionStorage.getItem("flight") == "1") {
+    const from = sessionStorage.getItem("selectedDestination");
+    const to = sessionStorage.getItem("selectedDestination2");
+
+    try {
+      selectedDestination.value = from?.startsWith("{")
+        ? JSON.parse(from)
+        : from || null;
+
+      selectedDestination2.value = to?.startsWith("{")
+        ? JSON.parse(to)
+        : to || null;
+    } catch (e) {
+      console.error("Session parse error:", e);
+    }
+  } else if (sessionStorage.getItem("flight") == "2") {
+    const from = sessionStorage.getItem("selectedDestination3");
+    const to = sessionStorage.getItem("selectedDestination4");
+
+    try {
+      selectedDestination3.value = from?.startsWith("{")
+        ? JSON.parse(from)
+        : from || null;
+
+      selectedDestination4.value = to?.startsWith("{")
+        ? JSON.parse(to)
+        : to || null;
+    } catch (e) {
+      console.error("Session parse error:", e);
+    }
+  }
+
+});
+
+watch(selectedDestination, (newVal) => {
+  if (newVal) {
+    const valueToStore = newVal;
+    sessionStorage.setItem("selectedDestination", JSON.stringify(valueToStore));
+  }
+});
+
+watch(selectedDestination2, (newVal) => {
+  console.log(newVal)
+  if (newVal) {
+    const valueToStore =
+      newVal;
+    sessionStorage.setItem("selectedDestination2", JSON.stringify(valueToStore));
+  }
+});
+
+watch(selectedDestination3, (newVal) => {
+  if (newVal) {
+    const valueToStore = newVal;
+    sessionStorage.setItem("selectedDestination3", JSON.stringify(valueToStore));
+  }
+});
+
+watch(selectedDestination4, (newVal) => {
+  console.log(newVal)
+  if (newVal) {
+    const valueToStore =
+      newVal;
+    sessionStorage.setItem("selectedDestination4", JSON.stringify(valueToStore));
+  }
+});
+
+
+
+
+
 
 onMounted(() => {
   airportStore.getAirports(); // Сайт ачаалахад API-гаас өгөгдлийг татаж авах
@@ -458,19 +543,19 @@ onMounted(() => {
 
 
 // Сонгогдсон утгуудыг sessionStorage-д хадгалах
-watch(selectedDestination, (newValue) => {
-  const dep = destinationOptions.value.filter(option =>
-    option.choices.some(choice => choice.value === newValue) // choices массив дотор байгаа эсэхийг шалгах
-  );
+// watch(selectedDestination, (newValue) => {
+//   const dep = destinationOptions.value.filter(option =>
+//     option.choices.some(choice => choice.value === newValue) // choices массив дотор байгаа эсэхийг шалгах
+//   );
 
-  console.log(dep);
-  sessionStorage.setItem("selectedDestination", JSON.stringify(dep[0])); // JSON.stringify ашиглав
-});
+//   console.log(newValue);
+//   sessionStorage.setItem("selectedDestination", newValue); // JSON.stringify ашиглав
+// });
 
 
-watch(selectedDestination2, (newValue) => {
-  sessionStorage.setItem("selectedDestination2", newValue);
-});
+// watch(selectedDestination2, (newValue) => {
+//   sessionStorage.setItem("selectedDestination2", newValue);
+// });
 
 
 watch(show, (newValue) => {
@@ -479,19 +564,25 @@ watch(show, (newValue) => {
 
 
 // Хайлтын мөрүүд
-const trips = ref([
-  {
-    selectedDestination: '',
-    selectedDestination2: '',
-    departureDate: '',
-  },
-]);
+// const trips = ref([
+//   {
+//     selectedDestination: '',
+//     selectedDestination2: '',
+//     departureDate: '',
+//   },
+// ]);
+interface Trip {
+  selectedDestination: Destination;
+  selectedDestination2: Destination;
+  departureDate: string;
+}
+const trips = ref<Trip[]>([]);
 
 // Шинэ мөр нэмэх
 const addTrip = () => {
   trips.value.push({
-    selectedDestination: '',
-    selectedDestination2: '',
+    selectedDestination: { airportCode: '', airportName: '' }, // Empty destination
+    selectedDestination2: { airportCode: '', airportName: '' }, // Empty destination
     departureDate: '',
   });
   sessionStorage.setItem("trips", trips.value.length.toString());
@@ -506,7 +597,7 @@ const removeTrip = (index: number) => {
 // URL үүсгэх
 const generateTicketUrlMulti = computed(() => {
   if (show.value != 3) {
-    sessionStorage.setItem("trips", show.value.toString());
+    sessionStorage.setItem("tripsValue", show.value.toString());
   }
   if (!trips.value.length) return "/flights/list/";
 
@@ -518,9 +609,9 @@ const generateTicketUrlMulti = computed(() => {
   if (!firstTrip.selectedDestination || !firstTrip.selectedDestination2 || !firstTrip.departureDate) {
     return baseUrl; // Шаардлагатай өгөгдөл байхгүй бол хоосон URL буцаах
   }
-
-  params.push(`dpt=${encodeURIComponent(firstTrip.selectedDestination)}`);
-  params.push(`arr=${encodeURIComponent(firstTrip.selectedDestination2)}`);
+  console.log(firstTrip.selectedDestination)
+  params.push(`dpt=${encodeURIComponent(firstTrip.selectedDestination.airportCode)}`);
+  params.push(`arr=${encodeURIComponent(firstTrip.selectedDestination2.airportCode)}`);
   params.push(`date=${encodeURIComponent(firstTrip.departureDate)}`);
   params.push(`fclass=Econom`);
   params.push(`adults=${formValue.value.guests.adults || 1}`);
@@ -531,14 +622,44 @@ const generateTicketUrlMulti = computed(() => {
   trips.value.slice(1).forEach((trip, index) => {
     if (trip.selectedDestination && trip.selectedDestination2 && trip.departureDate) {
       params.push(`mdate${index + 1}=${encodeURIComponent(trip.departureDate)}`);
-      params.push(`from${index + 1}=${encodeURIComponent(trip.selectedDestination)}`);
-      params.push(`to${index + 1}=${encodeURIComponent(trip.selectedDestination2)}`);
+      params.push(`from${index + 1}=${encodeURIComponent(trip.selectedDestination.airportCode)}`);
+      params.push(`to${index + 1}=${encodeURIComponent(trip.selectedDestination2.airportCode)}`);
     }
   });
 
   return `${baseUrl}?${params.join("&")}`;
 });
 
+
+onMounted(() => {
+  // Try to load trips from sessionStorage when the page is loaded
+  const savedTrips = sessionStorage.getItem("tripsValue");
+
+  if (savedTrips) {
+    try {
+      const parsedTrips = JSON.parse(savedTrips);
+
+      // Ensure the loaded data is an array of trips, or an empty array if not
+      if (Array.isArray(parsedTrips)) {
+        trips.value = parsedTrips;
+      }
+    } catch (e) {
+      console.error("Error parsing trips from sessionStorage:", e);
+    }
+  }
+});
+
+// Watch for changes in trips and store it in sessionStorage
+watch(trips, (newTrips) => {
+  if (newTrips.length > 0) {
+    try {
+      sessionStorage.setItem("trips", JSON.stringify(newTrips.length));
+      sessionStorage.setItem("tripsValue", JSON.stringify(newTrips));
+    } catch (e) {
+      console.error("Error saving trips to sessionStorage:", e);
+    }
+  }
+}, { deep: true });
 
 
 
@@ -561,6 +682,9 @@ function searchFlights() {
     adults: Number(getQueryParam("adults", "1")), // Default: 1 adult
     childs: Number(getQueryParam("childs", "0")), // Default: 0 children
   };
+
+
+  sessionStorage.setItem("travelers", JSON.stringify(travelers));
 
   // 📌 `trips` массив (нэг, хоёр, олон чиглэлт нислэг)
   const trips = [{ from, to, date }];

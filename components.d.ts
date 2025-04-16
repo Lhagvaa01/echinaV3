@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AirportSelector: typeof import('./src/components/AirportSelector.vue')['default']
     AirportsFormInput: typeof import('./src/components/AirportsFormInput.vue')['default']
     AppMenu: typeof import('./src/components/navbar/AppMenu.vue')['default']
     BAccordion: typeof import('bootstrap-vue-next')['BAccordion']
@@ -32,11 +33,8 @@ declare module 'vue' {
     BFormInput: typeof import('bootstrap-vue-next')['BFormInput']
     BFormInvalidFeedback: typeof import('bootstrap-vue-next')['BFormInvalidFeedback']
     BFormRadio: typeof import('bootstrap-vue-next')['BFormRadio']
-    BFormSelect: typeof import('bootstrap-vue-next')['BFormSelect']
     BFormText: typeof import('bootstrap-vue-next')['BFormText']
     BFormTextarea: typeof import('bootstrap-vue-next')['BFormTextarea']
-    BIconArrowRight: typeof import('bootstrap-vue-next')['BIconArrowRight']
-    BIconEyeFill: typeof import('bootstrap-vue-next')['BIconEyeFill']
     BInputGroup: typeof import('bootstrap-vue-next')['BInputGroup']
     BListGroup: typeof import('bootstrap-vue-next')['BListGroup']
     BListGroupItem: typeof import('bootstrap-vue-next')['BListGroupItem']

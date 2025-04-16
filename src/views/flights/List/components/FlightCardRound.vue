@@ -294,6 +294,7 @@ import { string } from 'yup'
 
 const show = ref<number>(Number(sessionStorage.getItem("flight")) || 1);
 // const trips = ref<number>(Number(sessionStorage.getItem("trips")) || 1);
+// const tripcount = sessionStorage.getItem("trips")?.length || 0;
 const trips = parseInt(sessionStorage.getItem("trips") || "0", 10);
 const optionStore = useOptionStore();
 
@@ -389,7 +390,8 @@ const moreFlights = (index: number) => {
     const tripCount = trips.toString();
 
 
-    console.log(trips)
+
+    // console.log(trips)
     // Iterate through Rph values starting from 1, ending at `trips.value`
     for (let i = 1; i <= trips; i++) {
         let currentFilter: any[] = [];

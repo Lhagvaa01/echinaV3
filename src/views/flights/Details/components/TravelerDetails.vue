@@ -364,20 +364,54 @@ const BookingInfo = {
   email: ref(''),
 };
 
+// const addTraveler = () => {
+//   const newTraveler = {
+//     id: travelers.value.length + 1,
+//     ageType: '',
+//     birthDay: { day: "", month: "", year: "" },
+//     birthISO: '',
+//     document: '',
+//     gender: '',
+//     name: '',
+//     surname: '',
+//     DocumentExDate: { day: "", month: "", year: "" }
+//   };
+//   travelers.value.push(newTraveler);
+// };
+
+
 const addTraveler = () => {
-  const newTraveler = {
-    id: travelers.value.length + 1,
-    ageType: '',
-    birthDay: { day: "", month: "", year: "" },
-    birthISO: '',
-    document: '',
-    gender: '',
-    name: '',
-    surname: '',
-    DocumentExDate: { day: "", month: "", year: "" }
-  };
-  travelers.value.push(newTraveler);
+  const stored = sessionStorage.getItem("travelers");
+  if (!stored) return;
+
+  try {
+    const parsed = JSON.parse(stored);
+    const totalAllowed = (parsed.adults || 0) + (parsed.childs || 0);
+
+    if (travelers.value.length >= totalAllowed) {
+      alert("Нийт зорчигчдын тоо аль хэдийн хүрсэн байна.");
+      return;
+    }
+
+    const newTraveler = {
+      id: travelers.value.length + 1,
+      ageType: '',
+      birthDay: { day: "", month: "", year: "" },
+      birthISO: '',
+      document: '',
+      gender: '',
+      name: '',
+      surname: '',
+      DocumentExDate: { day: "", month: "", year: "" }
+    };
+
+    travelers.value.push(newTraveler);
+  } catch (e) {
+    console.error("Session parse error:", e);
+  }
 };
+
+
 
 const monthNameToNumber = (month: string) => {
   const months: Record<string, string> = {
@@ -422,18 +456,44 @@ const warningMessage = ref(''); // Initialize with an empty string or your defau
 
 // Modal нээх функц
 const openModal = () => {
-  showModal.value = true;
-  fetch('https://api.airkacc.mn/api/ref/conditionMore/mn/airkacc/')
-    .then(response => response.json())
-    .then(data => {
-      // Set the fetched data into the relevant variables
-      warningMessage.value = data.result.description; // Use `.value` to update the ref
-      // termsContent = data.result.description; // Set terms content if needed
-    })
-    .catch(error => {
-      console.error('API Error:', error);
-    });
+  travelers.value.forEach(traveler => {
+    traveler.ageType = getAgeCategory(traveler.birthDay).toString();
+  });
+  // 🧠 Session-аас зорчигчдын тоог авах
+  const stored = sessionStorage.getItem("travelers");
+  if (!stored) return;
+
+  try {
+    const parsed = JSON.parse(stored);
+    const expectedAdults = parsed.adults || 0;
+    const expectedChildren = parsed.childs || 0;
+
+    // 👤 actual зорчигчдын тоо
+    const actualAdults = travelers.value.filter(t => t.ageType === 'Adult').length;
+    const actualChildren = travelers.value.filter(t => t.ageType === 'Child').length;
+    console.log(travelers)
+    // ❗ Шалгах
+    if (actualAdults !== expectedAdults || actualChildren !== expectedChildren) {
+      alert(`Зорчигчдын төрөл зөрж байна!\nТом хүн: ${expectedAdults}, Хүүхэд: ${expectedChildren}`);
+      return;
+    }
+
+    // ✅ Хэрвээ зөв байвал modal нээнэ
+    showModal.value = true;
+    fetch('https://api.airkacc.mn/api/ref/conditionMore/mn/airkacc/')
+      .then(response => response.json())
+      .then(data => {
+        warningMessage.value = data.result.description;
+      })
+      .catch(error => {
+        console.error('API Error:', error);
+      });
+
+  } catch (e) {
+    console.error("Session parse error:", e);
+  }
 };
+
 
 
 // Modal хаах функц
