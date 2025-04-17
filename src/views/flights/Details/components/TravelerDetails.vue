@@ -289,7 +289,12 @@
           </div>
         </div>
       </div>
-
+      <div v-if="isLoading" class="fixed top-50 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+          <div class="loader mb-4"></div>
+          <p class="text-lg font-semibold">Түр хүлээнэ үү...</p>
+        </div>
+      </div>
     </b-card-body>
     <!-- Toast/Error Popup -->
     <!-- <ErrorToast v-if="errorMessage" :message="errorMessage" /> -->
@@ -504,18 +509,18 @@ const closeModal = () => {
 const show = ref(false);
 
 const errorMessage = ref('');
+const isLoading = ref(false);
 
 const confirmAndPay = async () => {
   showModal.value = false;
+  isLoading.value = true; // ⬅ Түр хүлээж байна гэдгийг эхлүүлнэ
 
-  // Хувьсагчийг бэлтгэх
   travelers.value.forEach(traveler => {
     traveler.ageType = getAgeCategory(traveler.birthDay).toString();
   });
 
   const formattedTravelers = prepareDataForApi(travelers.value);
 
-  // POST хүсэлтийн өгөгдөл
   const payload = {
     offerCode: infos.value?.OfferCode,
     searchGuid: infos.value?.SearchGuid,
@@ -524,9 +529,8 @@ const confirmAndPay = async () => {
     phone: '976' + BookingInfo.phoneNumber.value,
     passengers: formattedTravelers
   };
-  console.log(payload)
+
   try {
-    // API руу хүсэлт явуулах
     const response = await fetch('https://api.airkacc.mn/api/booking/mn/', {
       method: 'POST',
       headers: {
@@ -535,30 +539,27 @@ const confirmAndPay = async () => {
       body: JSON.stringify(payload)
     });
 
-    // Хариуг шалгах
     if (response.ok) {
       const data = await response.json();
       if (data.status != "ERROR") {
         console.log('Амжилттай:', data);
         sessionStorage.setItem("BookingInfo", JSON.stringify(data));
-        // Амжилттай бол /flights/booking руу шилжих
         window.location.href = '/flights/booking';
       } else {
-
         sessionStorage.setItem("BookingInfo", JSON.stringify(data));
-        // Алдааны мессежийг харуулах
-        // alert(`Алдаа: ${data.message}`);
         errorMessage.value = `Алдаа: ${data.message}`;
         console.error(`Алдаа: ${data.message}`);
       }
-
     } else {
       console.error('Алдаа гарлаа:', response.statusText);
     }
   } catch (error) {
     console.error('Алдаа:', error);
+  } finally {
+    isLoading.value = false; // ⬅ Дуусахаар loading болиулна
   }
 };
+
 
 
 
@@ -1006,5 +1007,25 @@ const nationalityOptions = [
   /* Optional: Add border */
   background-color: #f9f9f9;
   /* Optional: Add a background color */
+}
+
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

@@ -759,11 +759,15 @@ export const APP_MENU_ITEMS: MenuItemType[] = [
   }, {
     key: 'check-flight',
     label: 'Нислэгийн төлөв шалгах',
-    isTitle: true
+    isTitle: true,
+    
+    link: { name: 'flights.home' },
   }, {
     key: 'privacy-policy',
     label: 'Үйлчилгээний нөхцөл',
-    isTitle: true
+    isTitle: true,
+    
+    link: { name: 'flights.home' },
   }
   // {
   //   key: 'pages',
