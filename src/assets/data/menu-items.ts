@@ -748,11 +748,14 @@ export const APP_MENU_ITEMS: MenuItemType[] = [
   {
     key: 'home',
     label: 'Нүүр',
-    isTitle: true
+    isTitle: true,
+    
+    link: { name: 'flights.home' },
   }, {
-    key: 'check-ticket',
+    key: 'orderInfo',
     label: 'Тасалбар шалгах',
-    isTitle: true
+    isTitle: true,
+    link: { name: 'flights.OrderInfo' },
   }, {
     key: 'check-flight',
     label: 'Нислэгийн төлөв шалгах',

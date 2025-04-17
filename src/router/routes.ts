@@ -110,6 +110,13 @@ const flightRoutes = [
       title: 'Booking - Multipurpose Online Booking Theme'
     },
     component: () => import('@/views/flights/Booking/index.vue')
+  },{
+    path: '/flights/OrderInfo',
+    name: 'flights.OrderInfo',
+    meta: {
+      title: 'Details - Multipurpose Online Booking Theme'
+    },
+    component: () => import('@/views/flights/OrderInfo/index.vue')
   }
 ]
 

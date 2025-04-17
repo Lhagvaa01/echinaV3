@@ -150,7 +150,7 @@
                             :options="destinationOptionsRound" :choice-options="{ searchEnabled: true }" />
                         </div> -->
                         <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
-                          <AirportSelector v-model="selectedDestination3" class="w-100" />
+                          <AirportSelector v-model="selectedDestination" class="w-100" />
                         </div>
                         <div v-else>
                           Түр хүлээнэ үү...
@@ -176,7 +176,7 @@
                             :options="destinationOptionsRound" :choice-options="{ searchEnabled: true }" />
                         </div> -->
                         <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
-                          <AirportSelector v-model="selectedDestination4" class="w-100" />
+                          <AirportSelector v-model="selectedDestination2" class="w-100" />
                         </div>
                         <div v-else>
                           Түр хүлээнэ үү...
@@ -355,7 +355,7 @@ const generateTicketUrl = computed(() => {
 
 const generateTicketUrlRound = computed(() => {
   sessionStorage.setItem("trips", show.value.toString());
-  return `/flights/list/?dpt=${selectedDestination3.value?.airportCode}&arr=${selectedDestination4.value?.airportCode}&date=${departureDate.value}&backDate=${returnDate.value}&fclass=Econom&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
+  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${departureDate.value}&backDate=${returnDate.value}&fclass=Econom&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
 });
 
 
@@ -584,7 +584,13 @@ interface Trip {
   selectedDestination2: Destination;
   departureDate: string;
 }
-const trips = ref<Trip[]>([]);
+const trips = ref<Trip[]>([
+  {
+    selectedDestination: selectedDestination.value,
+    selectedDestination2: selectedDestination2.value,
+    departureDate: departureDate.value || "",
+  }
+]);
 
 
 // Шинэ мөр нэмэх
