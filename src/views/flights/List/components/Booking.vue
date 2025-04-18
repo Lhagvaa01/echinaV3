@@ -453,36 +453,19 @@ const selectedDestination3 = ref<Destination | null>(null);
 const selectedDestination4 = ref<Destination | null>(null);
 
 onMounted(() => {
-  if (sessionStorage.getItem("flight") == "1") {
-    const from = sessionStorage.getItem("selectedDestination");
-    const to = sessionStorage.getItem("selectedDestination2");
+  const from = sessionStorage.getItem("selectedDestination");
+  const to = sessionStorage.getItem("selectedDestination2");
 
-    try {
-      selectedDestination.value = from?.startsWith("{")
-        ? JSON.parse(from)
-        : from || null;
+  try {
+    selectedDestination.value = from?.startsWith("{")
+      ? JSON.parse(from)
+      : from || null;
 
-      selectedDestination2.value = to?.startsWith("{")
-        ? JSON.parse(to)
-        : to || null;
-    } catch (e) {
-      console.error("Session parse error:", e);
-    }
-  } else if (sessionStorage.getItem("flight") == "2") {
-    const from = sessionStorage.getItem("selectedDestination3");
-    const to = sessionStorage.getItem("selectedDestination4");
-
-    try {
-      selectedDestination3.value = from?.startsWith("{")
-        ? JSON.parse(from)
-        : from || null;
-
-      selectedDestination4.value = to?.startsWith("{")
-        ? JSON.parse(to)
-        : to || null;
-    } catch (e) {
-      console.error("Session parse error:", e);
-    }
+    selectedDestination2.value = to?.startsWith("{")
+      ? JSON.parse(to)
+      : to || null;
+  } catch (e) {
+    console.error("Session parse error:", e);
   }
 
 });
@@ -576,13 +559,22 @@ interface Trip {
   selectedDestination2: Destination;
   departureDate: string;
 }
+
+const from = sessionStorage.getItem("selectedDestination");
+const to = sessionStorage.getItem("selectedDestination2");
 const trips = ref<Trip[]>([
   {
-    selectedDestination: selectedDestination.value,
-    selectedDestination2: selectedDestination2.value,
+    selectedDestination: from?.startsWith("{")
+      ? JSON.parse(from)
+      : from || null,
+    selectedDestination2: to?.startsWith("{")
+      ? JSON.parse(to)
+      : to || null,
     departureDate: departureDate.value || "",
   }
 ]);
+
+
 
 // Шинэ мөр нэмэх
 const addTrip = () => {
