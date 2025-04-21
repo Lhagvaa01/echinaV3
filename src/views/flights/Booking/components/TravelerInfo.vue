@@ -71,15 +71,6 @@ const infos = computed(() => {
 
 });
 
-// const travelers = computed(() => {
-//     if ((storedData?.result?.Body?.AeroBookResponse?.AeroBookResult?.PaxList?.PaxData).typeof == Object) {
-//         return storedData?.result?.Body?.AeroBookResponse?.AeroBookResult?.PaxList?.PaxData.toList;
-//     } else {
-//         return storedData?.result?.Body?.AeroBookResponse?.AeroBookResult?.PaxList?.PaxData || [];
-//     }
-
-// });
-
 const travelers = computed(() => {
     const paxData = storedData?.result?.Body?.AeroBookResponse?.AeroBookResult?.PaxList?.PaxData;
     console.log(typeof paxData)
