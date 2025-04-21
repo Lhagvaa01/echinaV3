@@ -49,6 +49,7 @@ declare module 'vue' {
     BRow: typeof import('bootstrap-vue-next')['BRow']
     BTab: typeof import('bootstrap-vue-next')['BTab']
     BTabs: typeof import('bootstrap-vue-next')['BTabs']
+    CustomAlert: typeof import('./src/components/CustomAlert.vue')['default']
     CustomDropDown: typeof import('./src/components/CustomDropDown.vue')['default']
     CustomDropzone: typeof import('./src/components/CustomDropzone.vue')['default']
     CustomFlatpicker: typeof import('./src/components/CustomFlatpicker.vue')['default']

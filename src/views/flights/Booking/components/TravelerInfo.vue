@@ -43,6 +43,7 @@ import flightLogo from '@/assets/images/element/09.svg'
 
 import OptionDetailTab from '@/views/flights/Details/components/OptionDetailTab.vue'
 import { ChevronDown, Briefcase, Luggage, User } from 'lucide-vue-next';
+import { isArray } from 'util'
 
 const flightStore = useFlightStore();
 const fallbackLogo = flightLogo
@@ -81,8 +82,8 @@ const infos = computed(() => {
 
 const travelers = computed(() => {
     const paxData = storedData?.result?.Body?.AeroBookResponse?.AeroBookResult?.PaxList?.PaxData;
-    console.log(paxData)
-    if (typeof paxData === 'object' && paxData !== null) {
+    console.log(typeof paxData)
+    if (typeof paxData === 'object' && paxData !== null && !Array.isArray(paxData)) {
         return paxData.toList || [paxData];
     } else {
         return paxData;

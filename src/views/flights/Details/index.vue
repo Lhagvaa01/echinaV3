@@ -15,7 +15,7 @@
                   <ul class="list-inline mb-2">
                     <li class="list-inline-item me-2">
                       <h3 class="mb-0">{{ getAllSegments()[0].Departure?.City }}({{ getAllSegments()[0].Departure?.Iata
-                        }})</h3>
+                      }})</h3>
                     </li>
                     <li class="list-inline-item me-2">
                       <h3 class="mb-0">
@@ -25,7 +25,7 @@
                     <li class="list-inline-item me-0">
                       <h3 class="mb-0">{{ getAllSegments()[getAllSegments().length - 1].Arrival?.City }}({{
                         getAllSegments()[getAllSegments().length - 1].Arrival?.Iata
-                      }})</h3>
+                        }})</h3>
                     </li>
                   </ul>
                   <ul class="nav nav-divider h6 fw-normal text-body mb-0">
@@ -81,10 +81,27 @@ import BackToTop from '@/components/BackToTop.vue'
 import CustomStickyElement from '@/components/CustomStickyElement.vue'
 import ServiceInfo from './components/ServiceInfo.vue'
 import { useOptionStore } from '@/stores/optionStore'
+import { useRouter } from 'vue-router';
 
+
+const router = useRouter();
 
 const optionStore = useOptionStore();
 const storedData = sessionStorage.getItem("PreBooking") ? JSON.parse(sessionStorage.getItem("PreBooking") || "") : null;
+watch(
+  () => optionStore.optionInfos,
+  (newVal) => {
+    if (Object.keys(newVal).length === 0) {
+      router.push('/');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+  },
+  { immediate: true, deep: true }
+);
+
+
 
 const infos = computed(() => {
   if (optionStore.optionInfos?.result?.Body?.AeroPrebookResponse?.AeroPrebookResult) {

@@ -289,7 +289,7 @@
           </div>
         </div>
       </div>
-      <div v-if="isLoading" class="fixed top-50 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div v-if="isLoading" class="alert-loading">
         <div class="bg-white p-6 rounded-lg shadow-lg text-center">
           <div class="loader mb-4"></div>
           <p class="text-lg font-semibold">Түр хүлээнэ үү...</p>
@@ -302,6 +302,12 @@
       class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-red-500 text-black px-6 py-4 rounded-lg shadow-md">
       <p class="text-lg"> {{ errorMessage }} </p>
     </div> -->
+
+    <transition name="fade">
+      <div v-if="errorMessage.text" class="alert-wrapper">
+        <CustomAlert :severity="errorMessage.status" :message="errorMessage.text" />
+      </div>
+    </transition>
   </form>
 </template>
 
@@ -313,10 +319,12 @@ import ServiceInfo from './ServiceInfo.vue';
 import dayjs from 'dayjs';
 // import  ErrorToast  from '@/components/ErrorToastAlert.vue';
 import { useOptionStore } from '@/stores/optionStore';
-
+import CustomAlert from '../../../../components/CustomAlert.vue';
 
 const optionStore = useOptionStore();
 const storedData = sessionStorage.getItem("PreBooking") ? JSON.parse(sessionStorage.getItem("PreBooking") || "") : null;
+
+
 
 const infos = computed(() => {
   if (optionStore.optionInfos?.result?.Body?.AeroPrebookResponse?.AeroPrebookResult) {
@@ -326,6 +334,8 @@ const infos = computed(() => {
   }
 
 });
+
+
 
 const getFlightData = () => {
   return infos.value || { Offers: { OfferInfo: [] } };
@@ -394,7 +404,13 @@ const addTraveler = () => {
     const totalAllowed = (parsed.adults || 0) + (parsed.childs || 0);
 
     if (travelers.value.length >= totalAllowed) {
-      alert("Нийт зорчигчдын тоо аль хэдийн хүрсэн байна.");
+      // alert("Нийт зорчигчдын тоо аль хэдийн хүрсэн байна.");
+      errorMessage.value.text = "Нийт зорчигчдын тоо аль хэдийн хүрсэн байна.";
+      errorMessage.value.status = "error";
+      setTimeout(() => {
+        errorMessage.value.text = '';
+        errorMessage.value.status = '';
+      }, 2000);
       return;
     }
 
@@ -479,7 +495,13 @@ const openModal = () => {
     console.log(travelers)
     // ❗ Шалгах
     if (actualAdults !== expectedAdults || actualChildren !== expectedChildren) {
-      alert(`Зорчигчдын төрөл зөрж байна!\nТом хүн: ${expectedAdults}, Хүүхэд: ${expectedChildren}`);
+      // alert(`Зорчигчдын төрөл зөрж байна!\nТом хүн: ${expectedAdults}, Хүүхэд: ${expectedChildren}`);
+      errorMessage.value.text = `Зорчигчдын төрөл зөрж байна!\nТом хүн: ${expectedAdults}, Хүүхэд: ${expectedChildren}`;
+      errorMessage.value.status = "error";
+      setTimeout(() => {
+        errorMessage.value.text = '';
+        errorMessage.value.status = '';
+      }, 2000);
       return;
     }
 
@@ -508,7 +530,7 @@ const closeModal = () => {
 
 const show = ref(false);
 
-const errorMessage = ref('');
+const errorMessage = ref({ status: '', text: '' });
 const isLoading = ref(false);
 
 const confirmAndPay = async () => {
@@ -542,18 +564,39 @@ const confirmAndPay = async () => {
     if (response.ok) {
       const data = await response.json();
       if (data.status != "ERROR") {
-        console.log('Амжилттай:', data);
+        errorMessage.value.text = "Ажилттай захиалга үүслээ";
+        errorMessage.value.status = "success";
+        setTimeout(() => {
+          errorMessage.value.text = '';
+          errorMessage.value.status = '';
+        }, 2000);
         sessionStorage.setItem("BookingInfo", JSON.stringify(data));
         window.location.href = '/flights/booking';
       } else {
         sessionStorage.setItem("BookingInfo", JSON.stringify(data));
-        errorMessage.value = `Алдаа: ${data.message}`;
-        console.error(`Алдаа: ${data.message}`);
+        errorMessage.value.text = `Алдаа: ${data.message}`;
+        errorMessage.value.status = "error";
+        setTimeout(() => {
+          errorMessage.value.text = '';
+          errorMessage.value.status = '';
+        }, 2000);
       }
     } else {
+      errorMessage.value.text = `Алдаа: ${response.statusText}`;
+      errorMessage.value.status = "error";
+      setTimeout(() => {
+        errorMessage.value.text = '';
+        errorMessage.value.status = '';
+      }, 2000);
       console.error('Алдаа гарлаа:', response.statusText);
     }
   } catch (error) {
+    errorMessage.value.text = `Алдаа: ${error}`;
+    errorMessage.value.status = "error";
+    setTimeout(() => {
+      errorMessage.value.text = '';
+      errorMessage.value.status = '';
+    }, 2000);
     console.error('Алдаа:', error);
   } finally {
     isLoading.value = false; // ⬅ Дуусахаар loading болиулна
@@ -1027,5 +1070,52 @@ const nationalityOptions = [
   100% {
     transform: rotate(360deg);
   }
+}
+
+.alert-wrapper {
+  position: fixed;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 50px;
+  width: 100vw;
+  /* Default: mobile 100% дэлгэц */
+  z-index: 9999;
+}
+
+/* Desktop (768px-с дээш дэлгэц) үед */
+@media (min-width: 768px) {
+  .alert-wrapper {
+    width: 30vw;
+  }
+}
+
+.alert-loading {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 50px;
+  width: 100vw;
+  /* Default: mobile 100% дэлгэц */
+  z-index: 9999;
+}
+
+/* Desktop (768px-с дээш дэлгэц) үед */
+@media (min-width: 768px) {
+  .alert-loading {
+    width: 30vw;
+  }
+}
+
+/* Fade Animation */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

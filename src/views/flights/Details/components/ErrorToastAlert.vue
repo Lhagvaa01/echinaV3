@@ -18,6 +18,7 @@ const props = defineProps({
 const show = ref(false);
 
 onMounted(() => {
+    console.log("sssss")
     show.value = true;
     setTimeout(() => {
         show.value = false;

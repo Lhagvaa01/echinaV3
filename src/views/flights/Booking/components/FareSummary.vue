@@ -97,6 +97,13 @@
       </b-card-footer>
     </b-card>
   </b-col>
+  <!-- {{ errorMessage }} -->
+  <transition name="fade">
+    <div v-if="errorMessage" class="alert-wrapper">
+      <CustomAlert severity="info" :message="errorMessage" />
+    </div>
+  </transition>
+
 </template>
 <script setup lang="ts">
 import { ref, computed } from 'vue'
@@ -105,10 +112,13 @@ import { BIconInfoCircle } from 'bootstrap-icons-vue'
 import { useOptionStore } from '@/stores/optionStore'
 import { useToast } from 'bootstrap-vue-next'
 import { BToast } from 'bootstrap-vue-next'
+import CustomAlert from '../../../../components/CustomAlert.vue';
+// import Alert from '@mui/material/Alert';
+
 
 const bvToast = useToast();
 
-
+const errorMessage = ref('');
 
 const optionStore = useOptionStore();
 
@@ -149,16 +159,10 @@ const toast = useToast();
 const copyText = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text);
-    toast.show({
-      component: BToast,
-      props: {
-        title: 'Амжилттай',
-        body: 'Амжилттай хуулагдлаа!',
-        variant: 'success',
-        // autoHide: true,
-        // delay: 2000,
-      },
-    });
+    errorMessage.value = "Амжилттай хуулагдлаа! " + text
+    setTimeout(() => {
+      errorMessage.value = '';
+    }, 2000);
   } catch (err) {
     console.error('Хуулахад алдаа гарлаа:', err);
   }
@@ -191,5 +195,34 @@ const copyText = async (text: string) => {
   line-height: 1.6;
   max-width: 800px;
   /* Дээд талын өргөн */
+}
+
+.alert-wrapper {
+  position: fixed;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 50px;
+  width: 100vw;
+  /* Default: mobile 100% дэлгэц */
+  z-index: 9999;
+}
+
+/* Desktop (768px-с дээш дэлгэц) үед */
+@media (min-width: 768px) {
+  .alert-wrapper {
+    width: 30vw;
+  }
+}
+
+/* Fade Animation */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

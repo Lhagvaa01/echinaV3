@@ -224,7 +224,7 @@ const getAllSegments = (): any[] => {
   // const ai = StoreAirCompany.value?.find((airline: any) => airline.Code === "KE").Value
   // console.log(ai)
   const data = getFlightData();
-  console.log(data)
+  // console.log(data)
   const offerInfo = data.Offers.OfferInfo;
 
   // OfferInfo массив биш бол шууд OfferSegment-ийг буцаах
@@ -232,12 +232,12 @@ const getAllSegments = (): any[] => {
     let segment = offerInfo?.Segments?.OfferSegment;
     if (!Array.isArray(segment)) {
       segment = segment ? [segment] : []
-      console.log(segment)
+      // console.log(segment)
 
       return segment;
     }
-    console.log(StoreAirCompany.value?.find((airline: any) => airline.Code ===
-      segment[0].MarketingAirline).Value)
+    // console.log(StoreAirCompany.value?.find((airline: any) => airline.Code ===
+    //   segment[0].MarketingAirline).Value)
     return segment;
   }
 
