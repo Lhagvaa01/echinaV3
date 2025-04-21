@@ -435,7 +435,7 @@ const formatBirthDay = (birthDay: { month: any; day: any; year: any; }) => {
 // API руу илгээх өгөгдлийг бэлтгэх (id болон DocumentExDate-г хасах)
 const prepareDataForApi = (travelers: any[]) => {
   return travelers.map((traveler: { [x: string]: any; birthDay?: any; id?: any; }) => {
-    const { id, ...rest } = traveler; // id болон DocumentExDate-г хасах
+    const { id, DocumentExDate, ...rest } = traveler; // id болон DocumentExDate-г хасах
     return {
       ...rest,
       birthDay: formatBirthDay(traveler.birthDay),
