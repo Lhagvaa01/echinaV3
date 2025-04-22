@@ -12,7 +12,7 @@
                     <div class="search-box">
                         <input v-model="orderId" type="text" placeholder="Захиаллын дугаар (Booking ref)"
                             class="input" />
-                        <button @click="fetchOrderInfo" class="search-button">Тасалбар Шалгах</button>
+                        <button @click="fetchOrderInfo" class="search-button bg-primary">Тасалбар Шалгах</button>
                     </div>
 
                     <div v-if="loading" class="loading-text">Түр хүлээнэ үү...</div>
@@ -53,7 +53,7 @@
                         <p class="text-lg font-semibold text-gray-800 mt-4 mb-2">Хүн зорчигчийн мэдээлэл</p>
                         <p><strong>Нэр:</strong> {{ orderInfo.PaxList.PaxData.Name }} {{
                             orderInfo.PaxList.PaxData.Surname
-                            }}</p>
+                        }}</p>
                         <p><strong>Нас:</strong> {{ orderInfo.PaxList.PaxData.Age }}</p>
                         <p><strong>Хүйс:</strong> {{ orderInfo.PaxList.PaxData.GenderType }}</p>
                     </div>
@@ -62,12 +62,12 @@
                         <p class="text-lg font-semibold text-gray-800 mt-4 mb-2">Нислэгийн мэдээлэл</p>
                         <p><strong>Нислэгийн дугаар:</strong> {{
                             orderInfo.Offers.OfferInfo.Segments.OfferSegment.FlightNum
-                            }}</p>
+                        }}</p>
                         <p><strong>Явах хот:</strong> {{ orderInfo.Offers.OfferInfo.Segments.OfferSegment.Departure.City
-                            }}
+                        }}
                         </p>
                         <p><strong>Очих хот:</strong> {{ orderInfo.Offers.OfferInfo.Segments.OfferSegment.Arrival.City
-                            }}
+                        }}
                         </p>
                     </div>
                 </div>
@@ -213,7 +213,6 @@ async function fetchOrderInfo() {
 
 .search-button {
     padding: 12px 20px;
-    background-color: #c2185b;
     color: white;
     border: none;
     border-radius: 6px;
