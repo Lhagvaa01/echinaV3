@@ -31,50 +31,85 @@
             </b-button>
           </li>
 
-          <!-- Банк -->
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center ">
-              <span class="h6 fw-bold mb-0 me-2">Банк</span>
-            </div>
-            <b-button size="md" variant="link" class="p-0 m-0" @click="copyText('Голомт банк')">
-              <span class="h6 fw-normal text-primary mb-0 me-2">Голомт банк</span>
-              <i class="fas fa-copy"></i>
-            </b-button>
-          </li>
+          <div>
 
-          <!-- Данс -->
-          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="row g-3">
+              <!-- Банк бүрийг card болгож харуулна -->
+              <div v-for="(bank, index) in bankInfo" :key="index" class="col-6">
+                <div class="card shadow-sm rounded-2 p-2 d-flex flex-row align-items-center justify-content-between"
+                  :class="{ 'border-primary border-2': selectedBank === index }" style="cursor: pointer;"
+                  @click="selectBank(index)">
+                  <div class="d-flex align-items-center">
+                    <div class="bg-light rounded-2 d-flex justify-content-center align-items-center me-1"
+                      style="width: 50px; height: 50px;">
+                      <!-- <i class="fas fa-university text-primary fs-4"></i> -->
+                      <img :src="`/bankIcon/${bank.bic}.png`" alt="Bank Logo"
+                        style="width: 30px; height: 30px; object-fit: contain;">
+                    </div>
+                    <div>
+                      <div class="fw-light text-black fs-6">{{ bank.bank }}</div>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-right text-muted"></i>
+                </div>
+              </div>
 
-            <div class="d-flex align-items-center ">
-              <span class="h6 fw-bold mb-0 me-2">Данс</span>
             </div>
-            <b-button size="md" variant="link" class="p-0 m-0" @click="copyText('12345678')">
-              <span class="h6 fw-normal text-primary mb-0 me-2">12345678</span>
-              <i class="fas fa-copy"></i>
-            </b-button>
-          </li>
 
-          <!-- IBAN -->
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center ">
-              <span class="h6 fw-bold mb-0 me-2">IBAN</span>
-            </div>
-            <b-button size="md" variant="link" class="p-0 m-0" @click="copyText('MN8200400012345678')">
-              <span class="h6 fw-normal text-primary mb-0 me-2">MN8200400012345678</span>
-              <i class="fas fa-copy"></i>
-            </b-button>
-          </li>
+            <!-- Хэрвээ банк сонгосон бол дэлгэрэнгүй мэдээлэл харуулах -->
+            <ul v-if="selectedBank !== null" class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                  <span class="h6 fw-bold mb-0 me-2">Банк</span>
+                </div>
+                <b-button size="md" variant="link" class="p-0 m-0" @click="copyText(bankInfo[selectedBank].bank)">
+                  <span class="h6 fw-normal text-primary mb-0 me-2">{{ bankInfo[selectedBank].bank }}</span>
+                  <i class="fas fa-copy"></i>
+                </b-button>
+              </li>
 
-          <!-- Данс эзэмшигч -->
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center ">
-              <span class="h6 fw-bold mb-0 me-2">Данс эзэмшигч</span>
-            </div>
-            <b-button size="md" variant="link" class="p-0 m-0" @click="copyText('Айр касс ХХК')">
-              <span class="h6 fw-normal text-primary mb-0 me-2">Айр касс ХХК</span>
-              <i class="fas fa-copy"></i>
-            </b-button>
-          </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                  <span class="h6 fw-bold mb-0 me-2">Данс</span>
+                </div>
+                <b-button size="md" variant="link" class="p-0 m-0" @click="copyText(bankInfo[selectedBank].acc_number)">
+                  <span class="h6 fw-normal text-primary mb-0 me-2">{{ bankInfo[selectedBank].acc_number }}</span>
+                  <i class="fas fa-copy"></i>
+                </b-button>
+              </li>
+
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                  <span class="h6 fw-bold mb-0 me-2">IBAN</span>
+                </div>
+
+                <b-button v-if="bankInfo[selectedBank].bic == 'khanbank'" size="md" variant="link" class="p-0 m-0"
+                  @click="copyText('MN68000500' + bankInfo[selectedBank].acc_number.toString())">
+                  <span class="h6 fw-normal text-primary mb-0 me-2">MN68000500{{ bankInfo[selectedBank].acc_number
+                    }}</span>
+                  <i class="fas fa-copy"></i>
+                </b-button>
+                <b-button v-else size="md" variant="link" class="p-0 m-0"
+                  @click="copyText('MN44001500' + bankInfo[selectedBank].acc_number.toString())">
+                  <span class="h6 fw-normal text-primary mb-0 me-2">MN44001500{{ bankInfo[selectedBank].acc_number
+                    }}</span>
+                  <i class="fas fa-copy"></i>
+                </b-button>
+              </li>
+
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                  <span class="h6 fw-bold mb-0 me-2">Данс эзэмшигч</span>
+                </div>
+                <b-button size="md" variant="link" class="p-0 m-0"
+                  @click="copyText(bankInfo[selectedBank].acc_holder_name)">
+                  <span class="h6 fw-normal text-primary mb-0 me-2">{{ bankInfo[selectedBank].acc_holder_name }}</span>
+                  <i class="fas fa-copy"></i>
+                </b-button>
+              </li>
+            </ul>
+
+          </div>
         </ul>
       </b-card-body>
 
@@ -106,7 +141,7 @@
 
 </template>
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { currency } from '@/helpers/constants'
 import { BIconInfoCircle } from 'bootstrap-icons-vue'
 import { useOptionStore } from '@/stores/optionStore'
@@ -154,7 +189,13 @@ const getAllSegments = () => {
   return getFlightData().Offers.OfferInfo.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments.OfferSegment) || [];
 };
 
-const toast = useToast();
+
+
+const selectedBank = ref(null); // Сонгосон банкны индекс хадгална
+
+function selectBank(index) {
+  selectedBank.value = index;
+}
 
 const copyText = async (text: string) => {
   try {
@@ -168,10 +209,59 @@ const copyText = async (text: string) => {
   }
 };
 
+
+
+const orderId = ref('');
+const bankInfo = ref([]);
+const loading = ref(false);
+const error = ref(null);
+
+
+async function fetchbankInfo() {
+
+  loading.value = true;
+  error.value = null;
+  bankInfo.value = null;
+
+
+  try {
+    const response = await fetch(`https://api.airkacc.mn/api/res/getAccountInfo/mn/`);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+    const data = await response.json();
+    console.log(data)
+    if (data.status === 'SUCCESS' && data.result) {
+      bankInfo.value = data.result;
+    } else {
+      error.value = 'Банкны мэдээлэл олдсонгүй';
+    }
+
+  } catch (err) {
+    console.error('Алдаа дэлгэрэнгүй:', err); // >>> Энийг нэмээрэй!
+    if (err.response) {
+      error.value = `Серверээс буцсан алдаа: ${err.response.status} - ${err.response.statusText}`;
+    } else {
+      error.value = 'Алдаа гарлаа. Та дахин оролдоно уу.';
+    }
+  } finally {
+    loading.value = false;
+  }
+};
+
+onMounted(() => {
+  fetchbankInfo();
+});
+
 </script>
 
 
 <style scoped>
+.terms-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
 .b-button {
   padding: 0.25rem;
 }
