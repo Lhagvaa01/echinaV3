@@ -13,14 +13,14 @@
                 <!-- {{Array.isArray(StoreAirCompany) && segment.MarketingAirline ? StoreAirCompany?.find((airline: any) =>
                     airline.Code ===
                     segment.MarketingAirline)?.Value : "No Air Company"}} -->
-                {{ getAirlineName(segment.MarketingAirline) }} ({{ segment.FlightNum || 'SA-1254' }})
-                ({{ segment.FlightNum || 'SA-1254' }})
+                {{ segment.MarketingAirlineName }} ({{ segment.FlightNum || 'SA-1254' }})
+                <!-- ({{ segment.FlightNum || 'SA-1254' }}) -->
                 <!-- <span v-if="getAllSegments().length > 1" class="text-warning ">+{{ getAllSegments().length - 1
                     }}Airline</span> -->
 
               </h6>
-              <p class="ms-2 text-warning" @mouseover="onMouseOver(inx + segment.FlightNum)"
-                @mouseleave="onMouseLeave(inx + segment.FlightNum)">
+              <p v-if="(getAllSegments().length - 1) >= 1" class="ms-2 text-warning"
+                @mouseover="onMouseOver(inx + segment.FlightNum)" @mouseleave="onMouseLeave(inx + segment.FlightNum)">
                 +{{ getAllSegments().length - 1 }} Airlines
               </p>
               <!-- Tooltip -->

@@ -2,19 +2,19 @@
   <NavBar4 />
 
   <main>
-    <section class="pt-4 pt-lg-5">
-      <b-container>
-        <b-row class="g-4 g-xl-5">
-          <Orderinfo />
-          <!-- <aside class="col-xl-4">
+    <!-- <section> -->
+    <!-- <b-container> -->
+    <b-row>
+      <Orderinfo />
+      <!-- <aside class="col-xl-4">
             <b-row class="g-4">
               <FareSummary />
               <YourBooking />
             </b-row>
           </aside> -->
-        </b-row>
-      </b-container>
-    </section>
+    </b-row>
+    <!-- </b-container> -->
+    <!-- </section> -->
   </main>
 
   <Footer />
