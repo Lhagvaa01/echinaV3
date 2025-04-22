@@ -117,6 +117,13 @@ const flightRoutes = [
       title: 'Details - Multipurpose Online Booking Theme'
     },
     component: () => import('@/views/flights/OrderInfo/index.vue')
+  },{
+    path: '/flights/PrivacyPolicy',
+    name: 'flights.PrivacyPolicy',
+    meta: {
+      title: 'Details - Multipurpose Online Booking Theme'
+    },
+    component: () => import('@/views/flights/PrivacyPolicy/index.vue')
   }
 ]
 

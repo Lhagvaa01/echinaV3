@@ -767,7 +767,7 @@ export const APP_MENU_ITEMS: MenuItemType[] = [
     label: 'Үйлчилгээний нөхцөл',
     isTitle: true,
     
-    link: { name: 'flights.home' },
+    link: { name: 'flights.PrivacyPolicy' },
   }
   // {
   //   key: 'pages',

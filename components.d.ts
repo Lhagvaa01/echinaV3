@@ -20,6 +20,7 @@ declare module 'vue' {
     BCardBody: typeof import('bootstrap-vue-next')['BCardBody']
     BCardFooter: typeof import('bootstrap-vue-next')['BCardFooter']
     BCardHeader: typeof import('bootstrap-vue-next')['BCardHeader']
+    BCardText: typeof import('bootstrap-vue-next')['BCardText']
     BCardTitle: typeof import('bootstrap-vue-next')['BCardTitle']
     BCol: typeof import('bootstrap-vue-next')['BCol']
     BCollapse: typeof import('bootstrap-vue-next')['BCollapse']
