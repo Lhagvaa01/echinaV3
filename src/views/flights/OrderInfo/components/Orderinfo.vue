@@ -58,16 +58,16 @@
                         <p><strong>Хүйс:</strong> {{ orderInfo.PaxList.PaxData.GenderType }}</p>
                     </div>
 
-                    <div class="col-span-2">
+                    <div class="col-span-2" v-for="info in orderInfo.Offers.OfferInfo" key="info">
                         <p class="text-lg font-semibold text-gray-800 mt-4 mb-2">Нислэгийн мэдээлэл</p>
                         <p><strong>Нислэгийн дугаар:</strong> {{
-                            orderInfo.Offers.OfferInfo.Segments.OfferSegment.FlightNum
+                            info.Segments.OfferSegment.FlightNum
                         }}</p>
-                        <p><strong>Явах хот:</strong> {{ orderInfo.Offers.OfferInfo.Segments.OfferSegment.Departure.City
-                        }}
+                        <p><strong>Явах хот:</strong> {{ info.Segments.OfferSegment.Departure.City
+                            }}
                         </p>
-                        <p><strong>Очих хот:</strong> {{ orderInfo.Offers.OfferInfo.Segments.OfferSegment.Arrival.City
-                        }}
+                        <p><strong>Очих хот:</strong> {{ info.Segments.OfferSegment.Arrival.City
+                            }}
                         </p>
                     </div>
                 </div>
