@@ -134,14 +134,19 @@
                         <!-- Price info column -->
                         <div class="info-column price-column">
                             <div class="price-item">
-                                <span class="price-label">Үндсэн үнэ:</span>
-                                <span class="price-value">{{ orderInfo.TariffInfo.AdultBasePrice }} {{
+                                <span class="price-label">Том хүн:</span>
+                                <span class="price-value">{{ orderInfo.TariffInfo.AdultPrice }} {{
+                                    orderInfo.Currency }}</span>
+                            </div>
+                            <div v-if="'ChildPrice' in orderInfo.TariffInfo" class="price-item">
+                                <span class="price-label">Хүүхэд:</span>
+                                <span class="price-value">{{ orderInfo.TariffInfo.ChildPrice }} {{
                                     orderInfo.Currency }}</span>
                             </div>
                             <div class="price-item total-price">
                                 <span class="price-label">Нийт төлбөр:</span>
-                                <span class="price-value">{{ orderInfo.TariffInfo.AdultPrice }} {{ orderInfo.Currency
-                                    }}</span>
+                                <span class="price-value">{{ orderInfo.FullPrice }} {{ orderInfo.Currency
+                                }}</span>
                             </div>
                         </div>
                     </div>
@@ -187,12 +192,12 @@
                             <div class="info-row">
                                 <span>Нэр:</span>
                                 <strong>{{ orderInfo.PaxList.PaxData.Surname }} {{ orderInfo.PaxList.PaxData.Name
-                                    }}</strong>
+                                }}</strong>
                             </div>
                             <div class="info-row">
                                 <span>Хүйс:</span>
                                 <strong>{{ orderInfo.PaxList.PaxData.GenderType === 'Male' ? 'Эрэгтэй' : 'Эмэгтэй'
-                                    }}</strong>
+                                }}</strong>
                             </div>
                             <div class="info-row">
                                 <span>Нас:</span>
