@@ -1,12 +1,6 @@
 <template>
-  <b-alert
-    v-model="showAlert"
-    variant="warning"
-    fade
-    dismissible
-    close-class="pb-2"
-    class="py-2 m-0 bg-primary border-0 rounded-0 show text-center overflow-hidden"
-  >
+  <b-alert v-model="showAlert" variant="warning" fade dismissible close-class="pb-2"
+    class="py-2 m-0 bg-primary border-0 rounded-0 show text-center overflow-hidden">
     <p class="text-white m-0">
       Traveling internationally? Get update information on COVID-19 travel guidance and
       restrictions<a href="#" class="btn btn-xs btn-dark ms-2 mb-0">Learn more!</a>
@@ -18,15 +12,15 @@
   <main>
     <Hero />
 
-    <SpecialOffers />
+    <!-- <SpecialOffers /> -->
 
     <PopularDestinations />
 
     <DestinationSteps />
 
-    <ActionBox />
+    <!-- <ActionBox /> -->
 
-    <BlogsAndNews />
+    <!-- <BlogsAndNews /> -->
   </main>
 
   <Footer4 />
