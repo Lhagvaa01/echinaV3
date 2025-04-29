@@ -1,14 +1,7 @@
 <template>
   <label class="form-label" :class="labelClass" v-if="label">{{ label }}</label>
-  <b-form-input
-    :type="type ?? 'text'"
-    :id="id"
-    :placeholder="placeholder"
-    :value="modelValue"
-    :class="customClass"
-    @input="updateValue"
-    v-bind="$attrs"
-  />
+  <b-form-input :type="type ?? 'text'" :id="id" :placeholder="placeholder" :value="modelValue" :class="customClass"
+    @input="updateValue" v-bind="$attrs" />
 </template>
 
 <script setup lang="ts">

@@ -399,17 +399,54 @@ const emit = defineEmits(['search-flights']);
 // let selectedDestination2 = ref(findOptionValue(route.query.arr as string | null) || "PEK");
 
 
+function formatDate(date: Date): string {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 0-с эхэлдэг учир 1 нэмнэ
+  const year = date.getFullYear();
+  return `${day}.${month}.${year}`;
+}
+
+// Өнөөдрийн огноог авах
+const today = new Date();
+
+// Эхлэх огноог өнөөдөр болгох
 const departureDate = ref<string | undefined>(
   Array.isArray(route.query.date)
-    ? route.query.date[0] ?? undefined // Хэрэв массив бол эхний элементийг авна
-    : route.query.date ?? undefined   // Хэрэв string эсвэл null бол зөв хувиргана
+    ? route.query.date[0] ?? formatDate(today)  // Хэрэв массив бол эхний элементийг авна
+    : route.query.date ?? formatDate(today)     // Хэрэв string эсвэл null бол өнөөдрийн огноо
 );
 
+// Буцах огноо: Эхлэх огнооос 7 хоногийн дараа
 const returnDate = ref<string | undefined>(
   Array.isArray(route.query.backDate)
-    ? route.query.backDate[0] ?? undefined // Хэрэв массив бол эхний элементийг авна
-    : route.query.backDate ?? undefined   // Хэрэв string эсвэл null бол зөв хувиргана
+    ? route.query.backDate[0] ?? formatDate(new Date(today.setDate(today.getDate() + 7)))  // 7 хоногийн дараа
+    : route.query.backDate ?? formatDate(new Date(today.setDate(today.getDate() + 7)))   // 7 хоногийн дараа
 );
+
+// Огноо дээр өдрүүд нэмэх функц
+const convertToISOFormat = (dateStr: string): string => {
+  const [day, month, year] = dateStr.split('.'); // Огноог хэсгүүдэд хувааж авах
+  return `${year}-${month}-${day}`; // ISO формат руу хөрвүүлэх
+};
+
+const addDays = (date: string, days: number): Date => {
+  const isoDate = convertToISOFormat(date);  // `dd.mm.yyyy`-ийг `yyyy-mm-dd` болгон хөрвүүлэх
+  const result = new Date(isoDate); // Огноог хуулбарлах
+  result.setDate(result.getDate() + days); // Өдрүүдийг нэмэх
+
+  return result;  // Шинэ огноог буцаах
+};
+
+
+
+// departureDate өөрчлөгдөх үед returnDate-г автоматаар шинэчлэх watch
+watch(departureDate, (newDepartureDate) => {
+  if (newDepartureDate) {
+    const newReturnDate = addDays(newDepartureDate, 7);
+    returnDate.value = formatDate(newReturnDate);
+
+  }
+});
 
 // function searchFlights() {
 //   // URL-ээс параметрүүдийг авах
