@@ -2,7 +2,9 @@
   <NavBar4 />
 
   <main>
+    <Stepper :step="2" />
     <section>
+
       <b-container class="position-relative" data-sticky-container>
         <b-row class="g-4">
           <b-col xl="9">
@@ -82,6 +84,7 @@ import CustomStickyElement from '@/components/CustomStickyElement.vue'
 import ServiceInfo from './components/ServiceInfo.vue'
 import { useOptionStore } from '@/stores/optionStore'
 import { useRouter } from 'vue-router';
+import Stepper from '../Components/Stepper.vue'
 
 
 const router = useRouter();

@@ -3,7 +3,7 @@
 
   <main>
     <Booking @search-flights="loadFlights" />
-
+    <Stepper :step="1" />
     <NoticeBoard />
 
     <FlightList :flightInfos="flightInfos" :AirCompany="AirCompany" :AirPorts="AirPorts" />
@@ -27,6 +27,7 @@ import NoticeBoard from './components/NoticeBoard.vue'
 import FlightList from './components/FlightList.vue'
 import Footer from '@/views/flights/List/components/Footer.vue'
 import BackToTop from '@/components/BackToTop.vue'
+import Stepper from '../Components/Stepper.vue'
 // import SkeletonLoader from './components/Skeleton.vue'
 
 

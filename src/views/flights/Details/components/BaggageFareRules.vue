@@ -18,28 +18,43 @@
                   }}Airline</span> -->
 
               </h6>
-              <p class="ms-2 text-warning" @mouseover="onMouseOver(inx + segment.FlightNum)"
+              <!-- <p class="ms-2 text-warning" @mouseover="onMouseOver(inx + segment.FlightNum)"
                 @mouseleave="onMouseLeave(inx + segment.FlightNum)">
                 +{{ getAllSegments().length - 1 }} Airlines
               </p>
-              <!-- Tooltip -->
               <div v-if="isHovered[inx + segment.FlightNum]" class="tooltip text-white">
-                ss
-                <!-- <div v-for="segments in getAllSegments()" :key="segments.FlightNum"
-                  class="d-flex justify-content-sm-start align-items-center">
-                  <img :src="segments.MarketingAirline
-                    ? 'https://api.echina.mn/assets/d/' + segments.MarketingAirline + '.png'
-                    : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
-                  <h6 class="fw-bold mb-0 text-primary">
-                    {{ StoreAirCompany.find((airline: any) => airline.Code ===
-                      segments.MarketingAirline).Value }}
-                    ({{ segments.FlightNum || 'SA-1254' }})
-                  </h6>
+              </div> -->
 
-                  <Briefcase v-if="segments.Baggage" class="mx-2" color="#5a2dd7" />
-                  <Luggage v-if="segments.CabinBaggage" color="#5a2dd7" />
-
-                </div> -->
+              <p v-if="getAllSegments().length - 1 > 1" class="ms-2 text-warning"
+                @mouseover="onMouseOver(segment.FlightNum)" @mouseleave="onMouseLeave(segment.FlightNum)">
+                +{{ getAllSegments().length - 1 }} Airline
+              </p>
+              <!-- Tooltip -->
+              <div v-if="isHovered[segment.FlightNum]"
+                class="bg-white border rounded shadow position-absolute p-3 start-50 "
+                style="z-index: 1000; min-width: 260px;">
+                <div v-for="segmentB in getAllSegments()" :key="segment.FlightNum"
+                  class="d-flex align-items-start mb-2">
+                  <img :src="segmentB.MarketingAirline
+                    ? 'https://api.echina.mn/assets/d/' + segmentB.MarketingAirline + '.png'
+                    : fallbackLogo" alt="Airline logo" class="me-2"
+                    style="width: 32px; height: auto; border-radius: 4px;" />
+                  <div class="d-flex gap-2">
+                    <div class="fw-semibold text-dark" style="font-size: 14px;">
+                      {{
+                        StoreAirCompany.find((airline: any) => airline.Code ===
+                          segmentB.MarketingAirline)
+                          ?.Value || 'Unknown Airline'
+                      }}
+                      <span class="text-muted">({{ segmentB.FlightNum || 'SA-1254'
+                      }})</span>
+                    </div>
+                    <div class="d-flex align-items-center mt-1">
+                      <Briefcase v-if="segmentB.Baggage" class="me-2" color="#5a2dd7" :size="16" />
+                      <Luggage v-if="segmentB.CabinBaggage" color="#5a2dd7" :size="16" />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 

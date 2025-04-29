@@ -4,6 +4,7 @@
   <main>
 
 
+    <Stepper :step="3" />
     <section>
       <b-container class="position-relative" data-sticky-container>
         <b-row class="g-4">
@@ -46,4 +47,5 @@ import FareSummary from '@/views/flights/Booking/components/FareSummary.vue'
 import YourBooking from '@/views/flights/Booking/components/YourBooking.vue'
 import Footer from '@/views/flights/Booking/components/Footer.vue'
 import BackToTop from '@/components/BackToTop.vue'
+import Stepper from '../Components/Stepper.vue'
 </script>

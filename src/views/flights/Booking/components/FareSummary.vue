@@ -57,7 +57,7 @@
             </div>
 
             <!-- Хэрвээ банк сонгосон бол дэлгэрэнгүй мэдээлэл харуулах -->
-            <ul v-if="selectedBank !== null" class="list-group">
+            <ul v-if="bankInfo && bankInfo[selectedBank] && selectedBank !== null" class="list-group">
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                   <span class="h6 fw-bold mb-0 me-2">Банк</span>
@@ -191,9 +191,10 @@ const getAllSegments = () => {
 
 
 
-const selectedBank = ref(null); // Сонгосон банкны индекс хадгална
+const selectedBank = ref(0); // Сонгосон банкны индекс хадгална
 
 function selectBank(index) {
+  console.log(index)
   selectedBank.value = index;
 }
 
