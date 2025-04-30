@@ -5,10 +5,66 @@
         <SkeletonLoader v-for="n in 10" :key="n" />
     </div>
 
+
+
     <div v-else>
         <!-- <div v-for="(offer, Mainindex) in paginatedFlights" :key="Mainindex" class="mb-4">
             {{ offer }}
         </div> -->
+        <b-row class="mb-3 align-items-center">
+            <b-col>
+                Нийт: {{ filteredData.length }} нислэг
+            </b-col>
+            <b-col>
+                <div class="dropdown w-100">
+                    <button
+                        class="btn btn-light dropdown-toggle w-100 d-flex align-items-center justify-content-between"
+                        type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="d-flex align-items-center">
+                            <span class="fw-light text-primary">{{ selectedSortLabel }}</span>
+                        </div>
+                    </button>
+
+                    <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
+                        <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('asc')">Үнэ өсөхөөр</a></li>
+                        <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('desc')">Үнэ буурахаар</a>
+                        </li>
+                    </ul>
+                </div>
+            </b-col>
+            <!-- <b-col>
+                <div class="dropdown w-100">
+                    <button
+                        class="btn btn-light dropdown-toggle w-100 d-flex align-items-center justify-content-between"
+                        type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="d-flex align-items-center">
+                            <span class="fw-light text-primary">Хугацаагаар эрэмбэлэх</span>
+                        </div>
+                    </button>
+
+                    <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
+                        <li><a class="dropdown-item" href="#">Богино хугацаа</a></li>
+                        <li><a class="dropdown-item" href="#">Урт хугацаа</a></li>
+                    </ul>
+                </div>
+            </b-col>
+            <b-col>
+                <div class="dropdown w-100">
+                    <button
+                        class="btn btn-light dropdown-toggle w-100 d-flex align-items-center justify-content-between"
+                        type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="d-flex align-items-center">
+                            <span class="fw-light text-primary">Огноогоор эрэмбэлэх</span>
+                        </div>
+                    </button>
+
+                    <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
+                        <li><a class="dropdown-item" href="#">Хамгийн эрт</a></li>
+                        <li><a class="dropdown-item" href="#">Хамгийн орой</a></li>
+                    </ul>
+                </div>
+            </b-col> -->
+        </b-row>
         <div v-for="(offer, Mainindex) in paginatedFlights" :key="Mainindex" class="mb-4">
             <div>
                 <div v-for="(segments, inx) in getAllSegments(offer).slice(0, 1)" :key="inx">
@@ -352,7 +408,36 @@ const StoreAirCompany = computed(() => flightStore.AirCompany);
 const StoreAirPorts = computed(() => flightStore.AirPorts);
 const SearchGuid = computed(() => flightStore.SearchGuid);
 // let filteredData = computed(() => flightStore.firstAdultPrice || []);
-const filteredData = computed(() => flightStore.firstAdultPrice.length > 0 ? flightStore.firstAdultPrice : flightStore.flightInfos);
+// const filteredData = computed(() => flightStore.firstAdultPrice.length > 0 ? flightStore.firstAdultPrice : flightStore.flightInfos);
+
+const sortOrder = ref(null)
+
+const setSortOrder = (order) => {
+    sortOrder.value = order
+}
+
+const selectedSortLabel = computed(() => {
+    if (sortOrder.value === 'asc') return 'Үнэ өсөхөөр'
+    if (sortOrder.value === 'desc') return 'Үнэ буурахаар'
+    return 'Үнээр эрэмбэлэх'
+})
+
+const filteredData = computed(() => {
+    const source = flightStore.firstAdultPrice.length > 0
+        ? flightStore.firstAdultPrice
+        : flightStore.flightInfos
+
+    if (!sortOrder.value) return source
+
+    return [...source].sort((a, b) => {
+        const priceA = a.AdultPrice || 0
+        const priceB = b.AdultPrice || 0
+        return sortOrder.value === 'asc' ? priceA - priceB : priceB - priceA
+    })
+})
+
+
+
 
 
 const isHovered = ref<{ [key: string]: boolean }>({});
@@ -432,7 +517,7 @@ const getFlightData2 = (index: number) => {
 const getAllSegments = (offer: any) => {
     // console.log(offer)
     const offerData = offer || { Offers: { OfferInfo: [] } }
-    console.log(offerData.Offers.OfferInfo.flatMap((offer: { Segments?: { OfferSegment?: any } }) => offer.Segments?.OfferSegment) || [])
+    // console.log(offerData.Offers.OfferInfo.flatMap((offer: { Segments?: { OfferSegment?: any } }) => offer.Segments?.OfferSegment) || [])
     return offerData.Offers.OfferInfo.flatMap((offer: { Segments?: { OfferSegment?: any } }) => offer.Segments?.OfferSegment) || [];
 };
 
