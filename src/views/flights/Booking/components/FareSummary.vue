@@ -3,7 +3,38 @@
     <b-card no-body class="bg-light rounded-2">
       <b-card-header class="border-bottom bg-light">
         <b-card-title tag="h5" class="mb-0">Төлбөрийн мэдээлэл</b-card-title>
+        <!-- <p>{{ remainingTime }}</p> -->
       </b-card-header>
+
+      <b-card-header class="d-flex justify-content-between align-items-center border-bottom bg-light">
+        <b-card-title tag="h6" class=" d-flex align-items-center  mb-0">Төлбөр төлөх хугацаа: </b-card-title>
+        <div class="fw-bold text-danger align-items-center h5 mb-0" v-if="remainingTime">
+          {{ remainingTime }}
+        </div>
+        <div v-else>
+          Цаг дууссан
+        </div>
+      </b-card-header>
+      <b-modal v-model="showTimeoutModal" centered hide-header hide-footer :no-close-on-backdrop="true"
+        :no-close-on-esc="true">
+        <div class="text-center p-4">
+          <i class="fas fa-exclamation-circle text-danger" style="font-size: 48px;"></i>
+          <h4 class="text-danger mt-3">Анхааруулга</h4>
+          <p class="mt-2 mb-1">Төлбөр төлөх хугацаа дууслаа.</p>
+          <p>Та өөр нислэг сонгоно уу.</p>
+          <b-button variant="danger" class="mt-3 px-4" @click="redirectToSearch">Буцах</b-button>
+        </div>
+      </b-modal>
+      <!-- <div class="text-center mt-4">
+        <h2 class="text-lg font-semibold">Төлбөрийн мэдээлэл</h2>
+        <hr class="my-2 border-dashed border-gray-400" />
+        <div v-if="remainingTime">
+          Remaining time: {{ remainingTime }}
+        </div>
+        <div v-else>
+          Цаг дууссан
+        </div>
+      </div> -->
 
       <b-card-body>
         <ul class="list-group list-group-borderless">
@@ -141,13 +172,14 @@
 
 </template>
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { currency } from '@/helpers/constants'
 import { BIconInfoCircle } from 'bootstrap-icons-vue'
 import { useOptionStore } from '@/stores/optionStore'
 import { useToast } from 'bootstrap-vue-next'
 import { BToast } from 'bootstrap-vue-next'
 import CustomAlert from '../../../../components/CustomAlert.vue';
+import { useRouter } from 'vue-router';
 // import Alert from '@mui/material/Alert';
 
 
@@ -168,6 +200,48 @@ const infos = computed(() => {
   }
 
 });
+const router = useRouter();
+const remainingTime = ref('');
+const showTimeoutModal = ref(false);
+let intervalId: number | undefined;
+
+function updateRemainingTime() {
+  if (!infos.value?.ConfirmableToUtc) return;
+
+  const [datePart, timePart] = infos.value.ConfirmableToUtc.split(" ");
+  const [day, month, year] = datePart.split(".");
+  const targetUTC = new Date(`${year}-${month}-${day}T${timePart}Z`);
+
+  const now = new Date();
+  const nowUTC = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+  const ulaanbaatarTime = new Date(nowUTC.getTime() + 8 * 60 * 60000);
+
+  const diff = targetUTC.getTime() - ulaanbaatarTime.getTime();
+
+  if (diff > 0) {
+    const minutes = Math.floor(diff / 60000);
+    const seconds = Math.floor((diff % 60000) / 1000);
+    remainingTime.value = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  } else {
+    remainingTime.value = '';
+    showTimeoutModal.value = true; // 💡 Popup нээх
+    clearInterval(intervalId);
+  }
+}
+
+function redirectToSearch() {
+  router.push('/');
+}
+
+onMounted(() => {
+  updateRemainingTime();
+  intervalId = window.setInterval(updateRemainingTime, 1000);
+});
+
+onUnmounted(() => {
+  clearInterval(intervalId);
+});
+
 
 const transactionCode = computed(() => {
   return storedData?.result?.transactionCode || [];

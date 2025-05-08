@@ -290,7 +290,7 @@
         </div>
       </div>
       <div v-if="isLoading" class="alert-loading">
-        <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center rounded-5">
           <div class="loader mb-4"></div>
           <p class="text-lg font-semibold">Түр хүлээнэ үү...</p>
         </div>
