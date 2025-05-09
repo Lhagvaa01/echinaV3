@@ -12,8 +12,8 @@
 
           <div class="px-4">
             <img :src="step3" class="w-150px mb-3" alt="" />
-            <h5>Хайлтын сонголт</h5>
-            <p class="mb-0">Нийт 630+ чиглэлүүд</p>
+            <h5>{{ t('txtFindChoise') }}</h5>
+            <p class="mb-0">{{ t('txtFindChoiseDes') }}</p>
           </div>
         </b-col>
 
@@ -28,8 +28,8 @@
           <div class="px-4">
             <img :src="step2" class="w-150px mb-3" alt="" />
 
-            <h5>Нислэгийн чиглэлээ сонгоно</h5>
-            <p class="mb-0">Олон төрлөөр сонгох боломжтой</p>
+            <h5>{{ t('txtFindFlightChoise') }}</h5>
+            <p class="mb-0">{{ t('txtFindFlightChoiseDes') }}</p>
           </div>
         </b-col>
 
@@ -37,8 +37,8 @@
           <div class="px-4">
             <img :src="step1" class="w-150px mb-3" alt="" />
 
-            <h5>Хялбар захиалах боломж</h5>
-            <p class="mb-0">Хялбар бөгөөд хурдан тасалбар худалдан авах үйл явцтай</p>
+            <h5>{{ t('txtEasyBooking') }}</h5>
+            <p class="mb-0">{{ t('txtEasyBookingDes') }}</p>
           </div>
         </b-col>
       </b-row>
@@ -50,4 +50,7 @@
 import step1 from '@/assets/images/element/step-1.svg'
 import step2 from '@/assets/images/element/step-2.svg'
 import step3 from '@/assets/images/element/step-3.svg'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 </script>

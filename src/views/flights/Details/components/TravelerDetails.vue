@@ -1,7 +1,7 @@
 <template>
   <form class="card border">
     <b-card-header class="border-bottom px-4">
-      <b-card-title tag="h3" class="mb-0">Зорчигчдын мэдээлэл</b-card-title>
+      <b-card-title tag="h3" class="mb-0">{{ t('txtTravelerInfo') }}</b-card-title>
     </b-card-header>
 
     <b-card-body class="py-4">
@@ -13,7 +13,7 @@
       </div>
 
       <div class="text-end mb-3">
-        <a href="#" class="btn btn-primary-soft mb-0" @click.prevent="addTraveler">Зорчигч нэмэх</a>
+        <a href="#" class="btn btn-primary-soft mb-0" @click.prevent="addTraveler">{{ t('txtAddTraveler') }}</a>
       </div>
 
       <b-accordion class="accordion-icon accordion-bg-light">
@@ -24,8 +24,8 @@
           <b-row class="g-4">
 
             <b-col md="3">
-              <b-form-group label="Пасспортын дугаар">
-                <b-form-input type="text" placeholder="Пасспортын дугаар оруулна уу" v-model="traveler.document"
+              <b-form-group :label="t('txtPassportNum')">
+                <b-form-input type="text" :placeholder="t('txtPassportNum')" v-model="traveler.document"
                   :state="isPassportValid(traveler.document)"
                   @keydown.enter="autoFillTravelerByPassport(traveler.document, traveler)"
                   @blur="autoFillTravelerByPassport(traveler.document, traveler)" />
@@ -43,11 +43,11 @@
               </div>
             </b-col> -->
             <b-col md="9">
-              <b-form-group label="Бүтэн нэр">
+              <b-form-group :label="t('txtFullName')">
                 <div class="input-group">
-                  <b-form-input type="text" placeholder="Эцэг(Эх)-ийн нэр" v-model="traveler.surname"
+                  <b-form-input type="text" :placeholder="t('txtSureName')" v-model="traveler.surname"
                     :state="isNameValid(traveler.name, traveler.surname) ? true : false" />
-                  <b-form-input type="text" placeholder="Өөрийн нэр" v-model="traveler.name"
+                  <b-form-input type="text" :placeholder="t('txtName')" v-model="traveler.name"
                     :state="isNameValid(traveler.name, traveler.surname) ? true : false" />
                 </div>
                 <div class="invalid-feedback d-block text-danger" v-if="!isNameValid(traveler.name, traveler.name)">
@@ -63,7 +63,7 @@
             </b-col> -->
             <!-- Харьяалал -->
             <b-col md="6">
-              <SelectFormInput id="nationality" label="Иргэний харьяалал" v-model="traveler.birthISO"
+              <SelectFormInput id="nationality" :label="t('txtBirthIso')" v-model="traveler.birthISO"
                 :options="nationalityOptions" :choice-options="{ searchEnabled: false }"
                 :state="isNationalityValid(traveler.birthISO)" />
               <!-- <b-form-invalid-feedback v-if="!isNationalityValid(traveler.nationality)">
@@ -100,7 +100,7 @@
             </b-col> -->
             <!-- Төрсөн огноо -->
             <b-col md="6">
-              <label class="form-label">Төрсөн өдөр, сар, он</label>
+              <label class="form-label">{{ t('txtBirthDate') }}</label>
               <b-row class="g-0">
                 <b-col cols="4">
                   <SelectFormInput id="date" v-model="traveler.birthDay.day" :options="dateOptions" />
@@ -127,7 +127,7 @@
             </b-col> -->
             <!-- Хүйс -->
             <b-col md="6">
-              <SelectFormInput id="gender" label="Хүйс" v-model="traveler.gender" :options="titleOptions"
+              <SelectFormInput id="gender" :label="t('txtGender')" v-model="traveler.gender" :options="titleOptions"
                 :choice-options="{ searchEnabled: false }" :state="isGenderValid(traveler.gender)" />
               <!-- <b-form-invalid-feedback v-if="!isGenderValid(traveler.gender)">
                 Хүйсээ сонгоно уу.
@@ -164,7 +164,7 @@
             </b-col> -->
             <!-- Паспортын хугацаа -->
             <b-col md="6">
-              <label class="form-label">Пасспортын дуусах хугацаа</label>
+              <label class="form-label">{{ t('txtPassportDate') }}</label>
               <b-row class="g-0">
                 <b-col cols="4">
                   <SelectFormInput id="Pdate" v-model="traveler.DocumentExDate.day" :options="dateOptions" />
@@ -190,24 +190,24 @@
 
       <ServiceInfo />
 
-      <h5 class="mt-4">Захиалгын дэлгэрэнгүй мэдээллийг илгээнэ</h5>
+      <h5 class="mt-4">{{ t('txtBookingSend') }}</h5>
       <b-row class="g-3 g-md-4">
         <b-col md="6">
-          <b-form-group label="Утасны дугаар">
-            <b-form-input v-model="BookingInfo.phoneNumber.value" type="text" placeholder="Утасны дугаар оруулна уу"
+          <b-form-group :label="t('txtPhoneNum')">
+            <b-form-input v-model="BookingInfo.phoneNumber.value" type="text" :placeholder="t('txtPhoneNumDes')"
               :state="isPhoneNumberValid" />
             <div class="invalid-feedback d-block text-danger" v-if="!isPhoneNumberValid">
-              Утасны дугаараа зөв оруулна уу. Зөвхөн тоо байх ёстой!
+              {{ t('txtPhoneNumWar') }}
             </div>
           </b-form-group>
         </b-col>
 
         <b-col md="6">
-          <b-form-group label="Email Хаяг">
-            <b-form-input v-model="BookingInfo.email.value" type="email" placeholder="Email Хаяг оруулна уу"
+          <b-form-group :label="t('txtEmailAdd')">
+            <b-form-input v-model="BookingInfo.email.value" type="email" :placeholder="t('txtEmailAddDes')"
               :state="isEmailValid" />
             <div class="invalid-feedback d-block text-danger" v-if="!isEmailValid">
-              Буруу email хаяг!
+              {{ t('txtEmailAddDWar') }}
             </div>
           </b-form-group>
         </b-col>
@@ -223,7 +223,7 @@
         <!-- Төлбөр төлөх товч -->
         <a href="#" class="btn btn-primary-soft mb-0" :class="{ 'disabled-link': !isFormValid }"
           @click.prevent="openModal">
-          Төлбөр төлөх
+          {{ t('txtPay') }}
         </a>
       </div>
 
@@ -321,6 +321,9 @@ import dayjs from 'dayjs';
 // import  ErrorToast  from '@/components/ErrorToastAlert.vue';
 import { useOptionStore } from '@/stores/optionStore';
 import CustomAlert from '../../../../components/CustomAlert.vue';
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 const optionStore = useOptionStore();
 const storedData = sessionStorage.getItem("PreBooking") ? JSON.parse(sessionStorage.getItem("PreBooking") || "") : null;

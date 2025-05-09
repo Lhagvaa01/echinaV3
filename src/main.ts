@@ -8,6 +8,7 @@ import 'quill/dist/quill.bubble.css'
 import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
 import 'bootstrap/scss/bootstrap.scss'
 import '@/assets/scss/style.scss'
+import i18n from './plugins/i18n'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -30,5 +31,5 @@ app.component('v-icon', OhVueIcon)
 app.use(createBootstrap())
 app.use(createPinia())
 app.use(router)
-
+app.use(i18n)
 app.mount('#app')

@@ -12,7 +12,7 @@
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item" v-for="item in menuItems" :key="item.key">
           <router-link :to="item.link" class="nav-link fw-semibold text-dark px-3">
-            {{ item.label }}
+            {{ t(item.label) }}
           </router-link>
         </li>
       </ul>
@@ -36,6 +36,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { bookingHomeMenuItems } from '@/assets/data/menu-items'
 import router from '@/router'
 import { buyLink, supportLink } from '@/helpers/constants'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 type AppMenuProps = {
   showExtraPages?: boolean

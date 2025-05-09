@@ -9,8 +9,8 @@
     <ul class="dropdown-menu guest-selector-dropdown">
       <li class="d-flex justify-content-between">
         <div>
-          <h6 class="mb-0">Том хүн</h6>
-          <small>13-аас дээш нас</small>
+          <h6 class="mb-0">{{ t('txtAdult') }}</h6>
+          <small>{{ t('txtAdultDes') }}</small>
         </div>
 
         <div class="hstack gap-1 align-items-center">
@@ -28,8 +28,8 @@
 
       <li class="d-flex justify-content-between">
         <div>
-          <h6 class="mb-0">Хүүхэд</h6>
-          <small>13-аас доош нас</small>
+          <h6 class="mb-0">{{ t('txtChild') }}</h6>
+          <small>{{ t('txtChildDes') }}</small>
         </div>
 
         <div class="hstack gap-1 align-items-center">
@@ -74,6 +74,9 @@ import CustomDropDown from '@/components/CustomDropDown.vue'
 import { BIconDashCircle, BIconPlusCircle } from 'bootstrap-icons-vue'
 import { ref } from 'vue'
 import type { GuestAndRoomFormType } from '@/types'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 type GuestAndRoomFormPropType = {
   id?: string
@@ -119,10 +122,10 @@ const getGuestsValue = (): string => {
     guests.adults = 1;
   }
   if (guests.adults) {
-    value += guests.adults + (guests.adults > 1 ? ' Том хүн ' : ' Том хүн ')
+    value += guests.adults + ' ' + (guests.adults > 1 ? t('txtAdult') : t('txtAdult')) + ' '
   }
   if (guests.children) {
-    value += guests.children + (guests.children > 1 ? ' Хүүхэд ' : ' Хүүхэд ')
+    value += guests.children + ' ' + (guests.children > 1 ? t('txtChild') : t('txtChild')) + ' '
   }
   // if (guests.rooms) {
   //   value += guests.rooms + (guests.rooms > 1 ? ' Rooms ' : ' Room ')

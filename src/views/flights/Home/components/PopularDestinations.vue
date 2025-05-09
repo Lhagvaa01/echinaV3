@@ -1,6 +1,6 @@
 <template>
   <div class="popular-destinations">
-    <h2>ХАМГИЙН ЭРЭЛТТЭЙ ЧИГЛЭЛҮҮД</h2>
+    <h2>{{ t('txtMostPDest') }}</h2>
     <div class="carousel">
       <button @click="prev" class="nav-btn">‹</button>
       <div class="destinations">
@@ -26,6 +26,9 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 const destinations = [
   { name: "Beijing", iata: "PEK", price: 997000, image: "https://media.istockphoto.com/id/482334184/photo/night-on-beijing-central-business-district-buildings-skyline-china-cityscape.jpg?s=612x612&w=0&k=20&c=gd1nunX5dLfHTAyyqTE2frn4Iw-dzyr60YqJGaK2M4U=" },

@@ -13,7 +13,7 @@
         </div> -->
         <b-row class="mb-3 align-items-center">
             <b-col>
-                Нийт: {{ filteredData.length }} нислэг
+                {{ t('txtTotalFlight') }}: {{ filteredData.length }} {{ t('txtTotalFlightDes') }}
             </b-col>
             <b-col>
                 <div class="dropdown w-100">
@@ -26,8 +26,10 @@
                     </button>
 
                     <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
-                        <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('asc')">Үнэ өсөхөөр</a></li>
-                        <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('desc')">Үнэ буурахаар</a>
+                        <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('asc')">{{ t('txtPriceASC')
+                                }}</a></li>
+                        <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('desc')">{{ t('txtPriceDESC')
+                                }}</a>
                         </li>
                     </ul>
                 </div>
@@ -77,9 +79,10 @@
                                 <div v-if="flight.length > 0">
                                     <h6 class="m-3 fw-bold d-flex align-items-center">
                                         <PlaneTakeoff color="#009dff" :size="32" class="me-3" />
-                                        {{ (show == 2 && moreFlights(Mainindex).length - 1 === findex) ? 'Буцах нислэг'
+                                        {{ (show == 2 && moreFlights(Mainindex).length - 1 === findex) ?
+                                            t('txtToFlight')
                                             :
-                                            'Явах нислэг' }}
+                                            t('txtFromFlight') }}
                                     </h6>
                                     <b-card-header class="d-sm-flex justify-content-sm-between align-items-center">
 
@@ -100,7 +103,7 @@
                                             <p v-if="flight.length > 1" class="ms-2 text-warning"
                                                 @mouseover="onMouseOver(getFlightKey(Mainindex))"
                                                 @mouseleave="onMouseLeave(getFlightKey(Mainindex))">
-                                                +{{ flight.length - 1 }} Airline
+                                                +{{ flight.length - 1 }} {{ t('txtTotalAirline') }}
                                             </p>
                                             <!-- Tooltip -->
                                             <div v-if="isHovered[getFlightKey(Mainindex)]"
@@ -120,7 +123,7 @@
                                                                     ?.Value || 'Unknown Airline'
                                                             }}
                                                             <span class="text-muted">({{ segment.FlightNum || 'SA-1254'
-                                                                }})</span>
+                                                            }})</span>
                                                         </div>
                                                         <div class="d-flex align-items-center mt-1">
                                                             <Briefcase v-if="segment.Baggage" class="me-2"
@@ -133,8 +136,8 @@
                                             </div>
                                         </div>
 
-                                        <h6 class="fw-bold mb-0">{{ flight.length > 1 ? 'Дамжин нислэг' :
-                                            'Шууд нислэг' }}</h6>
+                                        <h6 class="fw-bold mb-0">{{ flight.length > 1 ? t('txtTransit') :
+                                            t('txtDirect') }}</h6>
                                     </b-card-header>
                                     <b-card-body class="p-4 pb-0">
                                         <b-row class="g-4">
@@ -218,9 +221,11 @@
                                                 class="text-md-end">
                                                 <h6 v-if="paginatedFlights[Mainindex].TotalPrice != paginatedFlights[Mainindex].AdultPrice"
                                                     class="d-flex flex-column">
-                                                    Том хүн: {{ currency }}{{ paginatedFlights[Mainindex].AdultPrice }}
+                                                    {{ t('txtAdult') }}: {{ currency }}{{
+                                                        paginatedFlights[Mainindex].AdultPrice }}
                                                     <span v-if="paginatedFlights[Mainindex].ChildPrice" class="mt-1">
-                                                        Хүүхэд: {{ currency }}{{ paginatedFlights[Mainindex].ChildPrice
+                                                        {{ t('txtChild') }}: {{ currency }}{{
+                                                            paginatedFlights[Mainindex].ChildPrice
                                                         }}
                                                     </span>
                                                 </h6>
@@ -229,10 +234,10 @@
                                                 <h4 v-if="paginatedFlights[Mainindex].TotalPrice != paginatedFlights[Mainindex].AdultPrice"
                                                     class="d-flex align-items-center">
                                                     <span class="fw-medium fs-5 text-primary">{{ route.query.adults
-                                                    }}</span>
+                                                        }}</span>
                                                     <User :size="36" color="#3949AB" class="me-2" />
                                                     <span class="fw-medium fs-5 text-primary">{{ route.query.childs
-                                                    }}</span>
+                                                        }}</span>
                                                     <User color="#3949AB" class="me-2" />
                                                     {{
                                                         currency
@@ -245,7 +250,7 @@
                                                     :aria-controls="`flightOption${segments.FlightNum}`"
                                                     v-b-toggle="`flightOption${Mainindex}${segments.FlightNum}`"
                                                     @click="fetchOptions(offer.OfferCode, SearchGuid)">
-                                                    Сонгох
+                                                    {{ t('txtChoose') }}
                                                 </b-button>
                                             </b-col>
                                         </b-row>
@@ -256,11 +261,11 @@
                                                 <ul
                                                     class="list-inline bg-light rounded-2 d-sm-flex text-end justify-content-sm-end mb-0 px-4 py-2">
                                                     <li v-if="flight.length > 0" class="list-inline-item text-orange">
-                                                        {{ getTotalStops(Mainindex, findex) }} Зогсолттой нислэг
+                                                        {{ getTotalStops(Mainindex, findex) }} {{ t('txtFlightStop') }}
                                                     </li>
                                                     <li class="list-inline-item text-center">
                                                         <h6 class="fw-medium mb-0">
-                                                            Ачаагаа өөрөө авч, дахин бүртгүүлэх шаардлагатай <br />
+                                                            {{ t('txtSelfTBag') }} <br />
                                                             (Self-transfer baggage)
                                                         </h6>
                                                     </li>
@@ -281,10 +286,10 @@
                         <div class="card-footer pt-4">
                             <ul
                                 class="list-inline bg-light rounded-2 d-sm-flex text-center justify-content-sm-between mb-0 px-4 py-2">
-                                <li class="list-inline-item text-primary">Боломжит суудал: {{
+                                <li class="list-inline-item text-primary">{{ t('txtAvailableSeat') }}: {{
                                     segments.ResBookDesigQuantity
-                                    }}</li>
-                                <h6 class="fw-medium mb-0"><span class="fw-medium">Ангилал:</span> {{
+                                }}</li>
+                                <h6 class="fw-medium mb-0"><span class="fw-medium">{{ t('txtClass') }}:</span> {{
                                     segments.FlightClass }}</h6>
                                 <li class="list-inline-item">
                                     <router-link :to="'/some-route/' + Mainindex + segments.FlightNum"
@@ -292,7 +297,7 @@
                                         :aria-controls="'flightDetail' + segments.FlightNum"
                                         v-b-toggle="'flightDetail' + Mainindex + segments.FlightNum"
                                         class="btn-more d-flex align-items-center collapsed p-0 mb-0" role="button">
-                                        Нислэгийн дэлгэрэнгүй
+                                        {{ t('txtFlightDetail') }}
                                         <ChevronDown />
                                     </router-link>
                                 </li>
@@ -337,6 +342,9 @@ import { ChevronDown, Briefcase, Luggage, User } from 'lucide-vue-next';
 import { useRoute } from 'vue-router';
 import SkeletonLoader from './Skeleton.vue'
 import { useOptionStore } from '@/stores/optionStore'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 
 // import { chevron-down } from 'bootstrap-icons-vue'
@@ -417,9 +425,9 @@ const setSortOrder = (order) => {
 }
 
 const selectedSortLabel = computed(() => {
-    if (sortOrder.value === 'asc') return 'Үнэ өсөхөөр'
-    if (sortOrder.value === 'desc') return 'Үнэ буурахаар'
-    return 'Үнээр эрэмбэлэх'
+    if (sortOrder.value === 'asc') return t('txtPriceASC')
+    if (sortOrder.value === 'desc') return t('txtPriceDESC')
+    return t('txtPriceSort')
 })
 
 const filteredData = computed(() => {
@@ -552,7 +560,7 @@ const getTotalFlightTime = (index: number, findex: number) => {
     const hours = Math.floor(totalMinutes / 60); // Бүтэн цагийг олно
     const minutes = totalMinutes % 60; // Үлдсэн минутыг олно
 
-    return `${hours} цаг ${minutes} мин`; // Цаг, минутын форматаар буцаана
+    return `${hours} ${t('txtHour')} ${minutes} ${t('txtMin')}`; // Цаг, минутын форматаар буцаана
     // if (i === 1) {
     //     const totalMinutes = moreFlights(index)[findex].reduce(
     //         (sum: number, seg: { FlightMinutes: string }) => sum + parseInt(seg.FlightMinutes, 10),

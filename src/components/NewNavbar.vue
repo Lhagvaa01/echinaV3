@@ -9,6 +9,7 @@
 
 
                     <MobileMenu />
+                    <!-- {{ t('operator') }} -->
                 </div>
                 <!-- <AppMenu v-else /> -->
 
@@ -69,7 +70,7 @@
                                 <path fill="currentColor"
                                     d="M10 2a4 4 0 1 0 0 8a4 4 0 0 0 0-8M7 6a3 3 0 1 1 6 0a3 3 0 0 1-6 0m-1.991 5A2 2 0 0 0 3 13c0 1.691.833 2.966 2.135 3.797C6.417 17.614 8.145 18 10 18q.536 0 1.056-.043a2.2 2.2 0 0 1 .005-1.005Q10.546 17 10 17c-1.735 0-3.257-.364-4.327-1.047C4.623 15.283 4 14.31 4 13c0-.553.448-1 1.009-1h9.514a1.95 1.95 0 0 1 .125-.772l.086-.228zm10.575.582l.283-.75c.258-.681 1.062-1.017 1.74-.728l.388.166c.473.202.864.568.947 1.06c.457 2.725-1.908 6.601-4.63 7.59c-.492.178-1.023.04-1.445-.246l-.346-.235a1.184 1.184 0 0 1-.204-1.79l.545-.607a1.07 1.07 0 0 1 1.034-.323l1.225.29q1.457-.91 1.562-2.56l-.878-.859a.94.94 0 0 1-.221-1.008">
                                 </path>
-                            </svg> ОПЕРАТОР
+                            </svg> {{ t('txtHeaderOperator') }}
                         </div>
                         <a href="tel:76105555"
                             style="font-size: 20px; font-weight: bold; color: #00d2ff; text-decoration: none;">
@@ -96,8 +97,10 @@ import type { BSIconType } from '@/types'
 import { BIconCircleHalf, BIconMoonStars, BIconSearch, BIconSun } from 'bootstrap-icons-vue'
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons'
 
-// import { toSentenceCase } from '@/helpers/change-casting'
 import { useLayoutStore } from '@/stores/layout'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 type ThemeModeType = {
     theme: LayoutState['theme']
@@ -122,47 +125,60 @@ const themeModes: ThemeModeType[] = [
 type LangModeType = {
     theme: LangState['theme']
     icon: BSIconType
-    flag: any
+    flag: string
+    lang: string
 }
 
 const langModes: LangModeType[] = [
     {
         icon: BIconSun,
         theme: 'Mongolia',
-        flag: 'MN'
+        flag: 'MN',
+        lang: 'mn'
     },
     {
         icon: BIconMoonStars,
         theme: 'English',
-        flag: 'GB'
+        flag: 'US',
+        lang: 'en'
     },
     {
         icon: BIconCircleHalf,
         theme: 'China',
-        flag: 'CN'
+        flag: 'CN',
+        lang: 'cn'
     }
 ]
 
-const currentLang = ref(langModes[0]) // Default: Mongolia
+const currentLang = ref(langModes[0]) // default lang = mn
 
 function changeLang(mode: LangModeType) {
     currentLang.value = mode
-    // Та энд хэлний тохиргоог хадгалах/өөрчлөх logic хийж болно (i18n гэх мэт)
+    locale.value = mode.lang
+    sessionStorage.setItem('lang', mode.lang)
 }
 
 function toSentenceCase(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
 }
 
-function getFlagUrl(flag) {
+function getFlagUrl(flag: string) {
     return `https://flagcdn.com/${flag.toLowerCase()}.svg`
 }
 
 const useLayout = useLayoutStore()
-
-let isSticky = ref<boolean>(false)
+const isSticky = ref<boolean>(false)
 
 onMounted(() => {
+    const savedLang = sessionStorage.getItem('lang')
+    if (savedLang) {
+        const found = langModes.find(lang => lang.lang === savedLang)
+        if (found) {
+            currentLang.value = found
+            locale.value = savedLang
+        }
+    }
+
     window.addEventListener('scroll', () => {
         isSticky.value = window.scrollY >= 400
     })

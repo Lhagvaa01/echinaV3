@@ -747,24 +747,24 @@ export const HELP_MENU_ITEMS: MenuItemType[] = [
 export const APP_MENU_ITEMS: MenuItemType[] = [
   {
     key: 'home',
-    label: 'Нүүр',
+    label: 'txtHome',
     isTitle: true,
     
     link: { name: 'flights.home' },
   }, {
     key: 'orderInfo',
-    label: 'Тасалбар шалгах',
+    label: 'txtCheckTicket',
     isTitle: true,
     link: { name: 'flights.OrderInfo' },
   }, {
     key: 'check-flight',
-    label: 'Нислэгийн төлөв шалгах',
+    label: 'txtFlightStatus',
     isTitle: true,
     
     link: { name: 'flights.home' },
   }, {
     key: 'privacy-policy',
-    label: 'Үйлчилгээний нөхцөл',
+    label: 'txtPrivacy',
     isTitle: true,
     
     link: { name: 'flights.PrivacyPolicy' },

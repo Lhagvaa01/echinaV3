@@ -27,7 +27,7 @@
 
               <p v-if="getAllSegments().length - 1 > 1" class="ms-2 text-warning"
                 @mouseover="onMouseOver(segment.FlightNum)" @mouseleave="onMouseLeave(segment.FlightNum)">
-                +{{ getAllSegments().length - 1 }} Airline
+                +{{ getAllSegments().length - 1 }} {{ t('txtTotalAirline') }}
               </p>
               <!-- Tooltip -->
               <div v-if="isHovered[segment.FlightNum]"
@@ -47,7 +47,7 @@
                           ?.Value || 'Unknown Airline'
                       }}
                       <span class="text-muted">({{ segmentB.FlightNum || 'SA-1254'
-                      }})</span>
+                        }})</span>
                     </div>
                     <div class="d-flex align-items-center mt-1">
                       <Briefcase v-if="segmentB.Baggage" class="me-2" color="#5a2dd7" :size="16" />
@@ -58,7 +58,7 @@
               </div>
             </div>
 
-            <h6 class="fw-bold mb-0">Дамжин нислэг</h6>
+            <h6 class="fw-bold mb-0">{{ t('txtTransit') }}</h6>
           </b-card-header>
 
           <b-card-body class="p-4 pb-0">
@@ -129,11 +129,11 @@
               <div v-if="segment.SelfConnect == 'true'" class="card-footer pt-4">
                 <ul class="list-inline bg-light rounded-2 d-sm-flex text-end justify-content-sm-end mb-0 px-4 py-2">
                   <li v-if="getAllSegments().length > 0" class="list-inline-item text-orange">
-                    {{ getTotalStops() }} Зогсолттой нислэг
+                    {{ getTotalStops() }} {{ t('txtFlightStop') }}
                   </li>
                   <li class="list-inline-item text-center">
                     <h6 class="fw-medium mb-0">
-                      Ачаагаа өөрөө авч, дахин бүртгүүлэх шаардлагатай <br />
+                      {{ t('txtSelfTBag') }} <br />
                       (Self-transfer baggage)
                     </h6>
                   </li>
@@ -147,16 +147,17 @@
 
           <div class="card-footer pt-4">
             <ul class="list-inline bg-light rounded-2 d-sm-flex text-center justify-content-sm-between mb-0 px-4 py-2">
-              <li class="list-inline-item text-primary">Боломжит суудал: {{ segment.ResBookDesigQuantity }}</li>
+              <li class="list-inline-item text-primary">{{ t('txtAvailableSeat') }}: {{ segment.ResBookDesigQuantity }}
+              </li>
               <!-- <li class="list-inline-item text-danger">Non-Refundable</li> -->
-              <h6 class="fw-medium mb-0"><span class="fw-medium">Ангилал:</span> {{
+              <h6 class="fw-medium mb-0"><span class="fw-medium">{{ t('txtClass') }}:</span> {{
                 segment.FlightClass }}</h6>
               <li class="list-inline-item">
                 <router-link :to="'/some-route/' + inx + segment.FlightNum"
                   :id="'toggleButton' + inx + segment.FlightNum" :aria-controls="'flightDetail' + segment.FlightNum"
                   v-b-toggle="'flightDetail' + inx + segment.FlightNum"
                   class="btn-more d-flex align-items-center collapsed p-0 mb-0" role="button">
-                  Нислэгийн дэлгэрэнгүй
+                  {{ t('txtFlightDetail') }}
                   <ChevronDown />
                 </router-link>
               </li>
@@ -191,6 +192,9 @@ import flightLogo from '@/assets/images/element/09.svg'
 
 import OptionDetailTab from '@/views/flights/Details/components/OptionDetailTab.vue'
 import { ChevronDown, Briefcase, Luggage, User } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 const flightStore = useFlightStore();
 const fallbackLogo = flightLogo
@@ -262,8 +266,8 @@ function formatDate(input: string): string {
 
 function convertTimeText(input: string): string {
   const [hours, minutes, seconds] = input.split(":").map(Number);
-  const hourText = hours ? `${hours} цаг` : "";
-  const minuteText = minutes ? `${minutes} мин` : " ";
+  const hourText = hours ? `${hours} ${t('txtHour')}` : "";
+  const minuteText = minutes ? `${minutes} ${t('txtMin')}` : " ";
   return [hourText, minuteText].filter(Boolean).join(" ");
 }
 
@@ -276,7 +280,7 @@ const getTotalFlightTime = () => {
   const hours = Math.floor(totalMinutes / 60); // Бүтэн цагийг олно
   const minutes = totalMinutes % 60; // Үлдсэн минутыг олно
 
-  return `${hours} цаг ${minutes} мин`; // Цаг, минутын форматаар буцаана
+  return `${hours} ${t('txtHour')} ${minutes} ${t('txtMin')}`; // Цаг, минутын форматаар буцаана
 };
 
 const getTotalStops = () => getAllSegments().length - 1;

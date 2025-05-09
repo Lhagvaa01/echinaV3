@@ -40,21 +40,21 @@
                       <button class="nav-link rounded-start rounded-0 mb-0" :class="show == 1 && 'active'"
                         id="pills-one-way-tab" data-bs-toggle="pill" data-bs-target="#pills-one-way" type="button"
                         role="tab" aria-selected="true" @click="show = 1">
-                        1 Талдаа
+                        {{ t('txtOneTrip') }}
                       </button>
                     </li>
                     <li class="nav-item" role="presentation">
                       <button class="nav-link  rounded-0 mb-0" :class="show == 2 && 'active'" id="pills-round-trip-tab"
                         data-bs-toggle="pill" data-bs-target="#pills-round-trip" type="button" role="tab"
                         aria-selected="false" @click="show = 2">
-                        2 Талдаа
+                        {{ t('txtRoundTrip') }}
                       </button>
                     </li>
                     <li class="nav-item" role="presentation">
                       <button class="nav-link rounded-end rounded-0 mb-0" :class="show == 3 && 'active'"
                         id="pills-round-trip-tab" data-bs-toggle="pill" data-bs-target="#pills-multi-trip" type="button"
                         role="tab" aria-selected="false" @click="show = 3">
-                        Олон хот
+                        {{ t('txtMultiTrip') }}
                       </button>
                     </li>
                   </ul>
@@ -80,16 +80,16 @@
                 <div class="tab-pane fade" :class="show == 1 && 'show active'" id="pills-one-way" role="tabpanel"
                   aria-labelledby="pills-one-way-tab">
                   <b-row class="g-4">
-                    <!-- Хаанаас -->
+                    <!-- {{ t('txtFrom') }} -->
                     <b-col md="6" lg="4" class="position-relative">
                       <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
                         <label class="mb-1 d-flex align-items-center">
-                          <BIconGeoAlt class="me-2" /> Хаанаас
+                          <BIconGeoAlt class="me-2" /> {{ t('txtFrom') }}
                         </label>
                         <div v-if="destinationOptions.length > 0">
                           <AirportSelector v-model="selectedDestination" class="w-100" />
                         </div>
-                        <div v-else class="text-muted small">Түр хүлээнэ үү...</div>
+                        <div v-else class="text-muted small">{{ t('txtWaiting') }}</div>
                       </div>
 
                       <!-- Flip Icon -->
@@ -100,24 +100,24 @@
                       </div>
                     </b-col>
 
-                    <!-- Хаашаа -->
+                    <!-- {{ t('txtTo') }} -->
                     <b-col md="6" lg="4">
                       <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
                         <label class="mb-1 d-flex align-items-center">
-                          <BIconSend class="me-2" /> Хаашаа
+                          <BIconSend class="me-2" /> {{ t('txtTo') }}
                         </label>
                         <div v-if="destinationOptions.length > 0">
                           <AirportSelector v-model="selectedDestination2" class="w-100" />
                         </div>
-                        <div v-else class="text-muted small">Түр хүлээнэ үү...</div>
+                        <div v-else class="text-muted small">{{ t('txtWaiting') }}</div>
                       </div>
                     </b-col>
 
-                    <!-- Хэзээ -->
+                    <!-- {{ t('txtOneTripDate') }} -->
                     <b-col lg="4">
                       <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
                         <label class="mb-1 d-flex align-items-center">
-                          <BIconCalendar class="me-2" /> Хэзээ
+                          <BIconCalendar class="me-2" /> {{ t('txtOneTripDate') }}
                         </label>
                         <CustomFlatpicker id="departureDate" placeholder="Select date" v-model="departureDate"
                           :options="{ dateFormat: 'Y.m.d' }" />
@@ -126,11 +126,11 @@
                       </div>
                     </b-col>
 
-                    <!-- Нислэг хайх -->
+                    <!-- {{ t('txtFindTicket') }} -->
                     <b-col cols="12" class="text-end pt-0">
                       <a class="btn btn-primary mb-n" :href="generateTicketUrl">
                         <div class="d-flex align-items-center justify-content-end">
-                          <p class="mb-0">Нислэг хайх</p>
+                          <p class="mb-0">{{ t('txtFindTicket') }}</p>
                           <BIconArrowRight class="ps-3" />
                         </div>
                       </a>
@@ -146,7 +146,7 @@
                       <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
                         <label class="mb-1">
                           <BIconGeoAlt class="me-2" />
-                          Хаанаас
+                          {{ t('txtFrom') }}
                         </label>
                         <!-- <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
                           <AirportsFormInput id="round-from" v-model="selectedDestination3"
@@ -156,7 +156,7 @@
                           <AirportSelector v-model="selectedDestination" class="w-100" />
                         </div>
                         <div v-else>
-                          Түр хүлээнэ үү...
+                          {{ t('txtWaiting') }}
                         </div>
 
                       </div>
@@ -172,7 +172,7 @@
                       <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
                         <label class="mb-1">
                           <BIconSend class="me-2" />
-                          Хаашаа
+                          {{ t('txtTo') }}
                         </label>
                         <!-- <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
                           <AirportsFormInput id="round-to" v-model="selectedDestination4"
@@ -182,7 +182,7 @@
                           <AirportSelector v-model="selectedDestination2" class="w-100" />
                         </div>
                         <div v-else>
-                          Түр хүлээнэ үү...
+                          {{ t('txtWaiting') }}
                         </div>
 
                       </div>
@@ -192,7 +192,7 @@
                       <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
                         <label class="mb-1">
                           <BIconCalendar class="me-2" />
-                          Явах огноо
+                          {{ t('txtStartDate') }}
                         </label>
                         <CustomFlatpicker id="round-departureDate" placeholder="Select date" v-model="departureDate"
                           :options="{ dateFormat: 'Y.m.d' }" />
@@ -203,7 +203,7 @@
                       <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
                         <label class="mb-1">
                           <BIconCalendar class="me-2" />
-                          Буцах огноо
+                          {{ t('txtEndDate') }}
                         </label>
                         <CustomFlatpicker id="round-returnDate" placeholder="Select date" v-model="returnDate"
                           :options="{ dateFormat: 'Y.m.d', minDate: departureDate }" />
@@ -213,7 +213,7 @@
                     <b-col cols="12" class="text-end pt-0">
                       <a class="btn btn-primary mb-n" :href="generateTicketUrlRound">
                         <div class="d-flex  align-items-center">
-                          <p class="mb-0">Нислэг хайх</p>
+                          <p class="mb-0">{{ t('txtFindTicket') }}</p>
                           <BIconArrowRight class="ps-3 w-auto" />
                         </div>
                       </a>
@@ -228,37 +228,37 @@
                     <!-- Хайлтын мөрүүд -->
                     <div v-for="(trip, index) in trips" :key="index" class="mb-3">
                       <b-row class="g-4 align-items-end">
-                        <!-- Хаанаас -->
+                        <!-- {{ t('txtFrom') }} -->
                         <b-col md="6" xl="3" class="position-relative">
                           <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
                             <label class="mb-1">
-                              <BIconGeoAlt class="me-2" /> Хаанаас
+                              <BIconGeoAlt class="me-2" /> {{ t('txtFrom') }}
                             </label>
                             <div v-if="destinationOptions.length > 0">
                               <AirportSelector v-model="trip.selectedDestination" class="w-100" />
                             </div>
-                            <div v-else>Түр хүлээнэ үү...</div>
+                            <div v-else>{{ t('txtWaiting') }}</div>
                           </div>
                         </b-col>
 
-                        <!-- Хаашаа -->
+                        <!-- {{ t('txtTo') }} -->
                         <b-col md="6" xl="3">
                           <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
                             <label class="mb-1">
-                              <BIconSend class="me-2" /> Хаашаа
+                              <BIconSend class="me-2" /> {{ t('txtTo') }}
                             </label>
                             <div v-if="destinationOptions.length > 0">
                               <AirportSelector v-model="trip.selectedDestination2" class="w-100" />
                             </div>
-                            <div v-else>Түр хүлээнэ үү...</div>
+                            <div v-else>{{ t('txtWaiting') }}</div>
                           </div>
                         </b-col>
 
-                        <!-- Хэзээ -->
+                        <!-- {{ t('txtOneTripDate') }} -->
                         <b-col md="6" xl="3">
                           <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
                             <label class="mb-1">
-                              <BIconCalendar class="me-2" /> Хэзээ
+                              <BIconCalendar class="me-2" /> {{ t('txtOneTripDate') }}
                             </label>
                             <CustomFlatpicker :id="`departureDate${index}`" placeholder="Select date"
                               v-model="trip.departureDate" :options="{ dateFormat: 'Y.m.d' }" />
@@ -268,7 +268,7 @@
                         <!-- Устгах товч -->
                         <b-col md="6" xl="3" v-if="index > 0">
                           <button class="btn btn-danger w-100" type="button" @click="removeTrip(index)">
-                            Устгах
+                            {{ t('txtFlightDel') }}
                           </button>
                         </b-col>
                       </b-row>
@@ -283,7 +283,7 @@
                     </b-col> -->
                     <b-col cols="12">
                       <button class="btn btn-secondary" type="button" @click="addTrip">
-                        Шинэ хайлт нэмэх
+                        {{ t('txtNewFlight') }}
                       </button>
                     </b-col>
 
@@ -292,7 +292,7 @@
                     <b-col cols="12" class="text-end pt-0">
                       <a class="btn btn-primary mb-n" :href="generateTicketUrlMulti">
                         <div class="d-flex  align-items-center">
-                          <p class="mb-0">Нислэг хайх</p>
+                          <p class="mb-0">{{ t('txtFindTicket') }}</p>
                           <BIconArrowRight class="ps-3 w-auto" />
                         </div>
                       </a>
@@ -323,6 +323,9 @@ import CustomFlatpicker from '@/components/CustomFlatpicker.vue'
 import { computed, watch, ref } from 'vue'
 import GuestAndRoomForm from '@/components/GuestAndRoomForm.vue'
 import type { GuestAndRoomFormType } from '@/types'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 
 const show = ref<number>(Number(sessionStorage.getItem("flight")) || 1);
@@ -459,7 +462,7 @@ const departureDate = ref<string | undefined>(
     : route.query.date ?? formatDate(today)     // Хэрэв string эсвэл null бол өнөөдрийн огноо
 );
 
-// Буцах огноо: Эхлэх огнооос 7 хоногийн дараа
+// {{ t('txtEndDate') }}: Эхлэх огнооос 7 хоногийн дараа
 const returnDate = ref<string | undefined>(
   Array.isArray(route.query.backDate)
     ? route.query.backDate[0] ?? formatDate(new Date(today.setDate(today.getDate() + 7)))  // 7 хоногийн дараа

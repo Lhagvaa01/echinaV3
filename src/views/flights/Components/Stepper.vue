@@ -73,6 +73,9 @@ import BookingSignIn from '@/views/tour/Booking/components/BookingSignIn.vue'
 
 import { string } from 'yup'
 import StepProgress from './StepProgress.vue'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 const props = defineProps({
   step: {
@@ -84,10 +87,10 @@ const props = defineProps({
 const showModal = ref(false)
 
 const stepLabels = [
-  { label: 'Тийз сонгох', desc: 'Хаанаас хаашаа явах нислэгээ сонгох.' },
-  { label: 'Мэдээлэл оруулах', desc: 'Зорчигчийн гадаад паспортын мэдээлэл оруулах.' },
-  { label: 'Төлбөр төлөх', desc: 'Банкны апп ашиглан төлбөр төлөх.' },
-  { label: 'Баталгаажуулалт', desc: 'Мэйл болон мессэжээр билет хүлээн авах.' }
+  { label: t('txtStep1'), desc: t('txtStep1Des') },
+  { label: t('txtStep2'), desc: t('txtStep2Des') },
+  { label: t('txtStep3'), desc: t('txtStep3Des') },
+  { label: t('txtStep4'), desc: t('txtStep4Des') }
 ]
 </script>
 

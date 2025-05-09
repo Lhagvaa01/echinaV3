@@ -2,7 +2,7 @@
   <div v-if="Array.isArray(StoreflightInfos) && StoreflightInfos[index]">
     <b-tabs nav-class="nav nav-pills nav-justified nav-responsive bg-primary bg-opacity-10 rounded p-2 mb-3">
       <b-tab>
-        <template #title> Нислэгийн дэлгэрэнгүй </template>
+        <template #title> {{ t('txtFlightDetail') }} </template>
         <div v-if="Array.isArray(StoreflightInfos[index].Offers.OfferInfo)">
           <div v-if="getAllSegments(index).length === 1">
 
@@ -24,8 +24,9 @@
                       ({{ offerSegment.FlightNum || 'SA-1254' }})
                     </h6>
                   </div>
-                  <h6 class="fw-normal mb-0"><span class="text-body">Ангилал:</span> {{ offerSegment.FlightClass
-                    }}
+                  <h6 class="fw-normal mb-0"><span class="text-body">{{ t('txtClass') }}:</span> {{
+                    offerSegment.FlightClass
+                  }}
                   </h6>
                 </div>
               </b-card-header>
@@ -121,18 +122,18 @@
                 <div class="m-3 fw-bold d-flex align-items-center"
                   v-if="offerSegment.Rph == '1' && isFirstSegmentWithRph(offerSegment.Rph, index, segidxs)">
                   <PlaneTakeoff color="#009dff" :size="32" class="me-3" />
-                  Явах нислэг
+                  {{ t('txtFromFlight') }}
                 </div>
                 <div class="m-3 fw-bold d-flex align-items-center"
                   v-if="offerSegment.Rph === '2' && isFirstSegmentWithRph(offerSegment.Rph, index, segidxs)">
                   <PlaneTakeoff color="#009dff" :size="32" class="me-3" />
-                  Буцах нислэг
+                  {{ t('txtToFlight') }}
                 </div>
               </div>
               <div v-else>
                 <div class="m-3 fw-bold d-flex align-items-center">
                   <PlaneTakeoff color="#009dff" :size="32" class="me-3" />
-                  Явах нислэг
+                  {{ t('txtFromFlight') }}
                 </div>
               </div>
 
@@ -178,8 +179,9 @@
                           ({{ offerSegment.FlightNum || 'SA-1254' }})
                         </h6>
                       </div>
-                      <h6 class="fw-normal mb-0"><span class="text-body">Ангилал:</span> {{ offerSegment.FlightClass
-                        }}
+                      <h6 class="fw-normal mb-0"><span class="text-body">{{ t('txtClass') }}:</span> {{
+                        offerSegment.FlightClass
+                      }}
                       </h6>
                     </div>
                   </b-card-header>
@@ -282,7 +284,7 @@
                         class=" fw-normal  mt-1 p-2 d-flex text-center align-items-center">
                         <TriangleAlert :size="24" />
                         <h6 class="fw-light mb-0">
-                          Ачаагаа өөрөө авч, дахин бүртгүүлэх шаардлагатай <br />
+                          {{ t('txtSelfTBag') }} <br />
                           <span class="fst-normal">(Self-transfer baggage)</span>
                         </h6>
                       </div>
@@ -293,7 +295,7 @@
                       class=" fw-normal  mt-1 p-2 d-flex text-center align-items-center justify-content-sm-end">
                       <TriangleAlert :size="24" />
                       <h6 class="fw-light mb-0">
-                        Ачаагаа өөрөө авч, дахин бүртгүүлэх шаардлагатай <br />
+                        {{ t('txtSelfTBag') }} <br />
                         <span class="fst-normal">(Self-transfer baggage)</span>
                       </h6>
                     </div>
@@ -325,7 +327,7 @@
 
       </b-tab>
       <b-tab>
-        <template #title> Ачаа тээшний дүрэм </template>
+        <template #title> {{ t('txtBagRule') }} </template>
         <div v-if="Array.isArray(StoreflightInfos) && StoreflightInfos[index]">
 
 
@@ -432,7 +434,7 @@
         </div>
       </b-tab>
       <b-tab>
-        <template #title> Cancellation Rules </template>
+        <template #title> {{ t('txtCancelationRule') }} </template>
         <b-card no-body class="border">
           <b-card-header class="d-flex align-items-center border-bottom">
             <img :src="element9" class="h-20px me-1" alt="" />
@@ -482,6 +484,9 @@ import fallbackLogo from '@/assets/images/element/09.svg'
 import { useFlightStore } from '@/stores/flight';
 
 import { PlaneTakeoff } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 const props = defineProps({
   flight: {
@@ -580,7 +585,7 @@ const getTotalFlightTime = (index: number) => {
   const hours = Math.floor(totalMinutes / 60); // Бүтэн цагийг олно
   const minutes = totalMinutes % 60; // Үлдсэн минутыг олно
 
-  return `${hours} цаг ${minutes} мин`; // Цаг, минутын форматаар буцаана
+  return `${hours} ${t('txtHour')} ${minutes} ${t('txtMin')}`; // Цаг, минутын форматаар буцаана
 };
 
 const getLayoverTime = (arrival: string, nextDeparture: string) => {
