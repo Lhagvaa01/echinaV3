@@ -566,7 +566,7 @@ const confirmAndPay = async () => {
       const data = await response.json();
       if (data.status === 'SUCCESS' && data.result?.Body?.AeroBookResponse?.AeroBookResult) {
         var orderInfo = data.result.Body.AeroBookResponse.AeroBookResult;
-        const oid = orderInfo.value.oid;
+        // const oid = orderInfo.value.oid;
         errorMessage.value.text = "Ажилттай захиалга үүслээ";
         errorMessage.value.status = "success";
         setTimeout(() => {
@@ -574,7 +574,7 @@ const confirmAndPay = async () => {
           errorMessage.value.status = '';
         }, 2000);
         sessionStorage.setItem("BookingInfo", JSON.stringify(data));
-        window.location.href = `/flights/booking/${oid}/`;
+        window.location.href = `/flights/booking/`;
 
       } else {
         sessionStorage.setItem("BookingInfo", JSON.stringify(data));
