@@ -6,28 +6,28 @@
           <b-col cols="12">
             <div class="d-sm-flex justify-content-sm-between align-items-center">
               <div class="mb-3 mb-sm-0">
-                <h1 class="d-flex fs-3">
-                  {{ StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                    getFirstDeparture(0)).City }}
-                  ({{ StoreAirPorts.find((AirPorts: any) =>
+                <h1 class="d-flex fs-4">
+                  {{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
+                    getFirstDeparture(0)).City}}
+                  ({{StoreAirPorts.find((AirPorts: any) =>
                     AirPorts.Iata ===
-                    getFirstDeparture(0)).Name }})
+                    getFirstDeparture(0)).Name}})
                   <PlaneTakeoff :size="40" color="#3949AB" class="mb-3 mx-3" />
                   <div v-if="showRound === 2">
-                    {{ StoreAirPorts.find((AirPorts: any) =>
+                    {{StoreAirPorts.find((AirPorts: any) =>
                       AirPorts.Iata ===
-                      returnFlights(0)[0].Departure.Iata).City }}
-                    ({{ StoreAirPorts.find((AirPorts: any) =>
+                      returnFlights(0)[0].Departure.Iata).City}}
+                    ({{StoreAirPorts.find((AirPorts: any) =>
                       AirPorts.Iata ===
-                      returnFlights(0)[0].Departure.Iata).Name }})
+                      returnFlights(0)[0].Departure.Iata).Name}})
                   </div>
                   <div v-else>
-                    {{ StoreAirPorts.find((AirPorts: any) =>
+                    {{StoreAirPorts.find((AirPorts: any) =>
                       AirPorts.Iata ===
-                      getLastArrival(0)).City }}
-                    ({{ StoreAirPorts.find((AirPorts: any) =>
+                      getLastArrival(0)).City}}
+                    ({{StoreAirPorts.find((AirPorts: any) =>
                       AirPorts.Iata ===
-                      getLastArrival(0)).Name }})
+                      getLastArrival(0)).Name}})
                   </div>
 
                 </h1>

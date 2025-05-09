@@ -1,90 +1,59 @@
 <template>
   <header class="navbar-light header-sticky" :class="{ 'header-sticky-on': isSticky }">
-    <nav class="navbar navbar-expand-xl">
+    <nav class="navbar navbar-expand-xl ">
       <b-container>
-        <LogoBox />
+        <div class="d-flex justify-content-center align-items-center">
+          <LogoBox />
 
-        <button
-          class="navbar-toggler ms-auto mx-3 me-xl-0 p-0 p-sm-1"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarCollapse"
-          aria-controls="navbarCollapse"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-          v-b-toggle="'navbar-collapse'"
-        >
-          <span class="navbar-toggler-animation">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-        </button>
 
-        <MobileMenu v-if="isMobileMenu" start-booking-menu show-extra-pages />
-        <AppMenu v-else start-booking-menu show-extra-pages />
+          <MobileMenu />
+        </div>
+        <!-- <AppMenu v-else /> -->
 
-        <ul class="nav flex-row align-items-center list-unstyled ms-xl-auto">
-          <CustomDropDown is="li" custom-class="nav-item me-3">
-            <button
-              class="btn btn-link text-warning p-0 mb-0"
-              id="bd-theme"
-              aria-expanded="false"
-              data-bs-toggle="dropdown"
-              data-bs-display="static"
-              type="button"
-            >
-              <BIconCircleHalf class="fs-5" />
+        <div class="d-flex align-items-center gap-3">
+          <li class="nav flex-row align-items-center list-unstyled ms-xl-auto dropdown">
+            <!-- Current Language Button -->
+            <button class="btn btn-link text-warning p-0 mb-0 " id="langSwitcher" data-bs-toggle="dropdown"
+              aria-expanded="false" type="button">
+              <img :src="getFlagUrl(currentLang.flag)" alt="lang" class="rounded-0"
+                style="width: 46px; height: 26px; object-fit: cover" />
             </button>
 
-            <ul class="dropdown-menu min-w-auto dropdown-menu-end" aria-labelledby="bd-theme">
-              <template v-for="(mode, idx) in themeModes" :key="idx">
-                <li :class="{ 'mb-1': idx != themeModes.length - 1 }">
-                  <button
-                    type="button"
-                    class="dropdown-item d-flex align-items-center"
-                    :class="{ active: mode.theme === useLayout.theme }"
-                    @click="useLayout.setTheme(mode.theme)"
-                  >
-                    <component :is="mode.icon" />
-                    &nbsp;&nbsp;{{ toSentenceCase(mode.theme) }}
-                  </button>
-                </li>
-              </template>
+            <!-- Dropdown menu -->
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langSwitcher">
+              <li v-for="(mode, idx) in langModes" :key="idx" class="dropdown-item d-flex align-items-center"
+                @click="changeLang(mode)" :class="{ active: currentLang.theme === mode.theme }"
+                style="cursor: pointer;">
+                <img :src="getFlagUrl(mode.flag)" alt="lang" class="rounded-0"
+                  style="width: 46px; height: 26px; object-fit: cover" />
+                <span class="ms-2">{{ toSentenceCase(mode.theme) }}</span>
+
+              </li>
             </ul>
-          </CustomDropDown>
-
-          <CustomDropDown is="li" custom-class="nav-item nav-search me-3">
-            <a
-              class="nav-link mb-0 p-0"
-              href="#"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              data-bs-auto-close="outside"
-              data-bs-display="static"
-            >
-              <BIconSearch class="fs-5" />
-            </a>
-
-            <div
-              class="dropdown-menu dropdown-menu-end shadow rounded p-2"
-              aria-labelledby="navSearch"
-            >
-              <b-form class="input-group">
-                <b-form-input class="border-primary" type="search" placeholder="Search..." />
-                <b-button variant="primary" class="m-0" type="submit">Search</b-button>
-              </b-form>
-            </div>
-          </CustomDropDown>
-
-          <li class="nav-item ms-2 d-none d-sm-block">
-            <a href="#" class="btn btn-sm btn-primary-soft mb-0">
-              <font-awesome-icon :icon="faRightToBracket" class="me-2" />
-              Sign Up
-            </a>
           </li>
-        </ul>
+
+
+          <ul class="nav flex-row align-items-center list-unstyled ms-xl-auto">
+            <CustomDropDown is="li" custom-class="nav-item me-3">
+              <button class="btn btn-link text-warning p-0 mb-0" id="bd-theme" aria-expanded="false"
+                data-bs-toggle="dropdown" data-bs-display="static" type="button">
+                <BIconCircleHalf class="fs-5" />
+              </button>
+
+              <ul class="dropdown-menu min-w-auto dropdown-menu-end" aria-labelledby="bd-theme">
+                <template v-for="(mode, idx) in themeModes" :key="idx">
+                  <li :class="{ 'mb-1': idx != themeModes.length - 1 }">
+                    <button type="button" class="dropdown-item d-flex align-items-center"
+                      :class="{ active: mode.theme === useLayout.theme }" @click="useLayout.setTheme(mode.theme)">
+                      <component :is="mode.icon" />
+                      &nbsp;&nbsp;{{ toSentenceCase(mode.theme) }}
+                    </button>
+                  </li>
+                </template>
+              </ul>
+            </CustomDropDown>
+          </ul>
+        </div>
       </b-container>
     </nav>
   </header>
@@ -98,13 +67,13 @@ import MobileMenu from '@/components/navbar/mobile-menu/MobileMenu.vue'
 import CustomDropDown from '@/components/CustomDropDown.vue'
 import LogoBox from '@/components/LogoBox.vue'
 
-import type { LayoutState } from '@/types/layout'
+import type { LangState, LayoutState } from '@/types/layout'
 import type { BSIconType } from '@/types'
 
 import { BIconCircleHalf, BIconMoonStars, BIconSearch, BIconSun } from 'bootstrap-icons-vue'
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons'
 
-import { toSentenceCase } from '@/helpers/change-casting'
+// import { toSentenceCase } from '@/helpers/change-casting'
 import { useLayoutStore } from '@/stores/layout'
 
 type ThemeModeType = {
@@ -126,6 +95,45 @@ const themeModes: ThemeModeType[] = [
     theme: 'auto'
   }
 ]
+
+type LangModeType = {
+  theme: LangState['theme']
+  icon: BSIconType
+  flag: any
+}
+
+const langModes: LangModeType[] = [
+  {
+    icon: BIconSun,
+    theme: 'Mongolia',
+    flag: 'MN'
+  },
+  {
+    icon: BIconMoonStars,
+    theme: 'English',
+    flag: 'GB'
+  },
+  {
+    icon: BIconCircleHalf,
+    theme: 'China',
+    flag: 'CN'
+  }
+]
+
+const currentLang = ref(langModes[0]) // Default: Mongolia
+
+function changeLang(mode: LangModeType) {
+  currentLang.value = mode
+  // Та энд хэлний тохиргоог хадгалах/өөрчлөх logic хийж болно (i18n гэх мэт)
+}
+
+function toSentenceCase(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+}
+
+function getFlagUrl(flag) {
+  return `https://flagcdn.com/${flag.toLowerCase()}.svg`
+}
 
 const useLayout = useLayoutStore()
 

@@ -559,7 +559,7 @@ const isFirstSegmentWithRph = (rph: number, index: number, currentIndex: number)
   // Get the first matching segment's index in the original array
   const firstMatchIndex = segments.findIndex((seg: { Rph: number; }) => seg.Rph === rph);
 
-  console.log(firstMatchIndex === currentIndex)
+  // console.log(firstMatchIndex === currentIndex)
 
   // // Check if current segment is the first one with this Rph
   return firstMatchIndex === currentIndex;

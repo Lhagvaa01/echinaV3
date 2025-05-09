@@ -54,17 +54,17 @@
           <li class="list-inline-item mb-0">
             <input type="checkbox" class="btn-check" id="btn-check-c1" :value="1" v-model="filters.preferredStops" />
             <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c1">Шууд нислэг ({{ direct.length
-            }})</label>
+              }})</label>
           </li>
           <li class="list-inline-item mb-0">
             <input type="checkbox" class="btn-check" id="btn-check-c2" :value="2" v-model="filters.preferredStops" />
             <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c2">1 Зогсолт ({{ OneStop.length
-            }})</label>
+              }})</label>
           </li>
           <li class="list-inline-item mb-0">
             <input type="checkbox" class="btn-check" id="btn-check-c3" :value="3" v-model="filters.preferredStops" />
             <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c3">2+ Зогсолт ({{ TwoStop.length
-            }})</label>
+              }})</label>
           </li>
         </ul>
       </b-card>
@@ -182,8 +182,6 @@
                   </label>
 
                   {{ comp.Iata }}
-                  <!-- <b-form-checkbox id="layoverType1">{{ comp.Name }}</b-form-checkbox>
-                  <span class="small">{{ comp.Iata }}</span> -->
                 </div>
               </div>
             </div>
@@ -192,10 +190,16 @@
           <b-collapse class="multi-collapse" id="lauoverCollapse">
             <div v-if="Array.isArray(StoreAirport)">
               <div v-for="(comp, index) in StoreAirport.slice(5)" :key="index" class="form-check">
-                <div v-if="comp">
+                <div v-if="comp" class=" px-4">
+                  <input class="form-check-input" type="checkbox" :value="comp.Iata" :id="'airportType' + index"
+                    v-model="filters.preferredAirPorts" />
                   <div class="d-flex justify-content-between align-items-center">
-                    <b-form-checkbox id="layoverType1">{{ comp.Name }}</b-form-checkbox>
-                    <span class="small">{{ comp.Iata }}</span>
+
+                    <label :for="'airportType' + index">
+                      {{ comp.Name }}
+                    </label>
+
+                    {{ comp.Iata }}
                   </div>
                 </div>
               </div>

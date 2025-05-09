@@ -1,7 +1,7 @@
 <template>
   <form class="card border">
     <b-card-header class="border-bottom px-4">
-      <b-card-title tag="h3" class="mb-0">Traveler Details</b-card-title>
+      <b-card-title tag="h3" class="mb-0">Зорчигчдын мэдээлэл</b-card-title>
     </b-card-header>
 
     <b-card-body class="py-4">
@@ -18,8 +18,9 @@
 
       <b-accordion class="accordion-icon accordion-bg-light">
         <b-accordion-item v-for="(traveler, index) in travelers" :key="traveler.id" :header-tag="'h6'"
-          header-class="font-base" button-class="fw-bold" :title="`Adult ${index + 1}`" body-class="mt-3" class="mb-3"
-          :visible="index === 0">
+          header-class="font-base" button-class="fw-bold"
+          :title="`${traveler.ageType == 'Adult' ? 'Том хүн' : traveler.ageType == 'Child' ? 'Хүүхэд' : ''} ${index + 1}`"
+          body-class="mt-3" class="mb-3" :visible="index === 0">
           <b-row class="g-4">
 
             <b-col md="3">
@@ -563,7 +564,9 @@ const confirmAndPay = async () => {
 
     if (response.ok) {
       const data = await response.json();
-      if (data.status != "ERROR") {
+      if (data.status === 'SUCCESS' && data.result?.Body?.AeroBookResponse?.AeroBookResult) {
+        var orderInfo = data.result.Body.AeroBookResponse.AeroBookResult;
+        const oid = orderInfo.value.oid;
         errorMessage.value.text = "Ажилттай захиалга үүслээ";
         errorMessage.value.status = "success";
         setTimeout(() => {
@@ -571,7 +574,8 @@ const confirmAndPay = async () => {
           errorMessage.value.status = '';
         }, 2000);
         sessionStorage.setItem("BookingInfo", JSON.stringify(data));
-        window.location.href = '/flights/booking';
+        window.location.href = `/flights/booking/${oid}/`;
+
       } else {
         sessionStorage.setItem("BookingInfo", JSON.stringify(data));
         errorMessage.value.text = `Алдаа: ${data.message}`;
@@ -634,6 +638,10 @@ const autoFillTravelerByPassport = async (passportNumber: any, traveler: { name:
       traveler.DocumentExDate.month = monthEx;
       traveler.DocumentExDate.year = yearEx;
       traveler.gender = result.sex;
+
+      travelers.value.forEach(traveler => {
+        traveler.ageType = getAgeCategory(traveler.birthDay).toString();
+      });
     }
   } catch (err) {
     console.error("Алдаа гарлаа:", err);

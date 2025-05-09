@@ -173,10 +173,11 @@
 import { faPlane } from '@fortawesome/free-solid-svg-icons'
 import { BIconEyeFill } from 'bootstrap-icons-vue'
 import element9 from '@/assets/images/element/09.svg'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useOptionStore } from '@/stores/optionStore'
 import { useFlightStore } from '@/stores/flight';
 import flightLogo from '@/assets/images/element/09.svg'
+import { useRoute } from 'vue-router'
 
 import OptionDetailTab from '@/views/flights/Details/components/OptionDetailTab.vue'
 import { ChevronDown, Briefcase, Luggage, User } from 'lucide-vue-next';
@@ -196,6 +197,42 @@ function onMouseLeave(index: string) {
 }
 
 const storedData = sessionStorage.getItem("BookingInfo") ? JSON.parse(sessionStorage.getItem("BookingInfo") || "") : null;
+
+// onMounted(async () => {
+//   if (!storedData) {
+//     await fetchOrderInfo()
+//   }
+// })
+// const route = useRoute()
+// const error = ref('')
+// const loading = ref(false)
+// async function fetchOrderInfo() {
+
+//   try {
+//     const response = await fetch(`https://api.airkacc.mn/api/orderinfo/${route.params.oid}/mn/`)
+//     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`)
+
+//     const data = await response.json()
+//     console.log('Захиалгын өгөгдөл:', data)
+
+//     if (data.status === 'SUCCESS' && data.result?.Body?.AeroBookResponse?.AeroBookResult) {
+//       var orderInfo = data.result.Body.AeroBookResponse.AeroBookResult
+//       // Хүсвэл sessionStorage-д хадгалах:
+//       sessionStorage.setItem('BookingInfo', JSON.stringify(orderInfo))
+//     } else {
+//       error.value = 'Захиалгын дугаар олдсонгүй.'
+//     }
+//   } catch (err: any) {
+//     console.error('Алдаа дэлгэрэнгүй:', err)
+//     if (err.response) {
+//       error.value = `Серверээс буцсан алдаа: ${err.response.status} - ${err.response.statusText}`
+//     } else {
+//       error.value = 'Алдаа гарлаа. Та дахин оролдоно уу.'
+//     }
+//   } finally {
+//     loading.value = false
+//   }
+// }
 
 const infos = computed(() => {
   // console.log(storedData?.result?.Body?.AeroBookResponse?.AeroBookResult)

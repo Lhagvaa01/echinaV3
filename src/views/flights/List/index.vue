@@ -1,5 +1,5 @@
 <template>
-  <NavBar4 />
+  <Header />
 
   <main>
     <Booking @search-flights="loadFlights" />
@@ -22,6 +22,7 @@
 
 import { ref } from 'vue'
 import NavBar4 from '@/views/flights/List/components/NavBar4.vue'
+import Header from '@/components/NewNavbar.vue'
 import Booking from './components/Booking.vue'
 import NoticeBoard from './components/NoticeBoard.vue'
 import FlightList from './components/FlightList.vue'

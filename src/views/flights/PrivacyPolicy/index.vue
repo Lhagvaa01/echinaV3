@@ -1,5 +1,5 @@
 <template>
-  <NavBar4 />
+  <Header />
 
   <main>
     <!-- <section> -->
@@ -24,6 +24,7 @@
 
 <script setup lang="ts">
 import NavBar4 from '@/views/flights/Booking/components/NavBar4.vue'
+import Header from '@/components/NewNavbar.vue'
 import PrivacyPolicy from './components/PrivacyPolicy.vue'
 import Footer from '@/views/flights/Booking/components/Footer.vue'
 import BackToTop from '@/components/BackToTop.vue'

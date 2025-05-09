@@ -70,6 +70,7 @@ declare module 'vue' {
     MobileMenuItem: typeof import('./src/components/navbar/mobile-menu/MobileMenuItem.vue')['default']
     MobileMenuItemLink: typeof import('./src/components/navbar/mobile-menu/MobileMenuItemLink.vue')['default']
     MobileMenuItemWithChildren: typeof import('./src/components/navbar/mobile-menu/MobileMenuItemWithChildren.vue')['default']
+    NewNavbar: typeof import('./src/components/NewNavbar.vue')['default']
     PasswordInput: typeof import('./src/components/PasswordInput.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

@@ -1,5 +1,5 @@
 <template>
-  <NavBar4 />
+  <Header />
 
   <main>
     <Stepper :step="2" />
@@ -17,7 +17,7 @@
                   <ul class="list-inline mb-2">
                     <li class="list-inline-item me-2">
                       <h3 class="mb-0">{{ getAllSegments()[0].Departure?.City }}({{ getAllSegments()[0].Departure?.Iata
-                      }})</h3>
+                        }})</h3>
                     </li>
                     <li class="list-inline-item me-2">
                       <h3 class="mb-0">
@@ -27,7 +27,7 @@
                     <li class="list-inline-item me-0">
                       <h3 class="mb-0">{{ getAllSegments()[getAllSegments().length - 1].Arrival?.City }}({{
                         getAllSegments()[getAllSegments().length - 1].Arrival?.Iata
-                        }})</h3>
+                      }})</h3>
                     </li>
                   </ul>
                   <ul class="nav nav-divider h6 fw-normal text-body mb-0">
@@ -71,6 +71,7 @@ import { faPlane } from '@fortawesome/free-solid-svg-icons'
 import { BIconArrowRight } from 'bootstrap-icons-vue'
 
 import NavBar4 from '@/views/flights/Details/components/NavBar4.vue'
+import Header from '@/components/NewNavbar.vue'
 import BaggageFareRules from '@/views/flights/Details/components/BaggageFareRules.vue'
 import Information from '@/views/flights/Details/components/Information.vue'
 import TravelerDetails from '@/views/flights/Details/components/TravelerDetails.vue'

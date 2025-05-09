@@ -91,7 +91,7 @@
                         <BIconCalendar class="me-2" /> Хэзээ
                       </label>
                       <CustomFlatpicker id="departureDate" placeholder="Select date" v-model="departureDate"
-                        :options="{ dateFormat: 'd.m.Y' }" />
+                        :options="{ dateFormat: 'Y.m.d' }" />
                     </div>
                   </b-col>
 
@@ -164,7 +164,7 @@
                         Явах огноо
                       </label>
                       <CustomFlatpicker id="round-departureDate" placeholder="Select date" v-model="departureDate"
-                        :options="{ dateFormat: 'd.m.Y' }" />
+                        :options="{ dateFormat: 'Y.m.d' }" />
                     </div>
                   </b-col>
 
@@ -175,7 +175,7 @@
                         Буцах огноо
                       </label>
                       <CustomFlatpicker id="round-returnDate" placeholder="Select date" v-model="returnDate"
-                        :options="{ dateFormat: 'd.m.Y' }" />
+                        :options="{ dateFormat: 'Y.m.d', minDate: departureDate }" />
                     </div>
                   </b-col>
 
@@ -230,7 +230,7 @@
                             <BIconCalendar class="me-2" /> Хэзээ
                           </label>
                           <CustomFlatpicker :id="`departureDate${index}`" placeholder="Select date"
-                            v-model="trip.departureDate" :options="{ dateFormat: 'd.m.Y' }" />
+                            v-model="trip.departureDate" :options="{ dateFormat: 'Y.m.d' }" />
                         </div>
                       </b-col>
 
@@ -317,13 +317,18 @@ const selectedTravelers = ref('select-travelers')
 const generateTicketUrl = computed(() => {
 
   sessionStorage.setItem("trips", show.value.toString());
-  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${departureDate.value}&fclass=Econom&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
+  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${formatDateFinish(departureDate.value)}&fclass=Econom&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
 });
 
 const generateTicketUrlRound = computed(() => {
   sessionStorage.setItem("trips", show.value.toString());
-  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${departureDate.value}&backDate=${returnDate.value}&fclass=Econom&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
+  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${formatDateFinish(departureDate.value)}&backDate=${formatDateFinish(returnDate.value)}&fclass=Econom&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
 });
+
+const formatDateFinish = (date: string): string => {
+  const [year, month, day] = date.split('.');
+  return `${day}.${month}.${year}`;
+};
 
 
 // const destinationOptions = [
@@ -399,28 +404,44 @@ const emit = defineEmits(['search-flights']);
 // let selectedDestination2 = ref(findOptionValue(route.query.arr as string | null) || "PEK");
 
 
-function formatDate(date: Date): string {
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // 0-с эхэлдэг учир 1 нэмнэ
-  const year = date.getFullYear();
-  return `${day}.${month}.${year}`;
+function parseDMYStringToDate(dateStr: string): Date {
+  const [day, month, year] = dateStr.split('.');
+  return new Date(`${year}-${month}-${day}`);
 }
 
-// Өнөөдрийн огноог авах
+function formatDate(date: Date): string {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${year}.${month}.${day}`;
+}
+
 const today = new Date();
 
-// Эхлэх огноог өнөөдөр болгох
-const departureDate = ref<string | undefined>(
+const departureDate = ref<string>(
   Array.isArray(route.query.date)
-    ? route.query.date[0] ?? formatDate(today)  // Хэрэв массив бол эхний элементийг авна
-    : route.query.date ?? formatDate(today)     // Хэрэв string эсвэл null бол өнөөдрийн огноо
+    ? formatDate(parseDMYStringToDate(route.query.date[0].toString()))
+    : formatDate(parseDMYStringToDate(route.query.date?.toString() ?? formatDate(today)))
 );
 
 // Буцах огноо: Эхлэх огнооос 7 хоногийн дараа
 const returnDate = ref<string | undefined>(
   Array.isArray(route.query.backDate)
-    ? route.query.backDate[0] ?? formatDate(new Date(today.setDate(today.getDate() + 7)))  // 7 хоногийн дараа
-    : route.query.backDate ?? formatDate(new Date(today.setDate(today.getDate() + 7)))   // 7 хоногийн дараа
+    ? formatDate(parseDMYStringToDate(route.query.backDate[0])) ?? formatDate(new Date(today.setDate(today.getDate() + 7)))  // 7 хоногийн дараа
+    : formatDate(parseDMYStringToDate(route.query.backDate)) ?? formatDate(new Date(today.setDate(today.getDate() + 7)))   // 7 хоногийн дараа
+);
+function addDaysn(date: Date, days: number): Date {
+  const copy = new Date(date);
+  copy.setDate(copy.getDate() + days);
+  return copy;
+}
+
+const returnDates = ref<string>(
+  Array.isArray(route.query.backDate)
+    ? formatDate(parseDMYStringToDate(route.query.backDate[0]))
+    : route.query.backDate
+      ? formatDate(parseDMYStringToDate(route.query.backDate.toString()))
+      : formatDate(new Date(today.setDate(today.getDate() + 7)))
 );
 
 // Огноо дээр өдрүүд нэмэх функц
@@ -430,8 +451,8 @@ const convertToISOFormat = (dateStr: string): string => {
 };
 
 const addDays = (date: string, days: number): Date => {
-  const isoDate = convertToISOFormat(date);  // `dd.mm.yyyy`-ийг `yyyy-mm-dd` болгон хөрвүүлэх
-  const result = new Date(isoDate); // Огноог хуулбарлах
+  // const isoDate = convertToISOFormat(date);  // `dd.mm.yyyy`-ийг `yyyy-mm-dd` болгон хөрвүүлэх
+  const result = new Date(date); // Огноог хуулбарлах
   result.setDate(result.getDate() + days); // Өдрүүдийг нэмэх
 
   return result;  // Шинэ огноог буцаах
@@ -490,8 +511,8 @@ const selectedDestination3 = ref<Destination | null>(null);
 const selectedDestination4 = ref<Destination | null>(null);
 
 onMounted(() => {
-  const from = sessionStorage.getItem("selectedDestination");
-  const to = sessionStorage.getItem("selectedDestination2");
+  const from = sessionStorage.getItem("selectedDestination") || '{"airportName":"Ulaanbaatar","airportCode":"UBN"}';
+  const to = sessionStorage.getItem("selectedDestination2") || '{"airportName":"Beijing","airportCode":"PEK"}';
 
   try {
     selectedDestination.value = from?.startsWith("{")
@@ -515,7 +536,8 @@ watch(selectedDestination, (newVal) => {
 });
 
 watch(selectedDestination2, (newVal) => {
-  console.log(newVal)
+  // console.log(route.query.date);
+  // console.log(newVal)
   if (newVal) {
     const valueToStore =
       newVal;
@@ -615,12 +637,14 @@ const trips = ref<Trip[]>([
 
 // Шинэ мөр нэмэх
 const addTrip = () => {
-  trips.value.push({
-    selectedDestination: { airportCode: '', airportName: '' }, // Empty destination
-    selectedDestination2: { airportCode: '', airportName: '' }, // Empty destination
-    departureDate: '',
-  });
-  sessionStorage.setItem("trips", trips.value.length.toString());
+  if (trips.value.length < 3) {
+    trips.value.push({
+      selectedDestination: { airportCode: '', airportName: '' }, // Empty destination
+      selectedDestination2: { airportCode: '', airportName: '' }, // Empty destination
+      departureDate: '',
+    });
+    sessionStorage.setItem("trips", trips.value.length.toString());
+  }
 };
 
 // Мөр устгах

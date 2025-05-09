@@ -104,7 +104,8 @@ const flightRoutes = [
     component: () => import('@/views/flights/Details/index.vue')
   },
   {
-    path: '/flights/booking',
+    path: '/flights/booking/',
+    // path: '/flights/booking/:oid/',
     name: 'flights.booking',
     meta: {
       title: 'Booking - Multipurpose Online Booking Theme'

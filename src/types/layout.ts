@@ -11,6 +11,16 @@ export type ThemeModeType = {
   icon: BSIconType
 }
 
+export type LangState = {
+  theme: 'Mongolia' | 'English' | 'China'
+  dir: 'ltr' | 'rtl'
+}
+
+export type LangModeType = {
+  theme: LangState['theme']
+  icon: BSIconType
+}
+
 export type BookingMenuItemType = {
   key: string
   label: string

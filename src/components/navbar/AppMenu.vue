@@ -42,10 +42,27 @@
         <MenuItem v-else :item="item" link-class="nav-link" />
       </template> -->
 
-      <template v-for="item in menuItems" :key="item.key">
+      <!-- <template v-for="item in menuItems" :key="item.key">
+        <div>{{ item.label }}</div>
         <MenuItem :item="item"
           link-class="nav-link text-black d-flex align-items-center gap-3 justify-content-between" />
-      </template>
+      </template> -->
+      <!-- <template> -->
+      <!-- <header class="bg-light shadow-sm"> -->
+      <div class="container py-3">
+        <div class="d-flex flex-wrap align-items-center justify-content-between">
+          <!-- <h1 class="h4 mb-0">🌐 KACC</h1> -->
+          <nav class="d-flex flex-wrap gap-3">
+            <div v-for="item in menuItems" :key="item.key" class="nav-item">
+              <router-link :to="item.link" class="nav-link px-3 text-dark fw-semibold">
+                {{ item.label }}
+              </router-link>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <!-- </header> -->
+      <!-- </template> -->
 
 
 
@@ -115,5 +132,20 @@ defineProps<AppMenuProps>()
 
 const menuItems = getAppMenuItems()
 
+function navigateTo(link: { name: string }) {
+  router.push(link)
+}
+
 const currentRouteName = router.currentRoute.value.name
 </script>
+
+<style scoped>
+.nav-link {
+  transition: color 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+  color: #0d6efd;
+  text-decoration: underline;
+}
+</style>

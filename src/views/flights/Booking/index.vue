@@ -1,5 +1,5 @@
 <template>
-  <NavBar4 />
+  <Header />
 
   <main>
 
@@ -40,6 +40,7 @@
 
 <script setup lang="ts">
 import NavBar4 from '@/views/flights/Booking/components/NavBar4.vue'
+import Header from '@/components/NewNavbar.vue'
 import PaymentDetails from '@/views/flights/Booking/components/PaymentDetails.vue'
 import TravelerInfo from '@/views/flights/Booking/components/TravelerInfo.vue'
 import Warning from '@/views/flights/Booking/components/Warning.vue'

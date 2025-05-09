@@ -7,7 +7,7 @@
     </p>
   </b-alert>
 
-  <NavBar5 />
+  <Header />
 
   <main>
     <Hero />
@@ -30,6 +30,7 @@
 
 <script setup lang="ts">
 import NavBar5 from '@/views/flights/Home/components/NavBar5.vue'
+import Header from '@/components/NewNavbar.vue'
 import Hero from '@/views/flights/Home/components/Hero.vue'
 import SpecialOffers from '@/views/flights/Home/components/SpecialOffers.vue'
 import PopularDestinations from '@/views/flights/Home/components/PopularDestinations.vue'

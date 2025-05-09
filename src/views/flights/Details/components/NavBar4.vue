@@ -1,235 +1,80 @@
 <template>
   <header class="navbar-light header-sticky" :class="{ 'header-sticky-on': isSticky }">
-    <nav class="navbar navbar-expand-xl">
+    <nav class="navbar navbar-expand-xl ">
       <b-container>
-        <LogoBox />
+        <div class="d-flex justify-content-center align-items-center">
+          <LogoBox />
 
-        <!-- Responsive navbar toggler -->
-        <button
-          class="navbar-toggler ms-auto mx-3 p-0 p-sm-2"
-          type="button"
-          v-b-toggle="'navbar-collapse'"
-        >
-          <span class="navbar-toggler-animation py-1">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-          <span class="d-none d-sm-inline-block small ms-1">Menu</span>
-        </button>
 
-        <MobileMenu v-if="isMobileMenu" show-extra-pages />
+          <MobileMenu />
+        </div>
+        <!-- <AppMenu v-else /> -->
 
-        <AppMenu v-else show-extra-pages menu-class="mx-auto" />
+        <div class="d-flex align-items-center gap-3">
+          <li class="nav flex-row align-items-center list-unstyled ms-xl-auto dropdown">
+            <!-- Current Language Button -->
+            <button class="btn btn-link text-warning p-0 mb-0 " id="langSwitcher" data-bs-toggle="dropdown"
+              aria-expanded="false" type="button">
+              <img :src="getFlagUrl(currentLang.flag)" alt="lang" class="rounded-0"
+                style="width: 46px; height: 26px; object-fit: cover" />
+            </button>
 
-        <ul class="nav flex-row align-items-center list-unstyled ms-xl-auto">
-          <!-- Search -->
-          <CustomDropDown is="li" custom-class="nav-item nav-search me-3 d-none d-sm-block">
-            <a
-              class="nav-notification btn btn-light mb-0 p-0"
-              href="#"
-              id="searchDropdown"
-              role="button"
-              data-bs-auto-close="outside"
-              data-bs-display="static"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <BIconSearch />
-            </a>
+            <!-- Dropdown menu -->
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langSwitcher">
+              <li v-for="(mode, idx) in langModes" :key="idx" class="dropdown-item d-flex align-items-center"
+                @click="changeLang(mode)" :class="{ active: currentLang.theme === mode.theme }"
+                style="cursor: pointer;">
+                <img :src="getFlagUrl(mode.flag)" alt="lang" class="rounded-0"
+                  style="width: 46px; height: 26px; object-fit: cover" />
+                <span class="ms-2">{{ toSentenceCase(mode.theme) }}</span>
 
-            <div
-              class="dropdown-menu dropdown-animation dropdown-menu-end p-2"
-              aria-labelledby="searchDropdown"
-            >
-              <div class="nav flex-nowrap align-items-center">
-                <div class="nav-item w-100">
-                  <b-form class="input-group">
-                    <b-form-input class="border-primary" type="search" placeholder="Search..." />
-                    <b-button variant="primary" class="m-0" type="submit">Search</b-button>
-                  </b-form>
-                </div>
-              </div>
-            </div>
-          </CustomDropDown>
-
-          <!-- Notification -->
-          <CustomDropDown is="li" custom-class="nav-item me-3">
-            <a
-              class="nav-notification btn btn-light p-0 mb-0"
-              href="#"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              data-bs-auto-close="outside"
-            >
-              <BIconBell class="fa-fw" />
-            </a>
-            <span class="notif-badge animation-blink"></span>
-
-            <div
-              class="dropdown-menu dropdown-animation dropdown-menu-end dropdown-menu-size-md shadow-lg p-0"
-            >
-              <b-card class="bg-transparent" body-class="p-0">
-                <b-card-header
-                  class="bg-transparent d-flex justify-content-between align-items-center border-bottom"
-                >
-                  <h6 class="m-0">
-                    Notifications
-                    <span class="badge bg-danger bg-opacity-10 text-danger ms-2">4 new</span>
-                  </h6>
-                  <a class="small" href="#">Clear all</a>
-                </b-card-header>
-
-                <b-card-body class="p-0">
-                  <ul class="list-group list-group-flush list-unstyled p-2">
-                    <li v-for="(item, idx) in notificationData" :key="idx">
-                      <a
-                        href="#"
-                        class="list-group-item list-group-item-action rounded border-0 mb-1 p-3"
-                        :class="{ 'notif-unread': idx === 0 }"
-                      >
-                        <h6 class="mb-2">{{ item.title }}</h6>
-                        <p class="mb-0 small">{{ item.content }}</p>
-                        <span>{{ item.time }}</span>
-                      </a>
-                    </li>
-                  </ul>
-                </b-card-body>
-
-                <b-card-footer class="bg-transparent text-center border-top">
-                  <a href="#" class="btn btn-sm btn-link mb-0 p-0">See all incoming activity</a>
-                </b-card-footer>
-              </b-card>
-            </div>
-          </CustomDropDown>
-
-          <!-- Profile -->
-          <CustomDropDown is="li" custom-class="nav-item">
-            <a
-              class="avatar avatar-sm p-0"
-              href="#"
-              role="button"
-              data-bs-auto-close="outside"
-              data-bs-display="static"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <img class="avatar-img rounded-2" :src="avatar1" alt="avatar" />
-            </a>
-
-            <ul
-              class="dropdown-menu dropdown-animation dropdown-menu-end shadow pt-3"
-              aria-labelledby="profileDropdown"
-            >
-              <li class="px-2 pb-2">
-                <div class="d-flex align-items-center">
-                  <div class="avatar me-3">
-                    <img class="avatar-img rounded-circle shadow" :src="avatar1" alt="avatar" />
-                  </div>
-                  <div>
-                    <a class="h6 mt-2 mt-sm-0" href="#">Lori Ferguson</a>
-                    <p class="small m-0">example@gmail.com</p>
-                  </div>
-                </div>
-              </li>
-
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-
-              <li>
-                <router-link :to="{ name: 'user.bookings' }" class="dropdown-item">
-                  <BIconBookmarkCheck class="fa-fw me-2" />
-                  My Bookings
-                </router-link>
-              </li>
-              <li>
-                <router-link :to="{ name: 'user.wishlist' }" class="dropdown-item">
-                  <BIconHeart class="fa-fw me-2" />
-                  My Wishlist
-                </router-link>
-              </li>
-              <li>
-                <router-link :to="{ name: 'user.settings' }" class="dropdown-item">
-                  <BIconGear class="fa-fw me-2" />
-                  Settings
-                </router-link>
-              </li>
-              <li>
-                <router-link :to="{ name: 'pages.help.center' }" class="dropdown-item">
-                  <BIconInfoCircle class="fa-fw me-2" />
-                  Help Center
-                </router-link>
-              </li>
-              <li>
-                <router-link
-                  :to="{ name: 'auth.sign-in' }"
-                  class="dropdown-item bg-danger-soft-hover"
-                >
-                  <BIconPower class="fa-fw me-2" />
-                  Sign Out
-                </router-link>
-              </li>
-
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-
-              <!-- Dark mode options -->
-              <li>
-                <div
-                  class="nav-pills-primary-soft theme-icon-active d-flex justify-content-between align-items-center p-2 pb-0"
-                >
-                  <span>Mode:</span>
-
-                  <button
-                    v-for="mode in themeModes"
-                    :key="mode.theme"
-                    type="button"
-                    class="btn btn-link nav-link text-primary-hover mb-0 p-0"
-                    :class="{ active: mode.theme === useLayout.theme }"
-                    @click="useLayout.setTheme(mode.theme)"
-                    v-b-tooltip.hover
-                    :title="mode.theme"
-                  >
-                    <component :is="mode.icon" />
-                  </button>
-                </div>
               </li>
             </ul>
-          </CustomDropDown>
-        </ul>
+          </li>
+
+
+          <ul class="nav flex-row align-items-center list-unstyled ms-xl-auto">
+            <CustomDropDown is="li" custom-class="nav-item me-3">
+              <button class="btn btn-link text-warning p-0 mb-0" id="bd-theme" aria-expanded="false"
+                data-bs-toggle="dropdown" data-bs-display="static" type="button">
+                <BIconCircleHalf class="fs-5" />
+              </button>
+
+              <ul class="dropdown-menu min-w-auto dropdown-menu-end" aria-labelledby="bd-theme">
+                <template v-for="(mode, idx) in themeModes" :key="idx">
+                  <li :class="{ 'mb-1': idx != themeModes.length - 1 }">
+                    <button type="button" class="dropdown-item d-flex align-items-center"
+                      :class="{ active: mode.theme === useLayout.theme }" @click="useLayout.setTheme(mode.theme)">
+                      <component :is="mode.icon" />
+                      &nbsp;&nbsp;{{ toSentenceCase(mode.theme) }}
+                    </button>
+                  </li>
+                </template>
+              </ul>
+            </CustomDropDown>
+          </ul>
+        </div>
       </b-container>
     </nav>
   </header>
 </template>
 
 <script setup lang="ts">
-import {
-  BIconSearch,
-  BIconBell,
-  BIconBookmarkCheck,
-  BIconHeart,
-  BIconGear,
-  BIconInfoCircle,
-  BIconPower,
-  BIconSun,
-  BIconMoonStars,
-  BIconCircleHalf
-} from 'bootstrap-icons-vue'
-
-import avatar1 from '@/assets/images/avatar/01.jpg'
 import { computed, onMounted, ref } from 'vue'
 
-import type { BSIconType } from '@/types'
-import type { LayoutState } from '@/types/layout'
-import { useLayoutStore } from '@/stores/layout'
-
-import LogoBox from '@/components/LogoBox.vue'
 import AppMenu from '@/components/navbar/AppMenu.vue'
 import MobileMenu from '@/components/navbar/mobile-menu/MobileMenu.vue'
 import CustomDropDown from '@/components/CustomDropDown.vue'
+import LogoBox from '@/components/LogoBox.vue'
+
+import type { LangState, LayoutState } from '@/types/layout'
+import type { BSIconType } from '@/types'
+
+import { BIconCircleHalf, BIconMoonStars, BIconSearch, BIconSun } from 'bootstrap-icons-vue'
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons'
+
+// import { toSentenceCase } from '@/helpers/change-casting'
+import { useLayoutStore } from '@/stores/layout'
 
 type ThemeModeType = {
   theme: LayoutState['theme']
@@ -251,6 +96,47 @@ const themeModes: ThemeModeType[] = [
   }
 ]
 
+type LangModeType = {
+  theme: LangState['theme']
+  icon: BSIconType
+  flag: any
+}
+
+const langModes: LangModeType[] = [
+  {
+    icon: BIconSun,
+    theme: 'Mongolia',
+    flag: 'MN'
+  },
+  {
+    icon: BIconMoonStars,
+    theme: 'English',
+    flag: 'GB'
+  },
+  {
+    icon: BIconCircleHalf,
+    theme: 'China',
+    flag: 'CN'
+  }
+]
+
+const currentLang = ref(langModes[0]) // Default: Mongolia
+
+function changeLang(mode: LangModeType) {
+  currentLang.value = mode
+  // Та энд хэлний тохиргоог хадгалах/өөрчлөх logic хийж болно (i18n гэх мэт)
+}
+
+function toSentenceCase(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+}
+
+function getFlagUrl(flag) {
+  return `https://flagcdn.com/${flag.toLowerCase()}.svg`
+}
+
+const useLayout = useLayoutStore()
+
 let isSticky = ref<boolean>(false)
 
 onMounted(() => {
@@ -259,27 +145,7 @@ onMounted(() => {
   })
 })
 
-const useLayout = useLayoutStore()
-
 const isMobileMenu = computed(() => {
   return window.innerWidth <= 1200
 })
-
-type NotificationType = {
-  title: string
-  content?: string
-  time: string
-}
-
-const notificationData: NotificationType[] = [
-  {
-    title: 'New! Booking flights from New York ✈️',
-    content: 'Find the flexible ticket on flights around the world. Start searching today',
-    time: '05 Feb 2024'
-  },
-  {
-    title: 'Sunshine saving are here 🌞 save 30% or more on a stay',
-    time: '24 Aug 2024'
-  }
-]
 </script>
