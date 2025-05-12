@@ -287,6 +287,8 @@ import { computed, watch, ref } from 'vue'
 import GuestAndRoomForm from '@/components/GuestAndRoomForm.vue'
 import type { GuestAndRoomFormType } from '@/types'
 
+import SelectFormInput from '@/components/SelectFormInput.vue'
+
 import AirportSelector from '@/components/AirportSelector.vue'
 import { useI18n } from 'vue-i18n'
 
@@ -314,19 +316,22 @@ const formValue = ref<GuestAndRoomFormType>({
 // const selectedDestination2 = ref(route.query.arr || 'PEK')
 // const selectedDestination3 = ref('select-location')
 // const selectedDestination4 = ref('select-location')
-const selectedClass = ref('select-class')
 const selectedTravelers = ref('select-travelers')
 
 
 const generateTicketUrl = computed(() => {
 
   sessionStorage.setItem("trips", show.value.toString());
-  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${formatDateFinish(departureDate.value)}&fclass=Econom&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
+  sessionStorage.setItem("fclass", JSON.stringify(selectedClass.value));
+
+  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${formatDateFinish(departureDate.value)}&fclass=${selectedClass.value}&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
 });
 
 const generateTicketUrlRound = computed(() => {
   sessionStorage.setItem("trips", show.value.toString());
-  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${formatDateFinish(departureDate.value)}&backDate=${formatDateFinish(returnDate.value)}&fclass=Econom&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
+  sessionStorage.setItem("fclass", JSON.stringify(selectedClass.value));
+
+  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${formatDateFinish(departureDate.value)}&backDate=${formatDateFinish(returnDate.value)}&fclass=${selectedClass.value}&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
 });
 
 const formatDateFinish = (date: string): string => {
@@ -343,11 +348,10 @@ const formatDateFinish = (date: string): string => {
 // ]
 
 const classOptions = [
-  { value: 'select-class', text: 'Select Class' },
-  { value: 'economy', text: 'Economy' },
-  { value: 'Premium Economy', text: 'Premium Economy' },
+  { value: 'Econom', text: 'Economy' },
+  { value: 'Premium', text: 'Premium Economy' },
   { value: 'Business', text: 'Business' },
-  { value: 'First Class', text: 'First Class' }
+  { value: 'First', text: 'First Class' }
 ]
 const travelerOptions = [
   { value: 'select-travelers', text: 'Select Travelers' },
@@ -521,6 +525,14 @@ interface Destination {
   airportName: string;
 }
 
+interface Class {
+  value: string;
+  text: string;
+}
+
+
+const selectedClass = ref<string>('Econom')
+
 const selectedDestination = ref<Destination | null>(null);
 const selectedDestination2 = ref<Destination | null>(null);
 const selectedDestination3 = ref<Destination | null>(null);
@@ -529,6 +541,8 @@ const selectedDestination4 = ref<Destination | null>(null);
 onMounted(() => {
   const from = sessionStorage.getItem("selectedDestination") || '{"airportName":"Ulaanbaatar","airportCode":"UBN"}';
   const to = sessionStorage.getItem("selectedDestination2") || '{"airportName":"Beijing","airportCode":"PEK"}';
+  const fclass = sessionStorage.getItem("fclass") || '"Econom"'
+  console.log(sessionStorage.getItem("fclass"))
 
   try {
     selectedDestination.value = from?.startsWith("{")
@@ -538,6 +552,10 @@ onMounted(() => {
     selectedDestination2.value = to?.startsWith("{")
       ? JSON.parse(to)
       : to || null;
+
+    selectedClass.value = fclass?.startsWith('"')
+      ? JSON.parse(fclass)
+      : fclass || null;
   } catch (e) {
     console.error("Session parse error:", e);
   }
@@ -676,6 +694,10 @@ const generateTicketUrlMulti = computed(() => {
   }
   if (!trips.value.length) return "/flights/list/";
 
+
+  sessionStorage.setItem("fclass", JSON.stringify(selectedClass.value));
+
+
   const baseUrl = "/flights/list/";
   const params = [];
 
@@ -688,7 +710,7 @@ const generateTicketUrlMulti = computed(() => {
   params.push(`dpt=${encodeURIComponent(firstTrip.selectedDestination.airportCode)}`);
   params.push(`arr=${encodeURIComponent(firstTrip.selectedDestination2.airportCode)}`);
   params.push(`date=${encodeURIComponent(firstTrip.departureDate)}`);
-  params.push(`fclass=Econom`);
+  params.push(`fclass=${selectedClass.value}`);
   params.push(`adults=${formValue.value.guests.adults || 1}`);
   params.push(`childs=${formValue.value.guests.children || 0}`);
   params.push(`infants=0`);
@@ -751,6 +773,10 @@ function searchFlights() {
   const date = getQueryParam("date", "2025-01-25");
   const backDate = getQueryParam("backDate", "");
   const isRound = show.value; // 1: Нэг чиглэл, 2: Хоёр чиглэл, 3: Олон чиглэл
+  const fclass = getQueryParam("fclass", "");
+  console.log(fclass)
+
+  sessionStorage.setItem("fclass", JSON.stringify(selectedClass.value));
 
   // 👥 Зорчигчдын тоо
   const travelers = {
@@ -787,7 +813,7 @@ function searchFlights() {
 
 
   // 📢 Эмит функцээр дамжуулах
-  emit("search-flights", { trips, travelers, isRound });
+  emit("search-flights", { trips, travelers, isRound, fclass });
 }
 
 

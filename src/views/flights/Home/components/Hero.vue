@@ -356,12 +356,12 @@ const selectedTravelers = ref('select-travelers')
 const generateTicketUrl = computed(() => {
 
   sessionStorage.setItem("trips", show.value.toString());
-  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${formatDateFinish(departureDate.value)}&fclass=Econom&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
+  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${formatDateFinish(departureDate.value)}&fclass=${selectedClass.value}&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
 });
 
 const generateTicketUrlRound = computed(() => {
   sessionStorage.setItem("trips", show.value.toString());
-  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${formatDateFinish(departureDate.value)}&backDate=${formatDateFinish(returnDate.value)}&fclass=Econom&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
+  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${formatDateFinish(departureDate.value)}&backDate=${formatDateFinish(returnDate.value)}&fclass=${selectedClass.value}&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
 });
 
 const formatDateFinish = (date: string): string => {
@@ -378,11 +378,10 @@ const formatDateFinish = (date: string): string => {
 // ]
 
 const classOptions = [
-  { value: 'select-class', text: 'Select Class' },
-  { value: 'economy', text: 'Economy' },
-  { value: 'Premium Economy', text: 'Premium Economy' },
+  { value: 'Econom', text: 'Economy' },
+  { value: 'Premium', text: 'Premium Economy' },
   { value: 'Business', text: 'Business' },
-  { value: 'First Class', text: 'First Class' }
+  { value: 'First', text: 'First Class' }
 ]
 const travelerOptions = [
   { value: 'select-travelers', text: 'Select Travelers' },

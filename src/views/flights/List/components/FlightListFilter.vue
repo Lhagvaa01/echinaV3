@@ -1,5 +1,6 @@
 <template>
   <div v-if="(filteredData.length > 0 ? filteredData.length : StoreflightInfos.length) == 0">
+
     <SkeletonLoader v-for="n in 10" :key="n" />
   </div>
   <div v-else>
@@ -54,17 +55,17 @@
           <li class="list-inline-item mb-0">
             <input type="checkbox" class="btn-check" id="btn-check-c1" :value="1" v-model="filters.preferredStops" />
             <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c1">Шууд нислэг ({{ direct.length
-              }})</label>
+            }})</label>
           </li>
           <li class="list-inline-item mb-0">
             <input type="checkbox" class="btn-check" id="btn-check-c2" :value="2" v-model="filters.preferredStops" />
             <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c2">1 Зогсолт ({{ OneStop.length
-              }})</label>
+            }})</label>
           </li>
           <li class="list-inline-item mb-0">
             <input type="checkbox" class="btn-check" id="btn-check-c3" :value="3" v-model="filters.preferredStops" />
             <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c3">2+ Зогсолт ({{ TwoStop.length
-              }})</label>
+            }})</label>
           </li>
         </ul>
       </b-card>

@@ -2,8 +2,11 @@
     <!-- <div>Нийт нислэгийн тоо: {{ filteredData.length > 0 ? filteredData.length : StoreflightInfos.length }}</div> -->
     <!-- <div v-if="(filteredData.length > 0 ? filteredData.length : StoreflightInfos.length) == 0"> -->
     <div v-if="(paginatedFlights.length) == 0">
+
         <SkeletonLoader v-for="n in 10" :key="n" />
     </div>
+
+
 
 
 
@@ -27,9 +30,9 @@
 
                     <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('asc')">{{ t('txtPriceASC')
-                                }}</a></li>
+                        }}</a></li>
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('desc')">{{ t('txtPriceDESC')
-                                }}</a>
+                        }}</a>
                         </li>
                     </ul>
                 </div>
@@ -123,7 +126,7 @@
                                                                     ?.Value || 'Unknown Airline'
                                                             }}
                                                             <span class="text-muted">({{ segment.FlightNum || 'SA-1254'
-                                                            }})</span>
+                                                                }})</span>
                                                         </div>
                                                         <div class="d-flex align-items-center mt-1">
                                                             <Briefcase v-if="segment.Baggage" class="me-2"
@@ -234,10 +237,10 @@
                                                 <h4 v-if="paginatedFlights[Mainindex].TotalPrice != paginatedFlights[Mainindex].AdultPrice"
                                                     class="d-flex align-items-center">
                                                     <span class="fw-medium fs-5 text-primary">{{ route.query.adults
-                                                        }}</span>
+                                                    }}</span>
                                                     <User :size="36" color="#3949AB" class="me-2" />
                                                     <span class="fw-medium fs-5 text-primary">{{ route.query.childs
-                                                        }}</span>
+                                                    }}</span>
                                                     <User color="#3949AB" class="me-2" />
                                                     {{
                                                         currency
@@ -288,7 +291,7 @@
                                 class="list-inline bg-light rounded-2 d-sm-flex text-center justify-content-sm-between mb-0 px-4 py-2">
                                 <li class="list-inline-item text-primary">{{ t('txtAvailableSeat') }}: {{
                                     segments.ResBookDesigQuantity
-                                }}</li>
+                                    }}</li>
                                 <h6 class="fw-medium mb-0"><span class="fw-medium">{{ t('txtClass') }}:</span> {{
                                     segments.FlightClass }}</h6>
                                 <li class="list-inline-item">

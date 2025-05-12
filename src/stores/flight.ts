@@ -23,6 +23,7 @@ export const useFlightStore = defineStore({
     async fetchFlights(filters: {
       trips: Array<{ from: string; to: string; date: string }>;
       travelers: { adults: number; childs: number };
+      fclass: String;
       isRound: number; // 1: Нэг чиглэл | 2: Хоёр чиглэл | 3: Олон чиглэл
     }) {
       try {
@@ -34,7 +35,7 @@ export const useFlightStore = defineStore({
         params.push(`dpt=${firstTrip.from}`);
         params.push(`arr=${firstTrip.to}`);
         params.push(`date=${firstTrip.date}`);
-        params.push(`fclass=Econom`);
+        params.push(`fclass=${filters.fclass}`);
         params.push(`adults=${filters.travelers.adults}`);
         params.push(`childs=${filters.travelers.childs}`);
         params.push(`infants=0`);
@@ -85,6 +86,8 @@ console.log(this.AirCompany)
           console.error("Unexpected API response:", data);
         }
       } catch (error) {
+        
+        console.log("Fetched flights:", this.flightInfos);
         console.error("API call error:", error);
       }
     },
