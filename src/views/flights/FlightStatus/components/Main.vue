@@ -202,7 +202,7 @@
                                 Check-in: {{ flight.CheckinTable }}
                             </span>
                             <span class="detail-value">
-                                Tables {{ flight.CheckInTable }}
+                                CheckDoor: {{ flight.CheckInTable }}
                                 <span v-if="flight.CheckDoor">({{ flight.CheckDoor }})</span>
                                 <br>
                                 <small>Closes at {{ formatTime(flight.LastCheckinTime) }}</small>
@@ -383,7 +383,7 @@ const flightInfos = ref([])
 const loading = ref(false)
 const error = ref(null)
 
-const weatherLabels = ['Condition', 'Visibility', 'Wind', 'Temperature']
+const weatherLabels = ['Тэнгэрийн байдал', 'Алсын хараа', 'Салхи', 'Салхины чиглэл', 'Температур (°C)']
 
 
 const today = new Date();
@@ -443,7 +443,7 @@ async function fetchOrderInfo() {
 
     try {
         const response = await fetch(
-            `https://invoice.kacc.mn/api/searchFlight/?date=${selectedDate.value}&fnum=${flightNumber.value}`
+            `https://invoice.kacc.mn/api/searchFlight/?date=${departureDate.value}&fnum=${flightNumber.value}`
         )
 
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`)
