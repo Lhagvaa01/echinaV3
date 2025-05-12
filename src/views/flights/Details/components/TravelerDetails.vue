@@ -59,11 +59,6 @@
 
             </b-col>
 
-            <!-- <b-col md="6">
-              <SelectFormInput id="nationality" label="Иргэний харьяалал" v-model="traveler.nationality"
-                :options="nationalityOptions" :choice-options="{ searchEnabled: false }" />
-            </b-col> -->
-            <!-- Харьяалал -->
             <b-col md="6">
               <SelectFormInput id="nationality" :label="t('txtBirthIso')" v-model="traveler.birthISO"
                 :options="nationalityOptions" :choice-options="{ searchEnabled: false }"
