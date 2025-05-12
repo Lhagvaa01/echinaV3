@@ -25,7 +25,8 @@
 
             <b-col md="3">
               <b-form-group :label="t('txtPassportNum')">
-                <b-form-input type="text" :placeholder="t('txtPassportNum')" v-model="traveler.document"
+                <b-form-input id="passwordNum" name="passwordNum" type="text" autocomplete="name"
+                  :placeholder="t('txtPassportNum')" v-model="traveler.document"
                   :state="isPassportValid(traveler.document)"
                   @keydown.enter="autoFillTravelerByPassport(traveler.document, traveler)"
                   @blur="autoFillTravelerByPassport(traveler.document, traveler)" />
@@ -45,10 +46,11 @@
             <b-col md="9">
               <b-form-group :label="t('txtFullName')">
                 <div class="input-group">
-                  <b-form-input type="text" :placeholder="t('txtSureName')" v-model="traveler.surname"
+                  <b-form-input id="txtSureName" name="txtSureName" type="text" autocomplete="name"
+                    :placeholder="t('txtSureName')" v-model="traveler.surname"
                     :state="isNameValid(traveler.name, traveler.surname) ? true : false" />
-                  <b-form-input type="text" :placeholder="t('txtName')" v-model="traveler.name"
-                    :state="isNameValid(traveler.name, traveler.surname) ? true : false" />
+                  <b-form-input id="txtName" name="txtName" type="text" autocomplete="name" :placeholder="t('txtName')"
+                    v-model="traveler.name" :state="isNameValid(traveler.name, traveler.surname) ? true : false" />
                 </div>
                 <div class="invalid-feedback d-block text-danger" v-if="!isNameValid(traveler.name, traveler.name)">
                   Нэрийн бүх талбарыг бөглөнө үү. Зөвхөн үсэг бичнэ!
@@ -194,8 +196,8 @@
       <b-row class="g-3 g-md-4">
         <b-col md="6">
           <b-form-group :label="t('txtPhoneNum')">
-            <b-form-input v-model="BookingInfo.phoneNumber.value" type="text" :placeholder="t('txtPhoneNumDes')"
-              :state="isPhoneNumberValid" />
+            <b-form-input v-model="BookingInfo.phoneNumber.value" id="phone" name="phone" type="tel" autocomplete="tel"
+              :placeholder="t('txtPhoneNumDes')" :state="isPhoneNumberValid" />
             <div class="invalid-feedback d-block text-danger" v-if="!isPhoneNumberValid">
               {{ t('txtPhoneNumWar') }}
             </div>
@@ -204,8 +206,8 @@
 
         <b-col md="6">
           <b-form-group :label="t('txtEmailAdd')">
-            <b-form-input v-model="BookingInfo.email.value" type="email" :placeholder="t('txtEmailAddDes')"
-              :state="isEmailValid" />
+            <b-form-input v-model="BookingInfo.email.value" id="mail" name="mail" type="email" autocomplete="email"
+              :placeholder="t('txtEmailAddDes')" :state="isEmailValid" />
             <div class="invalid-feedback d-block text-danger" v-if="!isEmailValid">
               {{ t('txtEmailAddDWar') }}
             </div>

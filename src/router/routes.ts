@@ -125,6 +125,13 @@ const flightRoutes = [
       title: 'Details - Multipurpose Online Booking Theme'
     },
     component: () => import('@/views/flights/PrivacyPolicy/index.vue')
+  },{
+    path: '/flights/FlightStatus',
+    name: 'flights.FlightStatus',
+    meta: {
+      title: 'Details - Multipurpose Online Booking Theme'
+    },
+    component: () => import('@/views/flights/FlightStatus/index.vue')
   }
 ]
 

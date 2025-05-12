@@ -37,6 +37,7 @@ declare module 'vue' {
     BFormText: typeof import('bootstrap-vue-next')['BFormText']
     BFormTextarea: typeof import('bootstrap-vue-next')['BFormTextarea']
     BIcon: typeof import('bootstrap-vue-next')['BIcon']
+    BIconGeoAlt: typeof import('bootstrap-vue-next')['BIconGeoAlt']
     BInputGroup: typeof import('bootstrap-vue-next')['BInputGroup']
     BListGroup: typeof import('bootstrap-vue-next')['BListGroup']
     BListGroupItem: typeof import('bootstrap-vue-next')['BListGroupItem']

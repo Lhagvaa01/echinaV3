@@ -761,7 +761,7 @@ export const APP_MENU_ITEMS: MenuItemType[] = [
     label: 'txtFlightStatus',
     isTitle: true,
     
-    link: { name: 'flights.home' },
+    link: { name: 'flights.FlightStatus' },
   }, {
     key: 'privacy-policy',
     label: 'txtPrivacy',
