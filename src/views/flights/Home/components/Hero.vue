@@ -661,7 +661,7 @@ const generateTicketUrlMulti = computed(() => {
   console.log(firstTrip.selectedDestination)
   params.push(`dpt=${encodeURIComponent(firstTrip.selectedDestination.airportCode)}`);
   params.push(`arr=${encodeURIComponent(firstTrip.selectedDestination2.airportCode)}`);
-  params.push(`date=${encodeURIComponent(firstTrip.departureDate)}`);
+  params.push(`date=${encodeURIComponent(formatDateFinish(firstTrip.departureDate))}`);
   params.push(`fclass=Econom`);
   params.push(`adults=${formValue.value.guests.adults || 1}`);
   params.push(`childs=${formValue.value.guests.children || 0}`);
@@ -670,7 +670,7 @@ const generateTicketUrlMulti = computed(() => {
   // 🔄 Нэмэлт чиглэлүүд
   trips.value.slice(1).forEach((trip, index) => {
     if (trip.selectedDestination && trip.selectedDestination2 && trip.departureDate) {
-      params.push(`mdate${index + 1}=${encodeURIComponent(trip.departureDate)}`);
+      params.push(`mdate${index + 1}=${encodeURIComponent(formatDateFinish(trip.departureDate))}`);
       params.push(`from${index + 1}=${encodeURIComponent(trip.selectedDestination.airportCode)}`);
       params.push(`to${index + 1}=${encodeURIComponent(trip.selectedDestination2.airportCode)}`);
     }
