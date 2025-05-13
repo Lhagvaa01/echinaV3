@@ -349,7 +349,7 @@ const formValue = ref<GuestAndRoomFormType>({
 // const selectedDestination2 = ref(route.query.arr || 'PEK')
 // const selectedDestination3 = ref('select-location')
 // const selectedDestination4 = ref('select-location')
-const selectedClass = ref('select-class')
+const selectedClass = ref('Econom')
 const selectedTravelers = ref('select-travelers')
 
 
