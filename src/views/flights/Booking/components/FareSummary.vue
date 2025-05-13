@@ -42,10 +42,10 @@
             <div class="d-flex align-items-center ">
               <span class="h6 fw-bold mb-0 me-2">Нийт Дүн</span>
             </div>
-            <b-button size="md" variant="link" class="p-0 m-0" @click="copyText((Number(infos.FullPrice) *
-              parseFloat(rate) + totalFee).toLocaleString().toString())">
-              <span class="h6 fw-normal text-primary mb-0 me-2">{{ (Number(infos.FullPrice) *
-                parseFloat(rate) + totalFee).toLocaleString() || "" }}{{ currency }}</span>
+            <b-button size="md" variant="link" class="p-0 m-0" @click="copyText(Math.ceil((Number(infos.FullPrice) *
+              parseFloat(rate) + totalFee)).toLocaleString().toString())">
+              <span class="h6 fw-normal text-primary mb-0 me-2">{{ Math.ceil((Number(infos.FullPrice) *
+                parseFloat(rate) + totalFee)).toLocaleString() || "" }}{{ currency }}</span>
               <i class="fas fa-copy"></i>
             </b-button>
           </li>
@@ -147,8 +147,8 @@
       <b-card-footer class="border-top bg-light">
         <div class="d-flex justify-content-between align-items-center">
           <span class="h5 fw-normal mb-0">Нийт дүн</span>
-          <span class="h6 fw-normal text-primary mb-0 me-2">{{ (Number(infos.FullPrice) *
-            parseFloat(rate) + totalFee).toLocaleString() || "" }}{{ currency }}</span>
+          <span class="h6 fw-normal text-primary mb-0 me-2">{{ Math.ceil((Number(infos.FullPrice) *
+            parseFloat(rate) + totalFee)).toLocaleString() || "" }}{{ currency }}</span>
         </div>
       </b-card-footer>
 

@@ -235,8 +235,8 @@
                                                     </span>
                                                 </h6>
                                                 <h4 v-else>
-                                                    {{ (paginatedFlights[Mainindex].AdultPrice *
-                                                        parseFloat(rate)).toLocaleString() }}{{ currency }}
+                                                    {{ Math.ceil((paginatedFlights[Mainindex].AdultPrice *
+                                                        parseFloat(rate))).toLocaleString() }}{{ currency }}
                                                 </h4>
                                                 <h4 v-if="paginatedFlights[Mainindex].TotalPrice != paginatedFlights[Mainindex].AdultPrice"
                                                     class="d-flex align-items-center flex-wrap gap-2 justify-content-start justify-content-md-end">
@@ -254,8 +254,8 @@
 
                                                     <!-- Үнэ -->
                                                     <span class="fw-bold fs-5 text-dark ms-3">
-                                                        {{ (Number(paginatedFlights[Mainindex].TotalPrice) *
-                                                            parseFloat(rate)).toLocaleString() }}
+                                                        {{ Math.ceil((Number(paginatedFlights[Mainindex].TotalPrice) *
+                                                            parseFloat(rate))).toLocaleString() }}
                                                         {{ currency }}
                                                     </span>
                                                 </h4>

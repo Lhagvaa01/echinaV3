@@ -50,6 +50,7 @@ declare module 'vue' {
     BProgress: typeof import('bootstrap-vue-next')['BProgress']
     BProgressBar: typeof import('bootstrap-vue-next')['BProgressBar']
     BRow: typeof import('bootstrap-vue-next')['BRow']
+    BSpinner: typeof import('bootstrap-vue-next')['BSpinner']
     BTab: typeof import('bootstrap-vue-next')['BTab']
     BTabs: typeof import('bootstrap-vue-next')['BTabs']
     CustomAlert: typeof import('./src/components/CustomAlert.vue')['default']

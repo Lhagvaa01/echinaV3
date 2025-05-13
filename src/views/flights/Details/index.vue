@@ -7,7 +7,7 @@
 
       <b-container class="position-relative " data-sticky-container>
         <b-row class="g-4">
-          <b-col xl="9">
+          <b-col xl="8">
             <div class="vstack gap-4">
               <div class="d-flex align-items-center">
                 <h1 class="display-4 mb-0">
@@ -16,8 +16,8 @@
                 <div class="ms-3">
                   <ul class="list-inline mb-2">
                     <li class="list-inline-item me-2">
-                      <h3 class="mb-0">{{ getAllSegments()[0].Departure?.City }}({{ getAllSegments()[0].Departure?.Iata
-                      }})</h3>
+                      <h4 class="mb-0">{{ getAllSegments()[0].Departure?.City }}({{ getAllSegments()[0].Departure?.Iata
+                        }})</h4>
                     </li>
                     <li class="list-inline-item me-2">
                       <h3 class="mb-0">
@@ -25,9 +25,13 @@
                       </h3>
                     </li>
                     <li class="list-inline-item me-0">
-                      <h3 class="mb-0">{{ getAllSegments()[getAllSegments().length - 1].Arrival?.City }}({{
+                      <h4 v-if="getAllSegments().length > 1" class="mb-0">{{ getAllSegments()[getAllSegments().length -
+                        1].Departure?.City }}({{
+                          getAllSegments()[getAllSegments().length - 1].Departure?.Iata
+                        }})</h4>
+                      <h4 v-else class="mb-0">{{ getAllSegments()[getAllSegments().length - 1].Arrival?.City }}({{
                         getAllSegments()[getAllSegments().length - 1].Arrival?.Iata
-                        }})</h3>
+                      }})</h4>
                     </li>
                   </ul>
                   <ul class="nav nav-divider h6 fw-normal text-body mb-0">
@@ -46,7 +50,7 @@
             </div>
           </b-col>
 
-          <aside class="col-xl-3">
+          <aside class="col-xl-4">
             <CustomStickyElement data-sticky data-margin-top="80" data-sticky-for="1199">
               <b-row class="g-4">
                 <FareSummary />

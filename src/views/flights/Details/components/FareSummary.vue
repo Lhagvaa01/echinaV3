@@ -1,5 +1,5 @@
 <template>
-  <b-col md="6" xl="12">
+  <b-col md="8" xl="12">
     <b-card no-body class="bg-light rounded-2">
       <b-card-header class="border-bottom bg-light">
         <b-card-title tag="h5" class="mb-0">{{ t('txtPaymentInfo') }}</b-card-title>
@@ -11,12 +11,12 @@
           <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-md-center">
             <span class="h6 fw-normal mb-2 mb-md-0">
               Том хүн ({{ travelers.adults }} x
-              {{ (parseFloat(getOptionPrice().AdultPrice) * eurToMnt).toLocaleString() }}₮)
+              {{ Math.ceil((parseFloat(getOptionPrice().AdultPrice) * eurToMnt)).toLocaleString() }}₮)
               <b-icon-info-circle class="ms-1" />
             </span>
             <span class="fs-6 text-end text-md-start">
               {{
-                (travelers.adults * parseFloat(getOptionPrice().AdultPrice) * eurToMnt).toLocaleString()
+                Math.ceil((travelers.adults * parseFloat(getOptionPrice().AdultPrice) * eurToMnt)).toLocaleString()
               }}₮
             </span>
           </li>
@@ -26,12 +26,12 @@
             class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-md-center">
             <span class="h6 fw-normal mb-2 mb-md-0">
               Хүүхэд ({{ travelers.childs }} x
-              {{ (parseFloat(getOptionPrice().ChildPrice) * eurToMnt).toLocaleString() }}₮)
+              {{ Math.ceil((parseFloat(getOptionPrice().ChildPrice) * eurToMnt)).toLocaleString() }}₮)
               <b-icon-info-circle class="ms-1" />
             </span>
             <span class="fs-6 text-end text-md-start">
               {{
-                (travelers.childs * parseFloat(getOptionPrice().ChildPrice) * eurToMnt).toLocaleString()
+                Math.ceil((travelers.childs * parseFloat(getOptionPrice().ChildPrice) * eurToMnt)).toLocaleString()
               }}₮
             </span>
           </li>
@@ -51,9 +51,9 @@
           <span class="h6 fw-normal mb-2 mb-md-0">Нийт Төлбөр:</span>
           <span class="h6 fw-bold mb-0">
             {{
-              (
+              Math.ceil((
                 parseFloat(infos.FullPrice) * eurToMnt + totalPrice
-              ).toLocaleString()
+              )).toLocaleString()
             }}₮
           </span>
         </div>

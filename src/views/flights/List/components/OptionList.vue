@@ -25,9 +25,9 @@
                                 <div class="list-inline-item h6 fw-normal me-1 mb-0">
                                     <div v-for="(line, index) in optionData.Text.split('\r\n')" :key="index">
                                         <span v-if="line.startsWith('+')" style="color: green;">✔ {{ line.slice(1)
-                                        }}</span>
+                                            }}</span>
                                         <span v-else-if="line.startsWith('!')">⚠ {{ line.slice(1)
-                                        }}</span>
+                                            }}</span>
                                         <span v-else>{{ line }}</span>
                                     </div>
                                 </div>
@@ -130,8 +130,8 @@
                                 {{ price }}
                             </li> -->
                             <li class="list-inline-item h5 mb-0">
-                                {{ (Number(price) *
-                                    parseFloat(rate)).toLocaleString() }}
+                                {{ Math.ceil((Number(price) *
+                                    parseFloat(rate))).toLocaleString() }}
                                 {{ currency }}
                             </li>
 
