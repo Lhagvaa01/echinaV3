@@ -198,7 +198,7 @@
 
                                             </b-col>
 
-                                            <b-col sm="4" md="3" class="mt-0">
+                                            <b-col sm="4" md="2" class="mt-0">
                                                 <h4>
                                                     {{ flight[flight.length -
                                                         1].Arrival.Date.split(" ")[1] }}
@@ -220,34 +220,46 @@
                                                         1].Arrival.Iata).City}}</p>
 
                                             </b-col>
-                                            <b-col v-if="moreFlights(Mainindex).length - 1 == findex" md="3"
+                                            <b-col v-if="moreFlights(Mainindex).length - 1 == findex" md="4"
                                                 class="text-md-end">
                                                 <h6 v-if="paginatedFlights[Mainindex].TotalPrice != paginatedFlights[Mainindex].AdultPrice"
                                                     class="d-flex flex-column">
-                                                    {{ t('txtAdult') }}: {{ currency }}{{
-                                                        paginatedFlights[Mainindex].AdultPrice }}
+                                                    {{ t('txtAdult') }}: {{
+                                                        (paginatedFlights[Mainindex].AdultPrice *
+                                                            parseFloat(rate)).toLocaleString() }}{{ currency }}
                                                     <span v-if="paginatedFlights[Mainindex].ChildPrice" class="mt-1">
-                                                        {{ t('txtChild') }}: {{ currency }}{{
-                                                            paginatedFlights[Mainindex].ChildPrice
-                                                        }}
+                                                        {{ t('txtChild') }}: {{
+                                                            (paginatedFlights[Mainindex].ChildPrice *
+                                                                parseFloat(rate)).toLocaleString()
+                                                        }}{{ currency }}
                                                     </span>
                                                 </h6>
-                                                <h4 v-else>{{ currency }}{{ paginatedFlights[Mainindex].AdultPrice }}
+                                                <h4 v-else>
+                                                    {{ (paginatedFlights[Mainindex].AdultPrice *
+                                                        parseFloat(rate)).toLocaleString() }}{{ currency }}
                                                 </h4>
                                                 <h4 v-if="paginatedFlights[Mainindex].TotalPrice != paginatedFlights[Mainindex].AdultPrice"
-                                                    class="d-flex align-items-center">
-                                                    <span class="fw-medium fs-5 text-primary">{{ route.query.adults
-                                                    }}</span>
-                                                    <User :size="36" color="#3949AB" class="me-2" />
-                                                    <span class="fw-medium fs-5 text-primary">{{ route.query.childs
-                                                    }}</span>
-                                                    <User color="#3949AB" class="me-2" />
-                                                    {{
-                                                        currency
-                                                    }}{{
-                                                        paginatedFlights[Mainindex].TotalPrice ||
-                                                        '' }}
+                                                    class="d-flex align-items-center flex-wrap gap-2 justify-content-start justify-content-md-end">
+                                                    <!-- Насанд хүрэгчид -->
+                                                    <span class="fw-medium fs-6 text-primary">
+                                                        {{ Number(route.query.adults) }}
+                                                    </span>
+                                                    <User :size="25" color="#3949AB" />
+
+                                                    <!-- Хүүхдүүд -->
+                                                    <span class="fw-medium fs-6 text-primary">
+                                                        {{ Number(route.query.childs) }}
+                                                    </span>
+                                                    <User :size="15" color="#3949AB" />
+
+                                                    <!-- Үнэ -->
+                                                    <span class="fw-bold fs-5 text-dark ms-3">
+                                                        {{ (Number(paginatedFlights[Mainindex].TotalPrice) *
+                                                            parseFloat(rate)).toLocaleString() }}
+                                                        {{ currency }}
+                                                    </span>
                                                 </h4>
+
                                                 <b-button variant="dark" class="mb-0 mb-sm-2"
                                                     :id="`toggleOption${Mainindex}${segments.FlightNum}`"
                                                     :aria-controls="`flightOption${segments.FlightNum}`"
@@ -360,6 +372,7 @@ import { string } from 'yup'
 // Fallback logo
 
 const show = ref<number>(Number(sessionStorage.getItem("flight")) || 1);
+const rate = sessionStorage.getItem('eur')
 // const trips = ref<number>(Number(sessionStorage.getItem("trips")) || 1);
 // const tripcount = sessionStorage.getItem("trips")?.length || 0;
 const trips = parseInt(sessionStorage.getItem("trips") || "0", 10);

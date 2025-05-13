@@ -1,7 +1,7 @@
 <template>
     <b-card no-body class="p-4 mb-2">
         <div v-if="option.Tariffs">
-            <div v-for="(optionData, index) in option.Tariffs.ServiceInfo " :key="index"
+            <div v-for="(optionData, index) in option.Tariffs.ServiceInfo" :key="index"
                 class="p-3 mb-4 border rounded-2">
                 <b-card-body class="p-0">
                     <b-row class="g-2 g-sm-4 ">
@@ -25,9 +25,9 @@
                                 <div class="list-inline-item h6 fw-normal me-1 mb-0">
                                     <div v-for="(line, index) in optionData.Text.split('\r\n')" :key="index">
                                         <span v-if="line.startsWith('+')" style="color: green;">✔ {{ line.slice(1)
-                                            }}</span>
+                                        }}</span>
                                         <span v-else-if="line.startsWith('!')">⚠ {{ line.slice(1)
-                                            }}</span>
+                                        }}</span>
                                         <span v-else>{{ line }}</span>
                                     </div>
                                 </div>
@@ -130,9 +130,11 @@
                                 {{ price }}
                             </li> -->
                             <li class="list-inline-item h5 mb-0">
+                                {{ (Number(price) *
+                                    parseFloat(rate)).toLocaleString() }}
                                 {{ currency }}
-                                {{ price }}
                             </li>
+
                         </ul>
                         <!-- <b-button variant="dark" class="mb-0" @click=""> Book Now </b-button> -->
                         <b-button variant="dark" class="mb-0" :to="{ path: '/flights/detail' }">
@@ -179,7 +181,7 @@ import { currency } from '@/helpers/constants'
 import fallbackLogo from '@/assets/images/element/09.svg'
 import type { PropType } from 'vue'
 import type { CabListType } from '@/views/cab/List/type'
-
+const rate = sessionStorage.getItem('eur')
 defineProps({
     option: {
         type: Object,

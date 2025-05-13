@@ -76,7 +76,20 @@
                             style="font-size: 20px; font-weight: bold; color: #00d2ff; text-decoration: none;">
                             7610 5555
                         </a>
+
                     </div>
+                    <div class="currency-banner">
+                        <div class="d-grid text-center">
+                            <div class="d-flex justify-content-center align-items-center gap-1">
+                                <i class="fas fa-euro-sign icon" title="EUR ханш"></i>
+                                <span class="value">
+                                    {{ eurRate !== null ? eurRate.toLocaleString() + '₮' : 'Уншиж байна...' }}
+                                </span>
+                            </div>
+                            <span class="date-text">{{ now }}</span>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </nav>
@@ -184,7 +197,87 @@ onMounted(() => {
     })
 })
 
+const eurRate = ref<number | null>(null)
+const now = ref('')
+onMounted(async () => {
+    const today = new Date()
+    now.value = today.toISOString().split('T')[0]
+    const yesterday = new Date(today)
+    yesterday.setDate(yesterday.getDate() - 1)
+
+    const formatDate = (d: Date) => d.toISOString().split('T')[0]
+
+    const startDate = formatDate(yesterday)
+    const endDate = formatDate(today)
+
+    try {
+        const res = await fetch(`https://www.mongolbank.mn/mn/currency-rates/data?startDate=${startDate}&endDate=${endDate}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+
+        const data = await res.json()
+        const eur = data?.data?.[0]?.EUR
+        eurRate.value = eur ? parseFloat(eur.replace(',', '')) : null
+        sessionStorage.setItem("eur", eurRate.value.toString())
+    } catch (error) {
+        console.error('❌ Монголбанк ханш татахад алдаа:', error)
+    }
+})
+
 const isMobileMenu = computed(() => {
     return window.innerWidth <= 1200
 })
 </script>
+
+<style lang="css" scoped>
+.currency-banner {
+    display: inline-block;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 13px;
+    color: #1f2937;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    max-width: 100%;
+}
+
+.icon {
+    font-size: 14px;
+    color: #2563eb;
+}
+
+.value {
+    font-weight: 600;
+    font-size: 14px;
+    color: #111827;
+}
+
+.date-text {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 2px;
+}
+
+@media (max-width: 576px) {
+    .currency-banner {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    .icon {
+        font-size: 12px;
+    }
+
+    .value {
+        font-size: 13px;
+    }
+
+    .date-text {
+        font-size: 11px;
+    }
+}
+</style>

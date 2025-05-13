@@ -5,7 +5,7 @@
     <Stepper :step="2" />
     <section>
 
-      <b-container class="position-relative" data-sticky-container>
+      <b-container class="position-relative " data-sticky-container>
         <b-row class="g-4">
           <b-col xl="9">
             <div class="vstack gap-4">
@@ -17,7 +17,7 @@
                   <ul class="list-inline mb-2">
                     <li class="list-inline-item me-2">
                       <h3 class="mb-0">{{ getAllSegments()[0].Departure?.City }}({{ getAllSegments()[0].Departure?.Iata
-                        }})</h3>
+                      }})</h3>
                     </li>
                     <li class="list-inline-item me-2">
                       <h3 class="mb-0">
@@ -27,7 +27,7 @@
                     <li class="list-inline-item me-0">
                       <h3 class="mb-0">{{ getAllSegments()[getAllSegments().length - 1].Arrival?.City }}({{
                         getAllSegments()[getAllSegments().length - 1].Arrival?.Iata
-                      }})</h3>
+                        }})</h3>
                     </li>
                   </ul>
                   <ul class="nav nav-divider h6 fw-normal text-body mb-0">

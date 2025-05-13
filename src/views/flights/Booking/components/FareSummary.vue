@@ -42,10 +42,10 @@
             <div class="d-flex align-items-center ">
               <span class="h6 fw-bold mb-0 me-2">Нийт Дүн</span>
             </div>
-            <b-button size="md" variant="link" class="p-0 m-0"
-              @click="copyText((Number(getOptionPrice()?.AdultPrice) + 7000).toString())">
-              <span class="h6 fw-normal text-primary mb-0 me-2">{{ currency }}{{ Number(getOptionPrice()?.AdultPrice) +
-                7000 || "" }}</span>
+            <b-button size="md" variant="link" class="p-0 m-0" @click="copyText((Number(infos.FullPrice) *
+              parseFloat(rate) + totalFee).toLocaleString().toString())">
+              <span class="h6 fw-normal text-primary mb-0 me-2">{{ (Number(infos.FullPrice) *
+                parseFloat(rate) + totalFee).toLocaleString() || "" }}{{ currency }}</span>
               <i class="fas fa-copy"></i>
             </b-button>
           </li>
@@ -147,8 +147,8 @@
       <b-card-footer class="border-top bg-light">
         <div class="d-flex justify-content-between align-items-center">
           <span class="h5 fw-normal mb-0">Нийт дүн</span>
-          <span class="h5 fw-normal mb-0 text-primary">{{ currency }}{{ Number(getOptionPrice()?.AdultPrice) + 7000 ||
-            "" }}</span>
+          <span class="h6 fw-normal text-primary mb-0 me-2">{{ (Number(infos.FullPrice) *
+            parseFloat(rate) + totalFee).toLocaleString() || "" }}{{ currency }}</span>
         </div>
       </b-card-footer>
 
@@ -182,6 +182,25 @@ import CustomAlert from '../../../../components/CustomAlert.vue';
 import { useRouter } from 'vue-router';
 // import Alert from '@mui/material/Alert';
 
+const rate = sessionStorage.getItem('eur')
+
+const totalFee = ref(0)
+const fee = 7000
+
+onMounted(() => {
+  const travelersStr = sessionStorage.getItem("travelers")
+  if (travelersStr) {
+    try {
+      const parsed = JSON.parse(travelersStr)
+      const adults = parsed.adults || 0
+      const childs = parsed.childs || 0
+
+      totalFee.value = (adults + childs) * fee
+    } catch (e) {
+      console.error("❌ travelers JSON parse алдаа:", e)
+    }
+  }
+})
 
 const bvToast = useToast();
 
