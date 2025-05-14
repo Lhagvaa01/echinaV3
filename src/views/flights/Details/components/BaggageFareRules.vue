@@ -47,7 +47,7 @@
                           ?.Value || 'Unknown Airline'
                       }}
                       <span class="text-muted">({{ segmentB.FlightNum || 'SA-1254'
-                        }})</span>
+                      }})</span>
                     </div>
                     <div class="d-flex align-items-center mt-1">
                       <Briefcase v-if="segmentB.Baggage" class="me-2" color="#5a2dd7" :size="16" />
@@ -164,7 +164,7 @@
             </ul>
             <b-collapse :id="'flightDetail' + inx + segment.FlightNum" class="multi-collapse">
               <div class="pt-3">
-                <OptionDetailTab :flight="getAllSegments()" :index="inx" />
+                <FlightDetailTab :flight="getAllSegments()" :index="inx" />
               </div>
             </b-collapse>
 
@@ -189,6 +189,8 @@ import { ref, computed } from 'vue'
 import { useOptionStore } from '@/stores/optionStore'
 import { useFlightStore } from '@/stores/flight';
 import flightLogo from '@/assets/images/element/09.svg'
+
+import FlightDetailTab from '../../List/components/FlightDetailTab.vue'
 
 import OptionDetailTab from '@/views/flights/Details/components/OptionDetailTab.vue'
 import { ChevronDown, Briefcase, Luggage, User } from 'lucide-vue-next';
