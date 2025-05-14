@@ -17,7 +17,7 @@
                   <ul class="list-inline mb-2">
                     <li class="list-inline-item me-2">
                       <h4 class="mb-0">{{ getAllSegments()[0].Departure?.City }}({{ getAllSegments()[0].Departure?.Iata
-                        }})</h4>
+                      }})</h4>
                     </li>
                     <li class="list-inline-item me-2">
                       <h3 class="mb-0">
@@ -31,7 +31,7 @@
                         }})</h4>
                       <h4 v-else class="mb-0">{{ getAllSegments()[getAllSegments().length - 1].Arrival?.City }}({{
                         getAllSegments()[getAllSegments().length - 1].Arrival?.Iata
-                      }})</h4>
+                        }})</h4>
                     </li>
                   </ul>
                   <ul class="nav nav-divider h6 fw-normal text-body mb-0">
@@ -211,10 +211,21 @@ async function fetchOptions(offerCode: string, searchGuid: string) {
   try {
     const response = await fetch(`https://api.airkacc.mn/api/tariffrules/mn/?offerCode=${offerCode}&searchGuid=${searchGuid}`);
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    const data = await response.json()
+    const aeroRules = data.result?.Body?.AeroGetRulesResponse?.AeroGetRulesResult?.Rules?.AeroRule
 
-    const data = await response.json();
-    TariffRules.value = data.result?.Body?.AeroGetRulesResponse?.AeroGetRulesResult?.Rules?.AeroRule?.Text;
-    console.log(TariffRules)
+    // TariffRules.value-г аюулгүй нөхцөлтэй оноох
+    if (Array.isArray(aeroRules)) {
+      const validTexts = aeroRules
+        .map((rule: any) => rule.Text)
+        .filter((text: any) => !!text && typeof text === 'string')
+
+      TariffRules.value = validTexts.join('<hr/>') || 'Тарифийн мэдээлэл олдсонгүй.'
+    } else if (aeroRules && aeroRules.Text) {
+      TariffRules.value = aeroRules.Text
+    } else {
+      TariffRules.value = 'Тарифийн мэдээлэл олдсонгүй.'
+    }
   } catch (error) {
     console.error('Error fetching options:', error);
   }
