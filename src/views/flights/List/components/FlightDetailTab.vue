@@ -238,7 +238,7 @@
                               {{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
                                 offerSegment.Arrival.Iata).City}}
                               дээр
-                              {{ timeDifference(offerSegment.Arrival.Date, getAllSegmentsDates(index)[segidxs +
+                              {{ timeDifference(offerSegment.Arrival.Date, getAllSegmentss(index).go[segidxs +
                                 1].Departure.Date)
                               }}
                               хүлээнэ
@@ -311,7 +311,7 @@
 
 
                       <!-- Дунд Repeat дүрс -->
-                      <div v-if="getAllSegmentss(index).go.length - 1 != segidxs">
+                      <div v-if="getAllSegmentss(index).return.length - 1 != segidxs">
                         <div v-if="segidxs < getAllSegmentsDates(index).length - 1"
                           class="mt-4 bg-light rounded-circle p-3">
                           <Repeat :size="36" color="#3949AB" />
@@ -417,7 +417,7 @@
                         </div>
                       </div>
                     </b-card-body>
-                    <div v-if="getAllSegmentss(index).go.length - 1 != segidxs">
+                    <div v-if="getAllSegmentss(index).return.length - 1 != segidxs">
                       <div v-if="segidxs < getAllSegmentsDates(index).length - 1"
                         class="card-footer pt-0 pb-4 d-flex align-items-center mw-100">
                         <div class="d-flex flex-row bg-light rounded-2 w-100 justify-content-between">
@@ -428,7 +428,7 @@
                               {{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
                                 offerSegment.Arrival.Iata).City}}
                               дээр
-                              {{ timeDifference(offerSegment.Arrival.Date, getAllSegmentsDates(index)[segidxs +
+                              {{ timeDifference(offerSegment.Arrival.Date, getAllSegmentss(index).return[segidxs +
                                 1].Departure.Date)
                               }}
                               хүлээнэ
@@ -885,7 +885,7 @@ const getAllSegments = (index: number) => {
 
 const getAllSegmentss = (index: number) => {
   const offers = getFlightData(index).Offers.OfferInfo
-
+  // console.log(offers)
   if (show.value == 3) {
     const retValue = {
       go: offers.flatMap((offer: any) =>
