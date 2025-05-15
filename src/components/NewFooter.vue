@@ -4,14 +4,8 @@
       <b-row class="g-4">
         <b-col lg="3">
           <router-link :to="{ name: 'flights.home' }">
-            <div v-if="useLayout.theme == 'light'">
-              <img class="h-40px" :class="customClass" :src="logoDark" alt="dark" />
-            </div>
+            <img class="h-40px" :class="customClass" :src="logoDark" alt="dark" />
 
-
-            <div v-else>
-              <img class="h-40px" :class="customClass" :src="logoLight" alt="Light" />
-            </div>
 
           </router-link>
           <p class="my-3 text-body-secondary">
