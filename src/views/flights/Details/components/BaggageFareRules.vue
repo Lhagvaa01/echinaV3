@@ -47,7 +47,7 @@
                           ?.Value || 'Unknown Airline'
                       }}
                       <span class="text-muted">({{ segmentB.FlightNum || 'SA-1254'
-                      }})</span>
+                        }})</span>
                     </div>
                     <div class="d-flex align-items-center mt-1">
                       <Briefcase v-if="segmentB.Baggage" class="me-2" color="#5a2dd7" :size="16" />
@@ -153,13 +153,13 @@
               <h6 class="fw-medium mb-0"><span class="fw-medium">{{ t('txtClass') }}:</span> {{
                 segment.FlightClass }}</h6>
               <li class="list-inline-item">
-                <router-link :to="'/some-route/' + inx + segment.FlightNum"
-                  :id="'toggleButton' + inx + segment.FlightNum" :aria-controls="'flightDetail' + segment.FlightNum"
+                <a :to="'/some-route/' + inx + segment.FlightNum" :id="'toggleButton' + inx + segment.FlightNum"
+                  :aria-controls="'flightDetail' + segment.FlightNum"
                   v-b-toggle="'flightDetail' + inx + segment.FlightNum"
                   class="btn-more d-flex align-items-center collapsed p-0 mb-0" role="button">
                   {{ t('txtFlightDetail') }}
                   <ChevronDown />
-                </router-link>
+                </a>
               </li>
             </ul>
             <b-collapse :id="'flightDetail' + inx + segment.FlightNum" class="multi-collapse">

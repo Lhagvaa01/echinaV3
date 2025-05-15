@@ -23,7 +23,7 @@
     <!-- <BlogsAndNews /> -->
   </main>
 
-  <Footer4 />
+  <NewFooter />
 
   <BackToTop />
 </template>
@@ -38,6 +38,7 @@ import DestinationSteps from '@/views/flights/Home/components/DestinationSteps.v
 import ActionBox from '@/views/flights/Home/components/ActionBox.vue'
 import BlogsAndNews from '@/views/flights/Home/components/BlogsAndNews.vue'
 import Footer4 from '@/views/flights/Home/components/Footer4.vue'
+import NewFooter from '@/components/NewFooter.vue'
 import BackToTop from '@/components/BackToTop.vue'
 import { ref } from 'vue'
 

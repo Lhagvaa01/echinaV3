@@ -30,9 +30,9 @@
 
                     <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('asc')">{{ t('txtPriceASC')
-                        }}</a></li>
+                                }}</a></li>
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('desc')">{{ t('txtPriceDESC')
-                        }}</a>
+                                }}</a>
                         </li>
                     </ul>
                 </div>
@@ -126,7 +126,7 @@
                                                                     ?.Value || 'Unknown Airline'
                                                             }}
                                                             <span class="text-muted">({{ segment.FlightNum || 'SA-1254'
-                                                                }})</span>
+                                                            }})</span>
                                                         </div>
                                                         <div class="d-flex align-items-center mt-1">
                                                             <Briefcase v-if="segment.Baggage" class="me-2"
@@ -303,18 +303,18 @@
                                 class="list-inline bg-light rounded-2 d-sm-flex text-center justify-content-sm-between mb-0 px-4 py-2">
                                 <li class="list-inline-item text-primary">{{ t('txtAvailableSeat') }}: {{
                                     segments.ResBookDesigQuantity
-                                    }}</li>
+                                }}</li>
                                 <h6 class="fw-medium mb-0"><span class="fw-medium">{{ t('txtClass') }}:</span> {{
                                     segments.FlightClass }}</h6>
                                 <li class="list-inline-item">
-                                    <router-link :to="'/some-route/' + Mainindex + segments.FlightNum"
+                                    <a :to="'/some-route/' + Mainindex + segments.FlightNum"
                                         :id="'toggleButton' + Mainindex + segments.FlightNum"
                                         :aria-controls="'flightDetail' + segments.FlightNum"
                                         v-b-toggle="'flightDetail' + Mainindex + segments.FlightNum"
                                         class="btn-more d-flex align-items-center collapsed p-0 mb-0" role="button">
                                         {{ t('txtFlightDetail') }}
                                         <ChevronDown />
-                                    </router-link>
+                                    </a>
                                 </li>
                             </ul>
                             <b-collapse :id="'flightDetail' + Mainindex + segments.FlightNum" class="multi-collapse">

@@ -33,7 +33,7 @@
     </section>
   </main>
 
-  <Footer />
+  <NewFooter />
 
   <BackToTop />
 </template>
@@ -47,6 +47,7 @@ import Warning from '@/views/flights/Booking/components/Warning.vue'
 import FareSummary from '@/views/flights/Booking/components/FareSummary.vue'
 import YourBooking from '@/views/flights/Booking/components/YourBooking.vue'
 import Footer from '@/views/flights/Booking/components/Footer.vue'
+import NewFooter from '@/components/NewFooter.vue'
 import BackToTop from '@/components/BackToTop.vue'
 import Stepper from '../Components/Stepper.vue'
 </script>

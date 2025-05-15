@@ -64,7 +64,7 @@
     </section>
   </main>
 
-  <Footer />
+  <NewFooter />
 
   <BackToTop />
 </template>
@@ -84,6 +84,7 @@ import OfferDiscount from '@/views/flights/Details/components/OfferDiscount.vue'
 import CancelPolicy from '@/views/flights/Details/components/CancelPolicy.vue'
 import TariffRulesModal from './components/TariffRulesModal.vue'
 import Footer from '@/views/flights/Details/components/Footer.vue'
+import NewFooter from '@/components/NewFooter.vue'
 import BackToTop from '@/components/BackToTop.vue'
 import CustomStickyElement from '@/components/CustomStickyElement.vue'
 import ServiceInfo from './components/ServiceInfo.vue'

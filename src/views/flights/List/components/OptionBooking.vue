@@ -25,6 +25,11 @@ import { ref, computed, onMounted, defineProps } from 'vue'
 import OptionList from './OptionList.vue'
 import SkeletonLoader from './Skeleton.vue'
 import { useOptionStore } from '@/stores/optionStore'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
+
+const rate = sessionStorage.getItem('eur')
 
 const optionStore = useOptionStore();
 

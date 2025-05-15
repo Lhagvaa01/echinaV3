@@ -27,7 +27,7 @@
 
   </main>
 
-  <Footer />
+  <NewFooter />
 
   <BackToTop />
 </template>
@@ -43,6 +43,7 @@ import Booking from './components/Booking.vue'
 import NoticeBoard from './components/NoticeBoard.vue'
 import FlightList from './components/FlightList.vue'
 import Footer from '@/views/flights/List/components/Footer.vue'
+import NewFooter from '@/components/NewFooter.vue'
 import BackToTop from '@/components/BackToTop.vue'
 import Stepper from '../Components/Stepper.vue'
 // import SkeletonLoader from './components/Skeleton.vue'

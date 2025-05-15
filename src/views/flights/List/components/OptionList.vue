@@ -63,13 +63,17 @@
                                     {{ price }}
                                 </li> -->
                                 <li class="list-inline-item h5 mb-0">
+
+                                    <!-- {{ Number(option.FullPrice) }}
+                                    {{ Number(optionData.Price) }} -->
+                                    {{ Math.ceil(((Number(option.FullPrice) + Number(optionData.Price)) *
+                                        parseFloat(rate))).toLocaleString() }}
                                     {{ currency }}
-                                    {{ Number(option.FullPrice) + Number(optionData.Price) }}
                                 </li>
                             </ul>
                             <!-- <b-button variant="dark" class="mb-0" @click=""> Book Now </b-button> -->
                             <b-button variant="dark" class="mb-0" :to="{ path: '/flights/detail' }">
-                                Book Now
+                                {{ t('txtChoose') }}
                             </b-button>
 
 
@@ -138,7 +142,7 @@
                         </ul>
                         <!-- <b-button variant="dark" class="mb-0" @click=""> Book Now </b-button> -->
                         <b-button variant="dark" class="mb-0" :to="{ path: '/flights/detail' }">
-                            Book Now
+                            {{ t('txtChoose') }}
                         </b-button>
 
 
@@ -181,6 +185,9 @@ import { currency } from '@/helpers/constants'
 import fallbackLogo from '@/assets/images/element/09.svg'
 import type { PropType } from 'vue'
 import type { CabListType } from '@/views/cab/List/type'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 const rate = sessionStorage.getItem('eur')
 defineProps({
     option: {

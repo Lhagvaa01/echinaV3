@@ -140,18 +140,16 @@
               <h6 class="fw-medium mb-0"><span class="fw-medium">Ангилал:</span> {{
                 segment.FlightClass }}</h6>
               <li class="list-inline-item">
-                <router-link :to="'/some-route/' + inx + segment.FlightNum"
-                  :id="'toggleButton' + inx + segment.FlightNum" :aria-controls="'flightDetail' + segment.FlightNum"
-                  v-b-toggle="'flightDetail' + inx + segment.FlightNum"
+                <a :id="'flightDetail-' + inx" :aria-controls="'flightDetail-' + inx" v-b-toggle="'flightDetail-' + inx"
                   class="btn-more d-flex align-items-center collapsed p-0 mb-0" role="button">
-                  Нислэгийн дэлгэрэнгүй
+                  {{ t('txtFlightDetail') }}
                   <ChevronDown />
-                </router-link>
+                </a>
               </li>
             </ul>
-            <b-collapse :id="'flightDetail' + inx + segment.FlightNum" class="multi-collapse">
+            <b-collapse :id="'flightDetail-' + inx" class="multi-collapse">
               <div class="pt-3">
-                <!-- <OptionDetailTab :flight="getAllSegments()" :index="inx" /> -->
+                <FlightDetailTab :flight="getAllSegments()" :index="inx" />
               </div>
             </b-collapse>
 
@@ -178,9 +176,13 @@ import { useOptionStore } from '@/stores/optionStore'
 import { useFlightStore } from '@/stores/flight';
 import flightLogo from '@/assets/images/element/09.svg'
 import { useRoute } from 'vue-router'
+import FlightDetailTab from '../../List/components/FlightDetailTab.vue'
 
 import OptionDetailTab from '@/views/flights/Details/components/OptionDetailTab.vue'
 import { ChevronDown, Briefcase, Luggage, User } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 const flightStore = useFlightStore();
 const fallbackLogo = flightLogo

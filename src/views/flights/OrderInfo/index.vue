@@ -17,7 +17,7 @@
     <!-- </section> -->
   </main>
 
-  <Footer />
+  <NewFooter />
 
   <BackToTop />
 </template>
@@ -27,5 +27,6 @@ import NavBar4 from '@/views/flights/Booking/components/NavBar4.vue'
 import Header from '@/components/NewNavbar.vue'
 import Orderinfo from './components/Orderinfo.vue'
 import Footer from '@/views/flights/Booking/components/Footer.vue'
+import NewFooter from '@/components/NewFooter.vue'
 import BackToTop from '@/components/BackToTop.vue'
 </script>

@@ -5,32 +5,35 @@
         <b-col lg="3">
           <router-link :to="{ name: 'flights.home' }">
             <div v-if="useLayout.theme == 'light'">
-              <img class="h-40px" :class="customClass" :src="logoLight" alt="logo" />
+              <img class="h-40px" :class="customClass" :src="logoDark" alt="dark" />
             </div>
 
 
             <div v-else>
-              <img class="h-40px" :class="customClass" :src="logoDark" alt="dark" />
+              <img class="h-40px" :class="customClass" :src="logoLight" alt="Light" />
             </div>
 
           </router-link>
           <p class="my-3 text-body-secondary">
-            БНХАУ-ын дотоодын бүх Авиа компаниудыг холбосон захиалгын сүлжээнд нэгдсэн учраас та өөрийн хүссэн
-            мэдээлэлээ эх үүсвэрээс нь түргэн шуурхай авах боломжтой. Та өөрөө онлайнаар нислэгээ харах, ажлаа төлөвлөх,
-            аялалын төсөв зохиох, тийзээ худалдан авах зэрэг боломжтой болсоноор өөрийн үнэт цаг хугацаа хэмнэнэ.
+            БНХАУ-ын дотоодын бүх Авиа компаниудыг холбосон захиалгын сүлжээнд нэгдсэн учраас та өөрийн
+            хүссэн
+            мэдээлэлээ эх үүсвэрээс нь түргэн шуурхай авах боломжтой. Та өөрөө онлайнаар нислэгээ харах,
+            ажлаа төлөвлөх,
+            аялалын төсөв зохиох, тийзээ худалдан авах зэрэг боломжтой болсоноор өөрийн үнэт цаг хугацаа
+            хэмнэнэ.
           </p>
           <!-- <p class="mb-2">
-            <a href="#" class="text-body-secondary text-primary-hover">
-              <BIconTelephone class="me-1 mb-1" />
-              +1234 568 963
-            </a>
-          </p>
-          <p class="mb-0">
-            <a href="#" class="text-body-secondary text-primary-hover">
-              <BIconEnvelope class="me-1 mb-1" />
-              example@gmail.com
-            </a>
-          </p> -->
+              <a href="#" class="text-body-secondary text-primary-hover">
+                <BIconTelephone class="me-1 mb-1" />
+                +1234 568 963
+              </a>
+            </p>
+            <p class="mb-0">
+              <a href="#" class="text-body-secondary text-primary-hover">
+                <BIconEnvelope class="me-1 mb-1" />
+                example@gmail.com
+              </a>
+            </p> -->
         </b-col>
 
         <b-col lg="8" class="ms-auto">
@@ -85,62 +88,62 @@
 
       </b-row>
       <!-- 
-      <b-row class="mt-5">
-        <h5 class="mb-2 text-white">Top Links</h5>
-        <ul class="list-inline text-primary-hover lh-lg">
-          <li v-for="(item, idx) in topLinks" :key="idx" class="list-inline-item">
-            <router-link :to="{ name: item.link?.name, params: item.link?.params }" class="text-body-secondary">
-              {{ item.name }}
-            </router-link>
-          </li>
-        </ul>
-      </b-row>
-
-      <b-row class="g-4 justify-content-between mt-0 mt-md-2">
-        <b-col sm="7" md="6" lg="4">
-          <h5 class="text-white mb-2">Payment & Security</h5>
-          <ul class="list-inline mb-0 mt-3 hstack gap-1 justify-content-start">
-            <li class="list-inline-item">
-              <a href="#"><img :src="paypal" class="h-30px" alt="" /></a>
-            </li>
-            <li class="list-inline-item">
-              <a href="#"><img :src="visa" class="h-30px" alt="" /></a>
-            </li>
-            <li class="list-inline-item">
-              <a href="#"><img :src="mastercard" class="h-30px" alt="" /></a>
-            </li>
-            <li class="list-inline-item">
-              <a href="#"><img :src="expresscard" class="h-30px" alt="" /></a>
+        <b-row class="mt-5">
+          <h5 class="mb-2 text-white">Top Links</h5>
+          <ul class="list-inline text-primary-hover lh-lg">
+            <li v-for="(item, idx) in topLinks" :key="idx" class="list-inline-item">
+              <router-link :to="{ name: item.link?.name, params: item.link?.params }" class="text-body-secondary">
+                {{ item.name }}
+              </router-link>
             </li>
           </ul>
-        </b-col>
-
-        <b-col sm="5" md="6" lg="3" class="text-sm-end">
-          <h5 class="text-white mb-2">Follow us on</h5>
-          <ul class="list-inline mb-0 mt-3 hstack gap-1 justify-content-end">
-            <li class="list-inline-item">
-              <a class="btn btn-sm px-2 bg-facebook mb-0" href="#">
-                <font-awesome-icon :icon="faFacebook" class="fab fa-fw" />
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a class="btn btn-sm shadow px-2 bg-instagram mb-0" href="#">
-                <font-awesome-icon :icon="faInstagram" class="fab fa-fw" />
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a class="btn btn-sm shadow px-2 bg-twitter mb-0" href="#">
-                <font-awesome-icon :icon="faTwitter" class="fab fa-fw" />
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a class="btn btn-sm shadow px-2 bg-linkedin mb-0" href="#">
-                <font-awesome-icon :icon="faLinkedinIn" class="fab fa-fw" />
-              </a>
-            </li>
-          </ul>
-        </b-col>
-      </b-row> -->
+        </b-row>
+  
+        <b-row class="g-4 justify-content-between mt-0 mt-md-2">
+          <b-col sm="7" md="6" lg="4">
+            <h5 class="text-white mb-2">Payment & Security</h5>
+            <ul class="list-inline mb-0 mt-3 hstack gap-1 justify-content-start">
+              <li class="list-inline-item">
+                <a href="#"><img :src="paypal" class="h-30px" alt="" /></a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#"><img :src="visa" class="h-30px" alt="" /></a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#"><img :src="mastercard" class="h-30px" alt="" /></a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#"><img :src="expresscard" class="h-30px" alt="" /></a>
+              </li>
+            </ul>
+          </b-col>
+  
+          <b-col sm="5" md="6" lg="3" class="text-sm-end">
+            <h5 class="text-white mb-2">Follow us on</h5>
+            <ul class="list-inline mb-0 mt-3 hstack gap-1 justify-content-end">
+              <li class="list-inline-item">
+                <a class="btn btn-sm px-2 bg-facebook mb-0" href="#">
+                  <font-awesome-icon :icon="faFacebook" class="fab fa-fw" />
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="btn btn-sm shadow px-2 bg-instagram mb-0" href="#">
+                  <font-awesome-icon :icon="faInstagram" class="fab fa-fw" />
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="btn btn-sm shadow px-2 bg-twitter mb-0" href="#">
+                  <font-awesome-icon :icon="faTwitter" class="fab fa-fw" />
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a class="btn btn-sm shadow px-2 bg-linkedin mb-0" href="#">
+                  <font-awesome-icon :icon="faLinkedinIn" class="fab fa-fw" />
+                </a>
+              </li>
+            </ul>
+          </b-col>
+        </b-row> -->
 
       <hr class="mt-4 mb-0" />
 
