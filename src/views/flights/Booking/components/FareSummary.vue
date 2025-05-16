@@ -152,6 +152,14 @@
         </div>
       </b-card-footer>
 
+      <button @click="confirmAndPay" class="btn btn-primary-soft m-3">
+        Төлбөр шалгах
+      </button>
+
+      <!-- <b-alert show>
+        {{ errorMessage.text }}
+      </b-alert> -->
+
       <b-card-footer class="border-top bg-light">
         <div class="d-flex justify-content-center align-items-center text-center">
           <span class="footer-text">
@@ -165,8 +173,8 @@
   </b-col>
   <!-- {{ errorMessage }} -->
   <transition name="fade">
-    <div v-if="errorMessage" class="alert-wrapper">
-      <CustomAlert severity="info" :message="errorMessage" />
+    <div v-if="errorMessage.text" class="alert-wrapper">
+      <CustomAlert severity="info" :message="errorMessage.text" />
     </div>
   </transition>
 
@@ -204,7 +212,7 @@ onMounted(() => {
 
 const bvToast = useToast();
 
-const errorMessage = ref('');
+// const errorMessage = ref('');
 
 const optionStore = useOptionStore();
 
@@ -219,6 +227,89 @@ const infos = computed(() => {
   }
 
 });
+
+const oid = computed(() => {
+  if (optionStore.optionInfos?.result) {
+    return optionStore.optionInfos?.result?.oid || [];
+  } else {
+    return storedData?.result?.oid || [];
+  }
+
+});
+
+const errorMessage = ref({ status: '', text: '' });
+const isLoading = ref(false);
+const showModal = ref(false);
+
+
+const confirmAndPay = async () => {
+  showModal.value = false;
+  isLoading.value = true; // ⬅ Түр хүлээж байна гэдгийг эхлүүлнэ
+
+  console.log(infos.value)
+  const body = {
+    oid: oid.value,
+    amount: Math.ceil(Number(infos.value.FullPrice) * parseFloat(rate) + totalFee.value)
+  };
+
+
+  try {
+    const response = await fetch('https://api.airkacc.mn/api/checkPayment/mn/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.status === 'SUCCESS') {
+        // var orderInfo = data.result.Body.AeroBookResponse.AeroBookResult;
+        // const oid = orderInfo.value.oid;
+        errorMessage.value.text = data.message;
+        errorMessage.value.status = data.status;
+        setTimeout(() => {
+          errorMessage.value.text = '';
+          errorMessage.value.status = '';
+        }, 2000);
+        // sessionStorage.setItem("BookingInfo", JSON.stringify(data));
+        window.location.href = `/flights/booking/confirm/`;
+
+      } else {
+        console.log(data.message)
+        errorMessage.value.text = `Анхааруулга: ${data.message}`;
+        errorMessage.value.status = "error";
+        setTimeout(() => {
+          errorMessage.value.text = '';
+          errorMessage.value.status = '';
+        }, 2000);
+      }
+    } else {
+      errorMessage.value.text = `Алдаа: ${response.statusText}`;
+      errorMessage.value.status = "error";
+      setTimeout(() => {
+        errorMessage.value.text = '';
+        errorMessage.value.status = '';
+      }, 2000);
+      console.error('Алдаа гарлаа:', response.statusText);
+    }
+  } catch (error) {
+    errorMessage.value.text = `Алдаа: ${error}`;
+    errorMessage.value.status = "error";
+    setTimeout(() => {
+      errorMessage.value.text = '';
+      errorMessage.value.status = '';
+    }, 2000);
+    console.error('Алдаа:', error);
+  } finally {
+    isLoading.value = false; // ⬅ Дуусахаар loading болиулна
+  }
+};
+
+
+
+
 const router = useRouter();
 const remainingTime = ref('');
 const showTimeoutModal = ref(false);
@@ -294,9 +385,9 @@ function selectBank(index) {
 const copyText = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text);
-    errorMessage.value = "Амжилттай хуулагдлаа! " + text
+    errorMessage.value.text = "Амжилттай хуулагдлаа! " + text
     setTimeout(() => {
-      errorMessage.value = '';
+      errorMessage.value.text = '';
     }, 2000);
   } catch (err) {
     console.error('Хуулахад алдаа гарлаа:', err);

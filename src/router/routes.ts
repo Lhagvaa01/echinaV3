@@ -132,6 +132,13 @@ const flightRoutes = [
       title: 'Details - Multipurpose Online Booking Theme'
     },
     component: () => import('@/views/flights/FlightStatus/index.vue')
+  },{
+    path: '/flights/booking/confirm/:oid/',
+    name: 'flights.confirm',
+    meta: {
+      title: 'Details - Multipurpose Online Booking Theme'
+    },
+    component: () => import('@/views/flights/Confirm/index.vue')
   }
 ]
 

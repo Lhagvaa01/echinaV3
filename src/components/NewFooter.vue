@@ -4,7 +4,7 @@
       <b-row class="g-4">
         <b-col lg="3">
           <router-link :to="{ name: 'flights.home' }">
-            <img class="h-40px" :class="customClass" :src="logoDark" alt="dark" />
+            <img class="h-40px" :class="customClass" :src="logoLight" alt="dark" />
 
 
           </router-link>

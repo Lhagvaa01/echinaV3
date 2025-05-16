@@ -376,20 +376,20 @@
                                         <h6 class="fw-medium mb-0"><span class="fw-medium">Ангилал:</span> {{
                                             segment.FlightClass }}</h6>
                                         <li class="list-inline-item">
-                                            <router-link :to="'/some-route/' + inx + segment.FlightNum"
+                                            <a :to="'/some-route/' + inx + segment.FlightNum"
                                                 :id="'toggleButton' + inx + segment.FlightNum"
                                                 :aria-controls="'flightDetail' + segment.FlightNum"
                                                 v-b-toggle="'flightDetail' + inx + segment.FlightNum"
                                                 class="btn-more d-flex align-items-center collapsed p-0 mb-0"
                                                 role="button">
-                                                Нислэгийн дэлгэрэнгүй
+                                                {{ t('txtFlightDetail') }}
                                                 <ChevronDown />
-                                            </router-link>
+                                            </a>
                                         </li>
                                     </ul>
                                     <b-collapse :id="'flightDetail' + inx + segment.FlightNum" class="multi-collapse">
                                         <div class="pt-3">
-                                            <!-- <OptionDetailTab :flight="getAllSegments()" :index="inx" /> -->
+                                            <FlightDetailTab :flight="getAllSegments()" :index="inx" />
                                         </div>
                                     </b-collapse>
 
@@ -424,6 +424,11 @@
 import { ref } from 'vue';
 
 import flightLogo from '@/assets/images/element/09.svg'
+import FlightDetailTab from '../../List/components/FlightDetailTab.vue'
+import { ChevronDown, Briefcase, Luggage, User } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 const fallbackLogo = flightLogo
 
