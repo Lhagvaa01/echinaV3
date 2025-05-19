@@ -40,7 +40,7 @@
                                                 Билетны үнэ:
                                             </span>
                                             <span class="h6 fw-normal mb-0">{{ orderInfo?.FullPrice }}{{ currency
-                                                }}</span>
+                                            }}</span>
                                         </li>
                                         <!-- <li
                                             class="list-group-item d-sm-flex justify-content-between align-items-center">
@@ -60,7 +60,8 @@
                                                 <BIconCalendar class="fa-fw me-2" />
                                                 Created Date / Үүсгэсэн огноо:
                                             </span>
-                                            <span class="h6 fw-normal mb-0">29 July 2022</span>
+                                            <span class="h6 fw-normal mb-0">{{
+                                                formatDateFinish(orderInfo?.ConfirmableToUtc.split(" ")[0]) }}</span>
                                         </li>
                                         <li
                                             class="list-group-item d-sm-flex justify-content-between align-items-center">
@@ -154,7 +155,7 @@
                                                     <td>{{ traveler.Document || '-' }}</td>
                                                     <td>{{ traveler.Surname || '-' }}</td>
                                                     <td>{{ traveler.Name || '-' }}</td>
-                                                    <td>{{ traveler.BirthDay || '-' }}</td>
+                                                    <td>{{ formatDateFinish(traveler.BirthDay) || '-' }}</td>
                                                     <td>{{ traveler.GenderType || '-' }}</td>
                                                 </tr>
                                             </tbody>
@@ -180,7 +181,8 @@
                                                 <td>{{ orderInfo.PaxList.PaxData.Document || '-' }}</td>
                                                 <td>{{ orderInfo.PaxList.PaxData.Surname || '-' }}</td>
                                                 <td>{{ orderInfo.PaxList.PaxData.Name || '-' }}</td>
-                                                <td>{{ orderInfo.PaxList.PaxData.BirthDay || '-' }}</td>
+                                                <td>{{ formatDateFinish(orderInfo.PaxList.PaxData.BirthDay) || '-' }}
+                                                </td>
                                                 <td>{{ orderInfo.PaxList.PaxData.GenderType || '-' }}</td>
                                             </tr>
                                         </tbody>
@@ -381,7 +383,8 @@
                                                 <b-collapse :id="'flightDetail' + inx + segment.FlightNum"
                                                     class="multi-collapse">
                                                     <div class="pt-3">
-                                                        <FlightDetailTab :flight="getAllSegments()" :index="inx" />
+                                                        <!-- <p>{{ getAllSegments() }}</p> -->
+                                                        <FlightDetailTab :flight="orderInfo" :index="0" />
                                                     </div>
                                                 </b-collapse>
 
@@ -458,6 +461,11 @@ const orderOID = computed(() => route.params.oid);
 
 const fallbackLogo = flightLogo
 
+
+const formatDateFinish = (date: string): string => {
+    const [year, month, day] = date.split('.');
+    return `${day}.${month}.${year}`;
+};
 
 const orderId = ref('');
 const orderInfo = ref(null);

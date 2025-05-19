@@ -25,9 +25,9 @@
                                 <div class="list-inline-item h6 fw-normal me-1 mb-0">
                                     <div v-for="(line, index) in optionData.Text.split('\r\n')" :key="index">
                                         <span v-if="line.startsWith('+')" style="color: green;">✔ {{ line.slice(1)
-                                            }}</span>
+                                        }}</span>
                                         <span v-else-if="line.startsWith('!')">⚠ {{ line.slice(1)
-                                            }}</span>
+                                        }}</span>
                                         <span v-else>{{ line }}</span>
                                     </div>
                                 </div>
@@ -72,7 +72,8 @@
                                 </li>
                             </ul>
                             <!-- <b-button variant="dark" class="mb-0" @click=""> Book Now </b-button> -->
-                            <b-button variant="dark" class="mb-0" :to="{ path: '/flights/detail' }">
+                            <b-button variant="dark" class="mb-0" @click="Choose(optionData)"
+                                :to="{ path: '/flights/detail' }">
                                 {{ t('txtChoose') }}
                             </b-button>
 
@@ -199,4 +200,9 @@ defineProps({
         required: true
     }
 })
+
+
+const Choose = async (data) => {
+    sessionStorage.setItem("Option", JSON.stringify(data));
+}
 </script>

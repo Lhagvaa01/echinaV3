@@ -533,7 +533,8 @@
 
                           <h6 class="fw-normal mb-0">
                             {{Array.isArray(StoreAirCompany) ? StoreAirCompany.find((airline: any) => airline.Code ===
-                              offerSegment.MarketingAirline).Value : StoreAirCompany.Value}}
+                              offerSegment.MarketingAirline)?.Value || offerSegment.MarketingAirlineName :
+                              StoreAirCompany?.Value}}
                             ({{ offerSegment.FlightNum || 'SA-1254' }})
                           </h6>
                         </div>
@@ -558,7 +559,7 @@
                               offerSegment.Departure.Terminal || '' }}
                           </p>
                           <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                            offerSegment.Departure.Iata).City}}</p>
+                            offerSegment.Departure.Iata)?.City || offerSegment.Departure.City}}</p>
 
                         </b-col>
 
@@ -595,7 +596,7 @@
                               offerSegment.Arrival.Terminal || '' }}
                           </p>
                           <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                            offerSegment.Arrival.Iata).City}}</p>
+                            offerSegment.Arrival.Iata)?.City || offerSegment.Arrival.City}}</p>
                         </b-col>
                       </b-row>
 
@@ -623,7 +624,7 @@
 
                             <div>
                               {{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                                offerSegment.Arrival.Iata).City}}
+                                offerSegment.Arrival.Iata)?.City || offerSegment.Arrival.City}}
                               дээр
                               {{ timeDifference(offerSegment.Arrival.Date, getAllSegmentsDates(index)[segidxs +
                                 1].Departure.Date)
@@ -684,6 +685,7 @@
             </div>
           </div>
         </div>
+        <div v-else>{{ StoreflightInfos[index].Offers.OfferInfo }} + {{ getAllSegments(index) }}</div>
 
       </b-tab>
       <b-tab>
@@ -830,6 +832,7 @@
       </b-tab>
     </b-tabs>
   </div>
+  <div v-else>{{ StoreflightInfos }}</div>
 </template>
 
 <script lang="ts" setup>
@@ -839,7 +842,7 @@ import { faPlane } from '@fortawesome/free-solid-svg-icons'
 import { Repeat, Briefcase, Luggage, TriangleAlert } from 'lucide-vue-next';
 import CabCard from '../../../cab/List/components/CabCard.vue'
 import { cabsLists } from '../../../cab/List/data'
-import { computed, ref } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import fallbackLogo from '@/assets/images/element/09.svg'
 import { useFlightStore } from '@/stores/flight';
 
@@ -865,9 +868,40 @@ const show = ref<number>(Number(sessionStorage.getItem("flight")) || 1);
 const trips = parseInt(sessionStorage.getItem("trips") || "0", 10);
 
 // Access state
-const StoreflightInfos = computed(() => flightStore.flightInfos || []);
+const StoreflightInfos = computed(() => flightStore.flightInfos || flight.value);
 const StoreAirCompany = computed(() => flightStore.AirCompany || []);
 const StoreAirPorts = computed(() => flightStore.AirPorts || []);
+
+const flights = computed(() => {
+  const flightArray = Array.isArray(props.flight) ? props.flight : [props.flight];
+
+  return flightArray.map((flight) => {
+    const offerInfoArray = Array.isArray(flight.Offers?.OfferInfo)
+      ? flight.Offers.OfferInfo
+      : [flight.Offers?.OfferInfo];
+
+    return {
+      ...flight,
+      Offers: {
+        ...flight.Offers,
+        OfferInfo: offerInfoArray
+      }
+    };
+  });
+});
+
+
+
+watchEffect(() => {
+  if (flightStore.flightInfos.length == 0) {
+    console.log(props.flight)
+    flightStore.flightInfos = flights; // props.flight-оос өгөгдөл оноож байна
+  } else {
+    console.log(props.flight)
+  }
+});
+
+
 
 const getFlightData = (index: number) => {
   return StoreflightInfos.value[index] || { Offers: { OfferInfo: [] } };
@@ -878,10 +912,21 @@ const test = (index: number) => {
   return getFlightData(index).Offers.OfferInfo.flatMap((Rph: any) => Rph) || []
 }
 
+// const getAllSegments = (index: number) => {
+//   console.log(getFlightData(index).Offers.OfferInfo.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments.OfferSegment) || [])
+//   return getFlightData(index).Offers.OfferInfo.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments.OfferSegment) || [];
+// };
 const getAllSegments = (index: number) => {
-  // console.log(getFlightData(index))
-  return getFlightData(index).Offers.OfferInfo.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments.OfferSegment) || [];
+  const data = getFlightData(index);
+  const offerInfos = Array.isArray(data.Offers?.OfferInfo)
+    ? data.Offers.OfferInfo
+    : [data.Offers?.OfferInfo];
+
+  const segments = offerInfos.flatMap((offer) => offer.Segments?.OfferSegment || []);
+  console.log(segments);
+  return segments;
 };
+
 
 const getAllSegmentss = (index: number) => {
   const offers = getFlightData(index).Offers.OfferInfo

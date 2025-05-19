@@ -319,6 +319,8 @@
                             </ul>
                             <b-collapse :id="'flightDetail' + Mainindex + segments.FlightNum" class="multi-collapse">
                                 <div class="pt-3">
+                                    <!-- <p>{{ segments }}</p>
+                                    <p>{{ Mainindex }}</p> -->
                                     <FlightDetailTab :flight="segments" :index="Mainindex" />
                                 </div>
                             </b-collapse>
@@ -395,7 +397,9 @@ async function fetchOptions(offerCode: string, searchGuid: string) {
         isOptionLoaded.value = true; // Show the component after fetching
         if (!optionStore.optionInfos?.result?.Body?.AeroPrebookResponse?.AeroPrebookResult?.Tariffs) {
             // Redirect to /flights/detail if Tariffs is missing
+            sessionStorage.removeItem("Option")
             router.push({ path: '/flights/detail' });
+
         }
     } catch (error) {
         console.error('Error fetching options:', error);

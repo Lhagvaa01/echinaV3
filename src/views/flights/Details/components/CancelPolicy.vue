@@ -1,38 +1,31 @@
 <template>
-  <b-col md="6" xl="12" :style="{ paddingBottom: '70px' }">
+  <b-col v-if="option" md="6" xl="12" :style="{ paddingBottom: '70px' }">
     <b-card class="border p-1">
       <b-card-title tag="h5" text="Cancellation & Date Change Charges" class="mb-3" />
 
-      <h6 class="text-danger">Non Refundable</h6>
-      <p class="mb-2">
-        The Cancellation penalty on this booking will depend on how close to the departure date you
-        cancel your ticket. View fare rules to know more
-      </p>
-      <div>
-        <a
-          href="#"
-          class="btn btn-link p-0 mb-0 text-decoration-underline"
-          @click="showModal = !showModal"
-        >
+      <!-- <h6 class="text-danger">Non Refundable</h6> -->
+      <div class="list-inline-item h6 fw-normal me-1 mb-0">
+        <div v-for="(line, index) in option.Text.split('\r\n')" :key="index">
+          <span v-if="line.startsWith('+')" style="color: green;">✔ {{ line.slice(1)
+          }}</span>
+          <span v-else-if="line.startsWith('!')">⚠ {{ line.slice(1)
+          }}</span>
+          <span v-else>{{ line }}</span>
+        </div>
+      </div>
+      <!-- <div>
+        <a href="#" class="btn btn-link p-0 mb-0 text-decoration-underline" @click="showModal = !showModal">
           <BIconEyeFill class="mb-1" />
           View Detail
         </a>
-      </div>
+      </div> -->
     </b-card>
   </b-col>
 
   <!--  Cancellation & Date Change Charges Modal -->
-  <b-modal
-    class="fade"
-    size="lg"
-    v-model="showModal"
-    title-tag="h5"
-    title="Cancellation & Date Change Charges"
-    hide-footer
-  >
-    <b-tabs
-      nav-class="nav nav-pills nav-justified nav-responsive bg-primary bg-opacity-10 rounded p-2 mb-3"
-    >
+  <b-modal class="fade" size="lg" v-model="showModal" title-tag="h5" title="Cancellation & Date Change Charges"
+    hide-footer>
+    <b-tabs nav-class="nav nav-pills nav-justified nav-responsive bg-primary bg-opacity-10 rounded p-2 mb-3">
       <b-tab title="Cancellation Charge">
         <b-card no-body class="border">
           <b-card-header class="border-bottom">
@@ -117,4 +110,6 @@ import element9 from '@/assets/images/element/09.svg'
 import { currency } from '@/helpers/constants'
 
 const showModal = ref(false)
+
+const option = sessionStorage.getItem("Option") ? JSON.parse(sessionStorage.getItem("Option") || "") : null;
 </script>

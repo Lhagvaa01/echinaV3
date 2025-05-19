@@ -140,16 +140,19 @@
               <h6 class="fw-medium mb-0"><span class="fw-medium">Ангилал:</span> {{
                 segment.FlightClass }}</h6>
               <li class="list-inline-item">
-                <a :id="'flightDetail-' + inx" :aria-controls="'flightDetail-' + inx" v-b-toggle="'flightDetail-' + inx"
+                <a :to="'/some-route/' + inx + segment.FlightNum" :id="'toggleButton' + inx + segment.FlightNum"
+                  :aria-controls="'flightDetail' + segment.FlightNum"
+                  v-b-toggle="'flightDetail' + inx + segment.FlightNum"
                   class="btn-more d-flex align-items-center collapsed p-0 mb-0" role="button">
                   {{ t('txtFlightDetail') }}
                   <ChevronDown />
                 </a>
               </li>
             </ul>
-            <b-collapse :id="'flightDetail-' + inx" class="multi-collapse">
+            <b-collapse :id="'flightDetail' + inx + segment.FlightNum" class="multi-collapse">
               <div class="pt-3">
-                <FlightDetailTab :flight="getAllSegments()" :index="inx" />
+                <!-- <p>{{ getAllSegments() }}</p> -->
+                <FlightDetailTab :flight="infos" :index="0" />
               </div>
             </b-collapse>
 
