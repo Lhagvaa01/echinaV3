@@ -54,7 +54,7 @@
             <CustomStickyElement data-sticky data-margin-top="80" data-sticky-for="1199">
               <b-row class="g-4">
                 <FareSummary />
-                <OfferDiscount />
+                <!-- <OfferDiscount /> -->
                 <CancelPolicy />
               </b-row>
             </CustomStickyElement>

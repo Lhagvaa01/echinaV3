@@ -20,7 +20,8 @@
 
                     <h6 class="fw-normal mb-0">
                       {{Array.isArray(StoreAirCompany.value) ? StoreAirCompany?.find((airline: any) => airline.Code ===
-                        offerSegment.MarketingAirline).Value : null}}
+                        offerSegment.MarketingAirline)?.Value || offerSegment.MarketingAirlineName :
+                        offerSegment.MarketingAirlineName || null}}
                       ({{ offerSegment.FlightNum || 'SA-1254' }})
                     </h6>
                   </div>
@@ -45,7 +46,7 @@
                         offerSegment.Departure.Terminal || '' }}
                     </p>
                     <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                      offerSegment.Departure.Iata).City}}</p>
+                      offerSegment.Departure.Iata)?.City || offerSegment.Departure.City}}</p>
 
                   </b-col>
 
@@ -82,7 +83,7 @@
                         offerSegment.Arrival.Terminal || '' }}
                     </p>
                     <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                      offerSegment.Arrival.Iata).City}}</p>
+                      offerSegment.Arrival.Iata)?.City || offerSegment.Arrival.City}}</p>
                   </b-col>
                 </b-row>
 
@@ -146,7 +147,8 @@
 
                           <h6 class="fw-normal mb-0">
                             {{Array.isArray(StoreAirCompany) ? StoreAirCompany.find((airline: any) => airline.Code ===
-                              offerSegment.MarketingAirline).Value : StoreAirCompany.Value}}
+                              offerSegment.MarketingAirline)?.Value || offerSegment.MarketingAirlineName :
+                              offerSegment.MarketingAirlineName || null}}
                             ({{ offerSegment.FlightNum || 'SA-1254' }})
                           </h6>
                         </div>

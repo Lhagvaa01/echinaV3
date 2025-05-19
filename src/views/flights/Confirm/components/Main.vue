@@ -11,9 +11,10 @@
                     <b-card no-body class="shadow">
                         <img :src="gallery4" class="rounded-top" alt="gallery4" />
                         <b-card-body class="text-center p-4">
-                            <b-card-title tag="h1" class="fs-3">{{ getStatusClass(orderInfo?.status) }}</b-card-title>
+                            <b-card-title tag="h1" class="fs-3">{{ t(getStatusClass(orderInfo?.status))
+                                }}</b-card-title>
                             <p class="lead mb-3">Itinerary</p>
-                            <h5 class="text-primary mb-4">Airkacc.mn | Нислэгийн тийз захиалга</h5>
+                            <h5 class="text-primary mb-4">Airkacc.mn | {{ t('txtFlightBooking') }}</h5>
                             <b-row class="justify-content-between text-start mb-4">
                                 <b-col lg="5">
                                     <ul class="list-group list-group-borderless">
@@ -21,7 +22,7 @@
                                             class="list-group-item d-sm-flex justify-content-between align-items-center">
                                             <span class="mb-0 items-center">
                                                 <BIconVr class="fa-fw me-2" />
-                                                Захиалагчийн И-мэйл:
+                                                {{ t('txtBookingMail') }}:
                                             </span>
                                             <span class="h6 fw-normal mb-0">{{ orderInfo?.email }}</span>
                                         </li>
@@ -29,7 +30,7 @@
                                             class="list-group-item d-sm-flex justify-content-between align-items-center">
                                             <span class="mb-0 items-center">
                                                 <BIconPerson class="fa-fw me-2" />
-                                                Захиалагчийн Утасны дугаар:
+                                                {{ t('txtBookingPhone') }}:
                                             </span>
                                             <span class="h6 fw-normal mb-0">{{ orderInfo?.phone }}</span>
                                         </li>
@@ -37,10 +38,11 @@
                                             class="list-group-item d-sm-flex justify-content-between align-items-center">
                                             <span class="mb-0 items-center">
                                                 <BIconWallet2 class="fa-fw me-2" />
-                                                Билетны үнэ:
+                                                {{ t('txtPaidAmount') }}:
                                             </span>
-                                            <span class="h6 fw-normal mb-0">{{ orderInfo?.FullPrice }}{{ currency
-                                            }}</span>
+                                            <span class="h6 fw-normal mb-0">{{ Math.ceil((Number(orderInfo?.FullPrice) *
+                                                parseFloat(rate))).toLocaleString() }}{{ currency
+                                                }}</span>
                                         </li>
                                         <!-- <li
                                             class="list-group-item d-sm-flex justify-content-between align-items-center">
@@ -132,7 +134,7 @@
 </b-button>
 </div> -->
                             <div class="passenger-container">
-                                <h2 class="title">Зорчигчийн мэдээлэл</h2>
+                                <h2 class="title">{{ t('txtTravelerInfo') }}</h2>
 
                                 <div v-if="Array.isArray(orderInfo?.PaxList.PaxData)">
 
@@ -141,11 +143,11 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Паспорт</th>
-                                                    <th>Овог</th>
-                                                    <th>Нэр</th>
-                                                    <th>Төрсөн өдөр</th>
-                                                    <th>Хүйс</th>
+                                                    <th>{{ t('txtPassportNum') }}</th>
+                                                    <th>{{ t('txtSureName') }}</th>
+                                                    <th>{{ t('txtName') }}</th>
+                                                    <th>{{ t('txtBirthDate') }}</th>
+                                                    <th>{{ t('txtGender') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -167,11 +169,11 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Паспорт</th>
-                                                <th>Овог</th>
-                                                <th>Нэр</th>
-                                                <th>Төрсөн өдөр</th>
-                                                <th>Хүйс</th>
+                                                <th>{{ t('txtPassportNum') }}</th>
+                                                <th>{{ t('txtSureName') }}</th>
+                                                <th>{{ t('txtName') }}</th>
+                                                <th>{{ t('txtBirthDate') }}</th>
+                                                <th>{{ t('txtGender') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -195,13 +197,13 @@
                             <div class="flight-details-container">
                                 <h3 class="section-title">
                                     <!-- <b-icon icon="airplane" class="section-icon"></b-icon> -->
-                                    Нислэгийн мэдээлэл
+                                    {{ t('txtFlightInfo') }}
                                 </h3>
 
                                 <div class="">
                                     <!-- Онгоцны PNR мэдээлэл -->
                                     <div class="d-flex mb-2">
-                                        <span class="pnr-label">PNR дугаар:</span>
+                                        <span class="pnr-label">{{ t('txtPNR') }}:</span>
                                         <span class="pnr-value">{{ orderInfo.Offers.OfferInfo.PNR }}</span>
                                     </div>
 
@@ -255,7 +257,9 @@
                                                     </div>
                                                 </div>
 
-                                                <h6 class="fw-bold mb-0">Дамжин нислэг</h6>
+                                                <h6 class="fw-bold mb-0">{{ getAllSegments().length > 1 ?
+                                                    t('txtTransit') :
+                                                    t('txtDirect') }}</h6>
                                             </b-card-header>
 
                                             <b-card-body class="p-4 pb-0">
@@ -362,10 +366,13 @@
                                             <div class="card-footer pt-4">
                                                 <ul
                                                     class="list-inline bg-light rounded-2 d-sm-flex text-center justify-content-sm-between mb-0 px-4 py-2">
-                                                    <li class="list-inline-item text-primary">Боломжит суудал: {{
-                                                        segment.ResBookDesigQuantity }}</li>
+                                                    <li class="list-inline-item text-primary">{{ t('txtAvailableSeat')
+                                                    }}:
+                                                        {{
+                                                            segment.ResBookDesigQuantity }}</li>
                                                     <!-- <li class="list-inline-item text-danger">Non-Refundable</li> -->
-                                                    <h6 class="fw-medium mb-0"><span class="fw-medium">Ангилал:</span>
+                                                    <h6 class="fw-medium mb-0"><span class="fw-medium">{{ t('txtClass')
+                                                    }}:</span>
                                                         {{
                                                             segment.FlightClass }}</h6>
                                                     <li class="list-inline-item">
@@ -462,6 +469,8 @@ const orderOID = computed(() => route.params.oid);
 const fallbackLogo = flightLogo
 
 
+const rate = sessionStorage.getItem('eur')
+
 const formatDateFinish = (date: string): string => {
     const [year, month, day] = date.split('.');
     return `${day}.${month}.${year}`;
@@ -499,7 +508,7 @@ const getTotalFlightTime = () => {
     const hours = Math.floor(totalMinutes / 60); // Бүтэн цагийг олно
     const minutes = totalMinutes % 60; // Үлдсэн минутыг олно
 
-    return `${hours} цаг ${minutes} мин`; // Цаг, минутын форматаар буцаана
+    return `${hours} ${t('txtHour')} ${minutes} ${t('txtMin')}`; // Цаг, минутын форматаар буцаана
 };
 
 const getTotalStops = () => getAllSegments().length - 1;
@@ -510,8 +519,8 @@ const getStopIatas = () => getAllSegments().slice(0, -1).map((seg: { Arrival: { 
 
 function getStatusClass(status) {
     switch (status.toLowerCase()) {
-        case 'confirm': return 'БАТАЛГААЖСАН';
-        case 'nonconfirm': return 'БАТАЛГААЖААГҮЙ';
+        case 'confirm': return 'txtConfirmed';
+        case 'nonconfirm': return 'txtNotConfirmed';
         case 'cancelled': return 'ЦУЦЛАГДСАН';
         default: return '';
     }

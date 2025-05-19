@@ -80,7 +80,16 @@
     "txtEmailAddDes": "Email хаяг оруулна уу",
     "txtPhoneNumWar": "Утасны дугаараа зөв оруулна уу. Зөвхөн тоо байх ёстой!",
     "txtEmailAddDWar": "Буруу email хаяг!",
-    "txtPay": "Төлбөр төлөх"
+    "txtPay": "Төлбөр төлөх",
     
+    
+    "txtConfirmed": "Баталгаажсан",
+    "txtNotConfirmed": "Баталгаажаагүй",
+    "txtBookingPhone": "Захиалагчийн Утасны дугаар",
+    "txtBookingMail": "Захиалагчийн И-мэйл",
+    "txtFlightInfo": "Нислэгийн мэдээлэл",
+    "txtPNR": "PNR дугаар",
+    "txtFlightBooking": "Нислэгийн тийз захиалга",
+    "txtPaidAmount": "Билетны үнэ"
     
 }
