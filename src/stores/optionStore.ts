@@ -44,6 +44,9 @@ export const useOptionStore = defineStore({
     }
     
   },
+  persist: {
+  storage: sessionStorage, // эсвэл localStorage
+},
   getters: {
     firstAdultPrice: (state) => {
       

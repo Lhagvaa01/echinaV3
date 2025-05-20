@@ -216,13 +216,12 @@
           @click.prevent="pay">Төлбөр төлөх</a>
       </div> -->
 
-      <div class="d-grid mt-4">
-        <!-- Төлбөр төлөх товч -->
+      <!-- <div class="d-grid mt-4">
         <a href="#" class="btn btn-primary-soft mb-0" :class="{ 'disabled-link': !isFormValid }"
           @click.prevent="openModal">
           {{ t('txtPay') }}
         </a>
-      </div>
+      </div> -->
 
       <!-- Баталгаажуулах Modal -->
 
@@ -310,7 +309,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import CustomFlatpicker from '@/components/CustomFlatpicker.vue';
 import SelectFormInput from '@/components/SelectFormInput.vue';
 import ServiceInfo from './ServiceInfo.vue';
@@ -319,11 +318,16 @@ import dayjs from 'dayjs';
 import { useOptionStore } from '@/stores/optionStore';
 import CustomAlert from '../../../../components/CustomAlert.vue';
 import { useI18n } from 'vue-i18n'
+import { useTravelerStore } from '@/stores/travelerStore'
+
+const travelerStore = useTravelerStore()
 
 const { t, locale } = useI18n()
 
 const optionStore = useOptionStore();
 const storedData = sessionStorage.getItem("PreBooking") ? JSON.parse(sessionStorage.getItem("PreBooking") || "") : null;
+
+
 
 
 
@@ -695,8 +699,21 @@ const isPhoneNumberValid = computed(() => {
 
 const isEmailValid = computed(() => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
   return emailRegex.test(BookingInfo.email.value);
 });
+
+watch(() => travelers.value, (newVal) => {
+  travelerStore.setTravelers(newVal)
+}, { deep: true })
+
+watch(() => BookingInfo.phoneNumber.value, (val) => {
+  travelerStore.setContactInfo(val, BookingInfo.email.value)
+})
+
+watch(() => BookingInfo.email.value, (val) => {
+  travelerStore.setContactInfo(BookingInfo.phoneNumber.value, val)
+})
 
 // Насны ангилал шалгах функц
 function getAgeCategory(dateOfBirth: { day: string; month: string; year: string; }) {

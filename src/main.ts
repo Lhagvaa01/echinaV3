@@ -12,6 +12,7 @@ import i18n from './plugins/i18n'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { createBootstrap } from 'bootstrap-vue-next'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { OhVueIcon, addIcons } from 'oh-vue-icons'
@@ -26,10 +27,13 @@ import 'typeface-mulish';
 addIcons(FcGoogle)
 const app = createApp(App)
 
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.component('v-icon', OhVueIcon)
 app.use(createBootstrap())
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 app.use(i18n)
 app.mount('#app')

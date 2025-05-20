@@ -4,7 +4,8 @@
       <b-card-title tag="h3" class="mb-0">Important Information</b-card-title>
     </b-card-header>
     <b-card-body class="py-4">
-      <div v-if="!isLoading" v-html="cleanTariffRules" class="tariff-rules-content"></div>
+      <div v-if="!isLoading" v-html="!cleanTariffRules ? tariffRules : cleanTariffRules" class="tariff-rules-content">
+      </div>
       <div v-else class="text-muted text-center py-4">
         <b-spinner small type="grow" class="me-2" />
         Тарифийн мэдээлэл ачаалж байна...
