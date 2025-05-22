@@ -1,10 +1,10 @@
 <template>
     <div class="terms-container">
         <div class="header">
-            <h4>Нислэгийн Тийз Захиалгын Үйлчилгээний Нөхцөл</h4>
+            <h4>{{ language?.PrivacyPolicy.header }}</h4>
         </div>
 
-        <div class="alert-section">
+        <!-- <div class="alert-section">
             <div>
                 <h4>АНХААРУУЛАХ САНАМЖ</h4>
                 <ul>
@@ -237,12 +237,114 @@
                         тохиолдолд Монгол улсын хууль тогтоомжийн дагуу шийдвэрлүүлнэ.</li>
                 </ul>
             </section>
-        </div>
+        </div> -->
 
+        <div class="alert-section">
+            <h4>{{ language?.PrivacyPolicy.alert_section.title }}</h4>
+            <ul>
+                <li v-for="(item, index) in language?.PrivacyPolicy.alert_section.items" :key="index">
+                    <strong>{{ item.subtitle }}:</strong> {{ item.text }}
+                </li>
+            </ul>
+        </div>
+        <div class="terms-content">
+            <section class="mb-4">
+                <h3>{{ language?.PrivacyPolicy.terms_content.general.title }}</h3>
+                <div>
+                    <div v-for="(item, index) in language?.PrivacyPolicy.terms_content.general.sections" :key="index">
+                        <h5>{{ item.subtitle }}</h5>
+                        <p>{{ item.text }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-4">
+                <h3>{{ language?.PrivacyPolicy.terms_content.client_rights.title }}</h3>
+                <ul>
+                    <li v-for="(item, index) in language?.PrivacyPolicy.terms_content.client_rights.items" :key="index">
+                        <strong>{{ item.subtitle }}:</strong> {{ item.text }}
+                    </li>
+                </ul>
+            </section>
+
+            <section class="mb-4">
+                <h3>{{ language?.PrivacyPolicy.terms_content.client_duties.title }}</h3>
+                <ul>
+                    <li v-for="(item, index) in language?.PrivacyPolicy.terms_content.client_duties.items" :key="index">
+                        <strong>{{ item.subtitle }}:</strong> {{ item.text }}
+                    </li>
+                </ul>
+            </section>
+
+            <section class="mb-4">
+                <h3>{{ language?.PrivacyPolicy.terms_content.company_rights.title }}</h3>
+                <ul>
+                    <li v-for="(item, index) in language?.PrivacyPolicy.terms_content.company_rights.items"
+                        :key="index">
+                        <strong>{{ item.subtitle }}:</strong> {{ item.text }}
+                    </li>
+                </ul>
+            </section>
+
+            <section class="mb-4">
+                <h3>{{ language?.PrivacyPolicy.terms_content.company_duties.title }}</h3>
+                <ul>
+                    <li v-for="(item, index) in language?.PrivacyPolicy.terms_content.company_duties.items"
+                        :key="index">
+                        <strong>{{ item.subtitle }}:</strong> {{ item.text }}
+                    </li>
+                </ul>
+            </section>
+
+            <section class="mb-4">
+                <h3>{{ language?.PrivacyPolicy.terms_content.payment_terms.title }}</h3>
+                <div>
+                    <div v-for="(item, index) in language?.PrivacyPolicy.terms_content.payment_terms.sections"
+                        :key="index">
+                        <h5>{{ item.subtitle }}</h5>
+                        <p>{{ item.text }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-4">
+                <h3>{{ language?.PrivacyPolicy.terms_content.ticket_refund.title }}</h3>
+                <div>
+                    <div v-for="(item, index) in language?.PrivacyPolicy.terms_content.ticket_refund.sections"
+                        :key="index">
+                        <h5>{{ item.subtitle }}</h5>
+                        <p>{{ item.text }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-4">
+                <h3>{{ language?.PrivacyPolicy.terms_content.other_conditions.title }}</h3>
+                <ul>
+                    <li v-for="(item, index) in language?.PrivacyPolicy.terms_content.other_conditions.items"
+                        :key="index">
+                        {{ item }}
+                    </li>
+                </ul>
+            </section>
+
+            <section class="mb-4">
+                <h3>{{ language?.PrivacyPolicy.terms_content.dispute_resolution.title }}</h3>
+                <ul>
+                    <li v-for="(item, index) in language?.PrivacyPolicy.terms_content.dispute_resolution.items"
+                        :key="index">
+                        {{ item }}
+                    </li>
+                </ul>
+            </section>
+        </div>
     </div>
 </template>
 
-<script>
+<!-- <script>
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 export default {
     methods: {
         proceed() {
@@ -255,7 +357,48 @@ export default {
         }
     }
 }
+</script> -->
+
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import { defineEmits, computed } from 'vue'
+import mn from './mn.json'
+import en from './en.json'
+import cn from './cn.json'
+
+// i18n setup
+const { t, locale } = useI18n()
+
+// Computed alert items
+const language = computed(() => {
+    if (locale.value === 'mn') return mn
+    if (locale.value === 'en') return en
+    if (locale.value === 'cn') return cn
+    return mn
+})
+
+
+// Router instance
+const router = useRouter()
+
+// Emit setup
+const emit = defineEmits<{
+    (e: 'terms-accepted'): void
+}>()
+
+// Methods
+function proceed() {
+    emit('terms-accepted')
+    // Эсвэл дараагийн алхам руу чиглүүлэх бол:
+    // router.push('/booking')
+}
+
+function goBack() {
+    router.go(-1)
+}
 </script>
+
 
 <style scoped>
 .terms-container {

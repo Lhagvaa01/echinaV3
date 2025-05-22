@@ -1,0 +1,261 @@
+{
+    "PrivacyPolicy": {
+        "header": "Flight Ticket Booking Terms and Conditions",
+        "alert_section": {
+            "title": "IMPORTANT NOTICE",
+            "items": [
+                {
+                    "subtitle": "Passport Information",
+                    "text": "Passengers must carefully check their details. Make sure your passport number, surname, given name, and gender are correct. Incorrect information or name changes cannot be fixed later, and any resulting risk is the passenger’s own responsibility."
+                },
+                {
+                    "subtitle": "Ticket Confirmation",
+                    "text": "The ticketing system is automated. After payment, if your ticket is confirmed, you will receive a message on your registered email and phone. If you do not receive confirmation, your booking was unsuccessful—please contact us for a refund."
+                },
+                {
+                    "subtitle": "Missing the Flight",
+                    "text": "Passengers must arrive at the airport at least 3 hours before departure to complete check-in, baggage drop-off, and passport control. If you miss the flight, you are fully responsible for all consequences."
+                },
+                {
+                    "subtitle": "Connecting Flights",
+                    "text": "For connecting flights, check if you need a visa for your transit country or city. You can get additional information from the Ministry of Foreign Affairs website. For details, call 96961414 or 90901550."
+                },
+                {
+                    "subtitle": "Flight Schedule Changes",
+                    "text": "Notifications of flight schedule changes will be sent to your registered phone number and email address. Please stay alert for such messages."
+                },
+                {
+                    "subtitle": "Flight Cancellations and Delays",
+                    "text": "Tickets must be used in the order specified on your itinerary. If you change the sequence, your ticket may be cancelled, and any risk will be your responsibility."
+                },
+                {
+                    "subtitle": "Flight Changes",
+                    "text": "The airline may cancel or delay flights due to weather or other force majeure circumstances. In such cases, AIRKACC.MN is not liable for any resulting consequences."
+                },
+                {
+                    "subtitle": "Risks",
+                    "text": "We do not provide travel insurance. For your safety, please obtain your own insurance. Be aware that various risks may arise during your trip."
+                }
+            ]
+        },
+        "terms_content": {
+            "general": {
+                "title": "GENERAL TERMS",
+                "sections": [
+                    {
+                        "subtitle": "Terms of Service",
+                        "text": "These terms are an agreement governing the rights, obligations, and responsibilities between the customer and the ticket-selling company for online ticket booking and purchase."
+                    },
+                    {
+                        "subtitle": "Service Ownership",
+                        "text": "AIRKACC.mn and the mobile application are the property of CHINA BOOKING LLC. These terms apply to all ticket purchase activities on AIRKACC.MN."
+                    },
+                    {
+                        "subtitle": "Validity of Terms",
+                        "text": "By accessing AIRKACC.MN and making a flight booking, the customer is considered to have fully accepted these terms, and the contract becomes effective."
+                    },
+                    {
+                        "subtitle": "Intellectual Property",
+                        "text": "All content on AIRKACC.MN, including text, images, and logos, is protected under Mongolian and international intellectual property law."
+                    }
+                ]
+            },
+            "client_rights": {
+                "title": "CUSTOMER RIGHTS",
+                "items": [
+                    {
+                        "subtitle": "Right to Information",
+                        "text": "Customers have the right to access flight schedules, ticket prices, baggage allowances, and other information from the online system."
+                    },
+                    {
+                        "subtitle": "Right to Manage Orders",
+                        "text": "Customers can monitor and update their ticket details online or through the app."
+                    },
+                    {
+                        "subtitle": "Right to Change or Refund Tickets",
+                        "text": "If the purchased ticket allows refunds or changes, the customer may request these within the period specified by the airline. Additional fees may apply according to the fare rules. Refunds for failed change requests will be fully returned. Always request confirmation from the operator for the result, as airlines may sometimes refuse changes."
+                    },
+                    {
+                        "subtitle": "Right to Data Protection",
+                        "text": "Personal information submitted by customers will be protected by law and not used without authorization."
+                    },
+                    {
+                        "subtitle": "Right to Accurate Flight Information",
+                        "text": "Customers have the right to receive accurate and timely updates about flight schedules, cancellations, and delays from the airline."
+                    }
+                ]
+            },
+            "client_duties": {
+                "title": "CUSTOMER DUTIES",
+                "items": [
+                    {
+                        "subtitle": "Provide Accurate Information",
+                        "text": "Customers must enter their surname, given name, passport details, and contact number correctly. They are responsible for any consequences from incorrect or missing information."
+                    },
+                    {
+                        "subtitle": "Passport Validity",
+                        "text": "The passport must be valid for at least 185 days from the date of the flight."
+                    },
+                    {
+                        "subtitle": "Follow Flight Rules",
+                        "text": "Customers must read and accept the rules for refunds, changes, and fees before purchasing a ticket."
+                    },
+                    {
+                        "subtitle": "Follow Baggage Rules",
+                        "text": "Customers must comply with the baggage and hand luggage size and weight requirements."
+                    },
+                    {
+                        "subtitle": "Arrive On Time",
+                        "text": "Customers must arrive at the airport before the designated time and complete check-in. The airline is not responsible for any issues caused by late arrival."
+                    },
+                    {
+                        "subtitle": "Fulfill Passport and Visa Requirements",
+                        "text": "Customers must ensure they have the required visa and documents for their destination. The airline is not responsible for issues with documentation."
+                    },
+                    {
+                        "subtitle": "Pay On Time",
+                        "text": "Customers must pay for their ticket within the specified period. Unpaid bookings will be automatically cancelled."
+                    },
+                    {
+                        "subtitle": "Research Visa Requirements",
+                        "text": "Customers must check visa and entry requirements for their destination in advance. The airline is not responsible for any issues caused by visa problems."
+                    },
+                    {
+                        "subtitle": "Legal Responsibility",
+                        "text": "Users must be at least 18 years old and legally responsible for their actions."
+                    }
+                ]
+            },
+            "company_rights": {
+                "title": "AIRKASS LLC RIGHTS",
+                "items": [
+                    {
+                        "subtitle": "Ticket Pricing",
+                        "text": "The ticket vendor has the right to set prices in accordance with the market and agreements with airlines."
+                    },
+                    {
+                        "subtitle": "Right to Cancel Orders",
+                        "text": "The vendor may cancel bookings if payment is not received in time or rules are violated."
+                    },
+                    {
+                        "subtitle": "Right to Update Flight Information",
+                        "text": "The vendor may provide updates on flight schedules, cancellations, and changes from the airline."
+                    },
+                    {
+                        "subtitle": "Right to Collect Customer Information",
+                        "text": "The vendor has the right to collect the customer’s name, contact information, passport details, and payment information."
+                    },
+                    {
+                        "subtitle": "Right to Charge Service Fees",
+                        "text": "The vendor may charge service fees for booking, refunds, or changes."
+                    }
+                ]
+            },
+            "company_duties": {
+                "title": "AIRKASS LLC DUTIES",
+                "items": [
+                    {
+                        "subtitle": "Provide Accurate Information",
+                        "text": "The vendor must provide accurate information about flight schedules, prices, refunds, and changes."
+                    },
+                    {
+                        "subtitle": "Protect Personal Data",
+                        "text": "The vendor must protect the customer’s personal information and not share it with third parties without consent."
+                    },
+                    {
+                        "subtitle": "Receive Payments",
+                        "text": "The vendor must collect payment to confirm bookings."
+                    },
+                    {
+                        "subtitle": "Comply with Airline Rules",
+                        "text": "The vendor must follow the airline’s refund, change, and other ticket rules."
+                    },
+                    {
+                        "subtitle": "Report Fraud",
+                        "text": "If fraudulent activity is detected, the vendor may report it to the authorities."
+                    },
+                    {
+                        "subtitle": "Handle Complaints",
+                        "text": "The vendor must receive, resolve, or forward customer complaints to the airline."
+                    }
+                ]
+            },
+            "payment_terms": {
+                "title": "PAYMENT TERMS",
+                "sections": [
+                    {
+                        "subtitle": "Payment Methods",
+                        "text": "Customers can pay using any method available on AIRKACC.MN."
+                    },
+                    {
+                        "subtitle": "Payment Timeframe",
+                        "text": "Customers must complete payment within 20 minutes of booking. Otherwise, the booking will be cancelled automatically."
+                    },
+                    {
+                        "subtitle": "Currency Rate",
+                        "text": "Due to changing currency rates and demand, ticket prices may fluctuate."
+                    },
+                    {
+                        "subtitle": "Total Amount",
+                        "text": "The total price shown on AIRKACC.MN is for all passengers in the booking."
+                    },
+                    {
+                        "subtitle": "Service Fees",
+                        "text": "Additional fees may be charged depending on the ticket conditions. Customers must agree to and be aware of these fees."
+                    },
+                    {
+                        "subtitle": "E-Receipt",
+                        "text": "Flight tickets have VAT=0. E-receipts can be issued for individuals or organizations."
+                    },
+                    {
+                        "subtitle": "Payment Issues",
+                        "text": "Payment problems caused by internet failures, bank issues, or customer error may occur."
+                    }
+                ]
+            },
+            "ticket_refund": {
+                "title": "TICKET REFUND",
+                "sections": [
+                    {
+                        "subtitle": "Request a Refund",
+                        "text": "Customers can request refunds via the AIRKACC.mn Facebook page or by sending a message from their registered number to 90901550."
+                    },
+                    {
+                        "subtitle": "Check Refund Conditions",
+                        "text": "Check the ticket type and rules to see if a refund is possible. If not, you will be notified."
+                    },
+                    {
+                        "subtitle": "Send Refund Request",
+                        "text": "Requests received from the customer will be sent to the relevant airline."
+                    },
+                    {
+                        "subtitle": "Refund Fees",
+                        "text": "Refunds may be subject to fees, deducted by the airline according to their rules."
+                    },
+                    {
+                        "subtitle": "Refund Payment",
+                        "text": "Refunds will be returned to the original payment account or to an account specified by the customer."
+                    },
+                    {
+                        "subtitle": "Refund Timing",
+                        "text": "Refund times vary by airline but are usually processed within 1–7 business days from the date the request is received."
+                    }
+                ]
+            },
+            "other_conditions": {
+                "title": "OTHER CONDITIONS",
+                "items": [
+                    "Airlines may cancel flights due to weather or force majeure. AIRKACC.MN is not responsible.",
+                    "Minors under 18 traveling abroad require a notarized authorization.",
+                    "It is the customer’s responsibility to research transit flight and visa requirements."
+                ]
+            },
+            "dispute_resolution": {
+                "title": "DISPUTE RESOLUTION",
+                "items": [
+                    "Disputes should be resolved by mutual agreement. If agreement cannot be reached, disputes will be settled under Mongolian law."
+                ]
+            }
+        }
+    }
+}
