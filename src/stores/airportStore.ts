@@ -42,4 +42,8 @@ export const useAirportStore = defineStore('airportStore', () => {
     destinationOptions,
     getAirports,
   };
+},{
+  persist: {
+    storage: sessionStorage, // localStorage гэж солиод хадгалах хэлбэрээ өөрчилж болно
+  }
 });

@@ -2,27 +2,27 @@
   <b-col md="6" xl="12">
     <b-card no-body class="bg-light rounded-2">
       <b-card-header class="border-bottom bg-light">
-        <b-card-title tag="h5" class="mb-0">Төлбөрийн мэдээлэл</b-card-title>
+        <b-card-title tag="h5" class="mb-0">{{ t('txtPaymentInfo') }}</b-card-title>
         <!-- <p>{{ remainingTime }}</p> -->
       </b-card-header>
 
       <b-card-header class="d-flex justify-content-between align-items-center border-bottom bg-light">
-        <b-card-title tag="h6" class=" d-flex align-items-center  mb-0">Төлбөр төлөх хугацаа: </b-card-title>
+        <b-card-title tag="h6" class=" d-flex align-items-center  mb-0">{{ t('txtPaymentTime') }}: </b-card-title>
         <div class="fw-bold text-danger align-items-center h5 mb-0" v-if="remainingTime">
           {{ remainingTime }}
         </div>
         <div v-else>
-          Цаг дууссан
+          {{ t('txtTimeEnd') }}
         </div>
       </b-card-header>
       <b-modal v-model="showTimeoutModal" centered hide-header hide-footer :no-close-on-backdrop="true"
         :no-close-on-esc="true">
         <div class="text-center p-4">
           <i class="fas fa-exclamation-circle text-danger" style="font-size: 48px;"></i>
-          <h4 class="text-danger mt-3">Анхааруулга</h4>
-          <p class="mt-2 mb-1">Төлбөр төлөх хугацаа дууслаа.</p>
-          <p>Та өөр нислэг сонгоно уу.</p>
-          <b-button variant="danger" class="mt-3 px-4" @click="redirectToSearch">Буцах</b-button>
+          <h4 class="text-danger mt-3">{{ t('txtWarning') }}</h4>
+          <p class="mt-2 mb-1">{{ t('txtTimeEndText') }}</p>
+          <p>{{ t('txtOtherFlight') }}</p>
+          <b-button variant="danger" class="mt-3 px-4" @click="redirectToSearch">{{ t('txtBack') }}</b-button>
         </div>
       </b-modal>
       <!-- <div class="text-center mt-4">
@@ -40,7 +40,7 @@
         <ul class="list-group list-group-borderless">
           <li class="list-group-item d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center ">
-              <span class="h6 fw-bold mb-0 me-2">Нийт Дүн</span>
+              <span class="h6 fw-bold mb-0 me-2">{{ t('txtTotalAmount') }}</span>
             </div>
             <b-button size="md" variant="link" class="p-0 m-0" @click="copyText(Math.ceil((Number(infos.FullPrice) *
               parseFloat(rate) + totalFee)).toLocaleString().toString())">
@@ -54,7 +54,7 @@
             <span class="h5 fw-normal mb-0">{{ transactionCode }}</span> -->
 
             <div class="d-flex align-items-center ">
-              <span class="h6 fw-bold mb-0 me-2">Гүйлгээний утга</span>
+              <span class="h6 fw-bold mb-0 me-2">{{ t('txtTransaction') }}</span>
             </div>
             <b-button size="md" variant="link" class="p-0 m-0" @click="copyText(transactionCode.toString())">
               <span class="h6 fw-normal text-primary mb-0 me-2">{{ transactionCode }}</span>
@@ -91,7 +91,7 @@
             <ul v-if="bankInfo && bankInfo[selectedBank] && selectedBank !== null" class="list-group">
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
-                  <span class="h6 fw-bold mb-0 me-2">Банк</span>
+                  <span class="h6 fw-bold mb-0 me-2">{{ t('txtBank') }}</span>
                 </div>
                 <b-button size="md" variant="link" class="p-0 m-0" @click="copyText(bankInfo[selectedBank].bank)">
                   <span class="h6 fw-normal text-primary mb-0 me-2">{{ bankInfo[selectedBank].bank }}</span>
@@ -101,7 +101,7 @@
 
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
-                  <span class="h6 fw-bold mb-0 me-2">Данс</span>
+                  <span class="h6 fw-bold mb-0 me-2">{{ t('txtBankNumber') }}</span>
                 </div>
                 <b-button size="md" variant="link" class="p-0 m-0" @click="copyText(bankInfo[selectedBank].acc_number)">
                   <span class="h6 fw-normal text-primary mb-0 me-2">{{ bankInfo[selectedBank].acc_number }}</span>
@@ -130,7 +130,7 @@
 
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
-                  <span class="h6 fw-bold mb-0 me-2">Данс эзэмшигч</span>
+                  <span class="h6 fw-bold mb-0 me-2">{{ t('txtBankAccount') }}</span>
                 </div>
                 <b-button size="md" variant="link" class="p-0 m-0"
                   @click="copyText(bankInfo[selectedBank].acc_holder_name)">
@@ -146,14 +146,14 @@
 
       <b-card-footer class="border-top bg-light">
         <div class="d-flex justify-content-between align-items-center">
-          <span class="h5 fw-normal mb-0">Нийт дүн</span>
+          <span class="h5 fw-normal mb-0">{{ t('txtTotalAmount') }}</span>
           <span class="h6 fw-normal text-primary mb-0 me-2">{{ Math.ceil((Number(infos.FullPrice) *
             parseFloat(rate) + totalFee)).toLocaleString() || "" }}{{ currency }}</span>
         </div>
       </b-card-footer>
 
       <button @click="confirmAndPay" class="btn btn-primary-soft m-3">
-        Төлбөр шалгах
+        {{ t('txtPaymentCheck') }}
       </button>
 
       <!-- <b-alert show>
@@ -163,9 +163,7 @@
       <b-card-footer class="border-top bg-light">
         <div class="d-flex justify-content-center align-items-center text-center">
           <span class="footer-text">
-            ХЭРЭВ ТА ТӨЛБӨРӨӨ ТӨЛСӨН БОЛ ТАНЫ УТАС БОЛОН ИМЭЙЛ-Д БИЛЕТ ЗАХИАЛГА НЬ
-            АМЖИЛТТАЙ БАТАЛГААЖСАН МЭДЭЭ ИРСЭНЭЭР ТАНЫ ЗАХИАЛГА АМЖИЛТТАЙ ДУУСНА.
-            ХЭРЭВ ТИЙМ МЭДЭЭ ХҮЛЭЭЖ АВААГҮЙ БОЛ ХОЛБОО БАРИХ ХЭСГЭЭР БИДЭНТЭЙ ХОЛБОГДОНО УУ.
+            {{ t('txtPaymentText') }}
           </span>
         </div>
       </b-card-footer>
@@ -188,6 +186,9 @@ import { useToast } from 'bootstrap-vue-next'
 import { BToast } from 'bootstrap-vue-next'
 import CustomAlert from '../../../../components/CustomAlert.vue';
 import { useRouter } from 'vue-router';
+
+import { useI18n } from 'vue-i18n'
+const { t, locale } = useI18n()
 // import Alert from '@mui/material/Alert';
 
 const rate = sessionStorage.getItem('eur')
@@ -285,7 +286,7 @@ const confirmAndPay = async () => {
           errorMessage.value.status = '';
         }, 2000);
 
-        // window.location.href = `/flights/booking/confirm/${oid.value}/`;
+        window.location.href = `/flights/booking/confirm/${oid.value}/`;
       }
     } else {
       errorMessage.value.text = `Алдаа: ${response.statusText}`;

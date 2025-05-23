@@ -31,14 +31,16 @@
                   </div>
 
                 </h1>
-                <h5>Явах: {{ formatDate(getFirstDepartureTime(0)) }}</h5>
-                <h5 v-if="showRound === 2">Очих: {{ formatDate(returnFlights(0)[0].Departure.Date) }}</h5>
+                <h5>{{ t('txtGoDate') }}: {{ formatDate(getFirstDepartureTime(0)) }}</h5>
+                <h5 v-if="showRound === 2">{{ t('txtArrDate') }}: {{ formatDate(returnFlights(0)[0].Departure.Date) }}
+                </h5>
                 <div class="d-flex flex-row justify-content-start align-items-center">
                   <h5 class="me-3">
-                    <Plane :size="30" color="#3949AB" /> Нийт: {{ filteredData.length }} нислэг
+                    <Plane :size="30" color="#3949AB" /> {{ t('txtTotalFlight') }}: {{ filteredData.length }} {{
+                      t('txtTotalFlightDes') }}
                   </h5>
                   <h5>
-                    <TicketsPlane :size="30" color="#3949AB" /> {{ StoreAirCompany.length }} airlines
+                    <TicketsPlane :size="30" color="#3949AB" /> {{ StoreAirCompany.length }} {{ t('txtTotalAirline') }}
                   </h5>
                 </div>
               </div>
@@ -94,6 +96,9 @@ import { ref, computed } from 'vue'
 import { ChevronDown, Briefcase, Luggage, User, PlaneTakeoff, TicketsPlane, Plane } from 'lucide-vue-next';
 
 import FlightListFilter from '@/views/flights/List/components/FlightListFilter.vue'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 const show = ref(false)
 const showRound = ref<number>(Number(sessionStorage.getItem("flight")) || 1);

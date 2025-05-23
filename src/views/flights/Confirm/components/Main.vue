@@ -12,7 +12,7 @@
                         <img :src="gallery4" class="rounded-top" alt="gallery4" />
                         <b-card-body class="text-center p-4">
                             <b-card-title tag="h1" class="fs-3">{{ t(getStatusClass(orderInfo?.status))
-                                }}</b-card-title>
+                            }}</b-card-title>
                             <p class="lead mb-3">Itinerary</p>
                             <h5 class="text-primary mb-4">Airkacc.mn | {{ t('txtFlightBooking') }}</h5>
                             <b-row class="justify-content-between text-start mb-4">
@@ -60,7 +60,7 @@
                                             class="list-group-item d-sm-flex justify-content-between align-items-center">
                                             <span class="mb-0 items-center">
                                                 <BIconCalendar class="fa-fw me-2" />
-                                                Created Date / Үүсгэсэн огноо:
+                                                {{ t('txtCreatedDate') }}:
                                             </span>
                                             <span class="h6 fw-normal mb-0">{{
                                                 formatDateFinish(orderInfo?.ConfirmableToUtc.split(" ")[0]) }}</span>
@@ -69,7 +69,7 @@
                                             class="list-group-item d-sm-flex justify-content-between align-items-center">
                                             <span class="mb-0 items-center">
                                                 <BIconCalendar class="fa-fw me-2" />
-                                                Order No / Захиалгын дугаар:
+                                                {{ t('txtInfoOrderNo') }}:
                                             </span>
                                             <span class="h6 fw-normal mb-0">{{ orderInfo?.orderNo }}</span>
                                         </li>
@@ -85,7 +85,7 @@
                                             class="list-group-item d-sm-flex justify-content-between align-items-center">
                                             <span class="mb-0 items-center">
                                                 <BIconPeople class="fa-fw me-2" />
-                                                Passenger / Зорчигчийн тоо:
+                                                {{ t('txtTravelerQty') }}:
                                             </span>
                                             <span class="h6 fw-normal mb-0">{{ Array.isArray(orderInfo?.PaxList) ?
                                                 orderInfo?.PaxList.length : 1 }}</span>
@@ -271,7 +271,8 @@
                                                             formatDate(segment.Departure.Date) }}
                                                         </p>
                                                         <p class="mb-0">{{ segment.Departure.Iata }}<span
-                                                                v-if="segment.Departure.Terminal">-Терминал</span>
+                                                                v-if="segment.Departure.Terminal">-{{
+                                                                t('txtTerminal') }}</span>
                                                             {{ segment.Departure.Terminal || '' }}</p>
                                                         <!-- <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
                                           segment.Departure.Iata).City}}</p> -->
@@ -322,7 +323,8 @@
 
                                                         <p class="mb-0">{{ getAllSegments()[getAllSegments().length -
                                                             1].Arrival.Iata }}<span
-                                                                v-if="getAllSegments()[getAllSegments().length - 1].Arrival.Terminal">-Терминал</span>
+                                                                v-if="getAllSegments()[getAllSegments().length - 1].Arrival.Terminal">-{{
+                                                                t('txtTerminal') }}</span>
                                                             {{ getAllSegments()[getAllSegments().length -
                                                                 1].Arrival.Terminal || ''
                                                             }}</p>
@@ -346,11 +348,11 @@
                                                             class="list-inline bg-light rounded-2 d-sm-flex text-end justify-content-sm-end mb-0 px-4 py-2">
                                                             <li v-if="getAllSegments().length > 0"
                                                                 class="list-inline-item text-orange">
-                                                                {{ getTotalStops() }} Зогсолттой нислэг
+                                                                {{ getTotalStops() }} {{ t('txtFlightStop') }}
                                                             </li>
                                                             <li class="list-inline-item text-center">
                                                                 <h6 class="fw-medium mb-0">
-                                                                    Ачаагаа өөрөө авч, дахин бүртгүүлэх шаардлагатай
+                                                                    {{ t('txtSelfTBag') }}
                                                                     <br />
                                                                     (Self-transfer baggage)
                                                                 </h6>
@@ -367,12 +369,12 @@
                                                 <ul
                                                     class="list-inline bg-light rounded-2 d-sm-flex text-center justify-content-sm-between mb-0 px-4 py-2">
                                                     <li class="list-inline-item text-primary">{{ t('txtAvailableSeat')
-                                                    }}:
+                                                        }}:
                                                         {{
                                                             segment.ResBookDesigQuantity }}</li>
                                                     <!-- <li class="list-inline-item text-danger">Non-Refundable</li> -->
                                                     <h6 class="fw-medium mb-0"><span class="fw-medium">{{ t('txtClass')
-                                                    }}:</span>
+                                                            }}:</span>
                                                         {{
                                                             segment.FlightClass }}</h6>
                                                     <li class="list-inline-item">
@@ -413,7 +415,7 @@
                 <b-card class="justify-content-center align-items-center">
                     <b-card-body>
                         <b-button variant="success" class="mb-3 no-print " @click="printAsPDF">
-                            📄 PDF-р хадгалах
+                            📄 {{ t('txtPDFSave') }}
                         </b-button>
                     </b-card-body>
                 </b-card>
@@ -421,12 +423,12 @@
         </b-container>
 
         <div class="contact">
-            <h2>Холбогдох</h2>
-            <p>Бид танд хэрхэн тусалж болох талаар ярилцахдаа баяртай байх болно.</p>
+            <h2>{{ t('txtInfoContact') }}</h2>
+            <p>{{ t('txtInfoContactText') }}</p>
             <div class="contact-info">
-                <div><strong>Цахим шуудан:</strong> contact@airkacc.mn</div>
-                <div><strong>Утас:</strong> +976 99999999 / +976 98989898</div>
-                <div><strong>Хаяг:</strong> Ulaanbaatar
+                <div><strong>{{ t('txtInfoMail') }}:</strong> contact@airkacc.mn</div>
+                <div><strong>{{ t('txtInfoPhone') }}:</strong> +976 99999999 / +976 98989898</div>
+                <div><strong>{{ t('txtInfoAddress') }}:</strong> Ulaanbaatar
                     15141
                 </div>
             </div>

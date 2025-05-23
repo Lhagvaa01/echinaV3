@@ -2,17 +2,17 @@
     <!-- <b-col xl="8"> -->
     <div>
         <div class="passenger-container">
-            <h2 class="title">Зорчигчийн мэдээлэл</h2>
+            <h2 class="title">{{ t('txtTravelerInfo') }}</h2>
             <div class="passenger-info">
                 <table class="passenger-table">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Паспорт</th>
-                            <th>Овог</th>
-                            <th>Нэр</th>
-                            <th>Төрсөн өдөр</th>
-                            <th>Хүйс</th>
+                            <th>{{ t('txtPassportNum') }}</th>
+                            <th>{{ t('txtSureName') }}</th>
+                            <th>{{ t('txtName') }}</th>
+                            <th>{{ t('txtBirthDate') }}</th>
+                            <th>{{ t('txtGender') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -21,7 +21,7 @@
                             <td>{{ traveler.Document || '-' }}</td>
                             <td>{{ traveler.Surname || '-' }}</td>
                             <td>{{ traveler.Name || '-' }}</td>
-                            <td>{{ traveler.BirthDay || '-' }}</td>
+                            <td>{{ formatDateFinish(traveler.BirthDay) || '-' }}</td>
                             <td>{{ traveler.GenderType || '-' }}</td>
                         </tr>
                     </tbody>
@@ -44,6 +44,9 @@ import flightLogo from '@/assets/images/element/09.svg'
 import OptionDetailTab from '@/views/flights/Details/components/OptionDetailTab.vue'
 import { ChevronDown, Briefcase, Luggage, User } from 'lucide-vue-next';
 import { isArray } from 'util'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 const flightStore = useFlightStore();
 const fallbackLogo = flightLogo
@@ -58,6 +61,11 @@ function onMouseOver(index: string) {
 function onMouseLeave(index: string) {
     isHovered.value[index] = false;
 }
+
+const formatDateFinish = (date: string): string => {
+    const [day, month, year] = date.split('.');
+    return `${year}.${month}.${day}`;
+};
 
 const storedData = sessionStorage.getItem("BookingInfo") ? JSON.parse(sessionStorage.getItem("BookingInfo") || "") : null;
 

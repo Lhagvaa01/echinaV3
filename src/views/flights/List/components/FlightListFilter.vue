@@ -54,18 +54,21 @@
         <ul class="list-inline mb-0 g-3">
           <li class="list-inline-item mb-0">
             <input type="checkbox" class="btn-check" id="btn-check-c1" :value="1" v-model="filters.preferredStops" />
-            <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c1">Шууд нислэг ({{ direct.length
-            }})</label>
+            <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c1">{{ t('txtDirect') }} ({{
+              direct.length
+              }})</label>
           </li>
           <li class="list-inline-item mb-0">
             <input type="checkbox" class="btn-check" id="btn-check-c2" :value="2" v-model="filters.preferredStops" />
-            <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c2">1 Зогсолт ({{ OneStop.length
-            }})</label>
+            <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c2">{{ t('txt1Stop') }} ({{
+              OneStop.length
+              }})</label>
           </li>
           <li class="list-inline-item mb-0">
             <input type="checkbox" class="btn-check" id="btn-check-c3" :value="3" v-model="filters.preferredStops" />
-            <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c3">2+ Зогсолт ({{ TwoStop.length
-            }})</label>
+            <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c3">{{ t('txt2PlusStop') }} ({{
+              TwoStop.length
+              }})</label>
           </li>
         </ul>
       </b-card>
@@ -238,6 +241,9 @@ import VueSlider from 'vue-3-slider-component'
 import { currency } from '@/helpers/constants'
 import { useFlightStore } from '@/stores/flight';
 import SkeletonLoader from './Skeleton.vue'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 const flightStore = useFlightStore();
 type AirCompany = {

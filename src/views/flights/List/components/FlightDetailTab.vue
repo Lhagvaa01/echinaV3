@@ -42,7 +42,7 @@
                       formatDate(offerSegment.Departure.Date) }}
                     </p>
                     <p class="mb-0">{{ offerSegment.Departure.Iata
-                    }}<span v-if="offerSegment.Departure.Terminal">-Терминал</span> {{
+                    }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
                         offerSegment.Departure.Terminal || '' }}
                     </p>
                     <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
@@ -77,8 +77,8 @@
                     </h4>
                     <p class="fw-bold text-black mb-0">{{
                       formatDate(offerSegment.Arrival.Date) }}</p>
-                    <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span
-                        v-if="offerSegment.Arrival.Terminal">-Терминал</span>
+                    <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span v-if="offerSegment.Arrival.Terminal">-{{
+                      t('txtTerminal') }}</span>
                       {{
                         offerSegment.Arrival.Terminal || '' }}
                     </p>
@@ -90,12 +90,12 @@
                 <div v-if="offerSegment.Baggage" class="card-footer d-flex justify-content-end align-items-end w-100">
                   <div class="d-flex mx-2 me-5">
                     <Briefcase class="mx-2" color="#3949AB" />
-                    Гар тээш: ({{ offerSegment.Baggage.Count }})-{{ offerSegment.Baggage.BaggageType }}
+                    {{ t('txtHandBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{ offerSegment.Baggage.BaggageType }}
                   </div>
                   <div v-if="offerSegment.CabinBaggage">
                     <div class="d-flex">
                       <Luggage class="mx-2" color="#3949AB" />
-                      Тээш: ({{ offerSegment.Baggage.Count }})-{{ offerSegment.Baggage.BaggageType }}
+                      {{ t('txtBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{ offerSegment.Baggage.BaggageType }}
                     </div>
                   </div>
                 </div>
@@ -169,7 +169,7 @@
                             formatDate(offerSegment.Departure.Date) }}
                           </p>
                           <p class="mb-0">{{ offerSegment.Departure.Iata
-                            }}<span v-if="offerSegment.Departure.Terminal">-Терминал</span> {{
+                            }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
                               offerSegment.Departure.Terminal || '' }}
                           </p>
                           <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
@@ -204,8 +204,8 @@
                           </h4>
                           <p class="fw-bold text-black mb-0">{{
                             formatDate(offerSegment.Arrival.Date) }}</p>
-                          <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span
-                              v-if="offerSegment.Arrival.Terminal">-Терминал</span>
+                          <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span v-if="offerSegment.Arrival.Terminal">-{{
+                            t('txtTerminal') }}</span>
                             {{
                               offerSegment.Arrival.Terminal || '' }}
                           </p>
@@ -219,12 +219,14 @@
                       <div v-if="offerSegment.Baggage" class="d-flex justify-content-end align-items-end w-100 mt-3">
                         <div class="d-flex mx-2 me-5">
                           <Briefcase class="mx-2" color="#3949AB" />
-                          Гар тээш: ({{ offerSegment.Baggage.Count }})-{{ offerSegment.Baggage.BaggageType }}
+                          {{ t('txtHandBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{
+                            offerSegment.Baggage.BaggageType }}
                         </div>
                         <div v-if="offerSegment.CabinBaggage">
                           <div class="d-flex">
                             <Luggage class="mx-2" color="#3949AB" />
-                            Тээш: ({{ offerSegment.Baggage.Count }})-{{ offerSegment.Baggage.BaggageType }}
+                            {{ t('txtBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{
+                              offerSegment.Baggage.BaggageType }}
                           </div>
                         </div>
                       </div>
@@ -239,11 +241,11 @@
                             <div>
                               {{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
                                 offerSegment.Arrival.Iata).City}}
-                              дээр
+                              {{ t('txtUPWait') }}
                               {{ timeDifference(offerSegment.Arrival.Date, getAllSegmentss(index).go[segidxs +
                                 1].Departure.Date)
                               }}
-                              хүлээнэ
+                              {{ t('txtUPWait2') }}
                             </div>
 
                           </div>
@@ -359,7 +361,7 @@
                             formatDate(offerSegment.Departure.Date) }}
                           </p>
                           <p class="mb-0">{{ offerSegment.Departure.Iata
-                            }}<span v-if="offerSegment.Departure.Terminal">-Терминал</span> {{
+                            }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
                               offerSegment.Departure.Terminal || '' }}
                           </p>
                           <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
@@ -394,8 +396,8 @@
                           </h4>
                           <p class="fw-bold text-black mb-0">{{
                             formatDate(offerSegment.Arrival.Date) }}</p>
-                          <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span
-                              v-if="offerSegment.Arrival.Terminal">-Терминал</span>
+                          <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span v-if="offerSegment.Arrival.Terminal">-{{
+                            t('txtTerminal') }}</span>
                             {{
                               offerSegment.Arrival.Terminal || '' }}
                           </p>
@@ -409,12 +411,14 @@
                       <div v-if="offerSegment.Baggage" class="d-flex justify-content-end align-items-end w-100 mt-3">
                         <div class="d-flex mx-2 me-5">
                           <Briefcase class="mx-2" color="#3949AB" />
-                          Гар тээш: ({{ offerSegment.Baggage.Count }})-{{ offerSegment.Baggage.BaggageType }}
+                          {{ t('txtHandBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{
+                            offerSegment.Baggage.BaggageType }}
                         </div>
                         <div v-if="offerSegment.CabinBaggage">
                           <div class="d-flex">
                             <Luggage class="mx-2" color="#3949AB" />
-                            Тээш: ({{ offerSegment.Baggage.Count }})-{{ offerSegment.Baggage.BaggageType }}
+                            {{ t('txtBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{ offerSegment.Baggage.BaggageType
+                            }}
                           </div>
                         </div>
                       </div>
@@ -429,11 +433,11 @@
                             <div>
                               {{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
                                 offerSegment.Arrival.Iata).City}}
-                              дээр
+                              {{ t('txtUPWait') }}
                               {{ timeDifference(offerSegment.Arrival.Date, getAllSegmentss(index).return[segidxs +
                                 1].Departure.Date)
                               }}
-                              хүлээнэ
+                              {{ t('txtUPWait2') }}
                             </div>
 
                           </div>
@@ -557,7 +561,7 @@
                             formatDate(offerSegment.Departure.Date) }}
                           </p>
                           <p class="mb-0">{{ offerSegment.Departure.Iata
-                            }}<span v-if="offerSegment.Departure.Terminal">-Терминал</span> {{
+                            }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
                               offerSegment.Departure.Terminal || '' }}
                           </p>
                           <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
@@ -592,8 +596,8 @@
                           </h4>
                           <p class="fw-bold text-black mb-0">{{
                             formatDate(offerSegment.Arrival.Date) }}</p>
-                          <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span
-                              v-if="offerSegment.Arrival.Terminal">-Терминал</span>
+                          <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span v-if="offerSegment.Arrival.Terminal">-{{
+                            t('txtTerminal') }}</span>
                             {{
                               offerSegment.Arrival.Terminal || '' }}
                           </p>
@@ -607,12 +611,14 @@
                       <div v-if="offerSegment.Baggage" class="d-flex justify-content-end align-items-end w-100 mt-3">
                         <div class="d-flex mx-2 me-5">
                           <Briefcase class="mx-2" color="#3949AB" />
-                          Гар тээш: ({{ offerSegment.Baggage.Count }})-{{ offerSegment.Baggage.BaggageType }}
+                          {{ t('txtHandBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{
+                            offerSegment.Baggage.BaggageType }}
                         </div>
                         <div v-if="offerSegment.CabinBaggage">
                           <div class="d-flex">
                             <Luggage class="mx-2" color="#3949AB" />
-                            Тээш: ({{ offerSegment.Baggage.Count }})-{{ offerSegment.Baggage.BaggageType }}
+                            {{ t('txtBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{
+                              offerSegment.Baggage.BaggageType }}
                           </div>
                         </div>
                       </div>
@@ -627,11 +633,11 @@
                             <div>
                               {{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
                                 offerSegment.Arrival.Iata)?.City || offerSegment.Arrival.City}}
-                              дээр
+                              {{ t('txtUPWait') }}
                               {{ timeDifference(offerSegment.Arrival.Date, getAllSegmentsDates(index)[segidxs +
                                 1].Departure.Date)
                               }}
-                              хүлээнэ
+                              {{ t('txtUPWait2') }}
                             </div>
 
                           </div>
@@ -721,9 +727,9 @@
                           </caption>
                           <thead class="table-dark">
                             <tr>
-                              <th scope="col" class="border-0 rounded-start">Ачаа тээшийн төрөл</th>
-                              <th scope="col" class="border-0">Хэмжих нэгж</th>
-                              <th scope="col" class="border-0">Тоо/ш : Хэмжээ</th>
+                              <th scope="col" class="border-0 rounded-start">{{ t('txtBaggageType') }}</th>
+                              <th scope="col" class="border-0">{{ t('txtMeasure') }}</th>
+                              <th scope="col" class="border-0">{{ t('txtQTY') }}</th>
                             </tr>
                           </thead>
                           <tbody class="border-top-0" v-if="offerSegment.Baggage || offerSegment.CabinBaggage">
@@ -766,9 +772,9 @@
                           </caption>
                           <thead class="table-dark">
                             <tr>
-                              <th scope="col" class="border-0 rounded-start">Ачаа тээшийн төрөл</th>
-                              <th scope="col" class="border-0">Хэмжих нэгж</th>
-                              <th scope="col" class="border-0">Тоо/ш : Хэмжээ</th>
+                              <th scope="col" class="border-0 rounded-start">{{ t('txtBaggageType') }}</th>
+                              <th scope="col" class="border-0">{{ t('txtMeasure') }}</th>
+                              <th scope="col" class="border-0">{{ t('txtQTY') }}</th>
                             </tr>
                           </thead>
                           <tbody class="border-top-0" v-if="offerSegment.Baggage || offerSegment.CabinBaggage">
@@ -1052,7 +1058,7 @@ const getLayoverTime = (arrival: string, nextDeparture: string) => {
   const hours = Math.floor(layoverMinutes / 60);
   const minutes = layoverMinutes % 60;
 
-  return `${hours} цаг ${minutes} мин`;
+  return `${hours} ${t('txtHour')} ${minutes} ${t('txtMin')}`;
 };
 
 
@@ -1084,8 +1090,8 @@ const index = computed(() => props.index as number);
 
 function convertTimeText(input: string): string {
   const [hours, minutes, seconds] = input.split(":").map(Number);
-  const hourText = hours ? `${hours} цаг` : "";
-  const minuteText = minutes ? `${minutes} мин` : " ";
+  const hourText = hours ? `${hours} ${t('txtHour')}` : "";
+  const minuteText = minutes ? `${minutes} ${t('txtMin')}` : " ";
   return [hourText, minuteText].filter(Boolean).join(" ");
 }
 
@@ -1111,7 +1117,7 @@ function timeDifference(start: string, end: string): string {
   const hours = Math.floor(diffMinutes / 60);
   const minutes = diffMinutes % 60;
 
-  return `${hours} цаг ${minutes} минут`;
+  return `${hours} ${t('txtHour')} ${minutes} ${t('txtMin')}`;
 }
 
 

@@ -44,7 +44,7 @@
               </div>
             </div>
 
-            <h6 class="fw-bold mb-0">Дамжин нислэг</h6>
+            <h6 class="fw-bold mb-0">{{ t('txtTransit') }}</h6>
           </b-card-header>
 
           <b-card-body class="p-4 pb-0">
@@ -53,7 +53,8 @@
                 <h4> {{ segment.Departure.Date.split(" ")[1] }}</h4>
                 <!-- <h4> 22</h4> -->
                 <p class="fw-bold text-black mb-0">{{ formatDate(segment.Departure.Date) }}</p>
-                <p class="mb-0">{{ segment.Departure.Iata }}<span v-if="segment.Departure.Terminal">-Терминал</span>
+                <p class="mb-0">{{ segment.Departure.Iata }}<span v-if="segment.Departure.Terminal">-{{ t('txtTerminal')
+                    }}</span>
                   {{ segment.Departure.Terminal || '' }}</p>
                 <!-- <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
                       segment.Departure.Iata).City}}</p> -->
@@ -98,7 +99,7 @@
                   1].Arrival.Date) }}</p>
 
                 <p class="mb-0">{{ getAllSegments()[getAllSegments().length - 1].Arrival.Iata }}<span
-                    v-if="getAllSegments()[getAllSegments().length - 1].Arrival.Terminal">-Терминал</span>
+                    v-if="getAllSegments()[getAllSegments().length - 1].Arrival.Terminal">-{{ t('txtTerminal') }}</span>
                   {{ getAllSegments()[getAllSegments().length - 1].Arrival.Terminal || '' }}</p>
                 <!-- <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
                     getAllSegments()[getAllSegments().length - 1].Arrival.Iata).City}}</p> -->
@@ -117,11 +118,11 @@
               <div v-if="segment.SelfConnect == 'true'" class="card-footer pt-4">
                 <ul class="list-inline bg-light rounded-2 d-sm-flex text-end justify-content-sm-end mb-0 px-4 py-2">
                   <li v-if="getAllSegments().length > 0" class="list-inline-item text-orange">
-                    {{ getTotalStops() }} Зогсолттой нислэг
+                    {{ getTotalStops() }} {{ t('txtFlightStop') }}
                   </li>
                   <li class="list-inline-item text-center">
                     <h6 class="fw-medium mb-0">
-                      Ачаагаа өөрөө авч, дахин бүртгүүлэх шаардлагатай <br />
+                      {{ t('txtSelfTBag') }} <br />
                       (Self-transfer baggage)
                     </h6>
                   </li>
@@ -135,9 +136,10 @@
 
           <div class="card-footer pt-4">
             <ul class="list-inline bg-light rounded-2 d-sm-flex text-center justify-content-sm-between mb-0 px-4 py-2">
-              <li class="list-inline-item text-primary">Боломжит суудал: {{ segment.ResBookDesigQuantity }}</li>
+              <li class="list-inline-item text-primary">{{ t('txtAvailableSeat') }}: {{ segment.ResBookDesigQuantity }}
+              </li>
               <!-- <li class="list-inline-item text-danger">Non-Refundable</li> -->
-              <h6 class="fw-medium mb-0"><span class="fw-medium">Ангилал:</span> {{
+              <h6 class="fw-medium mb-0"><span class="fw-medium">{{ t('txtClass') }}:</span> {{
                 segment.FlightClass }}</h6>
               <li class="list-inline-item">
                 <a :to="'/some-route/' + inx + segment.FlightNum" :id="'toggleButton' + inx + segment.FlightNum"

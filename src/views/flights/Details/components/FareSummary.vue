@@ -10,7 +10,7 @@
           <!-- Adult price -->
           <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-md-center">
             <span class="h6 fw-normal mb-2 mb-md-0">
-              Том хүн ({{ travelers.adults }} x
+              {{ t('txtAdult') }} ({{ travelers.adults }} x
               {{ Math.ceil((parseFloat(getOptionPrice().AdultPrice) * eurToMnt)).toLocaleString() }}₮)
               <b-icon-info-circle class="ms-1" />
             </span>
@@ -25,7 +25,7 @@
           <li v-if="travelers.childs > 0"
             class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-md-center">
             <span class="h6 fw-normal mb-2 mb-md-0">
-              Хүүхэд ({{ travelers.childs }} x
+              {{ t('txtChild') }} ({{ travelers.childs }} x
               {{ Math.ceil((parseFloat(getOptionPrice().ChildPrice) * eurToMnt)).toLocaleString() }}₮)
               <b-icon-info-circle class="ms-1" />
             </span>
@@ -38,7 +38,7 @@
 
           <!-- Service fee -->
           <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-md-center">
-            <span class="h6 fw-normal mb-2 mb-md-0">Үйлчилгээний хөлс</span>
+            <span class="h6 fw-normal mb-2 mb-md-0">{{ t('txtServiceFee') }}</span>
             <span class="fs-6 text-end text-md-start">
               {{ totalPrice.toLocaleString() }}₮
             </span>
@@ -48,7 +48,7 @@
 
       <b-card-footer class="border-top bg-light">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
-          <span class="h6 fw-normal mb-2 mb-md-0">Нийт Төлбөр:</span>
+          <span class="h6 fw-normal mb-2 mb-md-0">{{ t('txtTotalAmount') }}:</span>
           <span class="h6 fw-bold mb-0">
             {{
               Math.ceil((
@@ -70,12 +70,12 @@
       </b-card-footer>
       <div v-if="showModal" class="modal-overlay">
         <div class="modal-content">
-          <h3 class="modal-title">Мэдээлэл баталгаажуулах</h3>
+          <h3 class="modal-title">{{ t('txtTravelerInfoCheck') }}</h3>
 
           <!-- Анхааруулга -->
           <div class="alert-warning">
             <span class="warning-icon">⚠️</span>
-            <strong>Анхааруулга</strong>
+            <strong>{{ t('txtWarning') }}</strong>
           </div>
 
           <!-- Зорчигчийн мэдээлэл -->
@@ -84,12 +84,12 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Паспорт</th>
-                  <th>Овог</th>
-                  <th>Нэр</th>
-                  <th>Төрсөн өдөр</th>
-                  <th>Хүчинтэй хугацаа</th>
-                  <th>Хүйс</th>
+                  <th>{{ t('txtPassportNum') }}</th>
+                  <th>{{ t('txtSureName') }}</th>
+                  <th>{{ t('txtName') }}</th>
+                  <th>{{ t('txtBirthDate') }}</th>
+                  <th>{{ t('txtPassportDate') }}</th>
+                  <th>{{ t('txtGender') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -111,18 +111,17 @@
             <p v-html="warningMessage"></p>
             <h5>
               <input type="checkbox" v-model="agreed" :disabled="!scrolledToBottom" />
-              Би үйлчилгээний нөхцөлийг уншиж танилцлаа.
+              {{ t('txtCheckPrivacy') }}
             </h5>
           </div>
 
           <!-- Үйлдлийн хэсэг -->
           <div class="modal-actions">
             <div class="button-group">
-              <h6 class="instruction-text">Үргэлжлүүлэхийн тул үйлчилгээний нөхцөлийг уншиж танилцаад доош гүйлгээд
-                "зөвшөөрөх" товчийг дарна уу</h6>
-              <button @click="closeModal" class="btn btn-secondary">Хаах</button>
+              <h6 class="instruction-text">{{ t('txtContinueBTN') }}</h6>
+              <button @click="closeModal" class="btn btn-secondary">{{ t('txtClose') }}</button>
               <button @click="confirmAndPay" class="btn btn-primary-soft" :disabled="!agreed">
-                Үргэлжлүүлэх
+                {{ t('txtContinue') }}
               </button>
             </div>
           </div>
@@ -131,7 +130,7 @@
       <div v-if="isLoading" class="alert-loading">
         <div class="bg-white p-6 rounded-lg shadow-lg text-center rounded-5">
           <div class="loader mb-4"></div>
-          <p class="text-lg font-semibold">Түр хүлээнэ үү...</p>
+          <p class="text-lg font-semibold">{{ t('txtWaiting') }}</p>
         </div>
       </div>
 

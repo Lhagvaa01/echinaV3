@@ -3,7 +3,8 @@
   <b-container>
     <div class="bs-stepper stepper-outline">
       <div class="bs-stepper-header d-none d-md-flex" role="tablist">
-        <div v-for="(stepLabel, index) in stepLabels" class="d-flex mb-5" :class="{ active: step === index + 1 }">
+        <div v-for="(stepLabel, index) in stepLabels" class="d-flex mb-5 stepper-step"
+          :class="{ active: step === index + 1 }">
 
           <div class="step" :class="{ active: step === index + 1 }">
             <div class="text-center">
@@ -26,7 +27,7 @@
       </div>
       <!-- Mobile View -->
       <b-button @click="showModal = !showModal"
-        class="d-flex bg-white mt-3 text-primary d-md-none justify-content-between align-items-start px-3 py-2 border rounded">
+        class="d-flex bg-white mt-3 text-primary d-md-none justify-content-between align-items-start px-3 py-2 border rounded stepper-stepMobile">
         <div class="d-flex align-items-center ">
           <div class="me-3 ">
             <StepProgress :step="props.step" :total="stepLabels.length" :index="props.step" />
@@ -63,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 
 import TourReview from '@/views/tour/Booking/components/TourReview/index.vue'
 import TravelerInformation from '@/views/tour/Booking/components/TravelerInformation/index.vue'
@@ -86,12 +87,12 @@ const props = defineProps({
 
 const showModal = ref(false)
 
-const stepLabels = [
+const stepLabels = computed(() => [
   { label: t('txtStep1'), desc: t('txtStep1Des') },
   { label: t('txtStep2'), desc: t('txtStep2Des') },
   { label: t('txtStep3'), desc: t('txtStep3Des') },
   { label: t('txtStep4'), desc: t('txtStep4Des') }
-]
+])
 </script>
 
 <style lang="css" scoped>
@@ -99,5 +100,29 @@ const stepLabels = [
   background-color: #5143d9;
   color: white;
   border-color: #5143d9;
+}
+
+.stepper-step {
+  width: 25%;
+  /* 4 алхамтай бол */
+  min-width: 0;
+}
+
+.stepper-stepMobile {
+  width: 100%;
+  margin-bottom: 1em;
+  /* 4 алхамтай бол */
+  min-width: 0;
+}
+
+.bs-stepper-label {
+  /* Хэт урт текст мөр салгахгүй */
+  overflow: hidden;
+  /* Гарах текстийг нуух */
+  text-overflow: ellipsis;
+  /* ... болгож таслах */
+  display: block;
+  max-width: 100%;
+  text-align: center;
 }
 </style>

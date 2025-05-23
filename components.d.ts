@@ -20,7 +20,6 @@ declare module 'vue' {
     BCardBody: typeof import('bootstrap-vue-next')['BCardBody']
     BCardFooter: typeof import('bootstrap-vue-next')['BCardFooter']
     BCardHeader: typeof import('bootstrap-vue-next')['BCardHeader']
-    BCardText: typeof import('bootstrap-vue-next')['BCardText']
     BCardTitle: typeof import('bootstrap-vue-next')['BCardTitle']
     BCol: typeof import('bootstrap-vue-next')['BCol']
     BCollapse: typeof import('bootstrap-vue-next')['BCollapse']
@@ -36,15 +35,12 @@ declare module 'vue' {
     BFormRadio: typeof import('bootstrap-vue-next')['BFormRadio']
     BFormText: typeof import('bootstrap-vue-next')['BFormText']
     BFormTextarea: typeof import('bootstrap-vue-next')['BFormTextarea']
-    BIcon: typeof import('bootstrap-vue-next')['BIcon']
-    BIconGeoAlt: typeof import('bootstrap-vue-next')['BIconGeoAlt']
     BInputGroup: typeof import('bootstrap-vue-next')['BInputGroup']
     BListGroup: typeof import('bootstrap-vue-next')['BListGroup']
     BListGroupItem: typeof import('bootstrap-vue-next')['BListGroupItem']
     BModal: typeof import('bootstrap-vue-next')['BModal']
     BNav: typeof import('bootstrap-vue-next')['BNav']
     BNavbarNav: typeof import('bootstrap-vue-next')['BNavbarNav']
-    BNavItem: typeof import('bootstrap-vue-next')['BNavItem']
     BNavItemDropdown: typeof import('bootstrap-vue-next')['BNavItemDropdown']
     BOffcanvas: typeof import('bootstrap-vue-next')['BOffcanvas']
     BProgress: typeof import('bootstrap-vue-next')['BProgress']
@@ -82,7 +78,6 @@ declare module 'vue' {
   }
   export interface ComponentCustomProperties {
     vBModal: typeof import('bootstrap-vue-next')['vBModal']
-    vBPopover: typeof import('bootstrap-vue-next')['vBPopover']
     vBToggle: typeof import('bootstrap-vue-next')['vBToggle']
     vBTooltip: typeof import('bootstrap-vue-next')['vBTooltip']
   }

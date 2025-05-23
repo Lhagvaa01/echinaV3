@@ -3,19 +3,18 @@
         <div class="ticket-check">
             <div class="overlay">
                 <div class="content">
-                    <h1 class="title">Тасалбар шалгах</h1>
+                    <h1 class="title">{{ t('txtTicketCheck') }}</h1>
                     <p class="subtitle">
-                        Доорх формд өөрийн билетийн дугаарыг оруулснаар таны билет амжилттай захиалагдсан эсэхийг
-                        баталгаажуулж шалгаж болно.
+                        {{ t('txtInfoText') }}
                     </p>
 
                     <div class="search-box">
-                        <input v-model="orderId" type="text" placeholder="Захиаллын дугаар (Booking ref)"
-                            class="input" />
-                        <button @click="fetchOrderInfo" class="search-button bg-primary">Тасалбар Шалгах</button>
+                        <input v-model="orderId" type="text" v-bind:placeholder="t('txtInfoOrderNo')" class="input" />
+                        <button @click="fetchOrderInfo" class="search-button bg-primary">{{ t('txtTicketCheck')
+                        }}</button>
                     </div>
 
-                    <div v-if="loading" class="loading-text">Түр хүлээнэ үү...</div>
+                    <div v-if="loading" class="loading-text">{{ t('txtWaiting') }}</div>
                     <div v-if="error" class="error-text">{{ error }}</div>
                 </div>
             </div>
@@ -99,7 +98,7 @@
             <div v-if="orderInfo" class="order-detail-container">
                 <!-- Header section -->
                 <div class="order-header">
-                    <h2 class="order-title">Захиалгын дэлгэрэнгүй</h2>
+                    <h2 class="order-title">{{ t('txtOrderText') }}</h2>
                     <div class="order-status" :class="getStatusClass(orderInfo.status)">
                         {{ orderInfo.status }}
                     </div>
@@ -407,12 +406,12 @@
             </div>
         </b-container>
         <div class="contact">
-            <h2>Холбогдох</h2>
-            <p>Бид танд хэрхэн тусалж болох талаар ярилцахдаа баяртай байх болно.</p>
+            <h2>{{ t('txtInfoContact') }}</h2>
+            <p>{{ t('txtInfoContactText') }}</p>
             <div class="contact-info">
-                <div><strong>Цахим шуудан:</strong> contact@airkacc.mn</div>
-                <div><strong>Утас:</strong> +976 99999999 / +976 98989898</div>
-                <div><strong>Хаяг:</strong> Ulaanbaatar
+                <div><strong>{{ t('txtInfoMail') }}:</strong> contact@airkacc.mn</div>
+                <div><strong>{{ t('txtInfoPhone') }}:</strong> +976 99999999 / +976 98989898</div>
+                <div><strong>{{ t('txtInfoAddress') }}:</strong> Ulaanbaatar
                     15141
                 </div>
             </div>

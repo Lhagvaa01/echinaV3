@@ -4,7 +4,7 @@
         <div class="hero-section">
             <div class="overlay">
                 <div class="hero-content">
-                    <h1 class="hero-title text-white">Нислэгийн мэдээлэл</h1>
+                    <h1 class="hero-title text-white">{{ t('txtFlightInfo') }}</h1>
                 </div>
             </div>
         </div>
@@ -17,12 +17,12 @@
                     <button :class="{ 'active-tab': activeTab === 'flight' }" @click="activeTab = 'flight'"
                         class="tab-button">
                         <i class="fas fa-plane tab-icon"></i>
-                        Нислэгээр
+                        {{ t('txtStatusTab1') }}
                     </button>
                     <button :class="{ 'active-tab': activeTab === 'route' }" @click="activeTab = 'route'"
                         class="tab-button">
                         <i class="fas fa-route tab-icon"></i>
-                        Чиглэлээр
+                        {{ t('txtStatusTab2') }}
                     </button>
                 </div>
                 <div v-if="activeTab === 'flight'">
@@ -30,7 +30,7 @@
                         <div class="input-group">
                             <label for="flightNumber" class="input-label">
                                 <i class="fas fa-ticket-alt input-icon"></i>
-                                Нислэгийн дугаар / Flight Number
+                                {{ t('txtStatusNumber') }}
                             </label>
                             <input id="flightNumber" v-model="flightNumber" type="text" placeholder="KE657"
                                 class="text-input">
@@ -39,15 +39,16 @@
                         <div class="input-group h-100">
                             <label for="departureDate" class="input-label">
                                 <i class="far fa-calendar-alt input-icon"></i>
-                                Огноо / Date
+                                {{ t('txtStatusDate') }}
                             </label>
-                            <CustomFlatpicker id="departureDate" v-model="departureDate" placeholder="Өдрөө сонгоно уу"
-                                :options="{ dateFormat: 'Y-m-d' }" class="w-100" />
+                            <CustomFlatpicker id="departureDate" v-model="departureDate"
+                                v-bind:placeholder="t('txtStatusCheckDate')" :options="{ dateFormat: 'Y-m-d' }"
+                                class="w-100" />
                         </div>
 
                         <button @click="fetchOrderInfo" class="search-button">
                             <i class="fas fa-search button-icon"></i>
-                            Шалгах / Check
+                            {{ t('txtStatusCheck') }}
                         </button>
                     </div>
                 </div>
@@ -55,7 +56,7 @@
                     <div class="input-group">
                         <label class="input-label">
                             <i class="fas fa-plane-departure input-icon"></i>
-                            Явах буудал / Departure Airport Code
+                            {{ t('txtStatusDepAirport') }}
                         </label>
                         <div v-if="destinationOptions.length > 0">
                             <AirportSelector v-model="selectedDestination" class="w-100" />
@@ -67,7 +68,7 @@
                     <div class="input-group">
                         <label class="input-label">
                             <i class="fas fa-plane-arrival input-icon"></i>
-                            Ирэх буудал / Arrival Airport Code
+                            {{ t('txtStatusArrAirport') }}
                         </label>
                         <div v-if="destinationOptions.length > 0">
                             <AirportSelector v-model="selectedDestination2" class="w-100" />
@@ -79,7 +80,7 @@
                     <div class="input-group h-100">
                         <label for="departureDate" class="input-label">
                             <i class="far fa-calendar-alt input-icon"></i>
-                            Огноо / Date
+                            {{ t('txtStatusDate') }}
                         </label>
                         <CustomFlatpicker id="departureDate" v-model="departureDate" placeholder="Өдрөө сонгоно уу"
                             :options="{ dateFormat: 'Y-m-d' }" class="w-100" />
@@ -88,7 +89,7 @@
 
                     <button @click="fetchRouteFlights" class="search-button">
                         <i class="fas fa-search button-icon"></i>
-                        Шалгах / Check
+                        {{ t('txtStatusCheck') }}
                     </button>
                 </div>
             </div>
@@ -96,7 +97,7 @@
             <!-- Loading/Error States -->
             <div v-if="loading" class="status-card loading">
                 <i class="fas fa-spinner fa-spin status-icon"></i>
-                <p class="status-text">Түр хүлээнэ үү / Loading...</p>
+                <p class="status-text">{{ t('txtWaiting') }}</p>
             </div>
 
             <div v-else-if="error" class="status-card error">
@@ -106,7 +107,7 @@
 
             <div v-else-if="!flightInfos" class="status-card info">
                 <i class="fas fa-info-circle status-icon"></i>
-                <p class="status-text">Хайх мэдээллээ оруулаарай / Enter search information</p>
+                <p class="status-text">{{ t('txtStatusSearchInfo') }}</p>
             </div>
 
             <!-- Flight Details -->
@@ -281,7 +282,7 @@
                             <div class="map-section">
                                 <div class="map-label">
                                     <i class="fas fa-map-marker-alt map-icon departure"></i>
-                                    <span class="map-title">Явах нисэх буудал</span>
+                                    <span class="map-title">{{ t('txtStatusDepAirport') }}</span>
                                 </div>
                                 <a :href="`https://www.google.com/maps?q=${flight.DepAirportLat},${flight.DepAirportLon}`"
                                     target="_blank" class="map-link">
@@ -293,7 +294,7 @@
                             <div class="map-section">
                                 <div class="map-label">
                                     <i class="fas fa-door-open map-icon departure"></i>
-                                    <span class="map-title">Явах терминал</span>
+                                    <span class="map-title">{{ t('txtStatusDepTerAirport') }}</span>
                                 </div>
                                 <a :href="`https://www.google.com/maps?q=${flight.DepTerminalLat},${flight.DepTerminalLon}`"
                                     target="_blank" class="map-link">
@@ -309,7 +310,7 @@
                             <div class="map-section">
                                 <div class="map-label">
                                     <i class="fas fa-map-marker-alt map-icon arrival"></i>
-                                    <span class="map-title">Ирэх нисэх буудал</span>
+                                    <span class="map-title">{{ t('txtStatusArrAirport') }}</span>
                                 </div>
                                 <a :href="`https://www.google.com/maps?q=${flight.ArrAirportLat},${flight.ArrAirportLon}`"
                                     target="_blank" class="map-link">
@@ -321,7 +322,7 @@
                             <div class="map-section">
                                 <div class="map-label">
                                     <i class="fas fa-door-closed map-icon arrival"></i>
-                                    <span class="map-title">Ирэх терминал</span>
+                                    <span class="map-title">{{ t('txtStatusArrTerAirport') }}</span>
                                 </div>
                                 <a :href="`https://www.google.com/maps?q=${flight.ArrTerminalLat},${flight.ArrTerminalLon}`"
                                     target="_blank" class="map-link">

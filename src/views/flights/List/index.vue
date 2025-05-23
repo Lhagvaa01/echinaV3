@@ -14,9 +14,9 @@
       <div class="no-results-icon">
         <i class="fas fa-search"></i>
       </div>
-      <p class="no-results-title">Илэрц олдсонгүй</p>
+      <p class="no-results-title">{{ t('txtNotFind') }}</p>
       <p class="no-results-subtitle">
-        Таны хайлтанд тохирох нислэгийн мэдээлэл олдсонгүй.
+        {{ t('txtNotFindText') }}
       </p>
     </div>
 
@@ -46,6 +46,9 @@ import Footer from '@/views/flights/List/components/Footer.vue'
 import NewFooter from '@/components/NewFooter.vue'
 import BackToTop from '@/components/BackToTop.vue'
 import Stepper from '../Components/Stepper.vue'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 // import SkeletonLoader from './components/Skeleton.vue'
 
 
