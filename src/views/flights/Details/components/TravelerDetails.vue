@@ -31,7 +31,7 @@
                   @keydown.enter="autoFillTravelerByPassport(traveler.document, traveler)"
                   @blur="autoFillTravelerByPassport(traveler.document, traveler)" />
                 <b-form-invalid-feedback v-if="!isPassportValid(traveler.document)">
-                  Пасспортын дугаар буруу байна.
+                  {{ t('txtPassportNumErr') }}
                 </b-form-invalid-feedback>
               </b-form-group>
             </b-col>
@@ -53,7 +53,7 @@
                     v-model="traveler.name" :state="isNameValid(traveler.name, traveler.surname) ? true : false" />
                 </div>
                 <div class="invalid-feedback d-block text-danger" v-if="!isNameValid(traveler.name, traveler.name)">
-                  Нэрийн бүх талбарыг бөглөнө үү. Зөвхөн үсэг бичнэ!
+                  {{ t('txtNameErr') }}
                 </div>
               </b-form-group>
 
@@ -67,7 +67,7 @@
                 Харьяаллаа сонгоно уу.
               </b-form-invalid-feedback> -->
               <div class="invalid-feedback d-block text-danger" v-if="!isNationalityValid(traveler.birthISO)">
-                Харьяаллаа сонгоно уу.
+                {{ t('txtBirthIsoErr') }}
               </div>
             </b-col>
 
@@ -113,7 +113,7 @@
                 Бүрэн бөглөнө үү.
               </b-form-invalid-feedback> -->
               <div class="invalid-feedback d-block text-danger" v-if="!isDateValid(traveler.birthDay)">
-                Төрсөн он, сар, өдөр бүрэн бөглөнө үү.
+                {{ t('txtBirthDateErr') }}
               </div>
             </b-col>
 
@@ -130,7 +130,7 @@
                 Хүйсээ сонгоно уу.
               </b-form-invalid-feedback> -->
               <div class="invalid-feedback d-block text-danger" v-if="!isGenderValid(traveler.gender)">
-                Хүйсээ сонгоно уу.
+                {{ t('txtGenderErr') }}
               </div>
             </b-col>
 
@@ -177,7 +177,7 @@
                 Бүрэн бөглөнө үү.
               </b-form-invalid-feedback> -->
               <div class="invalid-feedback d-block text-danger" v-if="!isDateValid(traveler.DocumentExDate)">
-                Пасспортын дуусах он, сар, өдөр бүрэн бөглөнө үү.
+                {{ t('txtPassportDateErr') }}
               </div>
             </b-col>
           </b-row>
@@ -228,12 +228,12 @@
 
       <div v-if="showModal" class="modal-overlay">
         <div class="modal-content">
-          <h3 class="modal-title">Мэдээлэл баталгаажуулах</h3>
+          <h3 class="modal-title">{{ t('txtTravelerInfoCheck') }}</h3>
 
           <!-- Анхааруулга -->
           <div class="alert-warning">
             <span class="warning-icon">⚠️</span>
-            <strong>Анхааруулга</strong>
+            <strong>{{ t('txtWarning') }}</strong>
           </div>
 
           <!-- Зорчигчийн мэдээлэл -->
@@ -242,12 +242,12 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Паспорт</th>
-                  <th>Овог</th>
-                  <th>Нэр</th>
-                  <th>Төрсөн өдөр</th>
-                  <th>Хүчинтэй хугацаа</th>
-                  <th>Хүйс</th>
+                  <th>{{ t('txtPassportNum') }}</th>
+                  <th>{{ t('txtSureName') }}</th>
+                  <th>{{ t('txtName') }}</th>
+                  <th>{{ t('txtBirthDate') }}</th>
+                  <th>{{ t('txtPassportDate') }}</th>
+                  <th>{{ t('txtGender') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -269,18 +269,17 @@
             <p v-html="warningMessage"></p>
             <h5>
               <input type="checkbox" v-model="agreed" :disabled="!scrolledToBottom" />
-              Би үйлчилгээний нөхцөлийг уншиж танилцлаа.
+              {{ t('txtCheckPrivacy') }}
             </h5>
           </div>
 
           <!-- Үйлдлийн хэсэг -->
           <div class="modal-actions">
             <div class="button-group">
-              <h6 class="instruction-text">Үргэлжлүүлэхийн тул үйлчилгээний нөхцөлийг уншиж танилцаад доош гүйлгээд
-                "зөвшөөрөх" товчийг дарна уу</h6>
-              <button @click="closeModal" class="btn btn-secondary">Хаах</button>
+              <h6 class="instruction-text">{{ t('txtContinueBTN') }}</h6>
+              <button @click="closeModal" class="btn btn-secondary">{{ t('txtClose') }}</button>
               <button @click="confirmAndPay" class="btn btn-primary-soft" :disabled="!agreed">
-                Үргэлжлүүлэх
+                {{ t('txtContinue') }}
               </button>
             </div>
           </div>
@@ -289,7 +288,7 @@
       <div v-if="isLoading" class="alert-loading">
         <div class="bg-white p-6 rounded-lg shadow-lg text-center rounded-5">
           <div class="loader mb-4"></div>
-          <p class="text-lg font-semibold">Түр хүлээнэ үү...</p>
+          <p class="text-lg font-semibold">{{ t('txtWaiting') }}</p>
         </div>
       </div>
     </b-card-body>
@@ -410,7 +409,7 @@ const addTraveler = () => {
 
     if (travelers.value.length >= totalAllowed) {
       // alert("Нийт зорчигчдын тоо аль хэдийн хүрсэн байна.");
-      errorMessage.value.text = "Нийт зорчигчдын тоо аль хэдийн хүрсэн байна.";
+      errorMessage.value.text = t("txtTravelersCountDone");
       errorMessage.value.status = "error";
       setTimeout(() => {
         errorMessage.value.text = '';
@@ -501,7 +500,7 @@ const openModal = () => {
     // ❗ Шалгах
     if (actualAdults !== expectedAdults || actualChildren !== expectedChildren) {
       // alert(`Зорчигчдын төрөл зөрж байна!\nТом хүн: ${expectedAdults}, Хүүхэд: ${expectedChildren}`);
-      errorMessage.value.text = `Зорчигчдын төрөл зөрж байна!\nТом хүн: ${expectedAdults}, Хүүхэд: ${expectedChildren}`;
+      errorMessage.value.text = `${t("txtTravelersTypeDen")}: ${expectedAdults}, ${t("txtChild")}: ${expectedChildren}`;
       errorMessage.value.status = "error";
       setTimeout(() => {
         errorMessage.value.text = '';
@@ -571,7 +570,7 @@ const confirmAndPay = async () => {
       if (data.status === 'SUCCESS' && data.result?.Body?.AeroBookResponse?.AeroBookResult) {
         var orderInfo = data.result.Body.AeroBookResponse.AeroBookResult;
         // const oid = orderInfo.value.oid;
-        errorMessage.value.text = "Ажилттай захиалга үүслээ";
+        errorMessage.value.text = t("txtBookingConfirm");
         errorMessage.value.status = "success";
         setTimeout(() => {
           errorMessage.value.text = '';
@@ -582,7 +581,7 @@ const confirmAndPay = async () => {
 
       } else {
         sessionStorage.setItem("BookingInfo", JSON.stringify(data));
-        errorMessage.value.text = `Алдаа: ${data.message}`;
+        errorMessage.value.text = `${t("txtError")}: ${data.message}`;
         errorMessage.value.status = "error";
         setTimeout(() => {
           errorMessage.value.text = '';
@@ -590,22 +589,22 @@ const confirmAndPay = async () => {
         }, 2000);
       }
     } else {
-      errorMessage.value.text = `Алдаа: ${response.statusText}`;
+      errorMessage.value.text = `${t("txtError")}: ${response.statusText}`;
       errorMessage.value.status = "error";
       setTimeout(() => {
         errorMessage.value.text = '';
         errorMessage.value.status = '';
       }, 2000);
-      console.error('Алдаа гарлаа:', response.statusText);
+      console.error(`${t("txtError")}:`, response.statusText);
     }
   } catch (error) {
-    errorMessage.value.text = `Алдаа: ${error}`;
+    errorMessage.value.text = `${t("txtError")}: ${error}`;
     errorMessage.value.status = "error";
     setTimeout(() => {
       errorMessage.value.text = '';
       errorMessage.value.status = '';
     }, 2000);
-    console.error('Алдаа:', error);
+    console.error(`${t("txtError")}:`, error);
   } finally {
     isLoading.value = false; // ⬅ Дуусахаар loading болиулна
   }
@@ -648,7 +647,7 @@ const autoFillTravelerByPassport = async (passportNumber: any, traveler: { name:
       });
     }
   } catch (err) {
-    console.error("Алдаа гарлаа:", err);
+    console.error(`${t("txtError")}:`, err);
   }
 };
 
@@ -775,13 +774,13 @@ const isFormValid = computed(() => {
 //   { value: 'Female', text: 'Эм' }
 // ];
 
-const titleOptions = [
-  { value: 'Gender', text: 'Хүйс' },
+const titleOptions = computed(() => [
+  { value: 'Gender', text: t("txtGender") },
   ...['Male', 'Female'].map(g => ({
     value: g,
-    text: g === 'Male' ? 'Эр' : 'Эм'
+    text: g === 'Male' ? t("txtMale") : t("txtFemale")
   }))
-];
+]);
 
 // const dateOptions = [
 //   { value: 'date', text: 'Өдөр' },
@@ -818,13 +817,13 @@ const titleOptions = [
 //   { value: '31', text: '31' }
 // ];
 
-const dateOptions = [
-  { value: 'date', text: 'Өдөр' },
+const dateOptions = computed(() => [
+  { value: 'date', text: t("txtDay") },
   ...Array.from({ length: 31 }, (_, i) => {
     const num = String(i + 1).padStart(2, '0');
     return { value: num, text: String(i + 1) };
   })
-];
+]);
 
 
 // const monthOptions = [
@@ -844,15 +843,19 @@ const dateOptions = [
 // ];
 
 
-const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const monthNames = [
+  t("txtMonth1"), t("txtMonth2"), t("txtMonth3"), t("txtMonth4"),
+  t("txtMonth5"), t("txtMonth6"), t("txtMonth7"), t("txtMonth8"),
+  t("txtMonth9"), t("txtMonth10"), t("txtMonth11"), t("txtMonth12")
+];
 
-const monthOptions = [
-  { value: 'month', text: 'Сар' },
+const monthOptions = computed(() => [
+  { value: 'month', text: t("txtMonth") },
   ...monthNames.map((name, i) => {
     const value = String(i + 1).padStart(2, '0');
     return { value, text: name };
   })
-];
+]);
 
 
 // const yearOptions = [
@@ -883,13 +886,13 @@ const monthOptions = [
 
 const currentYear = new Date().getFullYear();
 
-const yearOptions = [
-  { value: 'year', text: 'Жил' },
+const yearOptions = computed(() => [
+  { value: 'year', text: t("txtYear") },
   ...Array.from({ length: currentYear - 1500 + 1 }, (_, i) => {
     const year = 1950 + i;
     return { value: String(year), text: String(year) };
   })
-];
+]);
 
 
 // const nationalityOptions = [
@@ -905,10 +908,10 @@ const nationalityList = [
   // хүсвэл API-гаас авдаг болгож болно
 ];
 
-const nationalityOptions = [
-  { value: 'select-nationality', text: 'Харьяалал' },
+const nationalityOptions = computed(() => [
+  { value: 'select-nationality', text: t("txtNationality") },
   ...nationalityList
-];
+]);
 
 
 
