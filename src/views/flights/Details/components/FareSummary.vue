@@ -36,6 +36,22 @@
             </span>
           </li>
 
+
+          <!-- Infants price -->
+          <li v-if="travelers.infants > 0"
+            class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+            <span class="h6 fw-normal mb-2 mb-md-0">
+              {{ t('txtInfants') }} ({{ travelers.infants }} x
+              {{ Math.ceil((parseFloat(getOptionPrice().InfantPrice) * eurToMnt)).toLocaleString() }}₮)
+              <b-icon-info-circle class="ms-1" />
+            </span>
+            <span class="fs-6 text-end text-md-start">
+              {{
+                Math.ceil((travelers.infants * parseFloat(getOptionPrice().InfantPrice) * eurToMnt)).toLocaleString()
+              }}₮
+            </span>
+          </li>
+
           <!-- Service fee -->
           <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-md-center">
             <span class="h6 fw-normal mb-2 mb-md-0">{{ t('txtServiceFee') }}</span>
@@ -154,7 +170,7 @@ const travelerStore = useTravelerStore()
 
 const { t, locale } = useI18n()
 
-const travelers = ref({ adults: 0, childs: 0 })
+const travelers = ref({ adults: 0, childs: 0, infants: 0 })
 
 const totalPrice = ref(0)
 const fee = 7000
@@ -167,8 +183,9 @@ onMounted(() => {
       travelers.value = parsed
       const adults = parsed.adults || 0
       const childs = parsed.childs || 0
+      const infants = parsed.infants || 0
 
-      totalPrice.value = (adults + childs) * fee
+      totalPrice.value = (adults + childs + infants) * fee
     } catch (e) {
       console.error("❌ travelers JSON parse алдаа:", e)
     }
@@ -354,15 +371,17 @@ const openModal = () => {
     const parsed = JSON.parse(stored);
     const expectedAdults = parsed.adults || 0;
     const expectedChildren = parsed.childs || 0;
+    const expectedInfants = parsed.infants || 0;
 
     // 👤 actual зорчигчдын тоо
     const actualAdults = travelerStore.travelers.filter(t => t.ageType === 'Adult').length;
     const actualChildren = travelerStore.travelers.filter(t => t.ageType === 'Child').length;
+    const actualInfants = travelerStore.travelers.filter(t => t.ageType === 'Infant').length;
     console.log(travelerStore.travelers)
     // ❗ Шалгах
-    if (actualAdults !== expectedAdults || actualChildren !== expectedChildren) {
+    if (actualAdults !== expectedAdults || actualChildren !== expectedChildren || actualInfants !== expectedInfants) {
       // alert(`Зорчигчдын төрөл зөрж байна!\nТом хүн: ${expectedAdults}, Хүүхэд: ${expectedChildren}`);
-      errorMessage.value.text = `Зорчигчдын төрөл зөрж байна!\nТом хүн: ${expectedAdults}, Хүүхэд: ${expectedChildren}`;
+      errorMessage.value.text = `Зорчигчдын төрөл зөрж байна!\nТом хүн: ${expectedAdults}, Хүүхэд: ${expectedChildren}, Нярай: ${expectedInfants}`;
       errorMessage.value.status = "error";
       setTimeout(() => {
         errorMessage.value.text = '';

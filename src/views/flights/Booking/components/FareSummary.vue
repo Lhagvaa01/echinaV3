@@ -117,13 +117,13 @@
                 <b-button v-if="bankInfo[selectedBank].bic == 'khanbank'" size="md" variant="link" class="p-0 m-0"
                   @click="copyText('MN68000500' + bankInfo[selectedBank].acc_number.toString())">
                   <span class="h6 fw-normal text-primary mb-0 me-2">MN68000500{{ bankInfo[selectedBank].acc_number
-                  }}</span>
+                    }}</span>
                   <i class="fas fa-copy"></i>
                 </b-button>
                 <b-button v-else size="md" variant="link" class="p-0 m-0"
                   @click="copyText('MN44001500' + bankInfo[selectedBank].acc_number.toString())">
                   <span class="h6 fw-normal text-primary mb-0 me-2">MN44001500{{ bankInfo[selectedBank].acc_number
-                  }}</span>
+                    }}</span>
                   <i class="fas fa-copy"></i>
                 </b-button>
               </li>
@@ -203,8 +203,9 @@ onMounted(() => {
       const parsed = JSON.parse(travelersStr)
       const adults = parsed.adults || 0
       const childs = parsed.childs || 0
+      const infants = parsed.infants || 0
 
-      totalFee.value = (adults + childs) * fee
+      totalFee.value = (adults + childs + infants) * fee
     } catch (e) {
       console.error("❌ travelers JSON parse алдаа:", e)
     }

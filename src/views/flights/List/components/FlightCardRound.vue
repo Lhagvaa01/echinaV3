@@ -30,9 +30,9 @@
 
                     <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('asc')">{{ t('txtPriceASC')
-                                }}</a></li>
+                        }}</a></li>
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('desc')">{{ t('txtPriceDESC')
-                                }}</a>
+                        }}</a>
                         </li>
                     </ul>
                 </div>
@@ -126,7 +126,7 @@
                                                                     ?.Value || 'Unknown Airline'
                                                             }}
                                                             <span class="text-muted">({{ segment.FlightNum || 'SA-1254'
-                                                            }})</span>
+                                                                }})</span>
                                                         </div>
                                                         <div class="d-flex align-items-center mt-1">
                                                             <Briefcase v-if="segment.Baggage" class="me-2"
@@ -225,13 +225,21 @@
                                                 <h6 v-if="paginatedFlights[Mainindex].TotalPrice != paginatedFlights[Mainindex].AdultPrice"
                                                     class="d-flex flex-column">
                                                     {{ t('txtAdult') }}: {{
-                                                        (paginatedFlights[Mainindex].AdultPrice *
-                                                            parseFloat(rate)).toLocaleString() }}{{ currency }}
+                                                        Math.ceil((paginatedFlights[Mainindex].AdultPrice *
+                                                            parseFloat(rate))).toLocaleString() }}{{ currency }}
                                                     <span v-if="paginatedFlights[Mainindex].ChildPrice" class="mt-1">
                                                         {{ t('txtChild') }}: {{
-                                                            (paginatedFlights[Mainindex].ChildPrice *
-                                                                parseFloat(rate)).toLocaleString()
-                                                        }}{{ currency }}
+                                                            Math.ceil((paginatedFlights[Mainindex].ChildPrice *
+                                                                parseFloat(rate))).toLocaleString() }}{{ currency }}
+
+                                                    </span>
+
+                                                    <span v-if="paginatedFlights[Mainindex].InfantPrice" class="mt-1">
+                                                        {{ t('txtInfants') }}: {{
+
+                                                            Math.ceil((paginatedFlights[Mainindex].InfantPrice *
+                                                                parseFloat(rate))).toLocaleString() }}{{ currency }}
+
                                                     </span>
                                                 </h6>
                                                 <h4 v-else>
@@ -246,11 +254,25 @@
                                                     </span>
                                                     <User :size="25" color="#3949AB" />
 
-                                                    <!-- Хүүхдүүд -->
-                                                    <span class="fw-medium fs-6 text-primary">
-                                                        {{ Number(route.query.childs) }}
+                                                    <span v-if="paginatedFlights[Mainindex].ChildPrice">
+                                                        <!-- Хүүхдүүд -->
+                                                        <span class="fw-medium fs-6 text-primary">
+                                                            {{ Number(route.query.childs) }}
+                                                        </span>
+                                                        <User :size="15" color="#3949AB" />
                                                     </span>
-                                                    <User :size="15" color="#3949AB" />
+
+                                                    <span v-if="paginatedFlights[Mainindex].InfantPrice">
+                                                        <!-- Хүүхдүүд -->
+                                                        <span class="fw-medium fs-6 text-primary">
+                                                            {{ Number(route.query.infants) }}
+                                                        </span>
+                                                        <User :size="10" color="#3949AB" />
+                                                    </span>
+
+
+
+
 
                                                     <!-- Үнэ -->
                                                     <span class="fw-bold fs-5 text-dark ms-3">
@@ -303,7 +325,7 @@
                                 class="list-inline bg-light rounded-2 d-sm-flex text-center justify-content-sm-between mb-0 px-4 py-2">
                                 <li class="list-inline-item text-primary">{{ t('txtAvailableSeat') }}: {{
                                     segments.ResBookDesigQuantity
-                                }}</li>
+                                    }}</li>
                                 <h6 class="fw-medium mb-0"><span class="fw-medium">{{ t('txtClass') }}:</span> {{
                                     segments.FlightClass }}</h6>
                                 <li class="list-inline-item">

@@ -87,8 +87,10 @@
                                                 <BIconPeople class="fa-fw me-2" />
                                                 {{ t('txtTravelerQty') }}:
                                             </span>
-                                            <span class="h6 fw-normal mb-0">{{ Array.isArray(orderInfo?.PaxList) ?
-                                                orderInfo?.PaxList.length : 1 }}</span>
+                                            <span class="h6 fw-normal mb-0">{{ Array.isArray(orderInfo?.PaxList.PaxData)
+                                                ?
+                                                orderInfo?.PaxList.PaxData.length : orderInfo?.PaxList.length || 1
+                                            }}</span>
                                         </li>
                                     </ul>
                                 </b-col>
@@ -272,7 +274,7 @@
                                                         </p>
                                                         <p class="mb-0">{{ segment.Departure.Iata }}<span
                                                                 v-if="segment.Departure.Terminal">-{{
-                                                                t('txtTerminal') }}</span>
+                                                                    t('txtTerminal') }}</span>
                                                             {{ segment.Departure.Terminal || '' }}</p>
                                                         <!-- <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
                                           segment.Departure.Iata).City}}</p> -->
@@ -324,7 +326,7 @@
                                                         <p class="mb-0">{{ getAllSegments()[getAllSegments().length -
                                                             1].Arrival.Iata }}<span
                                                                 v-if="getAllSegments()[getAllSegments().length - 1].Arrival.Terminal">-{{
-                                                                t('txtTerminal') }}</span>
+                                                                    t('txtTerminal') }}</span>
                                                             {{ getAllSegments()[getAllSegments().length -
                                                                 1].Arrival.Terminal || ''
                                                             }}</p>

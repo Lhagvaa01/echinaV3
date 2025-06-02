@@ -21,6 +21,6 @@ export type GuestAndRoomFormType = {
   guests: {
     adults: number
     children: number
-    // rooms: number
+    infants: number
   }
 }

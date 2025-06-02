@@ -405,7 +405,7 @@ const addTraveler = () => {
 
   try {
     const parsed = JSON.parse(stored);
-    const totalAllowed = (parsed.adults || 0) + (parsed.childs || 0);
+    const totalAllowed = (parsed.adults || 0) + (parsed.childs || 0) + (parsed.infants || 0);
 
     if (travelers.value.length >= totalAllowed) {
       // alert("Нийт зорчигчдын тоо аль хэдийн хүрсэн байна.");
@@ -492,15 +492,17 @@ const openModal = () => {
     const parsed = JSON.parse(stored);
     const expectedAdults = parsed.adults || 0;
     const expectedChildren = parsed.childs || 0;
+    const expectedInfants = parsed.infants || 0;
 
     // 👤 actual зорчигчдын тоо
     const actualAdults = travelers.value.filter(t => t.ageType === 'Adult').length;
     const actualChildren = travelers.value.filter(t => t.ageType === 'Child').length;
+    const actualInfants = travelers.value.filter(t => t.ageType === 'Infants').length;
     console.log(travelers)
     // ❗ Шалгах
-    if (actualAdults !== expectedAdults || actualChildren !== expectedChildren) {
+    if (actualAdults !== expectedAdults || actualChildren !== expectedChildren || actualInfants !== expectedInfants) {
       // alert(`Зорчигчдын төрөл зөрж байна!\nТом хүн: ${expectedAdults}, Хүүхэд: ${expectedChildren}`);
-      errorMessage.value.text = `${t("txtTravelersTypeDen")}: ${expectedAdults}, ${t("txtChild")}: ${expectedChildren}`;
+      errorMessage.value.text = `${t("txtTravelersTypeDen")}: ${expectedAdults}, ${t("txtChild")}: ${expectedChildren}, ${t("txtInfants")}: ${expectedInfants}`;
       errorMessage.value.status = "error";
       setTimeout(() => {
         errorMessage.value.text = '';

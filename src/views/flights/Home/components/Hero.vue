@@ -338,7 +338,8 @@ const route = useRoute();
 const formValue = ref<GuestAndRoomFormType>({
   guests: {
     adults: Number(route.query.adults) || 1,
-    children: Number(route.query.childs) || 0
+    children: Number(route.query.childs) || 0,
+    infants: Number(route.query.infants) || 0
   }
 })
 
@@ -356,12 +357,12 @@ const selectedTravelers = ref('select-travelers')
 const generateTicketUrl = computed(() => {
 
   sessionStorage.setItem("trips", show.value.toString());
-  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${formatDateFinish(departureDate.value)}&fclass=${selectedClass.value}&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
+  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${formatDateFinish(departureDate.value)}&fclass=${selectedClass.value}&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=${formValue.value.guests.infants}`;
 });
 
 const generateTicketUrlRound = computed(() => {
   sessionStorage.setItem("trips", show.value.toString());
-  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${formatDateFinish(departureDate.value)}&backDate=${formatDateFinish(returnDate.value)}&fclass=${selectedClass.value}&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=0`;
+  return `/flights/list/?dpt=${selectedDestination.value?.airportCode}&arr=${selectedDestination2.value?.airportCode}&date=${formatDateFinish(departureDate.value)}&backDate=${formatDateFinish(returnDate.value)}&fclass=${selectedClass.value}&adults=${formValue.value.guests.adults}&childs=${formValue.value.guests.children}&infants=${formValue.value.guests.infants}`;
 });
 
 const formatDateFinish = (date: string): string => {
@@ -665,7 +666,7 @@ const generateTicketUrlMulti = computed(() => {
   params.push(`fclass=Econom`);
   params.push(`adults=${formValue.value.guests.adults || 1}`);
   params.push(`childs=${formValue.value.guests.children || 0}`);
-  params.push(`infants=0`);
+  params.push(`infants=${formValue.value.guests.infants || 0}`);
 
   // 🔄 Нэмэлт чиглэлүүд
   trips.value.slice(1).forEach((trip, index) => {
@@ -731,6 +732,7 @@ function searchFlights() {
   const travelers = {
     adults: Number(getQueryParam("adults", "1")), // Default: 1 adult
     childs: Number(getQueryParam("childs", "0")), // Default: 0 children
+    infants: Number(getQueryParam("infants", "0")), // Default: 0 infants
   };
   sessionStorage.setItem("travelers", JSON.stringify(travelers));
 

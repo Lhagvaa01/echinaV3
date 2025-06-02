@@ -43,6 +43,25 @@
         </div>
       </li>
 
+      <li class="dropdown-divider"></li>
+
+      <li class="d-flex justify-content-between">
+        <div>
+          <h6 class="mb-0">{{ t('txtInfants') }}</h6>
+          <small>{{ t('txtInfantsDes') }}</small>
+        </div>
+
+        <div class="hstack gap-1 align-items-center">
+          <b-button variant="link" class="adult-remove p-0 mb-0" @click="() => updateGuests('infants', false)">
+            <BIconDashCircle class="fs-5 fa-fw" />
+          </b-button>
+          <h6 class="guest-selector-count mb-0 child">{{ formValue.guests.infants ?? 0 }}</h6>
+          <b-button variant="link" class="adult-add p-0 mb-0" @click="() => updateGuests('infants')">
+            <BIconPlusCircle class="fs-5 fa-fw" />
+          </b-button>
+        </div>
+      </li>
+
       <!-- <li class="dropdown-divider"></li> -->
       <!-- 
       <li class="d-flex justify-content-between">
@@ -92,7 +111,8 @@ const initialValue: GuestAndRoomFormType = {
   guests: {
     adults: 2,
     // rooms: 1,
-    children: 0
+    children: 0,
+    infants: 0
   }
 }
 
@@ -126,6 +146,9 @@ const getGuestsValue = (): string => {
   }
   if (guests.children) {
     value += guests.children + ' ' + (guests.children > 1 ? t('txtChild') : t('txtChild')) + ' '
+  }
+  if (guests.infants) {
+    value += guests.infants + ' ' + (guests.infants > 1 ? t('txtInfants') : t('txtInfants')) + ' '
   }
   // if (guests.rooms) {
   //   value += guests.rooms + (guests.rooms > 1 ? ' Rooms ' : ' Room ')

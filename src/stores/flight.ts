@@ -22,7 +22,7 @@ export const useFlightStore = defineStore({
   actions: {
     async fetchFlights(filters: {
       trips: Array<{ from: string; to: string; date: string }>;
-      travelers: { adults: number; childs: number };
+      travelers: { adults: number; childs: number; infants: number };
       fclass: String;
       isRound: number; // 1: Нэг чиглэл | 2: Хоёр чиглэл | 3: Олон чиглэл
     }) {
@@ -38,7 +38,7 @@ export const useFlightStore = defineStore({
         params.push(`fclass=${filters.fclass}`);
         params.push(`adults=${filters.travelers.adults}`);
         params.push(`childs=${filters.travelers.childs}`);
-        params.push(`infants=0`);
+        params.push(`infants=${filters.travelers.infants}`);
 
         console.log("filters.isRound")
         console.log(filters.isRound)
