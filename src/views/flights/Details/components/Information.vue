@@ -8,7 +8,7 @@
       </div>
       <div v-else class="text-muted text-center py-4">
         <b-spinner small type="grow" class="me-2" />
-        Тарифийн мэдээлэл ачаалж байна...
+        Тарифийн мэдээлэл ачаалж байна....
       </div>
     </b-card-body>
   </b-card>
