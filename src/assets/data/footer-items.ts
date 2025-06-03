@@ -5,32 +5,45 @@ import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 const footerLinks: FooterLink[] = [
   {
-    title: 'Аялалын зөвлөгөө',
-    items: [
-      { name: '2019-04-20 Бээжин рүү хэрхэн хямд явах вэ?', image: 'https://echina.mn/assets/footer-01.jpg' },
-      { name: '2019-04-20 Гуанжоу хотруу хамгийн хямд зардлаар хэрхэн аялах бэ?', image: 'https://echina.mn/assets/footer-01.jpg' },
-     
-    ]
-  },
+  title: 'Аяллын зөвлөгөө',
+  items: [
+    { 
+      name: '2024-07-05 Олон улсын нислэгийн хямдралтай үеийг хэрхэн оновчтой ашиглах вэ?', 
+      image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80' // хямдралтай нислэг, онгоцны буудал
+    },
+    { 
+      name: '2024-07-01 Аялалд гарахаасаа өмнө заавал мэдэх 5 аюулгүй байдлын зөвлөгөө', 
+      image: 'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?auto=format&fit=crop&w=600&q=80' // аюулгүй байдал, аяллын чемодан
+    },
+    { 
+      name: '2024-06-25 Шинэ орон руу аялахдаа юуг бэлдэх вэ?', 
+      image: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=600&q=80' // бэлэн байдал, аяллын checklist
+    },
+  ]
+},
+
   {
     title: 'Хэрэглэгчийн сэтгэгдэл',
     items: [
-      { name: 'Манай компани гадаад худалдааны чиглэлээр ажилладаг бөгөөд байнга гадагшаа явах ажил гарна. Тэгээд билет захиалах гэж асуудал болно шүү. Нэг өвөрмонгол юм уу, хүн гуйж, дээр нь хэдэн юан нэмж байж захиалдаг байлаа. Энэ жил Тайван руу явах гээд Echina.mn-ээр захиалж үзлээ. Монголын дотоодын банкаар төлбөрөө төлөөд шууд захиалсандаа сэтгэл хангалуун байна. Залуусдаа амжилт хүсье' },
-      
+      { 
+        name: `Airkacc.mn-ээр дамжуулж Бээжин рүү шууд нислэгийн тийзээ захиалсан. Төлбөр, баталгаажуулалт бүгд маш хурдан шийдэгдсэн. Итгэлтэй, найдвартай үйлчилгээ!` 
+      },
+      { 
+        name: `Маш сайн үйлчилгээтэй, олон улсруу аялах бүх зөвлөгөөг эндээс авч чадлаа. Дахин захиална аа!` 
+      },
     ]
   },
   {
     title: 'Холбоо барих',
     items: [
-      { name: 'contact@echina.mn', icon: faEnvelope }, // Email icon
-      { name: '+976 9090 1550 Монгол дугаар', icon: faPhone }, // Phone icon
-      { name: '+976 9091 1550 Монгол дугаар', icon: faPhone }, // Phone icon
-      { name: '+86 151 649 842 01 Хятад дугаар', icon: faPhone }, // WhatsApp icon (optional)
-      { name: 'Улаанбаатар хот, Чингэлтэй дүүрэг 5-р хороо МН Товер оффис 15 давхарт 1510 тоот', icon: faMapMarkerAlt } // Location icon
+      { name: 'contact@airkacc.mn', icon: faEnvelope }, // Email icon
+      { name: '+976 99889988', icon: faPhone },
+      { name: '+86 151 99889988', icon: faPhone },
+      { name: 'Улаанбаатар хот', icon: faMapMarkerAlt }
     ]
   }
-  
-]
+];
+
 
 const topLinks: FooterTopLink[] = [
   { name: 'Flights', link: { name: '' } },
