@@ -19,7 +19,7 @@
       <b-accordion class="accordion-icon accordion-bg-light">
         <b-accordion-item v-for="(traveler, index) in travelers" :key="traveler.id" :header-tag="'h6'"
           header-class="font-base" button-class="fw-bold"
-          :title="`${traveler.ageType == 'Adult' ? 'Том хүн' : traveler.ageType == 'Child' ? 'Хүүхэд' : ''} ${index + 1}`"
+          :title="`${traveler.ageType == 'Adult' ? 'Том хүн' : traveler.ageType == 'Child' ? 'Хүүхэд' : traveler.ageType == 'Infant' ? 'Нярай' : ''} ${index + 1}`"
           body-class="mt-3" class="mb-3" :visible="index === 0">
           <b-row class="g-4">
 
