@@ -52,7 +52,7 @@
 
             <!-- <FlightCard4 /> -->
 
-            <Pagination />
+            <!-- <Pagination /> -->
           </div>
         </b-col>
       </b-row>

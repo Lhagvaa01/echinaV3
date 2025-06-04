@@ -11,7 +11,7 @@
                 <div v-if="isLoading" class="text-center py-3">Уншиж байна...</div>
 
                 <!-- SEARCH RESULTS -->
-                <div v-else-if="searchResults.length" class="px-3 pt-3">
+                <!-- <div v-else-if="searchResults.length" class="px-3 pt-3">
                     <div v-for="item in searchResults" :key="item.cityCode + item.countryCode" class="mb-2">
                         <div class="fw-bold text-info">{{ item.countryName }} - {{ item.cityName }}</div>
                         <div v-for="airport in item.airport" :key="airport.airportCode"
@@ -22,34 +22,69 @@
                             {{ airport.airportName }} ({{ airport.airportCode }})
                         </div>
                     </div>
+                </div> -->
+                <div v-else-if="groupedSearchResults.length" class="px-3 pt-3">
+                    <div v-for="item in groupedSearchResults" :key="item.cityCode + item.countryCode"
+                        class="mb-4 pb-2 border-bottom border-dark-subtle">
+                        <!-- City Title -->
+                        <!-- <div class="fw-bold text-black small" style="font-size: 18px;">
+                            {{ item.cityName }} <span class="fw-normal text-secondary">/ All airports</span>
+                        </div> -->
+                        <!-- Country info -->
+                        <div class="text-black" style="font-size:13px; margin-left:1px;">
+                            {{ item.cityName }}, {{ item.countryName?.toUpperCase() }}, {{
+                                item.countryCode?.toUpperCase() }}
+                        </div>
+                        <!-- Each Airport -->
+                        <div v-for="airport in item.airport" :key="airport.airportCode"
+                            class="d-flex align-items-start gap-2 ps-3 mt-1" style="cursor: pointer;"
+                            @click.stop="selectSearchedAirport(item, airport)">
+                            <!-- ↳ Arrow -->
+                            <div class="text-secondary" style="font-size: 18px; margin-top: 2px;">↳</div>
+                            <div>
+                                <span class="fw-bold text-primary gap-2" style=" font-size: 18px;">
+                                    {{ airport.airportCode }}
+                                </span>
+                                <span class="fw-medium text-black" style="font-size:15px; margin-left:4px;">
+                                    {{ airport.airportName }}
+                                </span>
+                                <span v-if="airport.description" class="text-secondary ms-1" style="font-size:13px;">
+                                    , {{ airport.description }}
+                                </span>
+                                <span v-if="airport.type" class="text-secondary ms-1" style="font-size:13px;">
+                                    ({{ airport.type }})
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- MULTI-COLUMN DROPDOWN -->
                 <div v-else>
 
-                    <div class="airport-selector-list px-2">
+                    <div class="airport-selector-list px-1 px-md-2">
                         <div class="row g-2">
-                            <div v-for="continent in airportData" :key="continent.name" class="col-3 col-md-6 col-lg-4">
+                            <div v-for="continent in airportData" :key="continent.name" class="col-12 col-sm-6  ">
                                 <!-- CONTINENT HEADER -->
                                 <div
                                     class="continent-title px-2 py-1 mb-2 bg-dark text-light fw-bold rounded-top small text-uppercase">
                                     {{ continent.name }}
                                 </div>
                                 <!-- CITY LIST -->
-                                <div class="d-flex flex-wrap gap-2 px-2 pb-2">
+                                <div class="d-flex flex-wrap gap-1 px-1 pb-2">
                                     <div v-for="city in continent.cities" :key="city.airport_iata"
                                         class="d-flex align-items-center gap-1 city-item px-2 py-1 rounded"
-                                        style="min-width: 150px; cursor:pointer;" @click="selectCity(city)">
+                                        style="min-width: 120px; font-size: 15px; cursor:pointer;"
+                                        @click="selectCity(city)">
                                         <img :src="`https://flagcdn.com/${city.country_code?.toLowerCase()}.svg`"
                                             alt="flag" style="width: 18px; height: 13px; border-radius: 2px;" />
-                                        <span class="fw-medium">
-                                            {{ city.name }}
-                                        </span>
+                                        <span class="fw-medium">{{ city.name }}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
 
                 </div>
                 <!-- /multi-column -->
@@ -161,6 +196,30 @@ export default {
                 }
             }, 400);
         },
+    },
+    computed: {
+        groupedSearchResults() {
+            // 1. Group-лэлт хийх объект
+            const groupMap = {};
+            (this.searchResults || []).forEach(item => {
+                // Групплэх түлхүүр (cityCode + countryCode)
+                const key = `${item.cityCode}-${item.countryCode}`;
+                if (!groupMap[key]) {
+                    // Эхнийх бол үүсгэнэ
+                    groupMap[key] = {
+                        cityCode: item.cityCode,
+                        cityName: item.cityName,
+                        countryCode: item.countryCode,
+                        countryName: item.countryName,
+                        airport: []
+                    };
+                }
+                // Бүх airport-ыг нэг массивт цуглуулна
+                groupMap[key].airport = groupMap[key].airport.concat(item.airport || []);
+            });
+            // Object → Array
+            return Object.values(groupMap);
+        }
     },
     mounted() {
         this.fetchPopularAirports();

@@ -30,9 +30,9 @@
 
                     <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('asc')">{{ t('txtPriceASC')
-                        }}</a></li>
+                                }}</a></li>
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('desc')">{{ t('txtPriceDESC')
-                        }}</a>
+                                }}</a>
                         </li>
                     </ul>
                 </div>
@@ -126,7 +126,7 @@
                                                                     ?.Value || 'Unknown Airline'
                                                             }}
                                                             <span class="text-muted">({{ segment.FlightNum || 'SA-1254'
-                                                                }})</span>
+                                                            }})</span>
                                                         </div>
                                                         <div class="d-flex align-items-center mt-1">
                                                             <Briefcase v-if="segment.Baggage" class="me-2"
@@ -325,7 +325,7 @@
                                 class="list-inline bg-light rounded-2 d-sm-flex text-center justify-content-sm-between mb-0 px-4 py-2">
                                 <li class="list-inline-item text-primary">{{ t('txtAvailableSeat') }}: {{
                                     segments.ResBookDesigQuantity
-                                    }}</li>
+                                }}</li>
                                 <h6 class="fw-medium mb-0"><span class="fw-medium">{{ t('txtClass') }}:</span> {{
                                     segments.FlightClass }}</h6>
                                 <li class="list-inline-item">
@@ -360,11 +360,13 @@
 
         </div>
         <!-- Хуудаслалтын товчнууд -->
-        <div class="d-flex justify-content-center mt-4">
+        <!-- <div class="d-flex justify-content-center mt-4">
             <b-button @click="prevPage" :disabled="currentPage === 1">Өмнөх</b-button>
             <span class="mx-3">Хуудас {{ currentPage }} / {{ totalPages }}</span>
             <b-button @click="nextPage" :disabled="currentPage === totalPages">Дараагийн</b-button>
-        </div>
+        </div> -->
+        <Pagination :currentPage="currentPage" :totalPages="totalPages"
+            @update:currentPage="page => currentPage = page" />
     </div>
 
 </template>
@@ -382,6 +384,7 @@ import { useRoute } from 'vue-router';
 import SkeletonLoader from './Skeleton.vue'
 import { useOptionStore } from '@/stores/optionStore'
 import { useI18n } from 'vue-i18n'
+import Pagination from '@/views/flights/List/components/Pagination.vue'
 
 const { t, locale } = useI18n()
 
