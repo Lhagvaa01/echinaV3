@@ -117,13 +117,13 @@
                 <b-button v-if="bankInfo[selectedBank].bic == 'khanbank'" size="md" variant="link" class="p-0 m-0"
                   @click="copyText('MN68000500' + bankInfo[selectedBank].acc_number.toString())">
                   <span class="h6 fw-normal text-primary mb-0 me-2">MN68000500{{ bankInfo[selectedBank].acc_number
-                    }}</span>
+                  }}</span>
                   <i class="fas fa-copy"></i>
                 </b-button>
                 <b-button v-else size="md" variant="link" class="p-0 m-0"
                   @click="copyText('MN44001500' + bankInfo[selectedBank].acc_number.toString())">
                   <span class="h6 fw-normal text-primary mb-0 me-2">MN44001500{{ bankInfo[selectedBank].acc_number
-                    }}</span>
+                  }}</span>
                   <i class="fas fa-copy"></i>
                 </b-button>
               </li>
@@ -243,6 +243,55 @@ const errorMessage = ref({ status: '', text: '' });
 const isLoading = ref(false);
 const showModal = ref(false);
 
+
+const polling = ref(false);
+let pollInterval = null;
+
+const startPaymentPolling = () => {
+  if (polling.value) return;
+  polling.value = true;
+  pollInterval = setInterval(async () => {
+    try {
+      const response = await fetch('https://api.airkacc.mn/api/checkPayment/mn/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          oid: oid.value,
+          amount: Math.ceil(Number(infos.value.FullPrice) * parseFloat(rate) + totalFee.value)
+        })
+      });
+      const data = await response.json();
+      if (data.status === 'SUCCESS') {
+        clearInterval(pollInterval);
+        errorMessage.value.text = data.message;
+        errorMessage.value.status = data.status;
+        setTimeout(() => {
+          errorMessage.value.text = '';
+          errorMessage.value.status = '';
+        }, 2000);
+        polling.value = false;
+        setTimeout(() => {
+          window.location.href = `/flights/booking/confirm/${oid.value}/`;
+        }, 2000);
+      }
+    } catch (err) {
+      console.error("Polling error:", err);
+    }
+  }, 5000);
+};
+
+const stopPolling = () => {
+  clearInterval(pollInterval);
+  polling.value = false;
+};
+
+onMounted(() => {
+  startPaymentPolling();
+});
+
+onUnmounted(() => {
+  stopPolling();
+});
 
 const confirmAndPay = async () => {
   showModal.value = false;
