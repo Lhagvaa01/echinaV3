@@ -1,40 +1,58 @@
 <template>
     <div class="dropdown-wrapper">
-        <!-- <label>Хаанаас</label> -->
         <div class="dropdown">
             <div class="dropdown-header">
                 <input type="text" v-model="searchQuery" @focus="isOpen = true" @input="handleSearch"
-                    placeholder="Сонгоно уу..." class="search-input" />
+                    placeholder="Сонгоно уу..." class="form-control search-input" />
                 <span class="arrow" @click="toggleDropdown">{{ isOpen ? "▲" : "▼" }}</span>
             </div>
 
-            <div v-if="isOpen" class="dropdown-body">
-                <div v-if="isLoading">Уншиж байна...</div>
+            <div v-if="isOpen" class="dropdown-body p-0 border-0 shadow bg-white text-black" style="min-width: 800px;">
+                <div v-if="isLoading" class="text-center py-3">Уншиж байна...</div>
 
-                <div v-if="searchResults.length">
-                    <div v-for="item in searchResults" :key="item.cityCode + item.countryCode"
-                        class="continent-section">
-                        <p class="continent-name">{{ item.countryName }} - {{ item.cityName }}</p>
-                        <div v-for="airport in item.airport" :key="airport.airportCode" class="dropdown-item"
-                            @click.stop="selectSearchedAirport(item, airport)">
+                <!-- SEARCH RESULTS -->
+                <div v-else-if="searchResults.length" class="px-3 pt-3">
+                    <div v-for="item in searchResults" :key="item.cityCode + item.countryCode" class="mb-2">
+                        <div class="fw-bold text-info">{{ item.countryName }} - {{ item.cityName }}</div>
+                        <div v-for="airport in item.airport" :key="airport.airportCode"
+                            class="list-group-item list-group-item-action d-flex align-items-center bg-white text-black px-2 py-1 border-0"
+                            @click.stop="selectSearchedAirport(item, airport)" style="font-size: 15px;">
                             <img :src="`https://flagcdn.com/${item.countryCode.toLowerCase()}.svg`" alt="flag"
-                                width="20" style="margin-right: 8px; vertical-align: middle" />
+                                width="18" class="me-2" />
                             {{ airport.airportName }} ({{ airport.airportCode }})
                         </div>
                     </div>
                 </div>
 
+                <!-- MULTI-COLUMN DROPDOWN -->
                 <div v-else>
-                    <div v-for="continent in airportData" :key="continent.name" class="continent-section">
-                        <p class="continent-name">{{ continent.name }}</p>
-                        <div v-for="city in continent.cities" :key="city.name" class="dropdown-item"
-                            @click.stop="selectCity(city)">
-                            <img :src="`https://flagcdn.com/${city.country_code.toLowerCase()}.svg`" alt="flag"
-                                width="20" style="margin-right: 8px; vertical-align: middle" />
-                            {{ city.name }}
+
+                    <div class="airport-selector-list px-2">
+                        <div class="row g-2">
+                            <div v-for="continent in airportData" :key="continent.name" class="col-3 col-md-6 col-lg-4">
+                                <!-- CONTINENT HEADER -->
+                                <div
+                                    class="continent-title px-2 py-1 mb-2 bg-dark text-light fw-bold rounded-top small text-uppercase">
+                                    {{ continent.name }}
+                                </div>
+                                <!-- CITY LIST -->
+                                <div class="d-flex flex-wrap gap-2 px-2 pb-2">
+                                    <div v-for="city in continent.cities" :key="city.airport_iata"
+                                        class="d-flex align-items-center gap-1 city-item px-2 py-1 rounded"
+                                        style="min-width: 150px; cursor:pointer;" @click="selectCity(city)">
+                                        <img :src="`https://flagcdn.com/${city.country_code?.toLowerCase()}.svg`"
+                                            alt="flag" style="width: 18px; height: 13px; border-radius: 2px;" />
+                                        <span class="fw-medium">
+                                            {{ city.name }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                 </div>
+                <!-- /multi-column -->
             </div>
         </div>
     </div>
@@ -74,6 +92,13 @@ export default {
         },
     },
     methods: {
+        chunkArray(arr, size) {
+            const res = [];
+            for (let i = 0; i < arr.length; i += size) {
+                res.push(arr.slice(i, i + size));
+            }
+            return res;
+        },
         toggleDropdown() {
             this.isOpen = !this.isOpen;
         },
@@ -86,7 +111,7 @@ export default {
             this.searchQuery = `${selected.airportName} (${selected.airportCode})`;
             this.isOpen = false;
             this.$emit("update:modelValue", selected);
-            console.log("Selected city:", selected);
+            // console.log("Selected city:", selected);
         },
         selectSearchedAirport(item, airport) {
             const selected = {
@@ -97,7 +122,7 @@ export default {
             this.searchQuery = `${selected.airportName} (${selected.airportCode})`;
             this.isOpen = false;
             this.$emit("update:modelValue", selected);
-            console.log("Selected searched airport:", selected);
+            // console.log("Selected searched airport:", selected);
         },
         async fetchPopularAirports() {
             try {
@@ -143,20 +168,7 @@ export default {
 };
 </script>
 
-
-
 <style scoped>
-.airport-selector {
-    width: 100%;
-}
-
-.airport-selector .choices__inner,
-.airport-selector .choices__input {
-    width: 100%;
-    box-sizing: border-box;
-}
-
-
 .dropdown-wrapper {
     width: 300px;
 }
@@ -183,41 +195,80 @@ export default {
 }
 
 .dropdown-body {
-    max-height: 350px;
-    overflow-y: auto;
-    border-top: 1px solid #ddd;
+    border-radius: 0 0 12px 12px;
+    max-width: 1100px;
+    box-shadow: 0 16px 40px #000a;
     position: absolute;
-    background: #fff;
-    width: 100%;
-    z-index: 10;
-    padding: 8px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    max-height: 450px;
+    overflow-y: auto;
+    z-index: 100;
 }
 
-.continent-section {
-    margin-bottom: 10px;
-}
-
-.continent-name {
-    font-weight: bold;
-    font-size: 14px;
-    color: #444;
-    margin-bottom: 4px;
-}
-
-.dropdown-item {
-    padding: 6px 0;
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.dropdown-item:hover {
-    background: #f0f0f0;
+.list-group-item:hover,
+.list-group-item:focus {
+    background: #294b65 !important;
+    color: #fff !important;
 }
 
 .arrow {
     padding: 10px;
     cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .dropdown-body {
+        min-width: 100% !important;
+        max-width: 100vw !important;
+        left: 0 !important;
+        right: 0 !important;
+        border-radius: 0 0 12px 12px;
+    }
+
+    .col-md-auto,
+    .col-12 {
+        min-width: 100% !important;
+        border-right: none !important;
+        border-bottom: 1px solid #444 !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    .list-group-item {
+        font-size: 15px;
+    }
+}
+
+
+.airport-selector-list {
+    background: #ffffff;
+    border-radius: 16px;
+    padding-bottom: 16px;
+}
+
+.continent-title {
+    color: #e0e7ef !important;
+    border-bottom: 1px solid #253247;
+    letter-spacing: 1px;
+}
+
+.city-item {
+    background: transparent;
+    color: #000000;
+    font-size: 16px;
+    transition: background 0.15s;
+}
+
+.city-item:hover {
+    background: #294b65;
+}
+
+@media (max-width: 600px) {
+    .city-item {
+        min-width: 120px;
+        font-size: 15px;
+    }
 }
 </style>
