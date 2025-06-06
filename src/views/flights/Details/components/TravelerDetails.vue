@@ -750,6 +750,16 @@ function getAgeCategory(dateOfBirth: { day: string; month: string; year: string;
   }
 }
 
+travelers.value.forEach((traveler, idx) => {
+  watch(
+    () => [traveler.birthDay.day, traveler.birthDay.month, traveler.birthDay.year],
+    () => {
+      const category = getAgeCategory(traveler.birthDay);
+      travelers.value[idx].ageType = category;
+    }
+  );
+});
+
 function formatDate(input: string): string {
   const [day, month, yearAndTime] = input.split(".");
   const [year, time] = yearAndTime.split(" ");

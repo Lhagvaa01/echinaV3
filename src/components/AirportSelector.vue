@@ -1,5 +1,5 @@
 <template>
-    <div class="dropdown-wrapper">
+    <div class="dropdown-wrapper" ref="dropdownRef">
         <div class="dropdown">
             <div class="dropdown-header">
                 <input type="text" v-model="searchQuery" @focus="isOpen = true" @input="handleSearch"
@@ -196,6 +196,12 @@ export default {
                 }
             }, 400);
         },
+        handleClickOutside(e) {
+            // Энэ DOM-оос гадуур click хийсэн бол хаана
+            if (!this.$refs.dropdownRef.contains(e.target)) {
+                this.isOpen = false;
+            }
+        },
     },
     computed: {
         groupedSearchResults() {
@@ -221,8 +227,13 @@ export default {
             return Object.values(groupMap);
         }
     },
+
     mounted() {
         this.fetchPopularAirports();
+        document.addEventListener("click", this.handleClickOutside);
+    },
+    beforeUnmount() {
+        document.removeEventListener("click", this.handleClickOutside);
     },
 };
 </script>

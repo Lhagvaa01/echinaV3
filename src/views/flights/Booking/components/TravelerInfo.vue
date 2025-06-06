@@ -13,6 +13,7 @@
                             <th>{{ t('txtName') }}</th>
                             <th>{{ t('txtBirthDate') }}</th>
                             <th>{{ t('txtGender') }}</th>
+                            <!-- <th>Ticked number</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -23,6 +24,7 @@
                             <td>{{ traveler.Name || '-' }}</td>
                             <td>{{ formatDateFinish(traveler.BirthDay) || '-' }}</td>
                             <td>{{ traveler.GenderType || '-' }}</td>
+                            <!-- <td>{{ traveler. || '-' }}</td> -->
                         </tr>
                     </tbody>
                 </table>
