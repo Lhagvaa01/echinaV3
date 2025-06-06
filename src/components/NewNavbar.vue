@@ -62,8 +62,8 @@
                                     data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img class="avatar-img rounded-circle" :src="avatar1" alt="avatar" />
                                 </a>
-
-                                <ul v-if="userLogin?.lastName != ''"
+                                <!-- <p>{{ userLogin }}</p> -->
+                                <ul v-if="userLogin != false"
                                     class="dropdown-menu dropdown-animation dropdown-menu-end shadow pt-3"
                                     aria-labelledby="profileDropdown">
                                     <li class="px-2 pb-2">
@@ -139,7 +139,7 @@
                                             </div>
                                             <div>
                                                 <a class="small text-black mt-2 mt-sm-0" href="#">Та нэвтэрч орно уу</a>
-                                                <p class="small m-0">{{ userLogin }}</p>
+                                                <!-- <p class="small m-0">{{ userLogin }}</p> -->
                                             </div>
                                         </div>
                                     </li>
@@ -321,7 +321,7 @@ function getFlagUrl(flag: string) {
 const useLayout = useLayoutStore()
 const isSticky = ref<boolean>(false)
 
-const userLogin = ref(JSON.parse(sessionStorage.getItem('user') || '{}'));
+const userLogin = ref(JSON.parse(sessionStorage.getItem('user') || 'false'));
 
 const signOut = () => {
     sessionStorage.removeItem('user');
