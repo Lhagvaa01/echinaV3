@@ -14,6 +14,23 @@
                 <!-- <AppMenu v-else /> -->
 
                 <div class="d-flex gap-0 gap-md-5">
+                    <div class="text-black me-3 d-none d-md-block">
+                        <div style="font-size: 14px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                aria-hidden="true" role="img"
+                                class="component-iconify MuiBox-root css-1yn6y6h iconify iconify--fluent" width="1em"
+                                height="1em" viewBox="0 0 20 20">
+                                <path fill="currentColor"
+                                    d="M10 2a4 4 0 1 0 0 8a4 4 0 0 0 0-8M7 6a3 3 0 1 1 6 0a3 3 0 0 1-6 0m-1.991 5A2 2 0 0 0 3 13c0 1.691.833 2.966 2.135 3.797C6.417 17.614 8.145 18 10 18q.536 0 1.056-.043a2.2 2.2 0 0 1 .005-1.005Q10.546 17 10 17c-1.735 0-3.257-.364-4.327-1.047C4.623 15.283 4 14.31 4 13c0-.553.448-1 1.009-1h9.514a1.95 1.95 0 0 1 .125-.772l.086-.228zm10.575.582l.283-.75c.258-.681 1.062-1.017 1.74-.728l.388.166c.473.202.864.568.947 1.06c.457 2.725-1.908 6.601-4.63 7.59c-.492.178-1.023.04-1.445-.246l-.346-.235a1.184 1.184 0 0 1-.204-1.79l.545-.607a1.07 1.07 0 0 1 1.034-.323l1.225.29q1.457-.91 1.562-2.56l-.878-.859a.94.94 0 0 1-.221-1.008">
+                                </path>
+                            </svg> {{ t('txtHeaderOperator') }}
+                        </div>
+                        <a href="tel:76105555"
+                            style="font-size: 20px; font-weight: bold; color: #00d2ff; text-decoration: none;">
+                            7610 5555
+                        </a>
+
+                    </div>
                     <div class="d-flex align-items-center gap-3">
                         <li class="nav flex-row align-items-center list-unstyled ms-xl-auto dropdown">
                             <!-- Current Language Button -->
@@ -56,8 +73,8 @@
                                                     alt="avatar" />
                                             </div>
                                             <div>
-                                                <a class="h6 mt-2 mt-sm-0" href="#">Lori Ferguson</a>
-                                                <p class="small m-0">example@gmail.com</p>
+                                                <a class="h6 mt-2 mt-sm-0" href="#">{{ userLogin?.lastName }}</a>
+                                                <p class="small m-0">{{ userLogin?.email }}</p>
                                             </div>
                                         </div>
                                     </li>
@@ -69,25 +86,25 @@
                                     <li>
                                         <router-link :to="{ name: 'user.bookings' }" class="dropdown-item">
                                             <BIconBookmarkCheck class="fa-fw me-2" />
-                                            My Bookings
+                                            Миний захиалга
                                         </router-link>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <router-link :to="{ name: 'user.settings' }" class="dropdown-item">
                                             <BIconGear class="fa-fw me-2" />
                                             Settings
                                         </router-link>
-                                    </li>
-                                    <li>
+                                    </li> -->
+                                    <!-- <li>
                                         <router-link :to="{ name: 'pages.help.center' }" class="dropdown-item">
                                             <BIconInfoCircle class="fa-fw me-2" />
                                             Help Center
                                         </router-link>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <b-button class="dropdown-item bg-danger-soft-hover" @click="signOut">
                                             <BIconPower class="fa-fw me-2" />
-                                            Sign Out
+                                            Гарах
                                         </b-button>
                                     </li>
 
@@ -189,23 +206,7 @@
                     </div>
                     <!-- </b-container> -->
 
-                    <div class="text-black me-3 d-none d-md-block">
-                        <div style="font-size: 14px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                aria-hidden="true" role="img"
-                                class="component-iconify MuiBox-root css-1yn6y6h iconify iconify--fluent" width="1em"
-                                height="1em" viewBox="0 0 20 20">
-                                <path fill="currentColor"
-                                    d="M10 2a4 4 0 1 0 0 8a4 4 0 0 0 0-8M7 6a3 3 0 1 1 6 0a3 3 0 0 1-6 0m-1.991 5A2 2 0 0 0 3 13c0 1.691.833 2.966 2.135 3.797C6.417 17.614 8.145 18 10 18q.536 0 1.056-.043a2.2 2.2 0 0 1 .005-1.005Q10.546 17 10 17c-1.735 0-3.257-.364-4.327-1.047C4.623 15.283 4 14.31 4 13c0-.553.448-1 1.009-1h9.514a1.95 1.95 0 0 1 .125-.772l.086-.228zm10.575.582l.283-.75c.258-.681 1.062-1.017 1.74-.728l.388.166c.473.202.864.568.947 1.06c.457 2.725-1.908 6.601-4.63 7.59c-.492.178-1.023.04-1.445-.246l-.346-.235a1.184 1.184 0 0 1-.204-1.79l.545-.607a1.07 1.07 0 0 1 1.034-.323l1.225.29q1.457-.91 1.562-2.56l-.878-.859a.94.94 0 0 1-.221-1.008">
-                                </path>
-                            </svg> {{ t('txtHeaderOperator') }}
-                        </div>
-                        <a href="tel:76105555"
-                            style="font-size: 20px; font-weight: bold; color: #00d2ff; text-decoration: none;">
-                            7610 5555
-                        </a>
 
-                    </div>
                     <div class="currency-banner">
                         <div class="d-grid text-center">
                             <div class="d-flex justify-content-center align-items-center gap-1">
@@ -320,7 +321,7 @@ function getFlagUrl(flag: string) {
 const useLayout = useLayoutStore()
 const isSticky = ref<boolean>(false)
 
-const userLogin = ref(sessionStorage.getItem('user'));
+const userLogin = ref(JSON.parse(sessionStorage.getItem('user') || '{}'));
 
 const signOut = () => {
     sessionStorage.removeItem('user');
