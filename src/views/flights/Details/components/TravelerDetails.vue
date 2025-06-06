@@ -19,8 +19,8 @@
       <b-accordion class="accordion-icon accordion-bg-light">
         <b-accordion-item v-for="(traveler, index) in travelers" :key="traveler.id" :header-tag="'h6'"
           header-class="font-base" button-class="fw-bold"
-          :title="`${traveler.ageType == 'Adult' ? 'Том хүн' : traveler.ageType == 'Child' ? 'Хүүхэд' : traveler.ageType == 'Infant' ? 'Нярай' : ''} ${index + 1}`"
-          body-class="mt-3" class="mb-3" :visible="index === 0">
+          :title="`${index + 1}. ${traveler.ageType == 'Adult' ? 'Том хүн' : traveler.ageType == 'Child' ? 'Хүүхэд' : traveler.ageType == 'Infant' ? 'Нярай' : ''} `"
+          body-class="mt-3" class="mb-3" :visible="openedTravelerIndex === index" @show="openedTravelerIndex = index">
           <b-row class="g-4">
 
             <b-col md="3">
@@ -398,7 +398,7 @@ const BookingInfo = {
 //   travelers.value.push(newTraveler);
 // };
 
-
+const openedTravelerIndex = ref(0);
 const addTraveler = () => {
   const stored = sessionStorage.getItem("travelers");
   if (!stored) return;
@@ -431,6 +431,7 @@ const addTraveler = () => {
     };
 
     travelers.value.push(newTraveler);
+    openedTravelerIndex.value = travelers.value.length - 1;
   } catch (e) {
     console.error("Session parse error:", e);
   }

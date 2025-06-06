@@ -50,26 +50,37 @@ const updateValue = (e: Event) => {
 // Init Choices.js
 // -----------------
 const initChoices = async () => {
-  await nextTick()
+  await nextTick();
+  const ele = document.getElementById(props.id);
 
-  const ele = document.getElementById(props.id)
   if (ele) {
-    if (choicesInstance) choicesInstance.destroy()
+    // Хуучин instance устгах, DOM-оос extra elements-ийг арилгах
+    if (choicesInstance) {
+      choicesInstance.destroy();
+      choicesInstance = null;
+
+      // Хэрэв Choices нэмсэн wrapper үлдсэн бол select-ээ дахин replace хийх
+      if (ele.parentElement && ele.parentElement.classList.contains('choices')) {
+        // .choices wrapper-аас select-ийг гаргаж, wrapper-ийг устгах
+        ele.parentElement.replaceWith(ele);
+      }
+      // Энэ үед select бол жирийн select болж хувирна
+    }
 
     choicesInstance = new Choices(ele, {
       ...props.choiceOptions,
       placeholder: true,
       placeholderValue: props.placeholder || 'Сонгоно уу',
       allowHTML: true,
-      shouldSort: false
-    })
+      shouldSort: false,
+    });
 
     // set initial value
     if (props.modelValue) {
-      choicesInstance.setChoiceByValue(props.modelValue)
+      choicesInstance.setChoiceByValue(props.modelValue);
     }
   }
-}
+};
 
 // -----------------
 // Watch for changes

@@ -27,7 +27,7 @@
                   </div>
                   <h6 class="fw-normal mb-0"><span class="text-body">{{ t('txtClass') }}:</span> {{
                     offerSegment.FlightClass
-                    }}
+                  }}
                   </h6>
                 </div>
               </b-card-header>
@@ -42,7 +42,7 @@
                       formatDate(offerSegment.Departure.Date) }}
                     </p>
                     <p class="mb-0">{{ offerSegment.Departure.Iata
-                    }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
+                      }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
                         offerSegment.Departure.Terminal || '' }}
                     </p>
                     <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
@@ -52,7 +52,7 @@
 
                   <b-col sm="4" class="my-sm-auto text-center">
                     <h5>{{ convertTimeText(offerSegment.FlightTime)
-                    }}
+                      }}
                     </h5>
                     <div class="position-relative my-4">
                       <hr class="bg-primary opacity-5 position-relative" />
@@ -73,7 +73,7 @@
 
                   <b-col sm="4">
                     <h4> {{ offerSegment.Arrival.Date.split(" ")[1]
-                    }}
+                      }}
                     </h4>
                     <p class="fw-bold text-black mb-0">{{
                       formatDate(offerSegment.Arrival.Date) }}</p>
@@ -154,7 +154,7 @@
                         </div>
                         <h6 class="fw-normal mb-0"><span class="text-body">{{ t('txtClass') }}:</span> {{
                           offerSegment.FlightClass
-                        }}
+                          }}
                         </h6>
                       </div>
                     </b-card-header>
@@ -169,7 +169,7 @@
                             formatDate(offerSegment.Departure.Date) }}
                           </p>
                           <p class="mb-0">{{ offerSegment.Departure.Iata
-                            }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
+                          }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
                               offerSegment.Departure.Terminal || '' }}
                           </p>
                           <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
@@ -179,7 +179,7 @@
 
                         <b-col sm="4" class="my-sm-auto text-center">
                           <h5>{{ convertTimeText(offerSegment.FlightTime)
-                            }}
+                          }}
                           </h5>
                           <div class="position-relative my-4">
                             <hr class="bg-primary opacity-5 position-relative" />
@@ -200,7 +200,7 @@
 
                         <b-col sm="4">
                           <h4> {{ offerSegment.Arrival.Date.split(" ")[1]
-                            }}
+                          }}
                           </h4>
                           <p class="fw-bold text-black mb-0">{{
                             formatDate(offerSegment.Arrival.Date) }}</p>
@@ -346,7 +346,7 @@
                         </div>
                         <h6 class="fw-normal mb-0"><span class="text-body">{{ t('txtClass') }}:</span> {{
                           offerSegment.FlightClass
-                        }}
+                          }}
                         </h6>
                       </div>
                     </b-card-header>
@@ -361,7 +361,7 @@
                             formatDate(offerSegment.Departure.Date) }}
                           </p>
                           <p class="mb-0">{{ offerSegment.Departure.Iata
-                            }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
+                          }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
                               offerSegment.Departure.Terminal || '' }}
                           </p>
                           <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
@@ -371,7 +371,7 @@
 
                         <b-col sm="4" class="my-sm-auto text-center">
                           <h5>{{ convertTimeText(offerSegment.FlightTime)
-                            }}
+                          }}
                           </h5>
                           <div class="position-relative my-4">
                             <hr class="bg-primary opacity-5 position-relative" />
@@ -392,7 +392,7 @@
 
                         <b-col sm="4">
                           <h4> {{ offerSegment.Arrival.Date.split(" ")[1]
-                            }}
+                          }}
                           </h4>
                           <p class="fw-bold text-black mb-0">{{
                             formatDate(offerSegment.Arrival.Date) }}</p>
@@ -417,7 +417,8 @@
                         <div v-if="offerSegment.CabinBaggage">
                           <div class="d-flex">
                             <Luggage class="mx-2" color="#3949AB" />
-                            {{ t('txtBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{ offerSegment.Baggage.BaggageType
+                            {{ t('txtBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{
+                              offerSegment.Baggage.BaggageType
                             }}
                           </div>
                         </div>
@@ -546,7 +547,7 @@
                         </div>
                         <h6 class="fw-normal mb-0"><span class="text-body">{{ t('txtClass') }}:</span> {{
                           offerSegment.FlightClass
-                        }}
+                          }}
                         </h6>
                       </div>
                     </b-card-header>
@@ -561,7 +562,7 @@
                             formatDate(offerSegment.Departure.Date) }}
                           </p>
                           <p class="mb-0">{{ offerSegment.Departure.Iata
-                            }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
+                          }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
                               offerSegment.Departure.Terminal || '' }}
                           </p>
                           <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
@@ -571,7 +572,7 @@
 
                         <b-col sm="4" class="my-sm-auto text-center">
                           <h5>{{ convertTimeText(offerSegment.FlightTime)
-                            }}
+                          }}
                           </h5>
                           <div class="position-relative my-4">
                             <hr class="bg-primary opacity-5 position-relative" />
@@ -592,7 +593,7 @@
 
                         <b-col sm="4">
                           <h4> {{ offerSegment.Arrival.Date.split(" ")[1]
-                            }}
+                          }}
                           </h4>
                           <p class="fw-bold text-black mb-0">{{
                             formatDate(offerSegment.Arrival.Date) }}</p>
@@ -905,7 +906,7 @@ watchEffect(() => {
     console.log(props.flight)
     flightStore.flightInfos = flights; // props.flight-оос өгөгдөл оноож байна
   } else {
-    console.log(props.flight)
+    // console.log(props.flight)
   }
 });
 
@@ -931,7 +932,7 @@ const getAllSegments = (index: number) => {
     : [data.Offers?.OfferInfo];
 
   const segments = offerInfos.flatMap((offer) => offer.Segments?.OfferSegment || []);
-  console.log(segments);
+  // console.log(segments);
   return segments;
 };
 
