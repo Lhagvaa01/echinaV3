@@ -89,41 +89,42 @@ export const USER_PROFILE_MENU_ITEMS: MenuItemType[] = [
     parentKey: 'acc-user',
     icon: BIconTicketPerforated
   },
-  {
-    key: 'acc-user-travelers',
-    label: 'Travelers',
-    link: { name: 'user.travelers' },
-    parentKey: 'acc-user',
-    icon: BIconPeople
-  },
-  {
-    key: 'acc-user-payment-details',
-    label: 'Payment Details',
-    link: { name: 'user.payment-details' },
-    parentKey: 'acc-user',
-    icon: BIconWallet
-  },
-  {
-    key: 'acc-user-wishlist',
-    label: 'Wishlist',
-    link: { name: 'user.wishlist' },
-    parentKey: 'acc-user',
-    icon: BIconHeart
-  },
-  {
-    key: 'acc-user-settings',
-    label: 'Settings',
-    link: { name: 'user.settings' },
-    parentKey: 'acc-user',
-    icon: BIconGear
-  },
-  {
-    key: 'acc-user-delete',
-    label: 'Delete Profile',
-    link: { name: 'user.delete-profile' },
-    parentKey: 'acc-user',
-    icon: BIconTrash
-  }
+  // {
+  //   key: 'acc-user-travelers',
+  //   label: 'Travelers',
+  //   link: { name: 'user.travelers' },
+  //   parentKey: 'acc-user',
+  //   icon: BIconPeople
+  // },
+  // {
+  //   key: 'acc-user-payment-details',
+  //   label: 'Payment Details',
+  //   link: { name: 'user.payment-details' },
+  //   parentKey: 'acc-user',
+  //   icon: BIconWallet
+  // },
+  // {
+  //   key: 'acc-user-wishlist',
+  //   label: 'Wishlist',
+  //   link: { name: 'user.wishlist' },
+  //   parentKey: 'acc-user',
+  //   icon: BIconHeart
+  // },
+  // {
+  //   key: 'acc-user-settings',
+  //   label: 'Settings',
+  //   link: { name: 'user.settings' },
+  //   parentKey: 'acc-user',
+  //   icon: BIconGear
+  // }
+  // ,
+  // {
+  //   key: 'acc-user-delete',
+  //   label: 'Delete Profile',
+  //   link: { name: 'user.delete-profile' },
+  //   parentKey: 'acc-user',
+  //   icon: BIconTrash
+  // }
 ]
 
 export const AGENT_MENU_ITEMS: MenuItemType[] = [

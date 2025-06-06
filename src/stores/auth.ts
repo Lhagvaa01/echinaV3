@@ -4,7 +4,7 @@ import { useSessionStorage } from '@vueuse/core'
 import type { UserType } from '@/types/auth'
 
 export const useAuthStore = defineStore('auth_store', () => {
-  const user = useSessionStorage<string | null>('BOOKING_VUE_USER', null)
+  const user = useSessionStorage<string | null>('user', null)
 
   const saveSession = (newUser: UserType) => {
     user.value = JSON.stringify(newUser)

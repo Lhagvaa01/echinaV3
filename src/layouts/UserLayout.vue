@@ -1,6 +1,7 @@
 <template>
-  <Navbar />
+  <!-- <Navbar /> -->
 
+  <Header />
   <main>
     <section class="pt-3">
       <b-container>
@@ -8,13 +9,7 @@
           <SideBar v-if="!isMobileMenu" />
 
           <!--Mobile Sidebar-->
-          <b-offcanvas
-            v-else
-            v-model="openMobileMenu"
-            size="lg"
-            placement="end"
-            body-class="px-3 py-2"
-          >
+          <b-offcanvas v-else v-model="openMobileMenu" size="lg" placement="end" body-class="px-3 py-2">
             <div class="p-lg-0">
               <SideBar />
             </div>
@@ -33,7 +28,7 @@
       </b-container>
     </section>
   </main>
-  <Footer5 />
+  <NewFooter />
 
   <BackToTop />
 </template>
@@ -44,6 +39,8 @@ import SideBar from '@/layouts/partials/SideBar.vue'
 import Footer5 from '@/layouts/partials/Footer5.vue'
 import BackToTop from '@/components/BackToTop.vue'
 
+import Header from '@/components/NewNavbar.vue'
+import NewFooter from '@/components/NewFooter.vue'
 import { computed, onMounted, ref } from 'vue'
 import { faSlidersH } from '@fortawesome/free-solid-svg-icons'
 

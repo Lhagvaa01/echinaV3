@@ -1,14 +1,14 @@
 <template>
   <AuthLayout>
-    <b-col lg="6" class="d-md-flex align-items-center order-2 order-lg-1">
+    <!-- <b-col lg="6" class="d-md-flex align-items-center order-2 order-lg-1">
       <div class="p-3 p-lg-5">
         <img :src="forgotPass" alt="" />
       </div>
 
       <div class="vr opacity-1 d-none d-lg-block"></div>
-    </b-col>
+    </b-col> -->
 
-    <b-col lg="6" class="order-1">
+    <b-col lg="12" class="order-1">
       <div class="p-4 p-sm-7">
         <router-link :to="{ name: 'hotels.home' }">
           <img class="h-50px mb-4" :src="logo" alt="logo" />
@@ -49,14 +49,13 @@
             </a>
             <a href="#" class="btn btn-light mb-0">
               <FontAwesomeIcon :icon="faFacebookF" class="fa-fw text-facebook me-1" />
-              Sign in with Facebook</a
-            >
+              Sign in with Facebook
+            </a>
           </div>
 
           <div class="text-primary-hover text-body mt-3 text-center">
-            Copyrights ©{{ currentYear }} Booking. Build by
-            <a :href="developedByLink" class="text-body">{{ developedBy }}</a
-            >.
+            Copyrights ©{{ currentYear }} Build by
+            <a :href="developedByLink" class="text-body">{{ developedBy }}</a>
           </div>
         </b-form>
       </div>

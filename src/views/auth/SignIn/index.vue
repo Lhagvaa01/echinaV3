@@ -1,13 +1,13 @@
 <template>
   <AuthLayout>
-    <b-col lg="6" class="d-flex align-items-center order-2 order-lg-1">
+    <!-- <b-col lg="6" class="d-flex align-items-center order-2 order-lg-1">
       <div class="p-3 p-lg-5">
         <img :src="signin" alt="" />
       </div>
       <div class="vr opacity-1 d-none d-lg-block"></div>
-    </b-col>
+    </b-col> -->
 
-    <b-col lg="6" class="order-1">
+    <b-col lg="12" class="order-1">
       <div class="p-4 p-sm-7">
         <router-link :to="{ name: 'hotels.home' }">
           <img class="h-50px mb-4" :src="logo" alt="logo" />
@@ -29,12 +29,7 @@
           </div>
 
           <div class="mb-3">
-            <PasswordInput
-              v-model="credentials.password"
-              name="password"
-              place-holder=""
-              autocomplete=""
-            />
+            <PasswordInput v-model="credentials.password" name="password" place-holder="" autocomplete="" />
           </div>
 
           <div class="mb-3 d-sm-flex justify-content-between">
@@ -67,9 +62,8 @@
           </div>
 
           <div class="text-primary-hover text-body mt-3 text-center">
-            Copyrights ©{{ currentYear }} Booking. Build by
-            <a :href="developedByLink" class="text-body">{{ developedBy }}</a
-            >.
+            Copyrights ©{{ currentYear }} Build by
+            <a :href="developedByLink" class="text-body">{{ developedBy }}</a>
           </div>
         </b-form>
       </div>
@@ -90,8 +84,8 @@ import PasswordInput from '@/components/PasswordInput.vue'
 import { reactive, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import * as yup from 'yup'
-import router from '@/router'
-import { useRoute } from 'vue-router'
+// import router from '@/router'
+import { useRoute, useRouter } from 'vue-router'
 import HttpClient from '@/helpers/http-client'
 import type { AxiosResponse } from 'axios'
 import type { UserType } from '@/types/auth'
@@ -107,6 +101,7 @@ const credentials = reactive({
 
 const useAuth = useAuthStore()
 const route = useRoute()
+const router = useRouter()
 const query = route.query
 
 const error = ref('')
@@ -117,9 +112,11 @@ const loginFormSchema = yup.object({
 })
 
 const redirectUser = () => {
+  console.log(query.redirectedFrom)
   if (query.redirectedFrom) {
     return router.push(`${query.redirectedFrom}`)
   }
+  console.log("/")
   return router.push('/')
 }
 

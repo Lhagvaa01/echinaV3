@@ -37,8 +37,136 @@
                         </li>
 
 
+
+
                         <ul class="nav flex-row align-items-center list-unstyled ms-xl-auto">
-                            <CustomDropDown is="li" custom-class="nav-item me-3">
+                            <CustomDropDown is="li" custom-class="nav-item ms-3">
+                                <a class="avatar avatar-xs p-0" href="#" role="button" data-bs-auto-close="outside"
+                                    data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img class="avatar-img rounded-circle" :src="avatar1" alt="avatar" />
+                                </a>
+
+                                <ul v-if="userLogin"
+                                    class="dropdown-menu dropdown-animation dropdown-menu-end shadow pt-3"
+                                    aria-labelledby="profileDropdown">
+                                    <li class="px-2 pb-2">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar me-3">
+                                                <img class="avatar-img rounded-circle shadow" :src="avatar1"
+                                                    alt="avatar" />
+                                            </div>
+                                            <div>
+                                                <a class="h6 mt-2 mt-sm-0" href="#">Lori Ferguson</a>
+                                                <p class="small m-0">example@gmail.com</p>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <hr class="dropdown-divider" />
+                                    </li>
+
+                                    <li>
+                                        <router-link :to="{ name: 'user.bookings' }" class="dropdown-item">
+                                            <BIconBookmarkCheck class="fa-fw me-2" />
+                                            My Bookings
+                                        </router-link>
+                                    </li>
+                                    <li>
+                                        <router-link :to="{ name: 'user.settings' }" class="dropdown-item">
+                                            <BIconGear class="fa-fw me-2" />
+                                            Settings
+                                        </router-link>
+                                    </li>
+                                    <li>
+                                        <router-link :to="{ name: 'pages.help.center' }" class="dropdown-item">
+                                            <BIconInfoCircle class="fa-fw me-2" />
+                                            Help Center
+                                        </router-link>
+                                    </li>
+                                    <li>
+                                        <b-button class="dropdown-item bg-danger-soft-hover" @click="signOut">
+                                            <BIconPower class="fa-fw me-2" />
+                                            Sign Out
+                                        </b-button>
+                                    </li>
+
+                                    <li>
+                                        <hr class="dropdown-divider" />
+                                    </li>
+
+                                    <!-- Dark mode options -->
+                                    <li>
+                                        <div
+                                            class="nav-pills-primary-soft theme-icon-active d-flex justify-content-between align-items-center p-2 pb-0">
+                                            <span>Mode:</span>
+
+                                            <button v-for="mode in themeModes" :key="mode.theme" type="button"
+                                                class="btn btn-link nav-link text-primary-hover mb-0 p-0"
+                                                :class="{ active: mode.theme === useLayout.theme }"
+                                                @click="useLayout.setTheme(mode.theme)" v-b-tooltip.hover
+                                                :title="mode.theme">
+                                                <component :is="mode.icon" />
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul v-else class="dropdown-menu dropdown-animation dropdown-menu-end shadow pt-3"
+                                    aria-labelledby="profileDropdown">
+
+                                    <li class="px-2 pb-2">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar me-3">
+                                                <img class="avatar-img rounded-circle shadow" :src="avatar1"
+                                                    alt="avatar" />
+                                            </div>
+                                            <div>
+                                                <a class="small text-black mt-2 mt-sm-0" href="#">Та нэвтэрч орно уу</a>
+                                                <p class="small m-0">{{ userLogin }}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <hr class="dropdown-divider" />
+                                    </li>
+
+
+                                    <li>
+                                        <router-link :to="{ name: 'auth.sign-in' }" class="nav-link  pb-2">
+                                            <font-awesome-icon :icon="faUser" class="me-1" />
+                                            Нэвтрэх
+                                        </router-link>
+                                    </li>
+
+                                    <li>
+                                        <hr class="dropdown-divider" />
+                                    </li>
+
+                                    <!-- Dark mode options -->
+                                    <li>
+                                        <div
+                                            class="nav-pills-primary-soft theme-icon-active d-flex justify-content-between align-items-center p-2 pb-0">
+                                            <span>Mode:</span>
+
+                                            <button v-for="mode in themeModes" :key="mode.theme" type="button"
+                                                class="btn btn-link nav-link text-primary-hover mb-0 p-0"
+                                                :class="{ active: mode.theme === useLayout.theme }"
+                                                @click="useLayout.setTheme(mode.theme)" v-b-tooltip.hover
+                                                :title="mode.theme">
+                                                <component :is="mode.icon" />
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </CustomDropDown>
+                            <!-- <li v-else class="nav-item">
+                                <router-link :to="{ name: 'auth.sign-in' }" class="nav-link small pb-2">
+                                    <font-awesome-icon :icon="faUser" class="me-1" />
+                                    Sign In or Login
+                                </router-link>
+                            </li> -->
+                            <!-- <CustomDropDown v-if="userLogin == ''" is="li" custom-class="nav-item me-3">
                                 <button class="btn btn-link text-warning p-0 mb-0" id="bd-theme" aria-expanded="false"
                                     data-bs-toggle="dropdown" data-bs-display="static" type="button">
                                     <BIconCircleHalf class="fs-5" />
@@ -55,8 +183,8 @@
                                             </button>
                                         </li>
                                     </template>
-                                </ul>
-                            </CustomDropDown>
+</ul>
+</CustomDropDown> -->
                         </ul>
                     </div>
                     <!-- </b-container> -->
@@ -98,7 +226,15 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-
+import {
+    BIconBell,
+    BIconBookmarkCheck,
+    BIconHeart,
+    BIconGear,
+    BIconInfoCircle,
+    BIconPower,
+    BIconLightningCharge
+} from 'bootstrap-icons-vue'
 import AppMenu from '@/components/navbar/AppMenu.vue'
 import MobileMenu from '@/components/navbar/mobile-menu/MobileMenu.vue'
 import CustomDropDown from '@/components/CustomDropDown.vue'
@@ -107,9 +243,11 @@ import LogoBox from '@/components/LogoBox.vue'
 import type { LangState, LayoutState } from '@/types/layout'
 import type { BSIconType } from '@/types'
 
+import avatar1 from '@/assets/images/avatar/01.jpg'
 import { BIconCircleHalf, BIconMoonStars, BIconSearch, BIconSun } from 'bootstrap-icons-vue'
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons'
 
+import { faUser, faChevronDown, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import { useLayoutStore } from '@/stores/layout'
 import { useI18n } from 'vue-i18n'
 
@@ -181,6 +319,13 @@ function getFlagUrl(flag: string) {
 
 const useLayout = useLayoutStore()
 const isSticky = ref<boolean>(false)
+
+const userLogin = ref(sessionStorage.getItem('user'));
+
+const signOut = () => {
+    sessionStorage.removeItem('user');
+    window.location.reload();
+};
 
 onMounted(() => {
     const savedLang = sessionStorage.getItem('lang')

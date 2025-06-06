@@ -1,13 +1,13 @@
 <template>
   <AuthLayout>
-    <b-col lg="6" class="d-flex align-items-center order-2 order-lg-1">
+    <!-- <b-col lg="6" class="d-flex align-items-center order-2 order-lg-1">
       <div class="p-3 p-lg-5">
         <img :src="signin" alt="" />
       </div>
       <div class="vr opacity-1 d-none d-lg-block"></div>
-    </b-col>
+    </b-col> -->
 
-    <div class="col-lg-6 order-1">
+    <div class="col-lg-12 order-1">
       <div class="p-4 p-sm-6">
         <router-link :to="{ name: 'hotels.home' }">
           <img class="h-50px mb-4" :src="logo" alt="logo" />
@@ -27,22 +27,12 @@
           </div>
 
           <div class="mb-3">
-            <PasswordInput
-              v-model="newUserData.password"
-              id="password"
-              place-holder=""
-              autocomplete=""
-            />
+            <PasswordInput v-model="newUserData.password" id="password" place-holder="" autocomplete="" />
           </div>
 
           <div class="mb-3">
-            <PasswordInput
-              v-model="newUserData.confirmPassword"
-              id="confirm-password"
-              label="Confirm Password"
-              place-holder=""
-              autocomplete=""
-            />
+            <PasswordInput v-model="newUserData.confirmPassword" id="confirm-password" label="Confirm Password"
+              place-holder="" autocomplete="" />
           </div>
 
           <div class="mb-3">
@@ -55,9 +45,7 @@
 
           <div class="position-relative my-4">
             <hr />
-            <p
-              class="small position-absolute top-50 start-50 translate-middle bg-mode px-1 px-sm-2"
-            >
+            <p class="small position-absolute top-50 start-50 translate-middle bg-mode px-1 px-sm-2">
               Or sign in with
             </p>
           </div>
@@ -69,14 +57,13 @@
             </a>
             <a href="#" class="btn btn-light mb-0">
               <FontAwesomeIcon :icon="faFacebookF" class="fa-fw text-facebook me-1" />
-              Sign in with Facebook</a
-            >
+              Sign in with Facebook
+            </a>
           </div>
 
           <div class="text-primary-hover text-body mt-3 text-center">
-            Copyrights ©{{ currentYear }} Booking. Build by
-            <a :href="developedByLink" class="text-body">{{ developedBy }}</a
-            >.
+            Copyrights ©{{ currentYear }} Build by
+            <a :href="developedByLink" class="text-body">{{ developedBy }}</a>
           </div>
         </b-form>
       </div>
