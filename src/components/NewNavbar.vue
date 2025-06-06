@@ -63,7 +63,7 @@
                                     <img class="avatar-img rounded-circle" :src="avatar1" alt="avatar" />
                                 </a>
 
-                                <ul v-if="userLogin"
+                                <ul v-if="userLogin?.lastName != ''"
                                     class="dropdown-menu dropdown-animation dropdown-menu-end shadow pt-3"
                                     aria-labelledby="profileDropdown">
                                     <li class="px-2 pb-2">
