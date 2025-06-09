@@ -3,7 +3,15 @@
     <!-- <div v-if="(filteredData.length > 0 ? filteredData.length : StoreflightInfos.length) == 0"> -->
     <div v-if="(paginatedFlights.length) == 0">
 
-        <SkeletonLoader v-for="n in 10" :key="n" />
+        <div class="no-results-card">
+            <div class="no-results-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <p class="no-results-title">{{ t('txtNotFind') }}</p>
+            <p class="no-results-subtitle">
+                {{ t('txtNotFindText') }}
+            </p>
+        </div>
     </div>
 
 
@@ -449,7 +457,7 @@ import { string } from 'yup'
 // Fallback logo
 
 const show = ref<number>(Number(sessionStorage.getItem("flight")) || 1);
-const rate = sessionStorage.getItem('eur')
+const rate = sessionStorage.getItem('eur') || '1'
 // const trips = ref<number>(Number(sessionStorage.getItem("trips")) || 1);
 // const tripcount = sessionStorage.getItem("trips")?.length || 0;
 const trips = parseInt(sessionStorage.getItem("trips") || "0", 10);
@@ -528,8 +536,9 @@ const selectedSortLabel = computed(() => {
 const filteredData = computed(() => {
     const source = flightStore.firstAdultPrice.length > 0
         ? flightStore.firstAdultPrice
-        : flightStore.flightInfos
+        : []
 
+    console.log(source)
     if (!sortOrder.value) return source
 
     return [...source].sort((a, b) => {
@@ -751,5 +760,35 @@ const nextPage = () => {
 
 .custom-margin {
     margin-left: -8px;
+}
+
+.no-results-card {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin: 20px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.no-results-icon {
+    font-size: 36px;
+    color: #94a3b8;
+    margin-bottom: 12px;
+}
+
+.no-results-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.no-results-subtitle {
+    font-size: 14px;
+    color: #64748b;
+    max-width: 500px;
+    margin: 0 auto;
 }
 </style>
