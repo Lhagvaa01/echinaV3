@@ -34,7 +34,10 @@
 
       <!-- Onward stops -->
       <b-card no-body class="card-body rounded-0 p-4">
-        <h6 class="mb-2">Зогсолт</h6>
+        <div class="d-flex justify-content-between align-items-center p-2 p-xl-0  mb-2">
+          <h6 class="mb-0">Зогсолт</h6>
+          <b-button variant="link" class="p-0 mb-0" style="font-size: small;" @click="resetStops">Цэвэрлэх</b-button>
+        </div>
         <b-col cols="12">
           <div class="form-check mb-2">
             <input class="form-check-input" type="checkbox" id="btn-check-c1" :value="1"
@@ -64,9 +67,9 @@
 
       <!-- Price -->
       <b-card no-body class="card-body rounded-0 p-4">
-        <h6 class="mb-2">Үнэ</h6>
-        <div class="d-flex justify-content-between p-2 p-xl-0 mt-xl-4">
-          <b-button variant="link" class="p-0 mb-0" @click="resetFilters">Clear all</b-button>
+        <div class="d-flex justify-content-between align-items-center p-2 p-xl-0 mb-2">
+          <h6 class="mb-0">Үнэ</h6>
+          <b-button variant="link" class="p-0 mb-0" style="font-size: small;" @click="resetPrice">Цэвэрлэх</b-button>
         </div>
         <div class="position-relative">
           <div class="d-flex justify-content-between">
@@ -86,7 +89,10 @@
 
       <!-- Хөөрөх цагууд -->
       <b-card no-body class="card-body rounded-0 p-4">
-        <h6 class="mb-2">Хөөрөх цагууд</h6>
+        <div class="d-flex justify-content-between align-items-center p-2 p-xl-0 mb-2">
+          <h6 class="mb-0">Хөөрөх цагууд</h6>
+          <b-button variant="link" class="p-0 mb-0" style="font-size: small;" @click="resetPrice">Цэвэрлэх</b-button>
+        </div>
         <b-col cols="12">
           <div v-for="option in departOptions" :key="option.value" class="form-check">
             <input class="form-check-input" type="checkbox" :id="'depart-' + option.value" :value="option.value"
@@ -100,7 +106,10 @@
       </b-card>
 
       <b-card no-body class="card-body rounded-0 p-4 mt-3">
-        <h6 class="mb-2">Газардaх цагууд</h6>
+        <div class="d-flex justify-content-between align-items-center p-2 p-xl-0 mb-2">
+          <h6 class="mb-0">Газардaх цагууд</h6>
+          <b-button variant="link" class="p-0 mb-0" style="font-size: small;" @click="resetPrice">Цэвэрлэх</b-button>
+        </div>
         <b-col cols="12">
           <div v-for="option in arrivalOptions" :key="option.value" class="form-check">
             <input class="form-check-input" type="checkbox" :id="'arrival-' + option.value" :value="option.value"
@@ -259,7 +268,7 @@
     </b-form>
 
     <div class="d-flex justify-content-between p-2 p-xl-0 mt-xl-4">
-      <b-button variant="link" class="p-0 mb-0">Clear all</b-button>
+      <b-button variant="link" class="p-0 mb-0 ms-3" style="font-size: small;" @click="resetFilters">Цэвэрлэх</b-button>
       <!-- <b-button variant="primary" class="mb-0" @click="applyFilter('223')">Filter Result</b-button> -->
     </div>
     <!-- <p>Сонгогдсон Airlines: {{ selectedAirlines }}</p>
@@ -350,6 +359,27 @@ const value = ref([
 watch([minPrice, maxPrice], ([min, max]) => {
   value.value = [Math.ceil(min * rate), Math.ceil(max * rate)]
 })
+
+
+function resetStops() {
+  filters.value = {
+    preferredAirlines: [],
+    preferredAirPorts: [],
+    preferredStops: [],
+  }
+}
+
+function resetPrice() {
+  value.value = [Math.ceil(minPrice.value * rate), Math.ceil(maxPrice.value * rate)]
+}
+
+function resetArrDate() {
+  selectedArrivalTimes.value = []
+}
+
+function resetDepDate() {
+  selectedDepartTimes.value = []
+}
 
 // Filter reset:
 function resetFilters() {
