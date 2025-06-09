@@ -30,12 +30,37 @@
           </div>
         </b-col>
       </b-card> -->
+      <hr class="my-0" />
 
+      <!-- Onward stops -->
+      <b-card no-body class="card-body rounded-0 p-4">
+        <h6 class="mb-2">Зогсолт</h6>
+        <ul class="list-inline mb-0 g-3">
+          <li class="list-inline-item mb-0">
+            <input type="checkbox" class="btn-check" id="btn-check-c1" :value="1" v-model="filters.preferredStops" />
+            <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c1">{{ t('txtDirect') }} ({{
+              direct.length
+            }})</label>
+          </li>
+          <li class="list-inline-item mb-0">
+            <input type="checkbox" class="btn-check" id="btn-check-c2" :value="2" v-model="filters.preferredStops" />
+            <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c2">{{ t('txt1Stop') }} ({{
+              OneStop.length
+            }})</label>
+          </li>
+          <li class="list-inline-item mb-0">
+            <input type="checkbox" class="btn-check" id="btn-check-c3" :value="3" v-model="filters.preferredStops" />
+            <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c3">{{ t('txt2PlusStop') }} ({{
+              TwoStop.length
+            }})</label>
+          </li>
+        </ul>
+      </b-card>
       <hr class="my-0" />
 
       <!-- Price -->
       <b-card no-body class="card-body rounded-0 p-4">
-        <h6 class="mb-2">Price</h6>
+        <h6 class="mb-2">Үнэ</h6>
         <div class="position-relative">
           <div class="d-flex justify-content-between">
             <span>{{ currency }} {{ value[0] }}</span>
@@ -46,32 +71,7 @@
         </div>
       </b-card>
 
-      <hr class="my-0" />
 
-      <!-- Onward stops -->
-      <b-card no-body class="card-body rounded-0 p-4">
-        <h6 class="mb-2">Onward Stops</h6>
-        <ul class="list-inline mb-0 g-3">
-          <li class="list-inline-item mb-0">
-            <input type="checkbox" class="btn-check" id="btn-check-c1" :value="1" v-model="filters.preferredStops" />
-            <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c1">{{ t('txtDirect') }} ({{
-              direct.length
-              }})</label>
-          </li>
-          <li class="list-inline-item mb-0">
-            <input type="checkbox" class="btn-check" id="btn-check-c2" :value="2" v-model="filters.preferredStops" />
-            <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c2">{{ t('txt1Stop') }} ({{
-              OneStop.length
-              }})</label>
-          </li>
-          <li class="list-inline-item mb-0">
-            <input type="checkbox" class="btn-check" id="btn-check-c3" :value="3" v-model="filters.preferredStops" />
-            <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-c3">{{ t('txt2PlusStop') }} ({{
-              TwoStop.length
-              }})</label>
-          </li>
-        </ul>
-      </b-card>
 
       <hr class="my-0" />
 

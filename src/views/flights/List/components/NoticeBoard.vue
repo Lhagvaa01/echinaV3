@@ -6,13 +6,13 @@
           <b-col cols="12">
             <div class="d-sm-flex justify-content-sm-between align-items-center">
               <div class="mb-3 mb-sm-0">
-                <h1 class="d-flex fs-4">
+                <h1 class="d-flex fs-6 align-items-center">
                   {{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
                     getFirstDeparture(0)).City}}
                   ({{StoreAirPorts.find((AirPorts: any) =>
                     AirPorts.Iata ===
                     getFirstDeparture(0)).Name}})
-                  <PlaneTakeoff :size="40" color="#3949AB" class="mb-3 mx-3" />
+                  <PlaneTakeoff :size="25" color="#3949AB" class="mb-2 mx-3" />
                   <div v-if="showRound === 2">
                     {{StoreAirPorts.find((AirPorts: any) =>
                       AirPorts.Iata ===
@@ -31,15 +31,16 @@
                   </div>
 
                 </h1>
-                <h5>{{ t('txtGoDate') }}: {{ formatDate(getFirstDepartureTime(0)) }}</h5>
-                <h5 v-if="showRound === 2">{{ t('txtArrDate') }}: {{ formatDate(returnFlights(0)[0].Departure.Date) }}
+                <h5 class="fs-6">{{ t('txtGoDate') }}: {{ formatDate(getFirstDepartureTime(0)) }}</h5>
+                <h5 class="fs-6" v-if="showRound === 2">{{ t('txtArrDate') }}: {{
+                  formatDate(returnFlights(0)[0].Departure.Date) }}
                 </h5>
-                <div class="d-flex flex-row justify-content-start align-items-center">
-                  <h5 class="me-3">
+                <div class="d-flex flex-row justify-content-start align-items-center fs-6">
+                  <h5 class="me-3 fs-6">
                     <Plane :size="30" color="#3949AB" /> {{ t('txtTotalFlight') }}: {{ filteredData.length }} {{
                       t('txtTotalFlightDes') }}
                   </h5>
-                  <h5>
+                  <h5 class="fs-6">
                     <TicketsPlane :size="30" color="#3949AB" /> {{ StoreAirCompany.length }} {{ t('txtTotalAirline') }}
                   </h5>
                 </div>

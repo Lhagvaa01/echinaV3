@@ -8,7 +8,7 @@
               <img :src="segment.MarketingAirline
                 ? 'https://api.echina.mn/assets/d/' + segment.MarketingAirline + '.png'
                 : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
-              <h6 class="fw-normal mb-0">
+              <h6 class="fw-normal mb-0" style="font-size: small;">
                 <!-- {{Array.isArray(StoreAirCompany) && segment.MarketingAirline ? StoreAirCompany?.find((airline: any) =>
                   airline.Code ===
                   segment.MarketingAirline)?.Value : "No Air Company"}} -->
@@ -25,7 +25,7 @@
               <div v-if="isHovered[inx + segment.FlightNum]" class="tooltip text-white">
               </div> -->
 
-              <p v-if="getAllSegments().length - 1 > 1" class="ms-2 text-warning"
+              <p v-if="getAllSegments().length - 1 > 1" class="ms-2 text-warning" style="font-size: smaller;"
                 @mouseover="onMouseOver(segment.FlightNum)" @mouseleave="onMouseLeave(segment.FlightNum)">
                 +{{ getAllSegments().length - 1 }} {{ t('txtTotalAirline') }}
               </p>
@@ -58,45 +58,47 @@
               </div>
             </div>
 
-            <h6 class="fw-bold mb-0">{{ t('txtTransit') }}</h6>
+            <h6 class="fw-bold mb-0" style="font-size: smaller;">{{ t('txtTransit') }}</h6>
           </b-card-header>
 
           <b-card-body class="p-4 pb-0">
             <b-row class="g-3">
               <b-col sm="5" md="4" class="mt-0">
-                <h4> {{ segment.Departure.Date.split(" ")[1] }}</h4>
+                <h4 style="font-size: small;"> {{ segment.Departure.Date.split(" ")[1] }}</h4>
                 <!-- <h4> 22</h4> -->
-                <p class="fw-bold text-black mb-0">{{ formatDate(segment.Departure.Date) }}</p>
                 <p class="mb-0">{{ segment.Departure.Iata }}<span v-if="segment.Departure.Terminal">-Терминал</span>
                   {{ segment.Departure.Terminal || '' }}</p>
                 <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
                   segment.Departure.Iata).City}}</p>
 
+                <p class=" text-black mb-0" style="font-size: small;">{{ formatDate(segment.Departure.Date) }}
+                </p>
+
               </b-col>
 
               <b-col sm="5" md="4" class="my-sm-auto text-center">
                 <!-- <h5 class="mt-3">{{ convertTimeText(segment.FlightTime) }}</h5> -->
-                <h5 class="mt-3">{{ getTotalFlightTime() }}</h5>
+                <h5 class="mt-3" style="font-size: small;">{{ getTotalFlightTime() }}</h5>
                 <div class="position-relative my-4">
                   <hr class="bg-primary opacity-5 position-relative" />
 
                   <div class="icon-container" style="display: flex; justify-content: space-evenly; flex-wrap: wrap; ">
                     <div v-for="(segment, idx) in getStopIatas()" :key="'segment-' + idx">
-                      <div class="icon-xs bg-primary text-white rounded-circle position-relative"
-                        style="transform: translate(10%, -150%);">
-                        <p class="mt-4 text-black fs-6 custom-margin"
-                          style="transform: rotate(0deg); display: inline-block;">
+                      <div class="icon-xs bg-primary text-white  position-relative"
+                        style="transform: translate(10%, -250%); width: 8px;height: 8px;">
+                        <p class="mt-3 text-black  custom-margin"
+                          style="transform: rotate(0deg); display: inline-block; font-size: smaller; transform: translate(-30%, -0%);">
                           {{ segment }}
                         </p>
                       </div>
                     </div>
                   </div>
                   <div class="icon-container" style="display: flex; justify-content: space-between; ">
-                    <div class="icon-xs bg-secondary text-white rounded-circle position-relative"
-                      style="transform: translate(0%, -250%);">
+                    <div class="icon-xs bg-secondary text-white  position-relative"
+                      style="transform: translate(0%, -350%); width: 8px;height: 8px;">
                     </div>
-                    <div class="icon-xs bg-secondary text-white rounded-circle position-relative"
-                      style="transform: translate(0%, -250%);">
+                    <div class="icon-xs bg-secondary text-white  position-relative"
+                      style="transform: translate(0%, -350%); width: 8px;height: 8px;">
                     </div>
                   </div>
                 </div>
@@ -104,17 +106,19 @@
               </b-col>
 
               <b-col sm="5" md="4" class="mt-0">
-                <h4>
+                <h4 style="font-size: small;">
                   {{ getAllSegments()[getAllSegments().length - 1].Arrival.Date.split(" ")[1] }}
                 </h4>
-                <p class="fw-bold text-black mb-0">{{ formatDate(getAllSegments()[getAllSegments().length -
-                  1].Arrival.Date) }}</p>
+
 
                 <p class="mb-0">{{ getAllSegments()[getAllSegments().length - 1].Arrival.Iata }}<span
                     v-if="getAllSegments()[getAllSegments().length - 1].Arrival.Terminal">-Терминал</span>
                   {{ getAllSegments()[getAllSegments().length - 1].Arrival.Terminal || '' }}</p>
                 <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
                   getAllSegments()[getAllSegments().length - 1].Arrival.Iata).City}}</p>
+                <p class="fw-bold text-black mb-0" style="font-size: small;">{{
+                  formatDate(getAllSegments()[getAllSegments().length -
+                    1].Arrival.Date) }}</p>
 
               </b-col>
 
@@ -126,13 +130,14 @@
           <div>
             <template v-for="(segment, idx) in getAllSegments()" :key="'segment-' + idx">
               <!-- <div v-for="(offseg, offsegIdx) in segment.Segments.OfferSegment" :key="'offseg-' + offsegIdx"> -->
-              <div v-if="segment.SelfConnect == 'true'" class="card-footer pt-4">
+              <div v-if="segment.SelfConnect == 'true'" class="card-footer pt-4" style="font-size: smaller;">
                 <ul class="list-inline bg-light rounded-2 d-sm-flex text-end justify-content-sm-end mb-0 px-4 py-2">
-                  <li v-if="getAllSegments().length > 0" class="list-inline-item text-orange">
+                  <li v-if="getAllSegments().length > 0" class="list-inline-item text-orange"
+                    style="font-size: smaller;">
                     {{ getTotalStops() }} {{ t('txtFlightStop') }}
                   </li>
                   <li class="list-inline-item text-center">
-                    <h6 class="fw-medium mb-0">
+                    <h6 class=" mb-0" style="font-size: smaller;">
                       {{ t('txtSelfTBag') }} <br />
                       (Self-transfer baggage)
                     </h6>
@@ -147,12 +152,16 @@
 
           <div class="card-footer pt-4">
             <ul class="list-inline bg-light rounded-2 d-sm-flex text-center justify-content-sm-between mb-0 px-4 py-2">
-              <li class="list-inline-item text-primary">{{ t('txtAvailableSeat') }}: {{ segment.ResBookDesigQuantity }}
+              <li class="list-inline-item text-primary" style="font-size: smaller;">{{ t('txtAvailableSeat') }}: {{
+                segment.ResBookDesigQuantity }}
               </li>
               <!-- <li class="list-inline-item text-danger">Non-Refundable</li> -->
-              <h6 class="fw-medium mb-0"><span class="fw-medium">{{ t('txtClass') }}:</span> {{
-                segment.FlightClass }}</h6>
-              <li class="list-inline-item">
+              <h6 class="d-flex align-items-center fw-medium mb-0" style="font-size: smaller;"><span
+                  class="fw-medium">{{
+                    t('txtClass') }}:</span>
+                {{
+                  segment.FlightClass }}</h6>
+              <li class="list-inline-item" style="font-size: smaller;">
                 <a :to="'/some-route/' + inx + segment.FlightNum" :id="'toggleButton' + inx + segment.FlightNum"
                   :aria-controls="'flightDetail' + segment.FlightNum"
                   v-b-toggle="'flightDetail' + inx + segment.FlightNum"
@@ -162,7 +171,8 @@
                 </a>
               </li>
             </ul>
-            <b-collapse :id="'flightDetail' + inx + segment.FlightNum" class="multi-collapse">
+            <b-collapse :id="'flightDetail' + inx + segment.FlightNum" class="multi-collapse"
+              style="font-size: smaller;">
               <div class="pt-3">
                 <FlightDetailTab :flight="getAllSegments()" :index="inx" />
               </div>
