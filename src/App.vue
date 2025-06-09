@@ -18,3 +18,23 @@ onMounted(() => {
 
 configureFakeBackend()
 </script>
+<style>
+@font-face {
+  font-family: 'Exo 2';
+  src: url('/fonts/Exo2-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Exo 2';
+  src: url('/fonts/Exo2-Bold.ttf') format('truetype');
+  font-weight: 700;
+}
+
+/* ... бусад weights-ийг хүсвэл нэм */
+html,
+body,
+#app {
+  font-family: 'Exo 2', Arial, sans-serif;
+}
+</style>

@@ -52,7 +52,7 @@
                   </b-col>
 
                   <b-col sm="4" class="my-sm-auto text-center">
-                    <h5>{{ convertTimeText(offerSegment.FlightTime)
+                    <h5 style="font-size: smaller;">{{ convertTimeText(offerSegment.FlightTime)
                       }}
                     </h5>
                     <div class="position-relative my-4">
@@ -73,11 +73,9 @@
                   </b-col>
 
                   <b-col sm="4">
-                    <h4> {{ offerSegment.Arrival.Date.split(" ")[1]
+                    <h4 style="font-size: smaller;"> {{ offerSegment.Arrival.Date.split(" ")[1]
                       }}
                     </h4>
-                    <p class="fw-bold text-black mb-0">{{
-                      formatDate(offerSegment.Arrival.Date) }}</p>
                     <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span v-if="offerSegment.Arrival.Terminal">-{{
                       t('txtTerminal') }}</span>
                       {{
@@ -85,6 +83,9 @@
                     </p>
                     <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
                       offerSegment.Arrival.Iata)?.City || offerSegment.Arrival.City}}</p>
+
+                    <p class="fw-bold text-black mb-0">{{
+                      formatDate(offerSegment.Arrival.Date) }}</p>
                   </b-col>
                 </b-row>
 
