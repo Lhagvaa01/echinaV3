@@ -160,7 +160,8 @@
                                     <b-card-body class="p-4 pb-0">
                                         <b-row class="g-4">
                                             <b-col sm="4" md="2" class="mt-0 text-start ms-5 ps-4">
-                                                <h4 class="fw-bold fs-6"> {{ flight[0]?.Departure.Date.split(" ")[1] }}
+                                                <h4 class="fw-bold" style="font-size: small;"> {{
+                                                    flight[0]?.Departure.Date.split(" ")[1] }}
                                                 </h4>
                                                 <p class="mb-0" style="font-size: smaller;">{{ flight[0]?.Departure.Iata
                                                     }}<span v-if="flight[0]?.Departure.Terminal">-Терминал</span>
@@ -536,9 +537,9 @@ const selectedSortLabel = computed(() => {
 const filteredData = computed(() => {
     const source = flightStore.firstAdultPrice.length > 0
         ? flightStore.firstAdultPrice
-        : []
+        : StoreflightInfos.value
 
-    console.log(source)
+    // console.log(source)
     if (!sortOrder.value) return source
 
     return [...source].sort((a, b) => {
@@ -691,9 +692,9 @@ const getTotalFlightTime = (index: number, findex: number) => {
 
 
 watch(filteredData, (newValue, oldValue) => {
-    console.log("filteredData өөрчлөгдлөө:", oldValue, "->", newValue);
+    // console.log("filteredData өөрчлөгдлөө:", oldValue, "->", newValue);
 
-    console.log("filteredData:", filteredData);
+    // console.log("filteredData:", filteredData);
 }, { deep: true });
 
 
@@ -708,7 +709,7 @@ const paginatedFlights = computed(() => {
     if (filteredData.value.length <= itemsPerPage) {
         return filteredData.value;
     }
-    console.log(filteredData.value.slice(start, end))
+    // console.log(filteredData.value.slice(start, end))
     return filteredData.value.slice(start, end);
 });
 

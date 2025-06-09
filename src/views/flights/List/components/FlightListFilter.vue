@@ -438,7 +438,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 dayjs.extend(customParseFormat)
 function timeToMinutes(dateStr: string) {
   const d = dayjs(dateStr, "DD.MM.YYYY HH:mm")
-  console.log(d)
+  // console.log(d)
   return d.hour() * 60 + d.minute()
 }
 
@@ -482,20 +482,44 @@ const filteredData = computed(() => {
     ) {
       return false
     }
+    // console.log(StoreflightInfos.value)
+
+    if (!Array.isArray(StoreflightInfos.value)) return;
+
+    // Тоолуурын утгыг эхлүүлэх
+    direct.value = [];
+    OneStop.value = [];
+    TwoStop.value = [];
+
+    StoreflightInfos.value.forEach((flight: any, index: number) => {
+      if (flight.Offers) {
+        const segments = getAllSegments(index);
+        const stops = segments.length;  // Зогсолтын тоо
+
+        if (stops === 1) {
+          direct.value.push(flight); // Шууд нислэг
+        } else if (stops === 2) {
+          OneStop.value.push(flight); // 1 зогсолттой нислэг
+        } else {
+          TwoStop.value.push(flight); // 2+ зогсолттой нислэг
+        }
+      }
+    });
 
     // 4. Үнэний filter
     // const price = Number(flight.AdultPrice || flight.TotalPrice || 0)
     // if (price < value.value[0] || price > value.value[1]) {
     //   return false
     // }
-    const price = Number(flight.TotalPrice || 0) * rate
-    if (price < value.value[0] || price > value.value[1]) {
-      return false
-    }
+    // const price = Number(flight.TotalPrice || 0) * rate
+    // if (price < value.value[0] || price > value.value[1]) {
+    //   return false
+    // }
 
     return true
   })
 })
+
 
 // Хөөрөх/Газардалтын цагийн filter-ийг бүх filter-тэй нийлүүлсэн байдлаар
 const timeFilteredFlights = computed(() => {
@@ -506,7 +530,7 @@ const timeFilteredFlights = computed(() => {
     // Хөөрөх цагаар шүүх
     const departSeg = getFirstSegment(flight)
     const departMin = departSeg ? timeToMinutes(departSeg.Departure.Date) : null
-    console.log(departSeg.Departure.Date)
+    // console.log(departSeg.Departure.Date)
     const departMatch =
       !selectedDepartTimes.value.length ||
       selectedDepartTimes.value.some(val => {
@@ -530,7 +554,7 @@ const timeFilteredFlights = computed(() => {
 
 watch(timeFilteredFlights, (newData) => {
   // Шүүлтүүрдсэн нислэгүүдийг store-д хадгална
-  console.log(newData)
+  // console.log(newData)
   flightStore.filterAirline = newData
 })
 </script>

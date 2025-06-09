@@ -4,7 +4,7 @@
   <main>
     <Booking @search-flights="loadFlights" />
     <Stepper :step="1" />
-    <NoticeBoard />
+    <!-- <NoticeBoard /> -->
 
     <b-container v-if="loading">
       <SkeletonLoader v-for="n in 10" :key="n" />
@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import NavBar4 from '@/views/flights/List/components/NavBar4.vue'
 
 import SkeletonLoader from './components/Skeleton.vue'
@@ -63,6 +63,10 @@ const AirPorts = ref([]);
 import { useFlightStore } from '@/stores/flight';
 
 const flightStore = useFlightStore();
+
+onMounted(() => {
+  flightStore.filterAirline = []
+})
 
 // Access state
 const flights = flightStore.flightInfos;

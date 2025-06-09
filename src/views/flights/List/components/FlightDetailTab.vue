@@ -27,7 +27,7 @@
                   </div>
                   <h6 class="fw-normal mb-0"><span class="text-body">{{ t('txtClass') }}:</span> {{
                     offerSegment.FlightClass
-                  }}
+                    }}
                   </h6>
                 </div>
               </b-card-header>
@@ -40,7 +40,7 @@
                     </h4>
 
                     <p class="mb-0">{{ offerSegment.Departure.Iata
-                      }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
+                    }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
                         offerSegment.Departure.Terminal || '' }}
                     </p>
                     <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
@@ -52,29 +52,37 @@
                   </b-col>
 
                   <b-col sm="4" class="my-sm-auto text-center">
-                    <h5 style="font-size: smaller;">{{ convertTimeText(offerSegment.FlightTime)
-                      }}
+                    <h5 style="font-size: small;">{{ convertTimeText(offerSegment.FlightTime)
+                    }}
                     </h5>
                     <div class="position-relative my-4">
                       <hr class="bg-primary opacity-5 position-relative" />
                       <div class="icon-container" style="display: flex; justify-content: space-between; ">
-                        <div class="icon-xs bg-secondary text-white rounded-circle position-relative"
-                          style="transform: translate(0%, -150%);">
+                        <div class="icon-xs bg-secondary text-white  position-relative"
+                          style="transform: translate(0%, -250%); width: 8px;height: 8px;">
                         </div>
-                        <div class="icon-xs bg-secondary text-white rounded-circle position-relative"
-                          style="transform: translate(0%, -150%);">
+                        <div class="icon-xs bg-secondary text-white  position-relative"
+                          style="transform: translate(0%, -250%); width: 8px;height: 8px;">
                         </div>
                       </div>
-                      <div
-                        class="icon-md bg-primary text-white rounded-circle position-absolute top-0 start-50 translate-middle">
-                        <font-awesome-icon :icon="faPlane" class="fa-fw rtl-flip" />
+
+                    </div>
+                    <div class="icon-container" style="display: flex; justify-content: space-evenly; flex-wrap: wrap; ">
+                      <div>
+                        <div class="icon-xs bg-primary text-white  position-relative"
+                          style="transform: translate(10%, -670%); width: 8px;height: 8px;">
+                          <p class="mt-2 text-black custom-margin"
+                            style="transform: rotate(0deg); display: inline-block; font-size: smaller;">
+
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </b-col>
 
                   <b-col sm="4">
                     <h4 style="font-size: smaller;"> {{ offerSegment.Arrival.Date.split(" ")[1]
-                      }}
+                    }}
                     </h4>
                     <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span v-if="offerSegment.Arrival.Terminal">-{{
                       t('txtTerminal') }}</span>
@@ -156,7 +164,7 @@
                         </div>
                         <h6 class="fw-normal mb-0"><span class="text-body">{{ t('txtClass') }}:</span> {{
                           offerSegment.FlightClass
-                          }}
+                        }}
                         </h6>
                       </div>
                     </b-card-header>
@@ -169,7 +177,7 @@
                           </h4>
 
                           <p class="mb-0">{{ offerSegment.Departure.Iata
-                          }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
+                            }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
                               offerSegment.Departure.Terminal || '' }}
                           </p>
                           <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
@@ -182,7 +190,7 @@
 
                         <b-col sm="4" class="my-sm-auto text-center">
                           <h5 style="font-size: small;">{{ convertTimeText(offerSegment.FlightTime)
-                          }}
+                            }}
                           </h5>
                           <div class="position-relative my-4">
                             <hr class="bg-primary opacity-5 position-relative" />
@@ -194,9 +202,16 @@
                                 style="transform: translate(0%, -250%); width: 8px;height: 8px;">
                               </div>
                             </div>
-                            <div class="icon-container" style="display: flex; justify-content: space-between; ">
+                          </div>
+                          <div class="icon-container"
+                            style="display: flex; justify-content: space-evenly; flex-wrap: wrap; ">
+                            <div>
                               <div class="icon-xs bg-primary text-white  position-relative"
-                                style="transform: translate(1000%, -350%); width: 8px;height: 8px;">
+                                style="transform: translate(10%, -670%); width: 8px;height: 8px;">
+                                <p class="mt-2 text-black custom-margin"
+                                  style="transform: rotate(0deg); display: inline-block; font-size: smaller;">
+
+                                </p>
                               </div>
                             </div>
                           </div>
@@ -204,7 +219,7 @@
 
                         <b-col sm="4">
                           <h4 style="font-size: small;"> {{ offerSegment.Arrival.Date.split(" ")[1]
-                          }}
+                            }}
                           </h4>
 
                           <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span v-if="offerSegment.Arrival.Terminal">-{{
@@ -351,7 +366,7 @@
                         </div>
                         <h6 class="fw-normal mb-0"><span class="text-body">{{ t('txtClass') }}:</span> {{
                           offerSegment.FlightClass
-                          }}
+                        }}
                         </h6>
                       </div>
                     </b-card-header>
@@ -364,7 +379,7 @@
                           </h4>
 
                           <p class="mb-0">{{ offerSegment.Departure.Iata
-                          }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
+                            }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
                               offerSegment.Departure.Terminal || '' }}
                           </p>
                           <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
@@ -377,7 +392,7 @@
 
                         <b-col sm="4" class="my-sm-auto text-center">
                           <h5 style="font-size: small;">{{ convertTimeText(offerSegment.FlightTime)
-                          }}
+                            }}
                           </h5>
                           <div class="position-relative my-4">
                             <hr class="bg-primary opacity-5 position-relative" />
@@ -389,9 +404,16 @@
                                 style="transform: translate(0%, -250%); width: 8px;height: 8px;">
                               </div>
                             </div>
-                            <div class="icon-container" style="display: flex; justify-content: space-between; ">
+                          </div>
+                          <div class="icon-container"
+                            style="display: flex; justify-content: space-evenly; flex-wrap: wrap; ">
+                            <div>
                               <div class="icon-xs bg-primary text-white  position-relative"
-                                style="transform: translate(1000%, -350%); width: 8px;height: 8px;">
+                                style="transform: translate(10%, -670%); width: 8px;height: 8px;">
+                                <p class="mt-2 text-black custom-margin"
+                                  style="transform: rotate(0deg); display: inline-block; font-size: smaller;">
+
+                                </p>
                               </div>
                             </div>
                           </div>
@@ -399,7 +421,7 @@
 
                         <b-col sm="4">
                           <h4 style="font-size: small;"> {{ offerSegment.Arrival.Date.split(" ")[1]
-                          }}
+                            }}
                           </h4>
 
                           <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span v-if="offerSegment.Arrival.Terminal">-{{
@@ -555,7 +577,7 @@
                         </div>
                         <h6 class="fw-normal mb-0"><span class="text-body">{{ t('txtClass') }}:</span> {{
                           offerSegment.FlightClass
-                          }}
+                        }}
                         </h6>
                       </div>
                     </b-card-header>
@@ -563,12 +585,12 @@
                     <b-card-body class="p-4 pb-3">
                       <b-row class="g-4">
                         <b-col sm="4">
-                          <h4 fw-bold text-black> {{
+                          <h4 style="font-size: small;"> {{
                             offerSegment.Departure.Date.split(" ")[1] }}
                           </h4>
 
                           <p class="mb-0">{{ offerSegment.Departure.Iata
-                          }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
+                            }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
                               offerSegment.Departure.Terminal || '' }}
                           </p>
                           <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
@@ -580,8 +602,8 @@
                         </b-col>
 
                         <b-col sm="4" class="my-sm-auto text-center">
-                          <h5>{{ convertTimeText(offerSegment.FlightTime)
-                          }}
+                          <h5 style="font-size: small;">{{ convertTimeText(offerSegment.FlightTime)
+                            }}
                           </h5>
                           <div class="position-relative my-4">
                             <hr class="bg-primary opacity-5 position-relative" />
@@ -593,9 +615,17 @@
                                 style="transform: translate(0%, -250%); width: 8px;height: 8px;">
                               </div>
                             </div>
-                            <div class="icon-container" style="display: flex; justify-content: space-between; ">
+
+                          </div>
+                          <div class="icon-container"
+                            style="display: flex; justify-content: space-evenly; flex-wrap: wrap; ">
+                            <div>
                               <div class="icon-xs bg-primary text-white  position-relative"
-                                style="transform: translate(1000%, -350%); width: 8px;height: 8px;">
+                                style="transform: translate(10%, -670%); width: 8px;height: 8px;">
+                                <p class="mt-2 text-black custom-margin"
+                                  style="transform: rotate(0deg); display: inline-block; font-size: smaller;">
+
+                                </p>
                               </div>
                             </div>
                           </div>
@@ -603,7 +633,7 @@
 
                         <b-col sm="4">
                           <h4 style="font-size: small;"> {{ offerSegment.Arrival.Date.split(" ")[1]
-                          }}
+                            }}
                           </h4>
 
                           <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span v-if="offerSegment.Arrival.Terminal">-{{

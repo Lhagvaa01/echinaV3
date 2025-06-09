@@ -96,9 +96,9 @@ console.log(this.AirCompany)
       this.filterAirline = filter;
     },
   },
-persist: {
-  storage: sessionStorage, // эсвэл localStorage
-},
+// persist: {
+//   storage: sessionStorage, // эсвэл localStorage
+// },
   getters: {
     firstAdultPrice: (state) => state.filterAirline || [],
   },
