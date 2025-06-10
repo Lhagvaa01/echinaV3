@@ -1,6 +1,6 @@
 <template>
   <div v-if="Array.isArray(StoreflightInfos) && StoreflightInfos[index]">
-    <b-tabs nav-class="nav nav-pills nav-justified nav-responsive  rounded p-2 mb-3 bg-primary bg-opacity-10">
+    <b-tabs nav-class="nav nav-pills nav-justified nav-responsive bg-primary bg-opacity-10 rounded p-2 mb-3">
       <b-tab>
         <template #title style="font-size: smaller;"> {{ t('txtFlightDetail') }} </template>
         <div v-if="Array.isArray(StoreflightInfos[index].Offers.OfferInfo)">
@@ -10,8 +10,8 @@
 
 
 
-              <b-card-header class="bg-body-secondary">
-                <div class="d-sm-flex justify-content-sm-between align-items-center ">
+              <b-card-header>
+                <div class="d-sm-flex justify-content-sm-between align-items-center">
 
                   <div class="d-flex mb-2 mb-sm-0">
                     <img :src="offerSegment && offerSegment.MarketingAirline
@@ -97,8 +97,7 @@
                   </b-col>
                 </b-row>
 
-                <div v-if="offerSegment.Baggage"
-                  class="card-footer d-flex justify-content-end align-items-end w-100 bg-body-secondary">
+                <div v-if="offerSegment.Baggage" class="card-footer d-flex justify-content-end align-items-end w-100">
                   <div class="d-flex mx-2 me-5">
                     <Briefcase class="mx-2" color="#3949AB" />
                     {{ t('txtHandBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{ offerSegment.Baggage.BaggageType }}
@@ -148,7 +147,7 @@
 
 
                   <div class="w-100">
-                    <b-card-header class="bg-body-secondary">
+                    <b-card-header>
                       <div class="d-sm-flex justify-content-sm-between align-items-center">
 
                         <div class="d-flex mb-2 mb-sm-0">
@@ -254,8 +253,8 @@
                     </b-card-body>
                     <div v-if="getAllSegmentss(index).go.length - 1 != segidxs">
                       <div v-if="segidxs < getAllSegmentsDates(index).length - 1"
-                        class="card-footer d-flex align-items-center mw-100 bg-body-secondary justify-content-center">
-                        <div class="d-flex flex-row border border-primary rounded-2 w-100 justify-content-between">
+                        class="card-footer pt-0 pb-4 d-flex align-items-center mw-100">
+                        <div class="d-flex flex-row bg-light rounded-2 w-100 justify-content-between">
                           <div class="text-start fw-normal rounded-2 p-2 text-orange">
 
 
@@ -351,7 +350,7 @@
 
 
                   <div class="w-100">
-                    <b-card-header class="bg-body-secondary">
+                    <b-card-header>
                       <div class="d-sm-flex justify-content-sm-between align-items-center">
 
                         <div class="d-flex mb-2 mb-sm-0">
@@ -457,8 +456,8 @@
                     </b-card-body>
                     <div v-if="getAllSegmentss(index).return.length - 1 != segidxs">
                       <div v-if="segidxs < getAllSegmentsDates(index).length - 1"
-                        class="card-footer d-flex align-items-center mw-100 bg-body-secondary justify-content-center">
-                        <div class="d-flex flex-row border border-primary rounded-2 w-100 justify-content-between">
+                        class="card-footer pt-0 pb-4 d-flex align-items-center mw-100">
+                        <div class="d-flex flex-row bg-light rounded-2 w-100 justify-content-between">
                           <div class="text-start fw-normal rounded-2 p-2 text-orange">
 
 
@@ -561,7 +560,7 @@
 
 
                   <div class="w-100">
-                    <b-card-header class="bg-body-secondary">
+                    <b-card-header>
                       <div class="d-sm-flex justify-content-sm-between align-items-center">
 
                         <div class="d-flex mb-2 mb-sm-0">
@@ -668,8 +667,8 @@
                     </b-card-body>
                     <div v-if="getAllSegmentss(index).go.length - 1 != segidxs">
                       <div v-if="segidxs < getAllSegmentsDates(index).length - 1"
-                        class="card-footer d-flex align-items-center mw-100 bg-body-secondary justify-content-center">
-                        <div class="d-flex flex-row border border-primary rounded-2 w-100 justify-content-between">
+                        class="card-footer pt-0 pb-4 d-flex align-items-center mw-100">
+                        <div class="d-flex flex-row bg-light rounded-2 w-100 justify-content-between">
                           <div class="text-start fw-normal rounded-2 p-2 text-orange">
 
 
@@ -753,7 +752,7 @@
                   v-for="(offerSegment, segidx) in offer.Segments.OfferSegment" :key="segidx">
 
                   <b-card no-body class="border mb-3">
-                    <b-card-header class="d-flex align-items-center border-bottom bg-body-secondary">
+                    <b-card-header class="d-flex align-items-center border-bottom">
                       <img :src="offerSegment.MarketingAirline
                         ? 'https://api.echina.mn/assets/d/' + offerSegment.MarketingAirline + '.png'
                         : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
@@ -798,7 +797,7 @@
                 </div>
                 <div v-else v-for="(offerSegment, segidxs) in offer.Segments.OfferSegment" :key="segidxs">
                   <b-card no-body class="border mb-3">
-                    <b-card-header class="d-flex align-items-center border-bottom bg-body-secondary">
+                    <b-card-header class="d-flex align-items-center border-bottom">
                       <img :src="offerSegment.MarketingAirline
                         ? 'https://api.echina.mn/assets/d/' + offerSegment.MarketingAirline + '.png'
                         : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
@@ -849,7 +848,7 @@
       <b-tab>
         <template #title style="font-size: smaller;"> {{ t('txtCancelationRule') }} </template>
         <b-card no-body class="border">
-          <b-card-header class="d-flex align-items-center border-bottom bg-body-secondary">
+          <b-card-header class="d-flex align-items-center border-bottom">
             <img :src="element9" class="h-20px me-1" alt="" />
             <b-card-title tag="h5" class="mb-0">BOM - CDG</b-card-title>
           </b-card-header>
