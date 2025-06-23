@@ -38,9 +38,9 @@
 
                     <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('asc')">{{ t('txtPriceASC')
-                        }}</a></li>
+                                }}</a></li>
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('desc')">{{ t('txtPriceDESC')
-                        }}</a>
+                                }}</a>
                         </li>
                     </ul>
                 </div>
@@ -88,283 +88,465 @@
                             <div v-for="(flight, findex) in moreFlights(Mainindex)" :key="findex">
                                 <!-- <span>{{ flight }}</span> -->
                                 <div v-if="flight.length > 0">
-                                    <div class="d-flex justify-content-between align-items-center px-3">
-                                        <h6 class="m-3 mb-0 fw-bold d-flex align-items-center"
-                                            style="font-size: smaller;">
-                                            <PlaneTakeoff color="#009dff" :size="32" class="me-3" />
-                                            {{ (show == 2 && moreFlights(Mainindex).length - 1 === findex) ?
-                                                t('txtToFlight')
-                                                :
-                                                t('txtFromFlight') }}
-                                        </h6>
-                                        <h6 class="fw-bold mb-0" style="font-size: smaller;">{{ flight.length > 1 ?
-                                            t('txtTransit') :
-                                            t('txtDirect') }}</h6>
-                                    </div>
-                                    <b-card-header
-                                        class="d-sm-flex justify-content-sm-between align-items-center py-0 ps-4">
+                                    <b-row class="px-1 px-sm-3">
+                                        <!-- Main (info) column -->
+                                        <b-col cols="12" md="10"
+                                            class="d-flex flex-column pe-md-0 mb-3 mb-md-0 justify-content-between">
+                                            <!-- Үндсэн контент -->
+                                            <!-- <b-row> -->
+                                            <div class="d-flex justify-content-end">
+                                                <div class="w-100">
+                                                    <div class="d-flex justify-content-between align-items-center px-3">
+                                                        <h6 class="m-3 mb-0 fw-bold d-flex align-items-center"
+                                                            style="font-size: smaller;">
+                                                            <PlaneTakeoff color="#009dff" :size="32" class="me-3" />
+                                                            {{ (show == 2 && moreFlights(Mainindex).length - 1 ===
+                                                                findex) ?
+                                                                t('txtToFlight')
+                                                                :
+                                                                t('txtFromFlight') }}
+                                                        </h6>
+                                                        <h6 class="fw-bold mb-0" style="font-size: smaller;">{{
+                                                            flight.length >
+                                                                1 ?
+                                                                t('txtTransit') :
+                                                                t('txtDirect') }}</h6>
+                                                    </div>
+                                                    <b-card-header
+                                                        class="d-flex justify-content-between align-items-center py-0 ps-4">
 
-                                        <div class="d-flex align-items-center mb-2 mb-sm-0 "
-                                            style="font-size: smaller;">
-                                            <img :src="flight[0]?.MarketingAirline
-                                                ? 'https://api.echina.mn/assets/d/' + flight[0]?.MarketingAirline + '.png'
-                                                : fallbackLogo" alt="Airline logo" class="me-2"
-                                                style="width: 30px; height: auto;" />
-                                            <h6 class="fw-normal mb-0" style="font-size: smaller;">
-                                                {{Array.isArray(StoreAirCompany) && StoreAirCompany.length > 0
-                                                    ? StoreAirCompany.find((airline: any) => airline.Code ===
-                                                        flight[0]?.MarketingAirline)?.Value || 'Airline Not Found'
-                                                    : 'No Air Companies Available'
-                                                }}
-                                                ({{ flight[0]?.FlightNum || 'SA-1254' }})
-                                            </h6>
+                                                        <div class="d-flex align-items-center mb-2 mb-sm-0 "
+                                                            style="font-size: smaller;">
+                                                            <img :src="flight[0]?.MarketingAirline
+                                                                ? 'https://api.echina.mn/assets/d/' + flight[0]?.MarketingAirline + '.png'
+                                                                : fallbackLogo" alt="Airline logo" class="me-2"
+                                                                style="width: 30px; height: auto;" />
+                                                            <h6 class="fw-normal mb-0" style="font-size: smaller;">
+                                                                {{Array.isArray(StoreAirCompany) &&
+                                                                    StoreAirCompany.length > 0
+                                                                    ? StoreAirCompany.find((airline: any) =>
+                                                                        airline.Code === flight[0]?.MarketingAirline)?.Value ||
+                                                                    'Airline Not Found' : 'No Air Companies Available'
+                                                                }}
+                                                                ({{ flight[0]?.FlightNum || 'SA-1254' }})
+                                                            </h6>
 
-                                            <p v-if="flight.length > 1" class="ms-2 text-warning"
-                                                @mouseover="onMouseOver(getFlightKey(Mainindex))"
-                                                @mouseleave="onMouseLeave(getFlightKey(Mainindex))">
-                                                +{{ flight.length - 1 }} {{ t('txtTotalAirline') }}
-                                            </p>
-                                            <!-- Tooltip -->
-                                            <div v-if="isHovered[getFlightKey(Mainindex)]"
-                                                class="bg-white border rounded shadow position-absolute p-3 start-50 "
-                                                style="z-index: 1000; min-width: 260px;">
-                                                <div v-for="segment in flight" :key="segment.FlightNum"
-                                                    class="d-flex align-items-start mb-2">
-                                                    <img :src="segment.MarketingAirline
-                                                        ? 'https://api.echina.mn/assets/d/' + segment.MarketingAirline + '.png'
-                                                        : fallbackLogo" alt="Airline logo" class="me-2"
-                                                        style="width: 32px; height: auto; border-radius: 4px;" />
-                                                    <div class="d-flex gap-2">
-                                                        <div class="fw-semibold text-dark" style="font-size: 14px;">
-                                                            {{
-                                                                StoreAirCompany.find((airline: any) => airline.Code ===
-                                                                    segment.MarketingAirline)
-                                                                    ?.Value || 'Unknown Airline'
-                                                            }}
-                                                            <span class="text-muted">({{ segment.FlightNum || 'SA-1254'
-                                                                }})</span>
+                                                            <p v-if="flight.length > 1" class="ms-2 text-warning"
+                                                                @mouseover="onMouseOver(getFlightKey(Mainindex))"
+                                                                @mouseleave="onMouseLeave(getFlightKey(Mainindex))">
+                                                                +{{ flight.length - 1 }} {{ t('txtTotalAirline') }}
+                                                            </p>
+                                                            <!-- Tooltip -->
+                                                            <div v-if="isHovered[getFlightKey(Mainindex)]"
+                                                                class="bg-white border rounded shadow position-absolute p-3 start-50 "
+                                                                style="z-index: 1000; min-width: 260px;">
+                                                                <div v-for="segment in flight" :key="segment.FlightNum"
+                                                                    class="d-flex align-items-start mb-2">
+                                                                    <img :src="segment.MarketingAirline
+                                                                        ? 'https://api.echina.mn/assets/d/' + segment.MarketingAirline + '.png'
+                                                                        : fallbackLogo" alt="Airline logo" class="me-2"
+                                                                        style="width: 32px; height: auto; border-radius: 4px;" />
+                                                                    <div class="d-flex gap-2">
+                                                                        <div class="fw-semibold text-dark"
+                                                                            style="font-size: 14px;">
+                                                                            {{
+                                                                                StoreAirCompany.find((airline: any) =>
+                                                                                    airline.Code
+                                                                                    ===
+                                                                                    segment.MarketingAirline)
+                                                                                    ?.Value || 'Unknown Airline'
+                                                                            }}
+                                                                            <span class="text-muted">({{
+                                                                                segment.FlightNum
+                                                                                ||
+                                                                                'SA-1254'
+                                                                            }})</span>
+                                                                        </div>
+                                                                        <div class="d-flex align-items-center mt-1">
+                                                                            <Briefcase v-if="segment.Baggage"
+                                                                                class="me-2" color="#5a2dd7"
+                                                                                :size="16" />
+                                                                            <Luggage v-if="segment.CabinBaggage"
+                                                                                color="#5a2dd7" :size="16" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="d-flex align-items-center mt-1">
-                                                            <Briefcase v-if="segment.Baggage" class="me-2"
-                                                                color="#5a2dd7" :size="16" />
-                                                            <Luggage v-if="segment.CabinBaggage" color="#5a2dd7"
-                                                                :size="16" />
+                                                        <div>
+                                                            <h5 class="mt-0  fw-light mb-0 pb-0 text-muted"
+                                                                style="font-size: smaller;">Нийт: {{
+                                                                    getTotalFlightTime(Mainindex, findex)
+                                                                }}
+                                                            </h5>
                                                         </div>
+
+
+                                                    </b-card-header>
+                                                    <b-card-body class="p-4 pb-0">
+                                                        <b-row class="g-4">
+                                                            <b-col sm="4" md="3" class="mt-0 text-start ">
+                                                                <p class="mb-0" style="font-size: medium;">{{
+                                                                    flight[0]?.Departure.Iata
+                                                                }}</p>
+                                                                <p class="mb-0 text-truncate"
+                                                                    style="font-size: smaller; max-width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
+                                                                    :title="StoreAirPorts.find((AirPorts: any) => AirPorts.Iata === flight[0]?.Departure.Iata)?.City">
+                                                                    {{StoreAirPorts.find((AirPorts: any) =>
+                                                                        AirPorts.Iata === flight[0]?.Departure.Iata)?.City
+                                                                    }}
+                                                                </p>
+
+                                                                <h4 class="fw-bold fs-5 mb-0"> {{
+                                                                    flight[0]?.Departure.Date.split(" ")[1] }}
+                                                                </h4>
+
+
+                                                                <p class="mb-0" style="font-size: x-small;">
+                                                                    {{
+                                                                        formatDate(flight[0]?.Departure.Date) }}</p>
+                                                                <p style="font-size: x-small;">
+                                                                    <span v-if="flight[0]?.Departure.Terminal">Терминал:
+                                                                    </span>
+                                                                    {{ flight[0]?.Departure.Terminal || '' }}
+                                                                </p>
+                                                                <!-- <p class="mb-0" style="font-size: smaller;">
+                                                                    {{StoreAirCompany.find((AirCompany: any) =>
+                                                                        AirCompany.Code
+                                                                        ===
+                                                                        flight[0]?.Departure.Iata).City}}</p> -->
+
+
+                                                            </b-col>
+
+                                                            <b-col sm="4" md="6" class=" text-center mt-3">
+                                                                <!-- <h5 class="mt-0  fw-light mb-0 pb-0"
+                                                                    style="font-size: smaller;">{{
+                                                                        getTotalFlightTime(Mainindex, findex)
+                                                                    }}
+                                                                </h5> -->
+                                                                <div class="position-relative my-4"
+                                                                    style="height: 80px;">
+                                                                    <!-- Шугам -->
+                                                                    <hr class="position-absolute top-50 start-0 end-0 m-0"
+                                                                        style="height: 1px; background-color: #ccc;" />
+
+                                                                    <!-- Голын цэгүүд болон шошго -->
+                                                                    <div v-for="(stop, index) in getStopIatas(Mainindex, findex)"
+                                                                        :key="index"
+                                                                        class="position-absolute text-center "
+                                                                        :style="getDotPositionStyle(index, getStopIatas(Mainindex, findex).length)">
+                                                                        <div
+                                                                            style="font-size: small; font-weight: bold;">
+                                                                            {{ stop }}
+                                                                        </div>
+                                                                        <div style="font-size: small; color: gray;">
+                                                                            ({{StoreAirPorts.find((a) => a.Iata ===
+                                                                                stop)?.City || ''}})
+                                                                        </div>
+                                                                        <div class="rounded-circle bg-primary mx-auto"
+                                                                            style="width: 8px; height: 8px; top: 50%; left: 0; transform: translateY(120%);">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Зүүн ба баруун саарал цэг -->
+                                                                    <div class="rounded-circle bg-secondary position-absolute"
+                                                                        style="width: 8px; height: 8px; top: 50%; left: 0; transform: translateY(-50%);">
+                                                                    </div>
+                                                                    <div class="rounded-circle bg-secondary position-absolute"
+                                                                        style="width: 8px; height: 8px; top: 50%; right: 0; transform: translateY(-50%);">
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </b-col>
+
+                                                            <b-col sm="4" md="3" class="mt-0  text-start mt-0 ">
+                                                                <p class="mb-0" style="font-size: medium;">{{
+                                                                    flight[flight.length -
+                                                                        1].Arrival.Iata }}</p>
+                                                                <p class="mb-0" style="font-size: smaller;">
+                                                                    {{StoreAirPorts.find((AirPorts: any) =>
+                                                                        AirPorts.Iata
+                                                                        ===
+                                                                        flight[flight.length -
+                                                                            1].Arrival.Iata).City}}</p>
+                                                                <h4 class=" fs-5 mb-0">
+                                                                    {{ flight[flight.length -
+                                                                        1].Arrival.Date.split(" ")[1] }}
+                                                                </h4>
+
+
+
+                                                                <p class="mb-0" style="font-size: x-small;">
+                                                                    {{
+                                                                        formatDate(flight[flight.length -
+                                                                            1].Arrival.Date) }}</p>
+
+
+                                                                <p style="font-size: small;">
+                                                                    <span v-if="flight[0]?.Arrival.Terminal">Терминал:
+                                                                    </span>
+                                                                    {{ flight[0]?.Arrival.Terminal || '' }}
+                                                                </p>
+
+                                                            </b-col>
+
+                                                        </b-row>
+
+                                                    </b-card-body>
+                                                    <b-row v-for="(offseg, offsegIdx) in flight"
+                                                        :key="'offseg-' + offsegIdx" class="align-items-start mx-2">
+                                                        <!-- Зүүн талын блок -->
+                                                        <b-col cols="3" sm="2" md="4"
+                                                            v-if="offseg.SelfConnect === 'true'" class="d-flex pe-1">
+                                                            <div
+                                                                style="width: 100%; height: 55px; background-color: #eee9ff; border-radius: 10px;">
+                                                            </div>
+                                                        </b-col>
+
+                                                        <!-- Баруун талын анхааруулга -->
+                                                        <b-col cols="9" sm="10" md="8" class="mb-2 ps-1"
+                                                            v-if="offseg.SelfConnect === 'true'">
+                                                            <div
+                                                                style="background-color: #ffe6e6; border-radius: 10px; padding: 8px 12px;">
+                                                                <p class="mb-0 text-danger"
+                                                                    style="font-size: small; white-space: pre-line;">
+                                                                    {{ getTotalStops(Mainindex, findex) }} {{
+                                                                        t('txtFlightStop') }}
+                                                                    {{ t('txtSelfTBag') }}<br />
+                                                                    (Self-transfer baggage)
+                                                                </p>
+                                                            </div>
+                                                        </b-col>
+                                                    </b-row>
+
+
+                                                </div>
+
+                                                <div>
+
+                                                    <div class="vertical-divider h-100">
+                                                    </div>
+                                                </div>
+                                                <!-- {{ moreFlights(Mainindex).length }} {{ findex + 1 }} -->
+                                            </div>
+                                            <div v-if="moreFlights(Mainindex).length == findex + 1"
+                                                class="d-flex justify-content-end">
+                                                <div class="d-flex w-100 border-top border-primary justify-content-between border-2"
+                                                    style="height: 42px;">
+                                                    <div class="d-flex gap-4 gap-sm-0">
+                                                        <div
+                                                            class=" d-flex text-center border rounded m-2 px-3 justify-content-center small">
+                                                            <span class="text-black"><svg stroke="currentColor"
+                                                                    fill="currentColor" stroke-width="0"
+                                                                    viewBox="0 0 320 512"
+                                                                    class="text-black h-4 w-4 text-[#F8C5B3]"
+                                                                    height="15px" width="15px"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <path
+                                                                        d="M112 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm40 304V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V256.9L59.4 304.5c-9.1 15.1-28.8 20-43.9 10.9s-20-28.8-10.9-43.9l58.3-97c17.4-28.9 48.6-46.6 82.3-46.6h29.7c33.7 0 64.9 17.7 82.3 46.6l58.3 97c9.1 15.1 4.2 34.8-10.9 43.9s-34.8 4.2-43.9-10.9L232 256.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V352H152z">
+                                                                    </path>
+                                                                </svg>{{ Number(route.query.adults) }}<span
+                                                                    class="text-primary">: {{
+                                                                        Math.ceil((paginatedFlights[Mainindex].AdultPrice *
+                                                                            parseFloat(rate))).toLocaleString() }}{{ currency
+                                                                    }}</span>
+                                                            </span>
+                                                        </div>
+                                                        <div v-if="paginatedFlights[Mainindex].ChildPrice"
+                                                            class=" d-flex text-center border rounded m-2 px-3 justify-content-center small">
+                                                            <span class="text-black"><svg stroke="currentColor"
+                                                                    fill="currentColor" stroke-width="0"
+                                                                    viewBox="0 0 320 512"
+                                                                    class="text-black h-4 w-4 text-[#F8C5B3]"
+                                                                    height="15px" width="15px"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <path
+                                                                        d="M256 64A64 64 0 1 0 128 64a64 64 0 1 0 128 0zM152.9 169.3c-23.7-8.4-44.5-24.3-58.8-45.8L74.6 94.2C64.8 79.5 45 75.6 30.2 85.4s-18.7 29.7-8.9 44.4L40.9 159c18.1 27.1 42.8 48.4 71.1 62.4V480c0 17.7 14.3 32 32 32s32-14.3 32-32V384h32v96c0 17.7 14.3 32 32 32s32-14.3 32-32V221.6c29.1-14.2 54.4-36.2 72.7-64.2l18.2-27.9c9.6-14.8 5.4-34.6-9.4-44.3s-34.6-5.5-44.3 9.4L291 122.4c-21.8 33.4-58.9 53.6-98.8 53.6c-12.6 0-24.9-2-36.6-5.8c-.9-.3-1.8-.7-2.7-.9z">
+                                                                    </path>
+                                                                </svg>{{ Number(route.query.childs) }}<span
+                                                                    class="text-primary">: {{
+                                                                        Math.ceil((paginatedFlights[Mainindex].ChildPrice *
+                                                                            parseFloat(rate))).toLocaleString() }}{{ currency
+                                                                    }}</span>
+                                                            </span>
+                                                        </div>
+                                                        <div v-if="paginatedFlights[Mainindex].InfantPrice"
+                                                            class=" d-flex text-center border rounded m-2 px-3 justify-content-center small">
+                                                            <span class="text-black"><svg stroke="currentColor"
+                                                                    fill="currentColor" stroke-width="0"
+                                                                    viewBox="0 0 320 512"
+                                                                    class="text-black h-4 w-4 text-[#F8C5B3]"
+                                                                    height="15px" width="15px"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <path
+                                                                        d="M152 88a72 72 0 1 1 144 0A72 72 0 1 1 152 88zM39.7 144.5c13-17.9 38-21.8 55.9-8.8L131.8 162c26.8 19.5 59.1 30 92.2 30s65.4-10.5 92.2-30l36.2-26.4c17.9-13 42.9-9 55.9 8.8s9 42.9-8.8 55.9l-36.2 26.4c-13.6 9.9-28.1 18.2-43.3 25V288H128V251.7c-15.2-6.7-29.7-15.1-43.3-25L48.5 200.3c-17.9-13-21.8-38-8.8-55.9zm89.8 184.8l60.6 53-26 37.2 24.3 24.3c15.6 15.6 15.6 40.9 0 56.6s-40.9 15.6-56.6 0l-48-48C70 438.6 68.1 417 79.2 401.1l50.2-71.8zm128.5 53l60.6-53 50.2 71.8c11.1 15.9 9.2 37.5-4.5 51.2l-48 48c-15.6 15.6-40.9 15.6-56.6 0s-15.6-40.9 0-56.6L284 419.4l-26-37.2z">
+                                                                    </path>
+                                                                </svg>{{ Number(route.query.infants) }}<span
+                                                                    class="text-primary">: {{
+                                                                        Math.ceil((paginatedFlights[Mainindex].InfantPrice *
+                                                                            parseFloat(rate))).toLocaleString() }}{{ currency
+                                                                    }}</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-center py-2 me-3">
+                                                        <span class="text-primary small">{{
+                                                            t('txtAvailableSeat') }}: {{
+                                                                segments.ResBookDesigQuantity
+                                                            }}</span>
+                                                    </div>
+
+                                                </div>
+                                                <div>
+                                                    <div class="vertical-divider h-100">
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                            <!-- </b-row> -->
 
 
-                                    </b-card-header>
-                                    <b-card-body class="p-4 pb-0">
-                                        <b-row class="g-4">
-                                            <b-col sm="4" md="2" class="mt-0 text-start ms-5 ps-4">
-                                                <h4 class="fw-bold" style="font-size: small;"> {{
-                                                    flight[0]?.Departure.Date.split(" ")[1] }}
-                                                </h4>
-                                                <p class="mb-0" style="font-size: smaller;">{{ flight[0]?.Departure.Iata
-                                                }}<span v-if="flight[0]?.Departure.Terminal">-Терминал</span>
-                                                    {{ flight[0]?.Departure.Terminal || '' }}</p>
-                                                <p class="mb-0" style="font-size: smaller;">
-                                                    {{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata
-                                                        ===
-                                                        flight[0]?.Departure.Iata).City}}</p>
+                                        </b-col>
 
-                                                <p class="text-black mb-0" style="font-size: x-small;">{{
-                                                    formatDate(flight[0]?.Departure.Date) }}</p>
+                                        <!-- Баруун багана (үнэ, товч, дэлгэрэнгүй) -->
+                                        <b-col cols="12" md="2" class="d-flex flex-column px-0 justify-content-between">
+                                            <!-- Дээшээ: Icons -->
 
-                                            </b-col>
-
-                                            <b-col sm="4" md="3" class=" text-center mt-3">
-                                                <h5 class="mt-0  fw-light mb-0 pb-0" style="font-size: smaller;">{{
-                                                    getTotalFlightTime(Mainindex, findex)
-                                                }}
-                                                </h5>
-                                                <div class="position-relative my-4 mt-0">
-                                                    <hr class="bg-primary opacity-5 position-relative" />
-
-                                                    <div class="icon-container"
-                                                        style="display: flex; justify-content: space-evenly; flex-wrap: wrap; "
-                                                        v-if="getStopIatas(Mainindex, findex).length > 0">
-                                                        <div v-for="(segment, idx) in getStopIatas(Mainindex, findex)"
-                                                            :key="'segment-' + idx">
-                                                            <div class="icon-xs bg-primary text-white  position-relative"
-                                                                style="transform: translate(10%, -250%); width: 8px;height: 8px;">
-                                                                <p class="mt-2 text-black custom-margin"
-                                                                    style="transform: rotate(0deg); display: inline-block; font-size: smaller;">
-                                                                    {{ segment }}
-                                                                </p>
-                                                            </div>
-                                                        </div>
+                                            <div>
+                                                <div v-if="moreFlights(Mainindex).length > 0 &&
+                                                    (
+                                                        (findex == 0)
+                                                    )"
+                                                    class="d-flex rounded-top mt-2 mt-md-2 ms-md-2 gap-2 justify-content-start align-content-center">
+                                                    <!-- <div class="d-flex align-items-center mt-1">
+                                                    <Briefcase v-if="segments.Baggage" class="me-2" color="#5a2dd7"
+                                                        :size="16" />
+                                                    <Luggage v-if="segments.CabinBaggage" color="#5a2dd7" :size="16" />
+                                                </div> -->
+                                                    <div v-if="segments.Baggage"
+                                                        class="text-center p-0 border rounded-2  border-primary"
+                                                        style="width: 34px;">
+                                                        <i class="fas fa-suitcase-rolling text-primary"></i>
+                                                        <!-- <span class="text-primary ms-1"></span> -->
                                                     </div>
-                                                    <div v-else>
-                                                        <div class="icon-xs text-white position-relative"
-                                                            style="transform: translate(10%, -150%); width: 8px;height: 8px;">
-                                                            <p class="mt-4 text-black fs-6 custom-margin"
-                                                                style="transform: rotate(0deg); display: inline-block;">
-
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="icon-container"
-                                                        style="display: flex; justify-content: space-between; ">
-                                                        <div class="icon-xs bg-secondary text-white  position-relative"
-                                                            style="transform: translate(0%, -350%); width: 8px;height: 8px;">
-                                                        </div>
-                                                        <div class="icon-xs bg-secondary text-white  position-relative"
-                                                            style="transform: translate(0%, -350%); width: 8px;height: 8px;">
-                                                        </div>
+                                                    <div v-if="segments.CabinBaggage"
+                                                        class="text-center p-0 border rounded-2  border-primary"
+                                                        style="width: 34px;">
+                                                        <i class="fas fa-suitcase text-primary"></i>
+                                                        <!-- <span class="text-primary ms-1"></span> -->
                                                     </div>
                                                 </div>
-
-                                            </b-col>
-
-                                            <b-col sm="4" md="2" class="mt-0  text-start mt-0 ">
-                                                <h4 class="fs-6">
-                                                    {{ flight[flight.length -
-                                                        1].Arrival.Date.split(" ")[1] }}
-                                                </h4>
-
-
-                                                <p class="mb-0" style="font-size: smaller;">{{
-                                                    flight[flight.length -
-                                                        1].Arrival.Iata }}<span v-if="flight[flight.length -
-                                                        1].Arrival.Terminal">-Терминал</span>
-                                                    {{
-                                                        flight[flight.length -
-                                                            1].Arrival.Terminal || '' }}</p>
-                                                <p class="mb-0" style="font-size: smaller;">
-                                                    {{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata
-                                                        ===
-                                                        flight[flight.length -
-                                                            1].Arrival.Iata).City}}</p>
-                                                <p class="text-black mb-0" style="font-size: x-small;">{{
-                                                    formatDate(flight[flight.length -
-                                                        1].Arrival.Date) }}</p>
-
-                                            </b-col>
-                                            <b-col v-if="moreFlights(Mainindex).length - 1 == findex" md="4"
-                                                class="text-md-end mt-0">
-
-                                                <h6 v-if="paginatedFlights[Mainindex].TotalPrice != paginatedFlights[Mainindex].AdultPrice"
-                                                    class="d-flex fw-light flex-column mb-3 pt-2 "
-                                                    style="font-size: smaller;">
-                                                    {{ t('txtAdult') }}: {{
-                                                        Math.ceil((paginatedFlights[Mainindex].AdultPrice *
-                                                            parseFloat(rate))).toLocaleString() }}{{ currency }}
-                                                    <span v-if="paginatedFlights[Mainindex].ChildPrice" class="mt-1">
-                                                        {{ t('txtChild') }}: {{
-                                                            Math.ceil((paginatedFlights[Mainindex].ChildPrice *
-                                                                parseFloat(rate))).toLocaleString() }}{{ currency }}
-
-                                                    </span>
-
-                                                    <span v-if="paginatedFlights[Mainindex].InfantPrice" class="mt-1">
-                                                        {{ t('txtInfants') }}: {{
-
-                                                            Math.ceil((paginatedFlights[Mainindex].InfantPrice *
-                                                                parseFloat(rate))).toLocaleString() }}{{ currency }}
-
-                                                    </span>
-                                                </h6>
-                                                <h4 class="fw-bold fs-6 text-dark ms-3" v-else>
-                                                    {{ Math.ceil((paginatedFlights[Mainindex].AdultPrice *
-                                                        parseFloat(rate))).toLocaleString() }}{{ currency }}
-                                                </h4>
-                                                <h4 v-if="paginatedFlights[Mainindex].TotalPrice != paginatedFlights[Mainindex].AdultPrice"
-                                                    class="d-flex align-items-center flex-wrap gap-2 justify-content-start justify-content-md-end">
-
-
-
-                                                    <div
-                                                        class="d-flex justify-content-end align-items-center mb-0 mt-0">
-                                                        <!-- Насанд хүрэгчид -->
-                                                        <span class="fw-medium fs-6 text-primary">
-                                                            {{ Number(route.query.adults) }}
-                                                        </span>
-                                                        <!-- <User :size="25" color="#3949AB" /> -->
+                                                <div v-if="moreFlights(Mainindex).length > 0 &&
+                                                    (
+                                                        (findex == 0)
+                                                    )" class="d-flex gap-2 align-content-center mt-2 ms-2">
+                                                    <div class="border border-primary rounded-2 px-1">
                                                         <svg stroke="currentColor" fill="currentColor" stroke-width="0"
                                                             viewBox="0 0 320 512"
-                                                            class="text-primary h-4 w-4 text-[#F8C5B3]" height="20px"
-                                                            width="20px" xmlns="http://www.w3.org/2000/svg">
+                                                            class="text-black h-4 w-4 text-[#F8C5B3]" height="15px"
+                                                            width="15px" xmlns="http://www.w3.org/2000/svg">
                                                             <path
                                                                 d="M112 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm40 304V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V256.9L59.4 304.5c-9.1 15.1-28.8 20-43.9 10.9s-20-28.8-10.9-43.9l58.3-97c17.4-28.9 48.6-46.6 82.3-46.6h29.7c33.7 0 64.9 17.7 82.3 46.6l58.3 97c9.1 15.1 4.2 34.8-10.9 43.9s-34.8 4.2-43.9-10.9L232 256.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V352H152z">
                                                             </path>
                                                         </svg>
-
-                                                        <span v-if="paginatedFlights[Mainindex].ChildPrice">
-                                                            <!-- Хүүхдүүд -->
-                                                            <span class="fw-medium fs-6 text-primary">
-                                                                {{ Number(route.query.childs) }}
-                                                            </span>
-                                                            <!-- <User :size="15" color="#3949AB" /> -->
-                                                            <svg stroke="currentColor" fill="currentColor"
-                                                                stroke-width="0" viewBox="0 0 384 512"
-                                                                class="text-primary h-4 w-4 text-[#F8C5B3]"
-                                                                height="20px" width="20px"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M256 64A64 64 0 1 0 128 64a64 64 0 1 0 128 0zM152.9 169.3c-23.7-8.4-44.5-24.3-58.8-45.8L74.6 94.2C64.8 79.5 45 75.6 30.2 85.4s-18.7 29.7-8.9 44.4L40.9 159c18.1 27.1 42.8 48.4 71.1 62.4V480c0 17.7 14.3 32 32 32s32-14.3 32-32V384h32v96c0 17.7 14.3 32 32 32s32-14.3 32-32V221.6c29.1-14.2 54.4-36.2 72.7-64.2l18.2-27.9c9.6-14.8 5.4-34.6-9.4-44.3s-34.6-5.5-44.3 9.4L291 122.4c-21.8 33.4-58.9 53.6-98.8 53.6c-12.6 0-24.9-2-36.6-5.8c-.9-.3-1.8-.7-2.7-.9z">
-                                                                </path>
-                                                            </svg>
-                                                        </span>
-
-                                                        <span v-if="paginatedFlights[Mainindex].InfantPrice">
-                                                            <!-- Хүүхдүүд -->
-                                                            <span class="fw-medium fs-6 text-primary">
-                                                                {{ Number(route.query.infants) }}
-                                                            </span>
-                                                            <!-- <User :size="10" color="#3949AB" /> -->
-                                                            <svg stroke="currentColor" fill="currentColor"
-                                                                stroke-width="0" viewBox="0 0 448 512"
-                                                                class="text-primary h-4 w-4 text-[#F8C5B3]"
-                                                                height="20px" width="20px"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M152 88a72 72 0 1 1 144 0A72 72 0 1 1 152 88zM39.7 144.5c13-17.9 38-21.8 55.9-8.8L131.8 162c26.8 19.5 59.1 30 92.2 30s65.4-10.5 92.2-30l36.2-26.4c17.9-13 42.9-9 55.9 8.8s9 42.9-8.8 55.9l-36.2 26.4c-13.6 9.9-28.1 18.2-43.3 25V288H128V251.7c-15.2-6.7-29.7-15.1-43.3-25L48.5 200.3c-17.9-13-21.8-38-8.8-55.9zm89.8 184.8l60.6 53-26 37.2 24.3 24.3c15.6 15.6 15.6 40.9 0 56.6s-40.9 15.6-56.6 0l-48-48C70 438.6 68.1 417 79.2 401.1l50.2-71.8zm128.5 53l60.6-53 50.2 71.8c11.1 15.9 9.2 37.5-4.5 51.2l-48 48c-15.6 15.6-40.9 15.6-56.6 0s-15.6-40.9 0-56.6L284 419.4l-26-37.2z">
-                                                                </path>
-                                                            </svg>
-                                                        </span>
+                                                        {{ Number(route.query.adults) }}
                                                     </div>
-
-
-                                                    <!-- Үнэ -->
-                                                    <span class="fw-bold fs-6 text-dark ms-3">
-                                                        {{ Math.ceil((Number(paginatedFlights[Mainindex].TotalPrice) *
-                                                            parseFloat(rate))).toLocaleString() }}
-                                                        {{ currency }}
-                                                    </span>
-                                                </h4>
-
-                                                <b-button variant="dark" class="mb-0 mb-sm-2"
-                                                    :id="`toggleOption${Mainindex}${segments.FlightNum}`"
-                                                    :aria-controls="`flightOption${segments.FlightNum}`"
-                                                    v-b-toggle="`flightOption${Mainindex}${segments.FlightNum}`"
-                                                    @click="fetchOptions(offer.OfferCode, SearchGuid)">
-                                                    {{ t('txtChoose') }}
-                                                </b-button>
-                                            </b-col>
-                                        </b-row>
-                                    </b-card-body>
-                                    <div>
-                                        <div v-for="(offseg, offsegIdx) in flight" :key="'offseg-' + offsegIdx">
-                                            <div v-if="offseg.SelfConnect == 'true'" class="card-footer pt-4">
-                                                <ul class="list-inline bg-light rounded-2 d-sm-flex text-end justify-content-sm-end mb-0 px-4 py-2"
-                                                    style="font-size: small;">
-                                                    <li v-if="flight.length > 0" class="list-inline-item text-orange">
-                                                        {{ getTotalStops(Mainindex, findex) }} {{ t('txtFlightStop') }}
-                                                    </li>
-                                                    <li class="list-inline-item text-center" style="font-size: small;">
-                                                        <h6 class="fw-medium mb-0" style="font-size: small;">
-                                                            {{ t('txtSelfTBag') }} <br />
-                                                            (Self-transfer baggage)
-                                                        </h6>
-                                                    </li>
-                                                </ul>
+                                                    <div v-if="Number(route.query.childs) > 0"
+                                                        class="border border-primary rounded-2 px-1">
+                                                        <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                            viewBox="0 0 320 512"
+                                                            class="text-black h-4 w-4 text-[#F8C5B3]" height="15px"
+                                                            width="15px" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M256 64A64 64 0 1 0 128 64a64 64 0 1 0 128 0zM152.9 169.3c-23.7-8.4-44.5-24.3-58.8-45.8L74.6 94.2C64.8 79.5 45 75.6 30.2 85.4s-18.7 29.7-8.9 44.4L40.9 159c18.1 27.1 42.8 48.4 71.1 62.4V480c0 17.7 14.3 32 32 32s32-14.3 32-32V384h32v96c0 17.7 14.3 32 32 32s32-14.3 32-32V221.6c29.1-14.2 54.4-36.2 72.7-64.2l18.2-27.9c9.6-14.8 5.4-34.6-9.4-44.3s-34.6-5.5-44.3 9.4L291 122.4c-21.8 33.4-58.9 53.6-98.8 53.6c-12.6 0-24.9-2-36.6-5.8c-.9-.3-1.8-.7-2.7-.9z">
+                                                            </path>
+                                                        </svg>
+                                                        {{ Number(route.query.childs) }}
+                                                    </div>
+                                                    <div v-if="Number(route.query.infants) > 0"
+                                                        class="border border-primary rounded-2 px-1">
+                                                        <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                            viewBox="0 0 320 512"
+                                                            class="text-black h-4 w-4 text-[#F8C5B3]" height="15px"
+                                                            width="15px" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M152 88a72 72 0 1 1 144 0A72 72 0 1 1 152 88zM39.7 144.5c13-17.9 38-21.8 55.9-8.8L131.8 162c26.8 19.5 59.1 30 92.2 30s65.4-10.5 92.2-30l36.2-26.4c17.9-13 42.9-9 55.9 8.8s9 42.9-8.8 55.9l-36.2 26.4c-13.6 9.9-28.1 18.2-43.3 25V288H128V251.7c-15.2-6.7-29.7-15.1-43.3-25L48.5 200.3c-17.9-13-21.8-38-8.8-55.9zm89.8 184.8l60.6 53-26 37.2 24.3 24.3c15.6 15.6 15.6 40.9 0 56.6s-40.9 15.6-56.6 0l-48-48C70 438.6 68.1 417 79.2 401.1l50.2-71.8zm128.5 53l60.6-53 50.2 71.8c11.1 15.9 9.2 37.5-4.5 51.2l-48 48c-15.6 15.6-40.9 15.6-56.6 0s-15.6-40.9 0-56.6L284 419.4l-26-37.2z">
+                                                            </path>
+                                                        </svg>
+                                                        {{ Number(route.query.infants) }}
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                            <!-- Гол: Үнэ, Сонгох -->
+                                            <b-row v-if="moreFlights(Mainindex).length == findex + 1"
+                                                class="justify-content-end align-content-end h-100 mx-0">
+                                                <b-col
+                                                    class="d-flex d-md-block px-4 justify-content-between align-content-end align-content-sm-center text-md-end py-3">
+                                                    <div>
+                                                        <div
+                                                            class="fw-bold mb-1 align-content-end align-content-sm-center text-black">
+                                                            {{ Math.ceil(paginatedFlights[Mainindex].AdultPrice *
+                                                                parseFloat(rate)).toLocaleString() }}{{ currency }}
+                                                        </div>
+                                                        <div
+                                                            class="fw-light mb-1 align-content-end align-content-sm-center small text-black">
+                                                            Нийт: {{ Math.ceil(paginatedFlights[Mainindex].TotalPrice *
+                                                                parseFloat(rate)).toLocaleString() }}{{ currency }}
+                                                        </div>
+                                                        <div
+                                                            class="text-danger mb-2 align-content-end align-content-sm-center ">
+                                                            {{
+                                                                segments.FlightClass
+                                                            }}</div>
+                                                    </div>
+                                                    <b-button block variant="outline-primary" class="mb-0 mb-sm-2 "
+                                                        :id="`toggleOption${Mainindex}${segments.FlightNum}`"
+                                                        :aria-controls="`flightOption${segments.FlightNum}`"
+                                                        v-b-toggle="`flightOption${Mainindex}${segments.FlightNum}`"
+                                                        @click="fetchOptions(offer.OfferCode, SearchGuid)">
+                                                        {{ t('txtChoose') }}
+                                                    </b-button>
+                                                </b-col>
+                                            </b-row>
+                                            <!-- Доор: Дэлгэрэнгүй (always at bottom) -->
+                                            <b-row v-if="moreFlights(Mainindex).length == findex + 1"
+                                                class="border-2 border-top  border-primary rounded-bottom justify-content-center mx-0"
+                                                style="height: 42px;">
+                                                <b-col class="text-center py-2">
+                                                    <li class="list-inline-item" style="font-size: smaller;">
+                                                        <a :to="'/some-route/' + Mainindex + findex"
+                                                            :id="'toggleButton' + Mainindex + findex"
+                                                            :aria-controls="'flightDetail' + findex"
+                                                            v-b-toggle="'flightDetail' + Mainindex + findex"
+                                                            class="btn-more d-flex align-items-center collapsed p-0 mb-0 justify-content-center"
+                                                            role="button">
+                                                            Дэлгэрэнгүй
+                                                            <ChevronDown />
+                                                        </a>
+                                                    </li>
+                                                </b-col>
+                                            </b-row>
+                                        </b-col>
+
+                                        <!-- Details collapse -->
+                                        <b-col cols="12" class="bg-body-secondary">
+                                            <b-collapse :id="'flightDetail' + Mainindex + findex"
+                                                class="multi-collapse">
+                                                <div class="pt-3">
+                                                    <FlightDetailTab :flight="segments" :index="Mainindex" />
+                                                </div>
+                                            </b-collapse>
+                                            <b-collapse :id="`flightOption${Mainindex}${segments.FlightNum}`"
+                                                class="multi-collapse">
+                                                <div class="pt-3" v-if="isOptionLoaded">
+                                                    <OptionBooking :offerCode="offer.OfferCode"
+                                                        :searchGuid="SearchGuid" />
+                                                </div>
+                                            </b-collapse>
+                                        </b-col>
+                                    </b-row>
+
                                 </div>
                             </div>
                         </div>
@@ -375,7 +557,7 @@
 
 
 
-                        <div class="card-footer pt-0" style="font-size: smaller;">
+                        <!-- <div class="card-footer pt-0" style="font-size: smaller;">
                             <ul
                                 class="list-inline bg-light rounded-2 d-sm-flex text-center justify-content-sm-between mb-0 px-4 py-2">
                                 <li class="d-flex align-items-center list-inline-item text-primary"
@@ -400,8 +582,6 @@
                             </ul>
                             <b-collapse :id="'flightDetail' + Mainindex + segments.FlightNum" class="multi-collapse">
                                 <div class="pt-3">
-                                    <!-- <p>{{ segments }}</p>
-                                    <p>{{ Mainindex }}</p> -->
                                     <FlightDetailTab :flight="segments" :index="Mainindex" />
                                 </div>
                             </b-collapse>
@@ -410,7 +590,7 @@
                                     <OptionBooking :offerCode="offer.OfferCode" :searchGuid="SearchGuid" />
                                 </div>
                             </b-collapse>
-                        </div>
+                        </div> -->
 
 
                     </b-card>
@@ -456,6 +636,16 @@ import { useFlightStore } from '@/stores/flight';
 import { string } from 'yup'
 // Props
 // Fallback logo
+
+function getDotPositionStyle(index, total) {
+    const percent = ((index + 1) / (total + 1)) * 100;
+    return {
+        left: `${percent}%`,
+        transform: 'translate(-50%, -20%)',
+        top: '0',
+        bottom: '20px'
+    };
+}
 
 const show = ref<number>(Number(sessionStorage.getItem("flight")) || 1);
 const rate = sessionStorage.getItem('eur') || '1'
@@ -791,5 +981,19 @@ const nextPage = () => {
     color: #64748b;
     max-width: 500px;
     margin: 0 auto;
+}
+
+.vertical-divider {
+    border-left: 1px dashed #ccc;
+    width: 100%;
+    /* эсвэл 100% гэж болно */
+    margin: 0 0px;
+}
+
+@media (max-width: 768px) {
+    .vertical-divider {
+        display: none !important;
+        /* mobile дээр divider алга болго */
+    }
 }
 </style>
