@@ -38,9 +38,9 @@
 
                     <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('asc')">{{ t('txtPriceASC')
-                                }}</a></li>
+                        }}</a></li>
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('desc')">{{ t('txtPriceDESC')
-                                }}</a>
+                        }}</a>
                         </li>
                     </ul>
                 </div>
@@ -88,7 +88,7 @@
                             <div v-for="(flight, findex) in moreFlights(Mainindex)" :key="findex">
                                 <!-- <span>{{ flight }}</span> -->
                                 <div v-if="flight.length > 0">
-                                    <b-row class="px-1 px-sm-3">
+                                    <b-row class="pe-1 pe-sm-3">
                                         <!-- Main (info) column -->
                                         <b-col cols="12" md="10"
                                             class="d-flex flex-column pe-md-0 mb-3 mb-md-0 justify-content-between">
@@ -188,7 +188,7 @@
                                                             <b-col sm="4" md="3" class="mt-0 text-start ">
                                                                 <p class="mb-0" style="font-size: medium;">{{
                                                                     flight[0]?.Departure.Iata
-                                                                }}</p>
+                                                                    }}</p>
                                                                 <p class="mb-0 text-truncate"
                                                                     style="font-size: smaller; max-width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
                                                                     :title="StoreAirPorts.find((AirPorts: any) => AirPorts.Iata === flight[0]?.Departure.Iata)?.City">
@@ -332,12 +332,12 @@
                                                 <!-- {{ moreFlights(Mainindex).length }} {{ findex + 1 }} -->
                                             </div>
                                             <div v-if="moreFlights(Mainindex).length == findex + 1"
-                                                class="d-flex justify-content-end">
-                                                <div class="d-flex w-100 border-top border-primary justify-content-between border-2"
-                                                    style="height: 42px;">
-                                                    <div class="d-flex gap-4 gap-sm-0">
+                                                class="d-flex justify-content-end ms-0 ps-0">
+                                                <div class="d-flex ps-4 w-100 border-top border-primary justify-content-between border-2 bg-primary bg-opacity-10 "
+                                                    style="height: 42px; border-bottom-left-radius: 1rem;">
+                                                    <div class="d-flex gap-4 gap-sm-0 ">
                                                         <div
-                                                            class=" d-flex text-center border rounded m-2 px-3 justify-content-center small">
+                                                            class=" d-flex text-center border border-primary rounded m-2 px-3 justify-content-center small">
                                                             <span class="text-black"><svg stroke="currentColor"
                                                                     fill="currentColor" stroke-width="0"
                                                                     viewBox="0 0 320 512"
@@ -355,7 +355,7 @@
                                                             </span>
                                                         </div>
                                                         <div v-if="paginatedFlights[Mainindex].ChildPrice"
-                                                            class=" d-flex text-center border rounded m-2 px-3 justify-content-center small">
+                                                            class=" d-flex text-center border border-primary rounded m-2 px-3 justify-content-center small">
                                                             <span class="text-black"><svg stroke="currentColor"
                                                                     fill="currentColor" stroke-width="0"
                                                                     viewBox="0 0 320 512"
@@ -373,7 +373,7 @@
                                                             </span>
                                                         </div>
                                                         <div v-if="paginatedFlights[Mainindex].InfantPrice"
-                                                            class=" d-flex text-center border rounded m-2 px-3 justify-content-center small">
+                                                            class=" d-flex text-center border border-primary rounded m-2 px-3 justify-content-center small">
                                                             <span class="text-black"><svg stroke="currentColor"
                                                                     fill="currentColor" stroke-width="0"
                                                                     viewBox="0 0 320 512"
@@ -410,7 +410,11 @@
                                         </b-col>
 
                                         <!-- Баруун багана (үнэ, товч, дэлгэрэнгүй) -->
-                                        <b-col cols="12" md="2" class="d-flex flex-column px-0 justify-content-between">
+                                        <b-col cols="12" md="2"
+                                            class="d-flex flex-column px-0 justify-content-between bg-primary bg-opacity-10"
+                                            :style="show == 1 ? 'border-bottom-right-radius: 1rem; border-top-right-radius: 1rem;' : moreFlights(Mainindex).length === findex + 1
+                                                ? 'border-bottom-right-radius: 1rem;'
+                                                : 'border-top-right-radius: 1rem;'">
                                             <!-- Дээшээ: Icons -->
 
                                             <div>
@@ -418,7 +422,7 @@
                                                     (
                                                         (findex == 0)
                                                     )"
-                                                    class="d-flex rounded-top mt-2 mt-md-2 ms-md-2 gap-2 justify-content-start align-content-center">
+                                                    class="d-flex rounded-top mt-2 mt-md-2 ms-md-2 gap-2 justify-content-start align-content-center ">
                                                     <!-- <div class="d-flex align-items-center mt-1">
                                                     <Briefcase v-if="segments.Baggage" class="me-2" color="#5a2dd7"
                                                         :size="16" />
@@ -440,7 +444,7 @@
                                                 <div v-if="moreFlights(Mainindex).length > 0 &&
                                                     (
                                                         (findex == 0)
-                                                    )" class="d-flex gap-2 align-content-center mt-2 ms-2">
+                                                    )" class="d-flex gap-2 align-content-center mt-2 ms-2 ">
                                                     <div class="border border-primary rounded-2 px-1">
                                                         <svg stroke="currentColor" fill="currentColor" stroke-width="0"
                                                             viewBox="0 0 320 512"
@@ -480,7 +484,7 @@
                                             </div>
                                             <!-- Гол: Үнэ, Сонгох -->
                                             <b-row v-if="moreFlights(Mainindex).length == findex + 1"
-                                                class="justify-content-end align-content-end h-100 mx-0">
+                                                class="justify-content-end align-content-end h-100 mx-0 rounded-0">
                                                 <b-col
                                                     class="d-flex d-md-block px-4 justify-content-between align-content-end align-content-sm-center text-md-end py-3">
                                                     <div>
@@ -511,8 +515,8 @@
                                             </b-row>
                                             <!-- Доор: Дэлгэрэнгүй (always at bottom) -->
                                             <b-row v-if="moreFlights(Mainindex).length == findex + 1"
-                                                class="border-2 border-top  border-primary rounded-bottom justify-content-center mx-0"
-                                                style="height: 42px;">
+                                                class="border-2 border-top  border-primary justify-content-center mx-0 "
+                                                style="height: 42px; ">
                                                 <b-col class="text-center py-2">
                                                     <li class="list-inline-item" style="font-size: smaller;">
                                                         <a :to="'/some-route/' + Mainindex + findex"
@@ -530,11 +534,12 @@
                                         </b-col>
 
                                         <!-- Details collapse -->
-                                        <b-col cols="12" class="bg-body-secondary">
+                                        <b-col cols="12" class="ps-3 ms-2">
                                             <b-collapse :id="'flightDetail' + Mainindex + findex"
                                                 class="multi-collapse">
                                                 <div class="pt-3">
-                                                    <FlightDetailTab :flight="segments" :index="Mainindex" />
+                                                    <!-- {{ offer }} -->
+                                                    <FlightDetailTab :flight="offer" :index="Mainindex" />
                                                 </div>
                                             </b-collapse>
                                             <b-collapse :id="`flightOption${Mainindex}${segments.FlightNum}`"

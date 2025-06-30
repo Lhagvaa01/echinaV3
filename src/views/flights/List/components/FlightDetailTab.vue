@@ -1,906 +1,148 @@
 <template>
-  <div v-if="Array.isArray(StoreflightInfos) && StoreflightInfos[index]">
-    <b-tabs nav-class="nav nav-pills nav-justified nav-responsive  rounded p-2 mb-3 bg-primary bg-opacity-10">
-      <b-tab>
-        <template #title style="font-size: smaller;"> {{ t('txtFlightDetail') }} </template>
-        <div v-if="Array.isArray(StoreflightInfos[index].Offers.OfferInfo)">
-          <div v-if="getAllSegments(index).length === 1">
-
-            <div v-for="(offerSegment, segidx) in getAllSegments(index)" :key="segidx">
-
-
-
-              <b-card-header class="bg-body-secondary">
-                <div class="d-sm-flex justify-content-sm-between align-items-center ">
-
-                  <div class="d-flex mb-2 mb-sm-0">
-                    <img :src="offerSegment && offerSegment.MarketingAirline
-                      ? 'https://api.echina.mn/assets/d/' + offerSegment.MarketingAirline + '.png'
-                      : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
-
-                    <h6 class="fw-normal mb-0" style="font-size: smaller;">
-                      {{Array.isArray(StoreAirCompany.value) ? StoreAirCompany?.find((airline: any) => airline.Code ===
-                        offerSegment.MarketingAirline)?.Value || offerSegment.MarketingAirlineName :
-                        offerSegment.MarketingAirlineName || null}}
-                      ({{ offerSegment.FlightNum || 'SA-1254' }})
-                    </h6>
-                  </div>
-                  <h6 class="fw-normal mb-0"><span class="text-body">{{ t('txtClass') }}:</span> {{
-                    offerSegment.FlightClass
-                    }}
-                  </h6>
-                </div>
-              </b-card-header>
-
-              <b-card-body class="p-4">
-                <b-row class="g-4">
-                  <b-col sm="4">
-                    <h4 style="font-size: smaller;"> {{
-                      offerSegment.Departure.Date.split(" ")[1] }}
-                    </h4>
-
-                    <p class="mb-0">{{ offerSegment.Departure.Iata
-                    }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
-                        offerSegment.Departure.Terminal || '' }}
-                    </p>
-                    <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                      offerSegment.Departure.Iata)?.City || offerSegment.Departure.City}}</p>
-                    <p class="fw-bold text-black mb-0">{{
-                      formatDate(offerSegment.Departure.Date) }}
-                    </p>
-
-                  </b-col>
-
-                  <b-col sm="4" class="my-sm-auto text-center">
-                    <h5 style="font-size: small;">{{ convertTimeText(offerSegment.FlightTime)
-                    }}
-                    </h5>
-                    <div class="position-relative my-4">
-                      <hr class="bg-primary opacity-5 position-relative" />
-                      <div class="icon-container" style="display: flex; justify-content: space-between; ">
-                        <div class="icon-xs bg-secondary text-white  position-relative"
-                          style="transform: translate(0%, -250%); width: 8px;height: 8px;">
-                        </div>
-                        <div class="icon-xs bg-secondary text-white  position-relative"
-                          style="transform: translate(0%, -250%); width: 8px;height: 8px;">
-                        </div>
-                      </div>
-
-                    </div>
-                    <div class="icon-container" style="display: flex; justify-content: space-evenly; flex-wrap: wrap; ">
-                      <div>
-                        <div class="icon-xs bg-primary text-white  position-relative"
-                          style="transform: translate(10%, -670%); width: 8px;height: 8px;">
-                          <p class="mt-2 text-black custom-margin"
-                            style="transform: rotate(0deg); display: inline-block; font-size: smaller;">
-
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </b-col>
-
-                  <b-col sm="4">
-                    <h4 style="font-size: smaller;"> {{ offerSegment.Arrival.Date.split(" ")[1]
-                    }}
-                    </h4>
-                    <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span v-if="offerSegment.Arrival.Terminal">-{{
-                      t('txtTerminal') }}</span>
-                      {{
-                        offerSegment.Arrival.Terminal || '' }}
-                    </p>
-                    <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                      offerSegment.Arrival.Iata)?.City || offerSegment.Arrival.City}}</p>
-
-                    <p class="fw-bold text-black mb-0">{{
-                      formatDate(offerSegment.Arrival.Date) }}</p>
-                  </b-col>
-                </b-row>
-
-                <div v-if="offerSegment.Baggage"
-                  class="card-footer d-flex justify-content-end align-items-end w-100 bg-body-secondary">
-                  <div class="d-flex mx-2 me-5">
-                    <Briefcase class="mx-2" color="#3949AB" />
-                    {{ t('txtHandBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{ offerSegment.Baggage.BaggageType }}
-                  </div>
-                  <div v-if="offerSegment.CabinBaggage">
-                    <div class="d-flex">
-                      <Luggage class="mx-2" color="#3949AB" />
-                      {{ t('txtBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{ offerSegment.Baggage.BaggageType }}
-                    </div>
-                  </div>
-                </div>
-
-              </b-card-body>
-
-            </div>
-          </div>
-          <div v-else-if="getAllSegmentss(index).return?.length > 0">
-
-            <div class="m-3 fw-bold d-flex align-items-center">
-              <PlaneTakeoff color="#009dff" :size="32" class="me-3" />
-              {{ t('txtFromFlight') }}
-            </div>
-            <div v-for="(offerSegment, segidxs) in getAllSegmentss(index).go" :key="'go-' + segidxs">
-
-              <div class="d-grid">
-                <div class="d-flex ">
-                  <div class="d-flex p-2 align-items-center fw-medium">
-                    <div class="fs-5 text-black">{{ segidxs + 1 }}</div>
-                    <div class="d-flex flex-column justify-content-center align-items-center">
-                      <!-- Зураас -->
-                      <div style=" width: 2px; height: 210px; background-color: #3949AB;"></div>
-
-
-                      <!-- Дунд Repeat дүрс -->
-                      <div v-if="getAllSegmentss(index).go.length - 1 != segidxs">
-                        <div v-if="segidxs < getAllSegmentsDates(index).length - 1"
-                          class="mt-4 bg-light rounded-circle p-3">
-                          <Repeat :size="36" color="#3949AB" />
-                        </div>
-                        <div v-else style="width: 67px;"></div>
-                      </div>
-                      <div v-else style="width: 67px;"></div>
-
-                    </div>
-                  </div>
-
-
-
-                  <div class="w-100">
-                    <b-card-header class="bg-body-secondary">
-                      <div class="d-sm-flex justify-content-sm-between align-items-center">
-
-                        <div class="d-flex mb-2 mb-sm-0">
-                          <img :src="offerSegment && offerSegment.MarketingAirline
-                            ? 'https://api.echina.mn/assets/d/' + offerSegment.MarketingAirline + '.png'
-                            : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
-
-                          <h6 class="fw-normal mb-0">
-                            {{Array.isArray(StoreAirCompany) ? StoreAirCompany.find((airline: any) => airline.Code ===
-                              offerSegment.MarketingAirline)?.Value || offerSegment.MarketingAirlineName :
-                              offerSegment.MarketingAirlineName || null}}
-                            ({{ offerSegment.FlightNum || 'SA-1254' }})
-                          </h6>
-                        </div>
-                        <h6 class="fw-normal mb-0"><span class="text-body">{{ t('txtClass') }}:</span> {{
-                          offerSegment.FlightClass
-                        }}
-                        </h6>
-                      </div>
-                    </b-card-header>
-
-                    <b-card-body class="p-4 pb-3">
-                      <b-row class="g-4">
-                        <b-col sm="4">
-                          <h4 style="font-size: small;"> {{
-                            offerSegment.Departure.Date.split(" ")[1] }}
-                          </h4>
-
-                          <p class="mb-0">{{ offerSegment.Departure.Iata
-                            }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
-                              offerSegment.Departure.Terminal || '' }}
-                          </p>
-                          <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                            offerSegment.Departure.Iata).City}}</p>
-                          <p class="fw-bold text-black mb-0">{{
-                            formatDate(offerSegment.Departure.Date) }}
-                          </p>
-
-                        </b-col>
-
-                        <b-col sm="4" class="my-sm-auto text-center">
-                          <h5 style="font-size: small;">{{ convertTimeText(offerSegment.FlightTime)
-                            }}
-                          </h5>
-                          <div class="position-relative my-4">
-                            <hr class="bg-primary opacity-5 position-relative" />
-                            <div class="icon-container" style="display: flex; justify-content: space-between; ">
-                              <div class="icon-xs bg-secondary text-white  position-relative"
-                                style="transform: translate(0%, -250%); width: 8px;height: 8px;">
-                              </div>
-                              <div class="icon-xs bg-secondary text-white  position-relative"
-                                style="transform: translate(0%, -250%); width: 8px;height: 8px;">
-                              </div>
-                            </div>
-                          </div>
-                          <div class="icon-container"
-                            style="display: flex; justify-content: space-evenly; flex-wrap: wrap; ">
-                            <div>
-                              <div class="icon-xs bg-primary text-white  position-relative"
-                                style="transform: translate(10%, -670%); width: 8px;height: 8px;">
-                                <p class="mt-2 text-black custom-margin"
-                                  style="transform: rotate(0deg); display: inline-block; font-size: smaller;">
-
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </b-col>
-
-                        <b-col sm="4">
-                          <h4 style="font-size: small;"> {{ offerSegment.Arrival.Date.split(" ")[1]
-                            }}
-                          </h4>
-
-                          <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span v-if="offerSegment.Arrival.Terminal">-{{
-                            t('txtTerminal') }}</span>
-                            {{
-                              offerSegment.Arrival.Terminal || '' }}
-                          </p>
-                          <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                            offerSegment.Arrival.Iata).City}}</p>
-                          <p class="fw-bold text-black mb-0">{{
-                            formatDate(offerSegment.Arrival.Date) }}</p>
-                        </b-col>
-                      </b-row>
-
-
-
-                      <div v-if="offerSegment.Baggage" class="d-flex justify-content-end align-items-end w-100 mt-3">
-                        <div class="d-flex mx-2 me-5">
-                          <Briefcase class="mx-2" color="#3949AB" />
-                          {{ t('txtHandBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{
-                            offerSegment.Baggage.BaggageType }}
-                        </div>
-                        <div v-if="offerSegment.CabinBaggage">
-                          <div class="d-flex">
-                            <Luggage class="mx-2" color="#3949AB" />
-                            {{ t('txtBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{
-                              offerSegment.Baggage.BaggageType }}
-                          </div>
-                        </div>
-                      </div>
-                    </b-card-body>
-                    <div v-if="getAllSegmentss(index).go.length - 1 != segidxs">
-                      <div v-if="segidxs < getAllSegmentsDates(index).length - 1"
-                        class="card-footer d-flex align-items-center mw-100 bg-body-secondary justify-content-center">
-                        <div class="d-flex flex-row border border-primary rounded-2 w-100 justify-content-between">
-                          <div class="text-start fw-normal rounded-2 p-2 text-orange">
-
-
-                            <div>
-                              {{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                                offerSegment.Arrival.Iata).City}}
-                              {{ t('txtUPWait') }}
-                              {{ timeDifference(offerSegment.Arrival.Date, getAllSegmentss(index).go[segidxs +
-                                1].Departure.Date)
-                              }}
-                              {{ t('txtUPWait2') }}
-                            </div>
-
-                          </div>
-
-                          <!-- Ачаа өөрөө авах шаардлагатай бол нэмэлт анхааруулга -->
-                          <div v-if="offerSegment.SelfConnect == 'true'"
-                            class=" fw-normal  mt-1 p-2 d-flex text-center align-items-center">
-                            <TriangleAlert :size="24" />
-                            <h6 class="fw-light mb-0">
-                              {{ t('txtSelfTBag') }} <br />
-                              <span class="fst-normal">(Self-transfer baggage)</span>
-                            </h6>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                    <div v-else class="d-flex flex-row bg-light rounded-2 w-100 justify-content-between">
-                      <div v-if="offerSegment.SelfConnect == 'true'"
-                        class=" fw-normal  mt-1 p-2 d-flex text-center align-items-center justify-content-sm-end">
-                        <TriangleAlert :size="24" />
-                        <h6 class="fw-light mb-0">
-                          {{ t('txtSelfTBag') }} <br />
-                          <span class="fst-normal">(Self-transfer baggage)</span>
-                        </h6>
-                      </div>
-                      <!-- <button v-on:click="getAllSegmentss(index)">{{ test(index)[test(index).length - 1].Rph
-                        }}</button> -->
-                    </div>
-
-
-                  </div>
-
-                  <!-- <div v-if="segidxs < getAllSegmentsDates(index).length - 1" class="card-footer">
-                    <Repeat color="#3949AB" />
-                    <div class="bg-light text-start fw-normal rounded-2 mt-3 p-2 text-orange ">
-                      {{ StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                        offerSegment.Arrival.Iata).City }} дээр {{
-                        timeDifference(offerSegment.Arrival.Date, getAllSegmentsDates(index)[segidxs +
-                          1].Departure.Date)
-                      }} хүлээнэ
-                      <h6 v-if="offerSegment.SelfConnect == 'true'" class="fw-medium mb-0">
-                        Ачаагаа өөрөө авч, дахин бүртгүүлэх шаардлагатай <br />
-                        (Self-transfer baggage)
-                      </h6>
-                    </div>
-                  </div> -->
-
-
-
-                </div>
-              </div>
-            </div>
-            <div class="m-3 fw-bold d-flex align-items-center">
-              <PlaneTakeoff color="#009dff" :size="32" class="me-3" />
-              {{ t('txtToFlight') }}
-            </div>
-            <div v-for="(offerSegment, segidxs) in getAllSegmentss(index).return" :key="'ret-' + segidxs">
-
-              <div class="d-grid">
-                <div class="d-flex ">
-                  <div class="d-flex p-2 align-items-center fw-medium">
-                    <div class="fs-5 text-black">{{ segidxs + 1 }}</div>
-                    <div class="d-flex flex-column justify-content-center align-items-center">
-                      <!-- Зураас -->
-                      <div style=" width: 2px; height: 210px; background-color: #3949AB;"></div>
-
-
-                      <!-- Дунд Repeat дүрс -->
-                      <div v-if="getAllSegmentss(index).return.length - 1 != segidxs">
-                        <div v-if="segidxs < getAllSegmentsDates(index).length - 1"
-                          class="mt-4 bg-light rounded-circle p-3">
-                          <Repeat :size="36" color="#3949AB" />
-                        </div>
-                        <div v-else style="width: 67px;"></div>
-                      </div>
-                      <div v-else style="width: 67px;"></div>
-
-                    </div>
-                  </div>
-
-
-
-                  <div class="w-100">
-                    <b-card-header class="bg-body-secondary">
-                      <div class="d-sm-flex justify-content-sm-between align-items-center">
-
-                        <div class="d-flex mb-2 mb-sm-0">
-                          <img :src="offerSegment && offerSegment.MarketingAirline
-                            ? 'https://api.echina.mn/assets/d/' + offerSegment.MarketingAirline + '.png'
-                            : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
-
-                          <h6 class="fw-normal mb-0">
-                            {{Array.isArray(StoreAirCompany) ? StoreAirCompany.find((airline: any) => airline.Code ===
-                              offerSegment.MarketingAirline).Value : StoreAirCompany.Value}}
-                            ({{ offerSegment.FlightNum || 'SA-1254' }})
-                          </h6>
-                        </div>
-                        <h6 class="fw-normal mb-0"><span class="text-body">{{ t('txtClass') }}:</span> {{
-                          offerSegment.FlightClass
-                        }}
-                        </h6>
-                      </div>
-                    </b-card-header>
-
-                    <b-card-body class="p-4 pb-3">
-                      <b-row class="g-4">
-                        <b-col sm="4">
-                          <h4 style="font-size: small;"> {{
-                            offerSegment.Departure.Date.split(" ")[1] }}
-                          </h4>
-
-                          <p class="mb-0">{{ offerSegment.Departure.Iata
-                            }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
-                              offerSegment.Departure.Terminal || '' }}
-                          </p>
-                          <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                            offerSegment.Departure.Iata).City}}</p>
-                          <p class="fw-bold text-black mb-0">{{
-                            formatDate(offerSegment.Departure.Date) }}
-                          </p>
-
-                        </b-col>
-
-                        <b-col sm="4" class="my-sm-auto text-center">
-                          <h5 style="font-size: small;">{{ convertTimeText(offerSegment.FlightTime)
-                            }}
-                          </h5>
-                          <div class="position-relative my-4">
-                            <hr class="bg-primary opacity-5 position-relative" />
-                            <div class="icon-container" style="display: flex; justify-content: space-between; ">
-                              <div class="icon-xs bg-secondary text-white  position-relative"
-                                style="transform: translate(0%, -250%); width: 8px;height: 8px;">
-                              </div>
-                              <div class="icon-xs bg-secondary text-white  position-relative"
-                                style="transform: translate(0%, -250%); width: 8px;height: 8px;">
-                              </div>
-                            </div>
-                          </div>
-                          <div class="icon-container"
-                            style="display: flex; justify-content: space-evenly; flex-wrap: wrap; ">
-                            <div>
-                              <div class="icon-xs bg-primary text-white  position-relative"
-                                style="transform: translate(10%, -670%); width: 8px;height: 8px;">
-                                <p class="mt-2 text-black custom-margin"
-                                  style="transform: rotate(0deg); display: inline-block; font-size: smaller;">
-
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </b-col>
-
-                        <b-col sm="4">
-                          <h4 style="font-size: small;"> {{ offerSegment.Arrival.Date.split(" ")[1]
-                            }}
-                          </h4>
-
-                          <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span v-if="offerSegment.Arrival.Terminal">-{{
-                            t('txtTerminal') }}</span>
-                            {{
-                              offerSegment.Arrival.Terminal || '' }}
-                          </p>
-                          <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                            offerSegment.Arrival.Iata).City}}</p>
-                          <p class="fw-bold text-black mb-0">{{
-                            formatDate(offerSegment.Arrival.Date) }}</p>
-                        </b-col>
-                      </b-row>
-
-
-
-                      <div v-if="offerSegment.Baggage" class="d-flex justify-content-end align-items-end w-100 mt-3">
-                        <div class="d-flex mx-2 me-5">
-                          <Briefcase class="mx-2" color="#3949AB" />
-                          {{ t('txtHandBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{
-                            offerSegment.Baggage.BaggageType }}
-                        </div>
-                        <div v-if="offerSegment.CabinBaggage">
-                          <div class="d-flex">
-                            <Luggage class="mx-2" color="#3949AB" />
-                            {{ t('txtBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{
-                              offerSegment.Baggage.BaggageType
-                            }}
-                          </div>
-                        </div>
-                      </div>
-                    </b-card-body>
-                    <div v-if="getAllSegmentss(index).return.length - 1 != segidxs">
-                      <div v-if="segidxs < getAllSegmentsDates(index).length - 1"
-                        class="card-footer d-flex align-items-center mw-100 bg-body-secondary justify-content-center">
-                        <div class="d-flex flex-row border border-primary rounded-2 w-100 justify-content-between">
-                          <div class="text-start fw-normal rounded-2 p-2 text-orange">
-
-
-                            <div>
-                              {{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                                offerSegment.Arrival.Iata).City}}
-                              {{ t('txtUPWait') }}
-                              {{ timeDifference(offerSegment.Arrival.Date, getAllSegmentss(index).return[segidxs +
-                                1].Departure.Date)
-                              }}
-                              {{ t('txtUPWait2') }}
-                            </div>
-
-                          </div>
-
-                          <!-- Ачаа өөрөө авах шаардлагатай бол нэмэлт анхааруулга -->
-                          <div v-if="offerSegment.SelfConnect == 'true'"
-                            class=" fw-normal  mt-1 p-2 d-flex text-center align-items-center">
-                            <TriangleAlert :size="24" />
-                            <h6 class="fw-light mb-0">
-                              {{ t('txtSelfTBag') }} <br />
-                              <span class="fst-normal">(Self-transfer baggage)</span>
-                            </h6>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                    <div v-else class="d-flex flex-row bg-light rounded-2 w-100 justify-content-between">
-                      <div v-if="offerSegment.SelfConnect == 'true'"
-                        class=" fw-normal  mt-1 p-2 d-flex text-center align-items-center justify-content-sm-end">
-                        <TriangleAlert :size="24" />
-                        <h6 class="fw-light mb-0">
-                          {{ t('txtSelfTBag') }} <br />
-                          <span class="fst-normal">(Self-transfer baggage)</span>
-                        </h6>
-                      </div>
-                      <!-- <button v-on:click="getAllSegmentss(index)">{{ test(index)[test(index).length - 1].Rph
-                        }}</button> -->
-                    </div>
-
-
-                  </div>
-
-                  <!-- <div v-if="segidxs < getAllSegmentsDates(index).length - 1" class="card-footer">
-                    <Repeat color="#3949AB" />
-                    <div class="bg-light text-start fw-normal rounded-2 mt-3 p-2 text-orange ">
-                      {{ StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                        offerSegment.Arrival.Iata).City }} дээр {{
-                        timeDifference(offerSegment.Arrival.Date, getAllSegmentsDates(index)[segidxs +
-                          1].Departure.Date)
-                      }} хүлээнэ
-                      <h6 v-if="offerSegment.SelfConnect == 'true'" class="fw-medium mb-0">
-                        Ачаагаа өөрөө авч, дахин бүртгүүлэх шаардлагатай <br />
-                        (Self-transfer baggage)
-                      </h6>
-                    </div>
-                  </div> -->
-
-
-
-                </div>
-              </div>
-            </div>
-          </div>
-          <div v-else>
-            <!-- <button v-on:click="getAllSegmentss(index)">{{ test(index)[test(index).length - 1].Rph
-              }}</button> -->
-            <div v-if="show == 1" class="m-3 fw-bold d-flex align-items-center">
-              <PlaneTakeoff color="#009dff" :size="32" class="me-3" />
-              {{ t('txtFromFlight') }}
-            </div>
-            <div v-for="(offerSegment, segidxs) in getAllSegmentss(index).go" :key="'go-' + segidxs">
-              <div v-if="show == 3" class="m-3 fw-bold d-flex align-items-center">
-                <PlaneTakeoff color="#009dff" :size="32" class="me-3" />
-                {{ t('txtFromFlight') }}
-              </div>
-              <div class="d-grid">
-                <div class="d-flex ">
-                  <div class="d-flex p-2 align-items-center fw-medium">
-                    <div class="fs-5 text-black">{{ segidxs + 1 }}</div>
-                    <div class="d-flex flex-column justify-content-center align-items-center">
-                      <!-- Зураас -->
-                      <div style=" width: 2px; height: 210px; background-color: #3949AB;"></div>
-
-
-                      <!-- Дунд Repeat дүрс -->
-                      <div v-if="getAllSegmentss(index).go.length - 1 != segidxs">
-                        <div v-if="segidxs < getAllSegmentsDates(index).length - 1"
-                          class="mt-4 bg-light rounded-circle p-3">
-                          <Repeat :size="36" color="#3949AB" />
-                        </div>
-                        <div v-else style="width: 67px;"></div>
-                      </div>
-                      <div v-else style="width: 67px;"></div>
-
-                    </div>
-                  </div>
-
-
-
-                  <div class="w-100">
-                    <b-card-header class="bg-body-secondary">
-                      <div class="d-sm-flex justify-content-sm-between align-items-center">
-
-                        <div class="d-flex mb-2 mb-sm-0">
-                          <img :src="offerSegment && offerSegment.MarketingAirline
-                            ? 'https://api.echina.mn/assets/d/' + offerSegment.MarketingAirline + '.png'
-                            : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
-
-                          <h6 class="fw-normal mb-0">
-                            {{Array.isArray(StoreAirCompany) ? StoreAirCompany.find((airline: any) => airline.Code ===
-                              offerSegment.MarketingAirline)?.Value || offerSegment.MarketingAirlineName :
-                              StoreAirCompany?.Value}}
-                            ({{ offerSegment.FlightNum || 'SA-1254' }})
-                          </h6>
-                        </div>
-                        <h6 class="fw-normal mb-0"><span class="text-body">{{ t('txtClass') }}:</span> {{
-                          offerSegment.FlightClass
-                        }}
-                        </h6>
-                      </div>
-                    </b-card-header>
-
-                    <b-card-body class="p-4 pb-3">
-                      <b-row class="g-4">
-                        <b-col sm="4">
-                          <h4 style="font-size: small;"> {{
-                            offerSegment.Departure.Date.split(" ")[1] }}
-                          </h4>
-
-                          <p class="mb-0">{{ offerSegment.Departure.Iata
-                            }}<span v-if="offerSegment.Departure.Terminal">-{{ t('txtTerminal') }}</span> {{
-                              offerSegment.Departure.Terminal || '' }}
-                          </p>
-                          <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                            offerSegment.Departure.Iata)?.City || offerSegment.Departure.City}}</p>
-                          <p class="fw-bold text-black mb-0">{{
-                            formatDate(offerSegment.Departure.Date) }}
-                          </p>
-
-                        </b-col>
-
-                        <b-col sm="4" class="my-sm-auto text-center">
-                          <h5 style="font-size: small;">{{ convertTimeText(offerSegment.FlightTime)
-                            }}
-                          </h5>
-                          <div class="position-relative my-4">
-                            <hr class="bg-primary opacity-5 position-relative" />
-                            <div class="icon-container" style="display: flex; justify-content: space-between; ">
-                              <div class="icon-xs bg-secondary text-white  position-relative"
-                                style="transform: translate(0%, -250%); width: 8px;height: 8px;">
-                              </div>
-                              <div class="icon-xs bg-secondary text-white  position-relative"
-                                style="transform: translate(0%, -250%); width: 8px;height: 8px;">
-                              </div>
-                            </div>
-
-                          </div>
-                          <div class="icon-container"
-                            style="display: flex; justify-content: space-evenly; flex-wrap: wrap; ">
-                            <div>
-                              <div class="icon-xs bg-primary text-white  position-relative"
-                                style="transform: translate(10%, -670%); width: 8px;height: 8px;">
-                                <p class="mt-2 text-black custom-margin"
-                                  style="transform: rotate(0deg); display: inline-block; font-size: smaller;">
-
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </b-col>
-
-                        <b-col sm="4">
-                          <h4 style="font-size: small;"> {{ offerSegment.Arrival.Date.split(" ")[1]
-                            }}
-                          </h4>
-
-                          <p class="mb-0">{{ offerSegment.Arrival.Iata }}<span v-if="offerSegment.Arrival.Terminal">-{{
-                            t('txtTerminal') }}</span>
-                            {{
-                              offerSegment.Arrival.Terminal || '' }}
-                          </p>
-                          <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                            offerSegment.Arrival.Iata)?.City || offerSegment.Arrival.City}}</p>
-                          <p class="fw-bold text-black mb-0">{{
-                            formatDate(offerSegment.Arrival.Date) }}</p>
-                        </b-col>
-                      </b-row>
-
-
-
-                      <div v-if="offerSegment.Baggage" class="d-flex justify-content-end align-items-end w-100 mt-3">
-                        <div class="d-flex mx-2 me-5">
-                          <Briefcase class="mx-2" color="#3949AB" />
-                          {{ t('txtHandBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{
-                            offerSegment.Baggage.BaggageType }}
-                        </div>
-                        <div v-if="offerSegment.CabinBaggage">
-                          <div class="d-flex">
-                            <Luggage class="mx-2" color="#3949AB" />
-                            {{ t('txtBaggage') }}: ({{ offerSegment.Baggage.Count }})-{{
-                              offerSegment.Baggage.BaggageType }}
-                          </div>
-                        </div>
-                      </div>
-                    </b-card-body>
-                    <div v-if="getAllSegmentss(index).go.length - 1 != segidxs">
-                      <div v-if="segidxs < getAllSegmentsDates(index).length - 1"
-                        class="card-footer d-flex align-items-center mw-100 bg-body-secondary justify-content-center">
-                        <div class="d-flex flex-row border border-primary rounded-2 w-100 justify-content-between">
-                          <div class="text-start fw-normal rounded-2 p-2 text-orange">
-
-
-                            <div>
-                              {{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                                offerSegment.Arrival.Iata)?.City || offerSegment.Arrival.City}}
-                              {{ t('txtUPWait') }}
-                              {{ timeDifference(offerSegment.Arrival.Date, getAllSegmentsDates(index)[segidxs +
-                                1].Departure.Date)
-                              }}
-                              {{ t('txtUPWait2') }}
-                            </div>
-
-                          </div>
-
-                          <!-- Ачаа өөрөө авах шаардлагатай бол нэмэлт анхааруулга -->
-                          <div v-if="offerSegment.SelfConnect == 'true'"
-                            class=" fw-normal  mt-1 p-2 d-flex text-center align-items-center">
-                            <TriangleAlert :size="24" />
-                            <h6 class="fw-light mb-0">
-                              {{ t('txtSelfTBag') }} <br />
-                              <span class="fst-normal">(Self-transfer baggage)</span>
-                            </h6>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                    <div v-else class="d-flex flex-row bg-light rounded-2 w-100 justify-content-between">
-                      <div v-if="offerSegment.SelfConnect == 'true'"
-                        class=" fw-normal  mt-1 p-2 d-flex text-center align-items-center justify-content-sm-end">
-                        <TriangleAlert :size="24" />
-                        <h6 class="fw-light mb-0">
-                          {{ t('txtSelfTBag') }} <br />
-                          <span class="fst-normal">(Self-transfer baggage)</span>
-                        </h6>
-                      </div>
-                      <!-- <button v-on:click="getAllSegmentss(index)">{{ test(index)[test(index).length - 1].Rph
-                        }}</button> -->
-                    </div>
-
-
-                  </div>
-
-                  <!-- <div v-if="segidxs < getAllSegmentsDates(index).length - 1" class="card-footer">
-                    <Repeat color="#3949AB" />
-                    <div class="bg-light text-start fw-normal rounded-2 mt-3 p-2 text-orange ">
-                      {{ StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                        offerSegment.Arrival.Iata).City }} дээр {{
-                        timeDifference(offerSegment.Arrival.Date, getAllSegmentsDates(index)[segidxs +
-                          1].Departure.Date)
-                      }} хүлээнэ
-                      <h6 v-if="offerSegment.SelfConnect == 'true'" class="fw-medium mb-0">
-                        Ачаагаа өөрөө авч, дахин бүртгүүлэх шаардлагатай <br />
-                        (Self-transfer baggage)
-                      </h6>
-                    </div>
-                  </div> -->
-
-
-
-                </div>
-              </div>
-            </div>
-          </div>
+  <div class="container py-4">
+    <h5 class="fw-bold mb-3">
+      {{ getAirportName(firstDeparture) }} ⇄ {{ getAirportName(lastArrival) }}
+    </h5>
+    <div class="row">
+      <!-- Явах багана -->
+      <div class="col-md-6">
+        <div class="mb-2">
+          <span class="section-label bg-primary">Явах</span>
+          <span class="ms-2 text-muted">
+            {{ getSegmentDate(goSegments[0]?.Departure.Date) }} -
+            {{ getSegmentDate(goSegments[goSegments.length - 1]?.Arrival.Date) }}
+          </span>
         </div>
-        <div v-else>{{ StoreflightInfos[index].Offers.OfferInfo }} + {{ getAllSegments(index) }}</div>
+        <div v-for="(seg, idx) in goSegments" :key="'go' + idx" class=" mb-2">
+          <div class="d-flex">
+            <!-- Цаг, лого, огноо -->
+            <div class="d-grid text-center justify-content-between align-items-start" style="min-width:70px;">
+              <div class="time">{{ getTime(seg.Departure.Date) }}</div>
+              <img v-if="getAirlineLogo(seg.MarketingAirline)" :src="getAirlineLogo(seg.MarketingAirline)"
+                style="width:32px;" />
+              <!-- <div v-if="idx === 0" class="text-danger small">{{ getSegmentDate(seg.Departure.Date) }}</div> -->
 
-      </b-tab>
-      <b-tab>
-        <template #title style="font-size: smaller;"> {{ t('txtBagRule') }} </template>
-        <div v-if="Array.isArray(StoreflightInfos) && StoreflightInfos[index]">
-
-
-
-          <div v-if="Array.isArray(StoreflightInfos[index].Offers.OfferInfo)">
-            <div v-for="(offer, idx) in StoreflightInfos[index].Offers.OfferInfo" :key="idx">
-              <div v-if="Array.isArray(offer.Segments.OfferSegment)">
-                <div
-                  v-if="StoreflightInfos[index].Offers.OfferInfo.length === 1 && StoreflightInfos[index].Offers.OfferInfo[0].Segments.OfferSegment.length === 1"
-                  v-for="(offerSegment, segidx) in offer.Segments.OfferSegment" :key="segidx">
-
-                  <b-card no-body class="border mb-3">
-                    <b-card-header class="d-flex align-items-center border-bottom bg-body-secondary">
-                      <img :src="offerSegment.MarketingAirline
-                        ? 'https://api.echina.mn/assets/d/' + offerSegment.MarketingAirline + '.png'
-                        : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
-                      <b-card-title tag="h5" class="mb-0">{{
-                        offerSegment.Departure.Iata }} -
-                        {{ offerSegment.Arrival.Iata }}</b-card-title>
-                    </b-card-header>
-
-                    <b-card-body>
-                      <div class="table-responsive-lg">
-                        <table class="table caption-bottom mb-0">
-                          <caption class="pb-0">
-                            *1PC = 23KG
-                          </caption>
-                          <thead class="table-dark">
-                            <tr>
-                              <th scope="col" class="border-0 rounded-start">{{ t('txtBaggageType') }}</th>
-                              <th scope="col" class="border-0">{{ t('txtMeasure') }}</th>
-                              <th scope="col" class="border-0">{{ t('txtQTY') }}</th>
-                            </tr>
-                          </thead>
-                          <tbody class="border-top-0" v-if="offerSegment.Baggage || offerSegment.CabinBaggage">
-                            <tr v-if="offerSegment.Baggage">
-                              <td>Baggage</td>
-                              <td>{{ offerSegment.Baggage.BaggageType }}</td>
-                              <td>{{ offerSegment.Baggage.Count }}</td>
-                            </tr>
-                            <tr v-if="offerSegment.CabinBaggage">
-                              <td>CabinBaggage</td>
-                              <td>
-                                {{ offerSegment.CabinBaggage.BaggageType }}
-                              </td>
-                              <td>
-                                {{ offerSegment.CabinBaggage.Count }}
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </b-card-body>
-                  </b-card>
-                </div>
-                <div v-else v-for="(offerSegment, segidxs) in offer.Segments.OfferSegment" :key="segidxs">
-                  <b-card no-body class="border mb-3">
-                    <b-card-header class="d-flex align-items-center border-bottom bg-body-secondary">
-                      <img :src="offerSegment.MarketingAirline
-                        ? 'https://api.echina.mn/assets/d/' + offerSegment.MarketingAirline + '.png'
-                        : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
-                      <b-card-title tag="h5" class="mb-0">{{
-                        offerSegment.Departure.Iata }} -
-                        {{ offerSegment.Arrival.Iata }}</b-card-title>
-                    </b-card-header>
-
-                    <b-card-body>
-                      <div class="table-responsive-lg">
-                        <table class="table caption-bottom mb-0">
-                          <caption class="pb-0">
-                            *1PC = 23KG
-                          </caption>
-                          <thead class="table-dark">
-                            <tr>
-                              <th scope="col" class="border-0 rounded-start">{{ t('txtBaggageType') }}</th>
-                              <th scope="col" class="border-0">{{ t('txtMeasure') }}</th>
-                              <th scope="col" class="border-0">{{ t('txtQTY') }}</th>
-                            </tr>
-                          </thead>
-                          <tbody class="border-top-0" v-if="offerSegment.Baggage || offerSegment.CabinBaggage">
-                            <tr v-if="offerSegment.Baggage">
-                              <td>Baggage</td>
-                              <td>{{ offerSegment.Baggage.BaggageType }}</td>
-                              <td>{{ offerSegment.Baggage.Count }}</td>
-                            </tr>
-                            <tr v-if="offerSegment.CabinBaggage">
-                              <td>CabinBaggage</td>
-                              <td>
-                                {{ offerSegment.CabinBaggage.BaggageType }}
-                              </td>
-                              <td>
-                                {{ offerSegment.CabinBaggage.Count }}
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </b-card-body>
-                  </b-card>
-                </div>
+              <div class="time">{{ getTime(seg.Arrival.Date) }}</div>
+            </div>
+            <!-- Timeline -->
+            <div class="mx-2 d-flex flex-column align-items-center">
+              <!-- <div :class="['dot', idx === goSegments.length - 1 ? 'dot-last' : '']"></div> -->
+              <div class="timeline-line"></div>
+            </div>
+            <!-- Мэдээлэл -->
+            <div class="flex-grow-1 pb-3">
+              <div class="fw-bold text-black">
+                {{ getAirportName(seg.Departure.Iata) }} ({{ seg.Departure.Iata }})
               </div>
+              <div class="flight-meta bg-light p-1 rounded " style="font-size:13px;">
+                {{ getAirlineName(seg.MarketingAirline) }} {{ seg.FlightNum }} • {{ seg.AirCraft }}
+                <br>
+                {{ convertTimeText(seg.FlightTime) }}<br>
+                <span class="badge bg-light text-primary border me-1 mt-1">
+                  <!-- {{ seg.CabinBaggage?.Count || "1" }}x Гар тээш • {{ seg.Baggage?.Count || "1" }}кг Тээш -->
+                </span>
+              </div>
+
+              <div class="fw-bold text-black">
+                {{ getAirportName(seg.Arrival.Iata) }} ({{ seg.Arrival.Iata }})
+              </div>
+
             </div>
           </div>
-        </div>
-      </b-tab>
-      <b-tab>
-        <template #title style="font-size: smaller;"> {{ t('txtCancelationRule') }} </template>
-        <b-card no-body class="border">
-          <b-card-header class="d-flex align-items-center border-bottom bg-body-secondary">
-            <img :src="element9" class="h-20px me-1" alt="" />
-            <b-card-title tag="h5" class="mb-0">BOM - CDG</b-card-title>
-          </b-card-header>
+          <div class="d-flex" v-if="idx < goSegments.length - 1">
+            <!-- <div class="fw-bold text-black">
+              {{ getAirportName(seg.Arrival.Iata) }} ({{ seg.Arrival.Iata }})
+            </div> -->
+            <div class="mx-2 px-3"></div>
+            <div class="mx-2 d-flex flex-column align-items-center">
+              <!-- <div :class="['dot', idx === goSegments.length - 1 ? 'dot-last' : '']"></div> -->
 
-          <b-card-body>
-            <div class="table-responsive-lg">
-              <table class="table caption-bottom mb-0">
-                <caption class="pb-0">
-                  *From The Date Of Departure
-                </caption>
-                <thead class="table-dark">
-                  <tr>
-                    <th scope="col" class="border-0 rounded-start">Time Frame</th>
-                    <th scope="col" class="border-0 rounded-end">Air Free + MMT Free</th>
-                  </tr>
-                </thead>
-                <tbody class="border-top-0">
-                  <tr>
-                    <td>0 hours to 24 hours</td>
-                    <td>Non Refundable</td>
-                  </tr>
-                  <tr>
-                    <td>24 hours to 365 days</td>
-                    <td>{{ currency }}16,325 + {{ currency }}250</td>
-                  </tr>
-                </tbody>
-              </table>
+              <!-- <div class="timeline-line"></div> -->
+
             </div>
-          </b-card-body>
-        </b-card>
-      </b-tab>
-    </b-tabs>
+            <div v-if="idx < goSegments.length - 1" class="alert alert-danger py-1 px-2 mb-1 ms-4"
+              style="font-size:13px;">
+              Дамжин буух: {{ getAirportName(seg.Arrival.Iata) }}
+              <span v-if="goLayovers[idx]">• Хүлээх: {{ goLayovers[idx] }}</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- Буцах багана -->
+      <div v-if="show === 2" class="col-md-6">
+        <div class="mb-2">
+          <span class="section-label bg-secondary">Буцах</span>
+          <span class="ms-2 text-muted">
+            {{ getSegmentDate(returnSegments[0]?.Departure.Date) }} -
+            {{ getSegmentDate(returnSegments[returnSegments.length - 1]?.Arrival.Date) }}
+          </span>
+        </div>
+        <div v-for="(seg, idx) in returnSegments" :key="'return' + idx" class=" mb-2">
+          <div class="d-flex">
+            <!-- Цаг, лого, огноо -->
+            <div class="d-grid text-center justify-content-between align-items-start" style="min-width:70px;">
+              <div class="time">{{ getTime(seg.Departure.Date) }}</div>
+              <img v-if="getAirlineLogo(seg.MarketingAirline)" :src="getAirlineLogo(seg.MarketingAirline)"
+                style="width:32px;" />
+              <!-- <div v-if="idx === 0" class="text-danger small">{{ getSegmentDate(seg.Departure.Date) }}</div> -->
+
+              <div class="time">{{ getTime(seg.Arrival.Date) }}</div>
+            </div>
+            <!-- Timeline -->
+            <div class="mx-2 d-flex flex-column align-items-center">
+              <!-- <div :class="['dot', idx === goSegments.length - 1 ? 'dot-last' : '']"></div> -->
+              <div class="timeline-line"></div>
+            </div>
+            <!-- Мэдээлэл -->
+            <div class="flex-grow-1 pb-3">
+              <div class="fw-bold text-black">
+                {{ getAirportName(seg.Departure.Iata) }} ({{ seg.Departure.Iata }})
+              </div>
+              <div class="flight-meta bg-light p-1 rounded " style="font-size:13px;">
+                {{ getAirlineName(seg.MarketingAirline) }} {{ seg.FlightNum }} • {{ seg.AirCraft }}
+                <br>
+                {{ convertTimeText(seg.FlightTime) }}<br>
+                <span class="badge bg-light text-primary border me-1 mt-1">
+                  <!-- {{ seg.CabinBaggage.Count }}x Гар тээш • {{ seg.Baggage.Count }}кг Тээш -->
+                </span>
+              </div>
+
+              <div class="fw-bold text-black">
+                {{ getAirportName(seg.Arrival.Iata) }} ({{ seg.Arrival.Iata }})
+              </div>
+
+            </div>
+          </div>
+          <div class="d-flex" v-if="idx < returnSegments.length - 1">
+            <!-- <div class="fw-bold text-black">
+              {{ getAirportName(seg.Arrival.Iata) }} ({{ seg.Arrival.Iata }})
+            </div> -->
+            <div class="mx-2 px-3"></div>
+            <div class="mx-2 d-flex flex-column align-items-center">
+              <!-- <div :class="['dot', idx === goSegments.length - 1 ? 'dot-last' : '']"></div> -->
+
+              <!-- <div class="timeline-line"></div> -->
+
+            </div>
+            <div v-if="idx < returnSegments.length - 1" class="alert alert-danger py-1 px-2 mb-1 ms-4"
+              style="font-size:13px;">
+              Дамжин буух: {{ getAirportName(seg.Arrival.Iata) }}
+              <span v-if="returnLayovers[idx]">• Хүлээх: {{ returnLayovers[idx] }}</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
-  <div v-else>{{ StoreflightInfos }}</div>
 </template>
 
 <script lang="ts" setup>
-import element9 from '@/assets/images/element/09.svg'
-import { currency } from '@/helpers/constants'
-import { faPlane } from '@fortawesome/free-solid-svg-icons'
-import { Repeat, Briefcase, Luggage, TriangleAlert } from 'lucide-vue-next';
-import CabCard from '../../../cab/List/components/CabCard.vue'
-import { cabsLists } from '../../../cab/List/data'
-import { computed, ref, watchEffect } from 'vue'
-import fallbackLogo from '@/assets/images/element/09.svg'
-import { useFlightStore } from '@/stores/flight';
+import { computed, ref } from "vue";
+import { useFlightStore } from "@/stores/flight"; // path-аа project-ынхаа дагуу тохируул
 
-import { PlaneTakeoff } from 'lucide-vue-next';
-import { useI18n } from 'vue-i18n'
-
-const { t, locale } = useI18n()
+const flightStore = useFlightStore();
 
 const props = defineProps({
   flight: {
@@ -913,283 +155,148 @@ const props = defineProps({
   }
 })
 
-const flightStore = useFlightStore();
-
 const show = ref<number>(Number(sessionStorage.getItem("flight")) || 1);
 const trips = parseInt(sessionStorage.getItem("trips") || "0", 10);
+const index = computed(() => props.index);
+const flight = computed(() => props.flight); // 1-based index
 
-// Access state
-const StoreflightInfos = computed(() => flightStore.flightInfos || flight.value);
-const StoreAirCompany = computed(() => flightStore.AirCompany || []);
-const StoreAirPorts = computed(() => flightStore.AirPorts || []);
+const StoreflightInfos = computed(() => flightStore.flightInfos || []);
+const StoreAirCompany = computed(() => flightStore.AirCompany?.CodeValue || []);
+const StoreAirPorts = computed(() => flightStore.AirPorts?.AirPortInfo || []);
 
-const flights = computed(() => {
-  const flightArray = Array.isArray(props.flight) ? props.flight : [props.flight];
+const teest = computed(() => OfferInfo.value.flatMap((offer: any) => offer.Segments?.OfferSegment || []).filter((seg: any) => seg.Rph === "2"));
 
-  return flightArray.map((flight) => {
-    const offerInfoArray = Array.isArray(flight.Offers?.OfferInfo)
-      ? flight.Offers.OfferInfo
-      : [flight.Offers?.OfferInfo];
+// ----------- ХАМГИЙН ГОЛ ХУВЬСАГЧИД -----------
+// const OfferInfo = computed(() =>
+//   StoreflightInfos.value[index.value]?.Offers?.OfferInfo ?? []
+// );
+const OfferInfo = computed(() =>
+  props.flight?.Offers?.OfferInfo ?? []
+);
 
-    return {
-      ...flight,
-      Offers: {
-        ...flight.Offers,
-        OfferInfo: offerInfoArray
-      }
-    };
-  });
-});
-
-
-
-watchEffect(() => {
-  if (flightStore.flightInfos.length == 0) {
-    console.log(props.flight)
-    flightStore.flightInfos = flights; // props.flight-оос өгөгдөл оноож байна
-  } else {
-    // console.log(props.flight)
-  }
-});
-
-
-
-const getFlightData = (index: number) => {
-  return StoreflightInfos.value[index] || { Offers: { OfferInfo: [] } };
-};
-
-const test = (index: number) => {
-  // console.log(getFlightData(index).Offers.OfferInfo.flatMap((Rph: any) => Rph) || [])
-  return getFlightData(index).Offers.OfferInfo.flatMap((Rph: any) => Rph) || []
-}
-
-// const getAllSegments = (index: number) => {
-//   console.log(getFlightData(index).Offers.OfferInfo.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments.OfferSegment) || [])
-//   return getFlightData(index).Offers.OfferInfo.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments.OfferSegment) || [];
-// };
-const getAllSegments = (index: number) => {
-  const data = getFlightData(index);
-  const offerInfos = Array.isArray(data.Offers?.OfferInfo)
-    ? data.Offers.OfferInfo
-    : [data.Offers?.OfferInfo];
-
-  const segments = offerInfos.flatMap((offer) => offer.Segments?.OfferSegment || []);
-  // console.log(segments);
-  return segments;
-};
-
-
-const getAllSegmentss = (index: number) => {
-  const offers = getFlightData(index).Offers.OfferInfo
-  // console.log(offers)
-  if (show.value == 3) {
-    const retValue = {
-      go: offers.flatMap((offer: any) =>
-        offer.Segments.OfferSegment
-      ) || [], return: []
-    }
-    return retValue
-  }
-
-  if (offers.length > 1) {
-    // Хоёр OfferInfo-ийн сегментүүдийг нэгтгэж буцаана
-    const goSegments = offers
-      .filter((offer: any) => offer.Rph === "1")
-      .flatMap((offer: any) => offer.Segments?.OfferSegment || [])
-
-    const returnSegments = offers
-      .filter((offer: any) => offer.Rph === "2")
-      .flatMap((offer: any) => offer.Segments?.OfferSegment || [])
-
-
-
-    const retValue = {
-      go: goSegments, return: returnSegments
-    }
-
-    return retValue
-  }
-  const retValue = {
-    go: offers.flatMap((offer: any) =>
-      offer.Segments.OfferSegment.filter((seg: any) => seg.Rph === "1")
-    ) || [], return: offers.flatMap((offer: any) =>
-      offer.Segments.OfferSegment.filter((seg: any) => seg.Rph === "2")
-    ) || []
-  }
-  // Нэг сегменттэй байвал шууд буцаана
-  return retValue
-}
-
-const moreFlights = (index: number) => {
-  const data = getFlightData(index);
-  let filter: any[][] = [];  // Array of arrays to store segments for each i value
-
-  const tripCount = trips.toString();
-
-
-  // Iterate through Rph values starting from 1, ending at `trips.value`
-  for (let i = 1; i <= trips; i++) {
-    let currentFilter: any[] = [];
-
-    if (data.some((offer: { Rph: string }) => offer.Rph === tripCount)) {
-      currentFilter = data
-        .filter((offer: { Rph: string }) => offer.Rph === i.toString())
-        .flatMap((offer: { Segments: { OfferSegment: any[] } }) => offer.Segments.OfferSegment);
+function getSegmentsByRph(rph: string) {
+  // OfferInfo олон байж болно, segment бүрээс Rph-г ялгана
+  if (!Array.isArray(OfferInfo.value)) return [];
+  const segmentsFlat = OfferInfo.value.flatMap((offer: any) => offer.Segments?.OfferSegment || []);
+  if (show.value <= 2) {
+    if (segmentsFlat.filter((seg: any) => seg.Rph === "2").length === 0) {
+      // Хэрвээ "2" Rph-тай сегмент байхгүй бол OfferInfo array-г өөрөө шалгана
+      return OfferInfo.value
+        .filter((offer: any) => offer.Rph === rph)
+        .flatMap((offer: any) => offer.Segments?.OfferSegment || []);
     } else {
-      currentFilter = data
-        .flatMap((offer: { Segments?: { OfferSegment?: any[] } }) => offer.Segments?.OfferSegment || [])
-        .filter((segment: { Rph: string }) => segment.Rph === i.toString());
+      // Эсрэг тохиолдолд шууд сегментүүдээс шүүж буцаана
+      return segmentsFlat.filter((seg: any) => seg.Rph === rph);
     }
-
-    // Store the current filter array for each i value
-    filter.push(currentFilter);
+  } else {
+    return segmentsFlat;
   }
 
+}
+const goSegments = computed(() => getSegmentsByRph("1"));
+const returnSegments = computed(() => getSegmentsByRph("2"));
 
-
-  return filter;
-};
-
-const isFirstSegmentWithRph = (rph: number, index: number, currentIndex: number) => {
-  const segments = getAllSegments(index);
-
-  // Find all segments with matching Rph
-  const matchingSegments = segments.filter((seg: { Rph: number; }) => seg.Rph === rph);
-
-  // If no matching segments found
-  if (matchingSegments.length === 0) {
-    return false;
-  }
-
-  // Get the first matching segment's index in the original array
-  const firstMatchIndex = segments.findIndex((seg: { Rph: number; }) => seg.Rph === rph);
-
-  // console.log(firstMatchIndex === currentIndex)
-
-  // // Check if current segment is the first one with this Rph
-  return firstMatchIndex === currentIndex;
-};
-
-const getTotalStops = (index: number) => getAllSegments(index).length - 1;
-const getStopIatas = (index: number) => getAllSegments(index).slice(0, -1).map((seg: { Arrival: { Iata: any } }) => seg.Arrival.Iata);
-const getFirstDeparture = (index: number) => getAllSegments(index)[0]?.Departure.Iata || "N/A";
-const getFirstDepartureTime = (index: number) => getAllSegments(index)[0]?.Departure.Date || "N/A";
-const getLastArrival = (index: number) => getAllSegments(index).slice(-1)[0]?.Arrival.Iata || "N/A";
-const getLastArrivalTime = (index: number) => getAllSegments(index).slice(-1)[0]?.Arrival.Date || "N/A";
-const getTotalFlightTime = (index: number) => {
-  const totalMinutes = getAllSegments(index).reduce(
-    (sum: number, seg: { FlightMinutes: string }) => sum + parseInt(seg.FlightMinutes, 10),
-    0
-  );
-
-  const hours = Math.floor(totalMinutes / 60); // Бүтэн цагийг олно
-  const minutes = totalMinutes % 60; // Үлдсэн минутыг олно
-
-  return `${hours} ${t('txtHour')} ${minutes} ${t('txtMin')}`; // Цаг, минутын форматаар буцаана
-};
-
-const getLayoverTime = (arrival: string, nextDeparture: string) => {
-  if (!arrival || !nextDeparture) return '';
-
-  const arrivalTime = new Date(arrival).getTime();
-  const nextDepartureTime = new Date(nextDeparture).getTime();
-
-  const layoverMinutes = Math.floor((nextDepartureTime - arrivalTime) / (1000 * 60)); // Минут хөрвүүлэлт
-
-  if (layoverMinutes <= 0) return ''; // Сөрөг утгаас сэргийлэх
-
-  const hours = Math.floor(layoverMinutes / 60);
-  const minutes = layoverMinutes % 60;
-
-  return `${hours} ${t('txtHour')} ${minutes} ${t('txtMin')}`;
-};
-
-
-
-const getAllSegmentsDates = (index: number) => {
-  return getFlightData(index).Offers.OfferInfo
-    .flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments.OfferSegment)
-    .sort((a: { Departure: { Date: string | number | Date } }, b: { Departure: { Date: string | number | Date } }) => {
-      // Convert both dates to Date objects, ensuring they're valid.
-      const departureA = new Date(a.Departure.Date);
-      const departureB = new Date(b.Departure.Date);
-
-      // Ensure the dates are valid before comparing them
-      if (isNaN(departureA.getTime()) || isNaN(departureB.getTime())) {
-        return 0; // or handle as needed if one of the dates is invalid
-      }
-
-      return departureA.getTime() - departureB.getTime(); // Subtracting as timestamps
-    }) || [];
-};
-
-
-
-
-
-
-const flight = computed(() => props.flight || [])
-const index = computed(() => props.index as number);
-
-function convertTimeText(input: string): string {
-  const [hours, minutes, seconds] = input.split(":").map(Number);
-  const hourText = hours ? `${hours} ${t('txtHour')}` : "";
-  const minuteText = minutes ? `${minutes} ${t('txtMin')}` : " ";
-  return [hourText, minuteText].filter(Boolean).join(" ");
+// ----------- LOOKUP функцууд -----------
+function getAirlineName(code: string) {
+  const found = StoreAirCompany.value.find((c: any) => c.Code === code);
+  return found ? found.Value : code;
+}
+function getAirlineLogo(code: string) {
+  return code ? `https://api.echina.mn/assets/d/${code}.png` : "";
+}
+function getAirportName(iata: string) {
+  const found = StoreAirPorts.value.find((p: any) => p.Iata === iata);
+  return found ? found.Name : iata;
+}
+// Огноо, цаг ялгах
+function getTime(str: string) {
+  return str ? str.split(" ")[1]?.slice(0, 5) : "";
+}
+function getSegmentDate(str: string) {
+  return str ? str.split(" ")[0] : "";
+}
+function convertTimeText(time: string) {
+  if (!time) return "";
+  const [h, m] = time.split(":");
+  return `${h} цаг ${m} мин`;
 }
 
-function formatDate(input: string): string {
-  const [day, month, yearAndTime] = input.split(".");
-  const [year, time] = yearAndTime.split(" ");
-  return `${year}-${month}-${day}`;
+// Лэйовер тооцох
+function getLayoverMinutes(arrival: string, nextDeparture: string) {
+  if (!arrival || !nextDeparture) return "";
+  const [ad, at] = arrival.split(" ");
+  const [nd, nt] = nextDeparture.split(" ");
+  const arr = new Date(`${ad.split(".").reverse().join("-")}T${at}:00`);
+  const dep = new Date(`${nd.split(".").reverse().join("-")}T${nt}:00`);
+  const mins = Math.floor((dep.getTime() - arr.getTime()) / (1000 * 60));
+  return mins > 0 ? `${Math.floor(mins / 60)} цаг ${mins % 60} мин` : "";
 }
+const goLayovers = computed(() =>
+  goSegments.value.map((seg, idx, arr) => {
+    if (idx === arr.length - 1) return "";
+    return getLayoverMinutes(seg.Arrival.Date, arr[idx + 1].Departure.Date);
+  })
+);
+const returnLayovers = computed(() =>
+  returnSegments.value.map((seg, idx, arr) => {
+    if (idx === arr.length - 1) return "";
+    return getLayoverMinutes(seg.Arrival.Date, arr[idx + 1].Departure.Date);
+  })
+);
 
-function timeDifference(start: string, end: string): string {
-  // Огнооны форматыг ISO 8601 хэлбэрт хөрвүүлэх
-  const startDateFormatted = start.split(' ')[0].split('.').reverse().join('-') + 'T' + start.split(' ')[1] + ':00';
-  const endDateFormatted = end.split(' ')[0].split('.').reverse().join('-') + 'T' + end.split(' ')[1] + ':00';
-
-  // start болон end утгуудыг Date объект руу хөрвүүлэх
-  const startDate = new Date(startDateFormatted);
-  const endDate = new Date(endDateFormatted);
-
-  // Нийт минутын зөрүү
-  const diffMinutes = Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60));
-
-  // Цаг болон минут болгон хуваах
-  const hours = Math.floor(diffMinutes / 60);
-  const minutes = diffMinutes % 60;
-
-  return `${hours} ${t('txtHour')} ${minutes} ${t('txtMin')}`;
-}
-
-
-
-
+// Нислэгийн эхлэх/дуусах буудал нэр
+const firstDeparture = computed(() => goSegments.value[0]?.Departure.Iata || "");
+const lastArrival = computed(() =>
+  show.value > 1 ? returnSegments.value[0].Departure.Iata :
+    returnSegments.value.length
+      ? returnSegments.value[returnSegments.value.length - 1].Arrival.Iata
+      : goSegments.value[goSegments.value.length - 1]?.Arrival.Iata
+);
 </script>
 
-<style>
-.flight-counter {
-  width: 30px;
-  height: 30px;
-  background-color: #ff6f00;
-  /* Улбар шар өнгө */
-  color: white;
+<style scoped>
+.time {
+  font-size: 18px;
   font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+}
+
+.dot {
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
-  margin-right: 15px;
+  background: #fff;
+  border: 2px solid #bbb;
 }
 
-
-.bg-light {
-  background-color: #f8f9fa;
+.dot-last {
+  background: #6253ea;
+  border-color: #6253ea;
 }
 
-.warning-icon {
-  width: 18px;
-  height: 18px;
+.timeline-line {
+  width: 2px;
+  flex: 1;
+  background: repeating-linear-gradient(to bottom, #bbb 0, #bbb 6px, transparent 6px, transparent 12px);
+  margin: 2px 0;
+}
+
+.flight-meta {
+  color: #3d2a96;
+}
+
+.section-label {
+  color: #fff;
+  padding: 4px 18px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.bg-primary {
+  background: #6253ea !important;
+}
+
+.bg-secondary {
+  background: #3c45a0 !important;
 }
 </style>
