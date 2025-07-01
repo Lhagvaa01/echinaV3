@@ -38,9 +38,9 @@
 
                     <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('asc')">{{ t('txtPriceASC')
-                        }}</a></li>
+                                }}</a></li>
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('desc')">{{ t('txtPriceDESC')
-                        }}</a>
+                                }}</a>
                         </li>
                     </ul>
                 </div>
@@ -78,10 +78,10 @@
                 </div>
             </b-col> -->
         </b-row>
-        <div v-for="(offer, Mainindex) in paginatedFlights" :key="Mainindex" class="mb-4">
+        <div v-for="(offer, Mainindex) in paginatedFlights" :key="Mainindex" class="mb-4 ">
             <div>
                 <div v-for="(segments, inx) in getAllSegments(offer).slice(0, 1)" :key="inx">
-                    <b-card no-body class="border" :key="segments.FlightNum">
+                    <b-card no-body class="border border-1 border-primary" :key="segments.FlightNum">
 
                         <div>
                             <!-- <p>{{ moreFlights(Mainindex).length }}</p> -->
@@ -90,7 +90,7 @@
                                 <div v-if="flight.length > 0">
                                     <b-row class="pe-1 pe-sm-3">
                                         <!-- Main (info) column -->
-                                        <b-col cols="12" md="10"
+                                        <b-col cols="12" md="10" xl="9" xxl="10"
                                             class="d-flex flex-column pe-md-0 mb-3 mb-md-0 justify-content-between">
                                             <!-- Үндсэн контент -->
                                             <!-- <b-row> -->
@@ -184,11 +184,12 @@
 
                                                     </b-card-header>
                                                     <b-card-body class="p-4 pb-0">
-                                                        <b-row class="g-4">
-                                                            <b-col sm="4" md="3" class="mt-0 text-start ">
+                                                        <b-row
+                                                            class="g-4 justify-content-between align-content-center align-items-center">
+                                                            <b-col cols="3" sm="4" md="3" class="mt-0 text-start ">
                                                                 <p class="mb-0" style="font-size: medium;">{{
                                                                     flight[0]?.Departure.Iata
-                                                                    }}</p>
+                                                                }}</p>
                                                                 <p class="mb-0 text-truncate"
                                                                     style="font-size: smaller; max-width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
                                                                     :title="StoreAirPorts.find((AirPorts: any) => AirPorts.Iata === flight[0]?.Departure.Iata)?.City">
@@ -219,7 +220,7 @@
 
                                                             </b-col>
 
-                                                            <b-col sm="4" md="6" class=" text-center mt-3">
+                                                            <b-col cols="5" sm="4" md="6" class=" text-center mt-3">
                                                                 <!-- <h5 class="mt-0  fw-light mb-0 pb-0"
                                                                     style="font-size: smaller;">{{
                                                                         getTotalFlightTime(Mainindex, findex)
@@ -261,7 +262,8 @@
 
                                                             </b-col>
 
-                                                            <b-col sm="4" md="3" class="mt-0  text-start mt-0 ">
+                                                            <b-col cols="3" sm="4" md="3"
+                                                                class="mt-0  text-start mt-0 ">
                                                                 <p class="mb-0" style="font-size: medium;">{{
                                                                     flight[flight.length -
                                                                         1].Arrival.Iata }}</p>
@@ -335,7 +337,7 @@
                                                 class="d-flex justify-content-end ms-0 ps-0">
                                                 <div class="d-flex ps-4 w-100 border-top border-primary justify-content-between border-2 bg-primary bg-opacity-10 "
                                                     style="height: 42px; border-bottom-left-radius: 1rem;">
-                                                    <div class="d-flex gap-4 gap-sm-0 ">
+                                                    <div class="d-none d-md-flex gap-4 gap-sm-0 ">
                                                         <div
                                                             class=" d-flex text-center border border-primary rounded m-2 px-3 justify-content-center small">
                                                             <span class="text-black"><svg stroke="currentColor"
@@ -410,14 +412,14 @@
                                         </b-col>
 
                                         <!-- Баруун багана (үнэ, товч, дэлгэрэнгүй) -->
-                                        <b-col cols="12" md="2"
-                                            class="d-flex flex-column px-0 justify-content-between bg-primary bg-opacity-10"
+                                        <b-col cols="12" md="2" xl="3" xxl="2"
+                                            class="d-flex flex-column px-0 justify-content-between bg-md-primary bg-opacity-10"
                                             :style="show == 1 ? 'border-bottom-right-radius: 1rem; border-top-right-radius: 1rem;' : moreFlights(Mainindex).length === findex + 1
                                                 ? 'border-bottom-right-radius: 1rem;'
                                                 : 'border-top-right-radius: 1rem;'">
                                             <!-- Дээшээ: Icons -->
 
-                                            <div>
+                                            <div class="d-none d-md-flex">
                                                 <div v-if="moreFlights(Mainindex).length > 0 &&
                                                     (
                                                         (findex == 0)
@@ -486,8 +488,66 @@
                                             <b-row v-if="moreFlights(Mainindex).length == findex + 1"
                                                 class="justify-content-end align-content-end h-100 mx-0 rounded-0">
                                                 <b-col
-                                                    class="d-flex d-md-block px-4 justify-content-between align-content-end align-content-sm-center text-md-end py-3">
+                                                    class="d-flex d-md-block px-4 justify-content-between align-content-end align-items-end align-content-sm-center  text-md-end py-3">
                                                     <div>
+                                                        <div class="d-md-none">
+                                                            <div
+                                                                class="d-flex rounded-top mt-2 mt-md-2 ms-md-2 gap-2 justify-content-start align-content-center ">
+
+                                                                <div v-if="segments.Baggage"
+                                                                    class="text-center p-0 border rounded-2  border-primary"
+                                                                    style="width: 34px;">
+                                                                    <i class="fas fa-suitcase-rolling text-primary"></i>
+                                                                    <!-- <span class="text-primary ms-1"></span> -->
+                                                                </div>
+                                                                <div v-if="segments.CabinBaggage"
+                                                                    class="text-center p-0 border rounded-2  border-primary"
+                                                                    style="width: 34px;">
+                                                                    <i class="fas fa-suitcase text-primary"></i>
+                                                                    <!-- <span class="text-primary ms-1"></span> -->
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex gap-2 align-content-center mt-2 ">
+                                                                <div class="border border-primary rounded-2 px-1">
+                                                                    <svg stroke="currentColor" fill="currentColor"
+                                                                        stroke-width="0" viewBox="0 0 320 512"
+                                                                        class="text-black h-4 w-4 text-[#F8C5B3]"
+                                                                        height="15px" width="15px"
+                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                        <path
+                                                                            d="M112 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm40 304V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V256.9L59.4 304.5c-9.1 15.1-28.8 20-43.9 10.9s-20-28.8-10.9-43.9l58.3-97c17.4-28.9 48.6-46.6 82.3-46.6h29.7c33.7 0 64.9 17.7 82.3 46.6l58.3 97c9.1 15.1 4.2 34.8-10.9 43.9s-34.8 4.2-43.9-10.9L232 256.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V352H152z">
+                                                                        </path>
+                                                                    </svg>
+                                                                    {{ Number(route.query.adults) }}
+                                                                </div>
+                                                                <div v-if="Number(route.query.childs) > 0"
+                                                                    class="border border-primary rounded-2 px-1">
+                                                                    <svg stroke="currentColor" fill="currentColor"
+                                                                        stroke-width="0" viewBox="0 0 320 512"
+                                                                        class="text-black h-4 w-4 text-[#F8C5B3]"
+                                                                        height="15px" width="15px"
+                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                        <path
+                                                                            d="M256 64A64 64 0 1 0 128 64a64 64 0 1 0 128 0zM152.9 169.3c-23.7-8.4-44.5-24.3-58.8-45.8L74.6 94.2C64.8 79.5 45 75.6 30.2 85.4s-18.7 29.7-8.9 44.4L40.9 159c18.1 27.1 42.8 48.4 71.1 62.4V480c0 17.7 14.3 32 32 32s32-14.3 32-32V384h32v96c0 17.7 14.3 32 32 32s32-14.3 32-32V221.6c29.1-14.2 54.4-36.2 72.7-64.2l18.2-27.9c9.6-14.8 5.4-34.6-9.4-44.3s-34.6-5.5-44.3 9.4L291 122.4c-21.8 33.4-58.9 53.6-98.8 53.6c-12.6 0-24.9-2-36.6-5.8c-.9-.3-1.8-.7-2.7-.9z">
+                                                                        </path>
+                                                                    </svg>
+                                                                    {{ Number(route.query.childs) }}
+                                                                </div>
+                                                                <div v-if="Number(route.query.infants) > 0"
+                                                                    class="border border-primary rounded-2 px-1">
+                                                                    <svg stroke="currentColor" fill="currentColor"
+                                                                        stroke-width="0" viewBox="0 0 320 512"
+                                                                        class="text-black h-4 w-4 text-[#F8C5B3]"
+                                                                        height="15px" width="15px"
+                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                        <path
+                                                                            d="M152 88a72 72 0 1 1 144 0A72 72 0 1 1 152 88zM39.7 144.5c13-17.9 38-21.8 55.9-8.8L131.8 162c26.8 19.5 59.1 30 92.2 30s65.4-10.5 92.2-30l36.2-26.4c17.9-13 42.9-9 55.9 8.8s9 42.9-8.8 55.9l-36.2 26.4c-13.6 9.9-28.1 18.2-43.3 25V288H128V251.7c-15.2-6.7-29.7-15.1-43.3-25L48.5 200.3c-17.9-13-21.8-38-8.8-55.9zm89.8 184.8l60.6 53-26 37.2 24.3 24.3c15.6 15.6 15.6 40.9 0 56.6s-40.9 15.6-56.6 0l-48-48C70 438.6 68.1 417 79.2 401.1l50.2-71.8zm128.5 53l60.6-53 50.2 71.8c11.1 15.9 9.2 37.5-4.5 51.2l-48 48c-15.6 15.6-40.9 15.6-56.6 0s-15.6-40.9 0-56.6L284 419.4l-26-37.2z">
+                                                                        </path>
+                                                                    </svg>
+                                                                    {{ Number(route.query.infants) }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <div
                                                             class="fw-bold mb-1 align-content-end align-content-sm-center text-black">
                                                             {{ Math.ceil(paginatedFlights[Mainindex].AdultPrice *
@@ -504,7 +564,8 @@
                                                                 segments.FlightClass
                                                             }}</div>
                                                     </div>
-                                                    <b-button block variant="outline-primary" class="mb-0 mb-sm-2 "
+                                                    <b-button block variant="outline-primary"
+                                                        class="h-sm-25 mb-0 mb-sm-2 "
                                                         :id="`toggleOption${Mainindex}${segments.FlightNum}`"
                                                         :aria-controls="`flightOption${segments.FlightNum}`"
                                                         v-b-toggle="`flightOption${Mainindex}${segments.FlightNum}`"
@@ -515,7 +576,7 @@
                                             </b-row>
                                             <!-- Доор: Дэлгэрэнгүй (always at bottom) -->
                                             <b-row v-if="moreFlights(Mainindex).length == findex + 1"
-                                                class="border-2 border-top  border-primary justify-content-center mx-0 "
+                                                class="border-2 border-top  border-primary justify-content-center mx-3 mx-md-0 "
                                                 style="height: 42px; ">
                                                 <b-col class="text-center py-2">
                                                     <li class="list-inline-item" style="font-size: smaller;">
@@ -534,15 +595,16 @@
                                         </b-col>
 
                                         <!-- Details collapse -->
-                                        <b-col cols="12" class="ps-3 ms-2">
+                                        <b-col cols="12" class="ps-3 ms-2 border-1 border-primary">
                                             <b-collapse :id="'flightDetail' + Mainindex + findex"
-                                                class="multi-collapse">
+                                                class="multi-collapse ">
                                                 <div class="pt-3">
                                                     <!-- {{ offer }} -->
-                                                    <FlightDetailTab :flight="offer" :index="Mainindex" />
+                                                    <FlightDetailTab :flight="offer" :index="Mainindex"
+                                                        :airports="StoreAirPorts" />
                                                 </div>
                                             </b-collapse>
-                                            <b-collapse :id="`flightOption${Mainindex}${segments.FlightNum}`"
+                                            <b-collapse :id="'flightDetail' + Mainindex + findex"
                                                 class="multi-collapse">
                                                 <div class="pt-3" v-if="isOptionLoaded">
                                                     <OptionBooking :offerCode="offer.OfferCode"

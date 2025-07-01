@@ -47,7 +47,7 @@
                           ?.Value || 'Unknown Airline'
                       }}
                       <span class="text-muted">({{ segmentB.FlightNum || 'SA-1254'
-                        }})</span>
+                      }})</span>
                     </div>
                     <div class="d-flex align-items-center mt-1">
                       <Briefcase v-if="segmentB.Baggage" class="me-2" color="#5a2dd7" :size="16" />
@@ -174,7 +174,8 @@
             <b-collapse :id="'flightDetail' + inx + segment.FlightNum" class="multi-collapse"
               style="font-size: smaller;">
               <div class="pt-3">
-                <FlightDetailTab :flight="getAllSegments()" :index="inx" />
+                <!-- <FlightDetailTab :flight="getAllSegments()" :index="inx" /> -->
+                <FlightDetailTab :flight="offInfo" :index="1" :airports="StoreAirPorts" />
               </div>
             </b-collapse>
 
@@ -246,11 +247,14 @@ const getFlightData = () => {
   return infos.value || { Offers: { OfferInfo: [] } };
 };
 
+
+const FlightData = computed(() => getFlightData());
+const offInfo = computed(() => FlightData.value.Offers.OfferInfo);
+
 const getAllSegments = (): any[] => {
   // const ai = StoreAirCompany.value?.find((airline: any) => airline.Code === "KE").Value
   // console.log(ai)
-  const data = getFlightData();
-  const offerInfo = data.Offers.OfferInfo;
+  const offerInfo = offInfo.value;
 
   // OfferInfo массив биш бол шууд OfferSegment-ийг буцаах
   if (!Array.isArray(offerInfo)) {

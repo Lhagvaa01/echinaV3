@@ -47,44 +47,44 @@
             <h6 class="fw-bold mb-0">{{ t('txtTransit') }}</h6>
           </b-card-header>
 
+
           <b-card-body class="p-4 pb-0">
             <b-row class="g-3">
               <b-col sm="5" md="4" class="mt-0">
-                <h4> {{ segment.Departure.Date.split(" ")[1] }}</h4>
+                <h4 style="font-size: small;"> {{ segment.Departure.Date.split(" ")[1] }}</h4>
                 <!-- <h4> 22</h4> -->
-                <p class="fw-bold text-black mb-0">{{ formatDate(segment.Departure.Date) }}</p>
-                <p class="mb-0">{{ segment.Departure.Iata }}<span v-if="segment.Departure.Terminal">-{{ t('txtTerminal')
-                    }}</span>
+                <p class="mb-0">{{ segment.Departure.Iata }}<span v-if="segment.Departure.Terminal">-Терминал</span>
                   {{ segment.Departure.Terminal || '' }}</p>
-                <!-- <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                      segment.Departure.Iata).City}}</p> -->
                 <p class="mb-0">{{ segment.Departure.City }}</p>
+
+                <p class=" text-black mb-0" style="font-size: small;">{{ formatDate(segment.Departure.Date) }}
+                </p>
 
               </b-col>
 
               <b-col sm="5" md="4" class="my-sm-auto text-center">
                 <!-- <h5 class="mt-3">{{ convertTimeText(segment.FlightTime) }}</h5> -->
-                <h5 class="mt-3">{{ getTotalFlightTime() }}</h5>
+                <h5 class="mt-3" style="font-size: small;">{{ getTotalFlightTime() }}</h5>
                 <div class="position-relative my-4">
                   <hr class="bg-primary opacity-5 position-relative" />
 
                   <div class="icon-container" style="display: flex; justify-content: space-evenly; flex-wrap: wrap; ">
                     <div v-for="(segment, idx) in getStopIatas()" :key="'segment-' + idx">
-                      <div class="icon-xs bg-primary text-white rounded-circle position-relative"
-                        style="transform: translate(10%, -150%);">
-                        <p class="mt-4 text-black fs-6 custom-margin"
-                          style="transform: rotate(0deg); display: inline-block;">
+                      <div class="icon-xs bg-primary text-white  position-relative"
+                        style="transform: translate(10%, -250%); width: 8px;height: 8px;">
+                        <p class="mt-3 text-black  custom-margin"
+                          style="transform: rotate(0deg); display: inline-block; font-size: smaller; transform: translate(-30%, -0%);">
                           {{ segment }}
                         </p>
                       </div>
                     </div>
                   </div>
                   <div class="icon-container" style="display: flex; justify-content: space-between; ">
-                    <div class="icon-xs bg-secondary text-white rounded-circle position-relative"
-                      style="transform: translate(0%, -250%);">
+                    <div class="icon-xs bg-secondary text-white  position-relative"
+                      style="transform: translate(0%, -350%); width: 8px;height: 8px;">
                     </div>
-                    <div class="icon-xs bg-secondary text-white rounded-circle position-relative"
-                      style="transform: translate(0%, -250%);">
+                    <div class="icon-xs bg-secondary text-white  position-relative"
+                      style="transform: translate(0%, -350%); width: 8px;height: 8px;">
                     </div>
                   </div>
                 </div>
@@ -92,18 +92,17 @@
               </b-col>
 
               <b-col sm="5" md="4" class="mt-0">
-                <h4>
-                  {{ getAllSegments()[getAllSegments().length - 1].Arrival.Date.split(" ")[1] }}
-                </h4>
-                <p class="fw-bold text-black mb-0">{{ formatDate(getAllSegments()[getAllSegments().length -
-                  1].Arrival.Date) }}</p>
+                <h4 style="font-size: small;"> {{ goSegments[goSegments.length - 1].Arrival.Date.split(" ")[1] }}</h4>
+                <!-- <h4> 22</h4> -->
+                <p class="mb-0">{{ goSegments[goSegments.length - 1].Arrival.Iata }}<span
+                    v-if="goSegments[goSegments.length - 1].Arrival.Terminal">-Терминал</span>
+                  {{ goSegments[goSegments.length - 1].Arrival.Terminal || '' }}</p>
+                <!-- <p>{{ returnSegments }}</p> -->
+                <p class="mb-0">{{ goSegments[goSegments.length - 1].Arrival.City }}</p>
 
-                <p class="mb-0">{{ getAllSegments()[getAllSegments().length - 1].Arrival.Iata }}<span
-                    v-if="getAllSegments()[getAllSegments().length - 1].Arrival.Terminal">-{{ t('txtTerminal') }}</span>
-                  {{ getAllSegments()[getAllSegments().length - 1].Arrival.Terminal || '' }}</p>
-                <!-- <p class="mb-0">{{StoreAirPorts.find((AirPorts: any) => AirPorts.Iata ===
-                    getAllSegments()[getAllSegments().length - 1].Arrival.Iata).City}}</p> -->
-                <p class="mb-0">{{ segment.Arrival.City }}</p>
+                <p class=" text-black mb-0" style="font-size: small;">{{ formatDate(goSegments[goSegments.length -
+                  1].Arrival.Date) }}
+                </p>
 
               </b-col>
 
@@ -141,7 +140,7 @@
               <!-- <li class="list-inline-item text-danger">Non-Refundable</li> -->
               <h6 class="fw-medium mb-0"><span class="fw-medium">{{ t('txtClass') }}:</span> {{
                 segment.FlightClass }}</h6>
-              <li class="list-inline-item">
+              <li class="list-inline-item" style="font-size: smaller;">
                 <a :to="'/some-route/' + inx + segment.FlightNum" :id="'toggleButton' + inx + segment.FlightNum"
                   :aria-controls="'flightDetail' + segment.FlightNum"
                   v-b-toggle="'flightDetail' + inx + segment.FlightNum"
@@ -151,10 +150,11 @@
                 </a>
               </li>
             </ul>
-            <b-collapse :id="'flightDetail' + inx + segment.FlightNum" class="multi-collapse">
+            <b-collapse :id="'flightDetail' + inx + segment.FlightNum" class="multi-collapse"
+              style="font-size: smaller;">
               <div class="pt-3">
-                <!-- <p>{{ getAllSegments() }}</p> -->
-                <FlightDetailTab :flight="infos" :index="0" />
+                <!-- <FlightDetailTab :flight="getAllSegments()" :index="inx" /> -->
+                <FlightDetailTab :flight="OfferInfo" :index="1" :airports="StoreAirPorts" />
               </div>
             </b-collapse>
 
@@ -204,6 +204,12 @@ function onMouseLeave(index: string) {
 }
 
 const storedData = sessionStorage.getItem("BookingInfo") ? JSON.parse(sessionStorage.getItem("BookingInfo") || "") : null;
+
+const show = ref<number>(Number(sessionStorage.getItem("flight")) || 1);
+const trips = parseInt(sessionStorage.getItem("trips") || "0", 10);
+
+
+
 
 // onMounted(async () => {
 //   if (!storedData) {
@@ -264,16 +270,49 @@ const getFlightData = () => {
   return infos.value || { Offers: { OfferInfo: [] } };
 };
 
+const FlightData = computed(() => getFlightData());
+const OfferInfo = computed(() => FlightData.value?.Offers?.OfferInfo ?? []); // шууд массив болго!
+
+console.log('OfferInfo:', OfferInfo.value);
+
+// Хэрвээ OfferInfo нь нэг ширхэг объект байвал массив болгож ав:
+const OfferInfoArr = computed(() => {
+  const oi = FlightData.value?.Offers?.OfferInfo;
+  return Array.isArray(oi) ? oi : oi ? [oi] : [];
+});
+
+// Ашиглахдаа:
+function getSegmentsByRph(rph) {
+  if (!Array.isArray(OfferInfoArr.value)) return [];
+
+  const segmentsFlat = OfferInfoArr.value.flatMap((offer) => offer.Segments?.OfferSegment || []);
+  // console.log('Segments Flat:', segmentsFlat);
+
+  if (show.value <= 2) {
+    if (segmentsFlat.filter((seg) => seg.Rph === rph).length === 0) {
+      return OfferInfoArr.value
+        .filter((offer) => offer.Rph === rph)
+        .flatMap((offer) => offer.Segments?.OfferSegment || []);
+    } else {
+      return segmentsFlat.filter((seg) => seg.Rph === rph);
+    }
+  } else {
+    return segmentsFlat;
+  }
+}
+
+const goSegments = computed(() => getSegmentsByRph("1"));
+const returnSegments = computed(() => getSegmentsByRph("2"));
+
+
 const getAllSegments = (): any[] => {
   // const ai = StoreAirCompany.value?.find((airline: any) => airline.Code === "KE").Value
   // console.log(ai)
-  const data = getFlightData();
-  // console.log(data)
-  const offerInfo = data.Offers.OfferInfo;
+  const offerInfo1 = OfferInfo.value;
 
   // OfferInfo массив биш бол шууд OfferSegment-ийг буцаах
-  if (!Array.isArray(offerInfo)) {
-    let segment = offerInfo?.Segments?.OfferSegment;
+  if (!Array.isArray(offerInfo1)) {
+    let segment = offerInfo1?.Segments?.OfferSegment;
     if (!Array.isArray(segment)) {
       segment = segment ? [segment] : []
       // console.log(segment)
@@ -286,7 +325,7 @@ const getAllSegments = (): any[] => {
   }
 
   // OfferInfo массив бол flatMap ашиглан сегментүүдийг цуглуулах
-  return offerInfo.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments?.OfferSegment || []);
+  return offerInfo1.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments?.OfferSegment || []);
 };
 
 function formatDate(input: string): string {
