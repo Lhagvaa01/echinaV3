@@ -1,313 +1,310 @@
 <template>
-  <section class="py-0">
-    <b-container>
-      <div class="rounded-3 p-3 p-sm-5" :style="{
-        backgroundImage: `url(${bg01})`,
-        backgroundPosition: 'center center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover'
-      }">
+  <section class="py-0 hero-section">
+
+    <!-- <h1 class="text-dark display-3 pt-sm-5 my-5"></h1> -->
+  </section>
+  <b-container class="main-container">
+    <div class="rounded-3 p-3 p-sm-5">
+      <b-row>
+        <b-col md="10" class="mx-auto text-center">
+          <h1 class="text-dark display-3 pt-sm-5 my-5"></h1>
+          <!-- <h1 class="text-dark display-3 pt-sm-5 my-5">Тийз захиалга</h1> -->
+        </b-col>
+      </b-row>
+
+      <form class="bg-mode position-relative  shadow-lg px-3 px-sm-4 pt-4 mb-4 mb-sm-0">
+        <figure class="position-absolute top-0 start-0 h-100 ms-n2 ms-sm-n1">
+          <svg class="h-100" viewBox="0 0 12.9 324" style="enable-background: new 0 0 12.9 324">
+            <path class="fill-mode"
+              d="M9.8,316.4c1.1-26.8,2-53.4,1.9-80.2c-0.1-18.2-0.8-36.4-1.2-54.6c-0.2-8.9-0.2-17.7,0.8-26.6 c0.5-4.5,1.1-9,1.4-13.6c0.1-1.9,0.1-3.7,0.1-5.6c-0.2-0.2-0.6-1.5-0.2-3.1c-0.3-1.8-0.4-3.7-0.4-5.5c-1.2-3-1.8-6.3-1.7-9.6 c0.9-19,0.5-38.1,0.8-57.2c0.3-17.1,0.6-34.2,0.2-51.3c-0.1-0.6-0.1-1.2-0.1-1.7c0-0.8,0-1.6,0-2.4c0-0.5,0-1.1,0-1.6 c0-1.2,0-2.3,0.2-3.5H0v11.8c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1V31c3.3,0,6.1,2.7,6.1,6.1S3.3,43.3,0,43.3v6.9 c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1 s-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9 c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1 c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.7,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9 c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.7,6.1,6.1 c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1V324h9.5C9.6,321.4,9.7,318.8,9.8,316.4z" />
+          </svg>
+        </figure>
+
+        <figure class="position-absolute top-0 end-0 h-100 rotate-180 me-n2 me-sm-n1">
+          <svg class="h-100" viewBox="0 0 21 324" style="enable-background: new 0 0 21 324">
+            <path class="fill-mode"
+              d="M9.8,316.4c1.1-26.8,2-53.4,1.9-80.2c-0.1-18.2-0.8-36.4-1.2-54.6c-0.2-8.9-0.2-17.7,0.8-26.6 c0.5-4.5,1.1-9,1.4-13.6c0.1-1.9,0.1-3.7,0.1-5.6c-0.2-0.2-0.6-1.5-0.2-3.1c-0.3-1.8-0.4-3.7-0.4-5.5c-1.2-3-1.8-6.3-1.7-9.6 c0.9-19,0.5-38.1,0.8-57.2c0.3-17.1,0.6-34.2,0.2-51.3c-0.1-0.6-0.1-1.2-0.1-1.7c0-0.8,0-1.6,0-2.4c0-0.5,0-1.1,0-1.6 c0-1.2,0-2.3,0.2-3.5H0v11.8c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1V31c3.3,0,6.1,2.7,6.1,6.1S3.3,43.3,0,43.3v6.9 c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1 s-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9 c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1 c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.7,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9 c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.7,6.1,6.1 c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1V324h9.5C9.6,321.4,9.7,318.8,9.8,316.4z" />
+          </svg>
+        </figure>
+
+        <!-- <b-container> -->
         <b-row>
-          <b-col md="10" class="mx-auto text-center">
-            <h1 class="text-dark display-3 pt-sm-5 my-5"></h1>
-            <!-- <h1 class="text-dark display-3 pt-sm-5 my-5">Тийз захиалга</h1> -->
-          </b-col>
-        </b-row>
+          <b-col cols="12">
+            <!-- <b-form class="bg-mode border rounded position-relative px-4 pt-4 mb-4 mb-sm-0"> -->
+            <b-row class="g-4">
+              <b-col lg="6">
+                <ul class="nav nav-pills nav-pills-dark" id="pills-tab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-start rounded-0 mb-0" :class="show == 1 && 'active'"
+                      id="pills-one-way-tab" data-bs-toggle="pill" data-bs-target="#pills-one-way" type="button"
+                      role="tab" aria-selected="true" @click="show = 1">
+                      {{ t('txtOneTrip') }}
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link  rounded-0 mb-0" :class="show == 2 && 'active'" id="pills-round-trip-tab"
+                      data-bs-toggle="pill" data-bs-target="#pills-round-trip" type="button" role="tab"
+                      aria-selected="false" @click="show = 2">
+                      {{ t('txtRoundTrip') }}
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-end rounded-0 mb-0" :class="show == 3 && 'active'"
+                      id="pills-round-trip-tab" data-bs-toggle="pill" data-bs-target="#pills-multi-trip" type="button"
+                      role="tab" aria-selected="false" @click="show = 3">
+                      {{ t('txtMultiTrip') }}
+                    </button>
+                  </li>
+                </ul>
+              </b-col>
 
-        <form class="bg-mode position-relative px-3 px-sm-4 pt-4 mb-4 mb-sm-0">
-          <figure class="position-absolute top-0 start-0 h-100 ms-n2 ms-sm-n1">
-            <svg class="h-100" viewBox="0 0 12.9 324" style="enable-background: new 0 0 12.9 324">
-              <path class="fill-mode"
-                d="M9.8,316.4c1.1-26.8,2-53.4,1.9-80.2c-0.1-18.2-0.8-36.4-1.2-54.6c-0.2-8.9-0.2-17.7,0.8-26.6 c0.5-4.5,1.1-9,1.4-13.6c0.1-1.9,0.1-3.7,0.1-5.6c-0.2-0.2-0.6-1.5-0.2-3.1c-0.3-1.8-0.4-3.7-0.4-5.5c-1.2-3-1.8-6.3-1.7-9.6 c0.9-19,0.5-38.1,0.8-57.2c0.3-17.1,0.6-34.2,0.2-51.3c-0.1-0.6-0.1-1.2-0.1-1.7c0-0.8,0-1.6,0-2.4c0-0.5,0-1.1,0-1.6 c0-1.2,0-2.3,0.2-3.5H0v11.8c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1V31c3.3,0,6.1,2.7,6.1,6.1S3.3,43.3,0,43.3v6.9 c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1 s-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9 c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1 c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.7,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9 c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.7,6.1,6.1 c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1V324h9.5C9.6,321.4,9.7,318.8,9.8,316.4z" />
-            </svg>
-          </figure>
-
-          <figure class="position-absolute top-0 end-0 h-100 rotate-180 me-n2 me-sm-n1">
-            <svg class="h-100" viewBox="0 0 21 324" style="enable-background: new 0 0 21 324">
-              <path class="fill-mode"
-                d="M9.8,316.4c1.1-26.8,2-53.4,1.9-80.2c-0.1-18.2-0.8-36.4-1.2-54.6c-0.2-8.9-0.2-17.7,0.8-26.6 c0.5-4.5,1.1-9,1.4-13.6c0.1-1.9,0.1-3.7,0.1-5.6c-0.2-0.2-0.6-1.5-0.2-3.1c-0.3-1.8-0.4-3.7-0.4-5.5c-1.2-3-1.8-6.3-1.7-9.6 c0.9-19,0.5-38.1,0.8-57.2c0.3-17.1,0.6-34.2,0.2-51.3c-0.1-0.6-0.1-1.2-0.1-1.7c0-0.8,0-1.6,0-2.4c0-0.5,0-1.1,0-1.6 c0-1.2,0-2.3,0.2-3.5H0v11.8c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1V31c3.3,0,6.1,2.7,6.1,6.1S3.3,43.3,0,43.3v6.9 c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1 s-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9 c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1 c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.7,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9 c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.7,6.1,6.1 c0,3.4-2.8,6.1-6.1,6.1v6.9c3.3,0,6.1,2.8,6.1,6.1c0,3.4-2.8,6.1-6.1,6.1V324h9.5C9.6,321.4,9.7,318.8,9.8,316.4z" />
-            </svg>
-          </figure>
-
-          <!-- <b-container> -->
-          <b-row>
-            <b-col cols="12">
-              <!-- <b-form class="bg-mode border rounded position-relative px-4 pt-4 mb-4 mb-sm-0"> -->
-              <b-row class="g-4">
-                <b-col lg="6">
-                  <ul class="nav nav-pills nav-pills-dark" id="pills-tab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link rounded-start rounded-0 mb-0" :class="show == 1 && 'active'"
-                        id="pills-one-way-tab" data-bs-toggle="pill" data-bs-target="#pills-one-way" type="button"
-                        role="tab" aria-selected="true" @click="show = 1">
-                        {{ t('txtOneTrip') }}
-                      </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link  rounded-0 mb-0" :class="show == 2 && 'active'" id="pills-round-trip-tab"
-                        data-bs-toggle="pill" data-bs-target="#pills-round-trip" type="button" role="tab"
-                        aria-selected="false" @click="show = 2">
-                        {{ t('txtRoundTrip') }}
-                      </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link rounded-end rounded-0 mb-0" :class="show == 3 && 'active'"
-                        id="pills-round-trip-tab" data-bs-toggle="pill" data-bs-target="#pills-multi-trip" type="button"
-                        role="tab" aria-selected="false" @click="show = 3">
-                        {{ t('txtMultiTrip') }}
-                      </button>
-                    </li>
-                  </ul>
-                </b-col>
-
-                <b-col lg="3" class="ms-auto">
-                  <div class="form-control-bg-light form-fs-md">
-                    <SelectFormInput id="class" v-model="selectedClass" :options="classOptions"
-                      :choice-options="{ searchEnabled: true }" />
-                  </div>
-                </b-col>
-
-                <b-col lg="3" class="ms-auto">
-                  <div class="form-control-bg-light form-fs-md">
-                    <!-- <SelectFormInput id="travelers" v-model="selectedTravelers" :options="travelerOptions"
-                          :choice-options="{ searchEnabled: true }" /> -->
-                    <GuestAndRoomForm v-model="formValue" />
-                  </div>
-                </b-col>
-              </b-row>
-
-              <div class="tab-content mt-4" id="pills-tabContent">
-                <div class="tab-pane fade" :class="show == 1 && 'show active'" id="pills-one-way" role="tabpanel"
-                  aria-labelledby="pills-one-way-tab">
-                  <b-row class="g-4">
-                    <!-- {{ t('txtFrom') }} -->
-                    <b-col md="6" lg="4" class="position-relative">
-                      <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
-                        <label class="mb-1 d-flex align-items-center">
-                          <BIconGeoAlt class="me-2" /> {{ t('txtFrom') }}
-                        </label>
-                        <div v-if="destinationOptions.length > 0">
-                          <AirportSelector v-model="selectedDestination" class="w-100" />
-                        </div>
-                        <div v-else class="text-muted small">{{ t('txtWaiting') }}</div>
-                      </div>
-
-                      <!-- Flip Icon -->
-                      <div class="btn-flip-icon mt-3 mt-md-0">
-                        <button class="btn btn-white shadow btn-round mb-0">
-                          <font-awesome-icon :icon="faRightLeft" />
-                        </button>
-                      </div>
-                    </b-col>
-
-                    <!-- {{ t('txtTo') }} -->
-                    <b-col md="6" lg="4">
-                      <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
-                        <label class="mb-1 d-flex align-items-center">
-                          <BIconSend class="me-2" /> {{ t('txtTo') }}
-                        </label>
-                        <div v-if="destinationOptions.length > 0">
-                          <AirportSelector v-model="selectedDestination2" class="w-100" />
-                        </div>
-                        <div v-else class="text-muted small">{{ t('txtWaiting') }}</div>
-                      </div>
-                    </b-col>
-
-                    <!-- {{ t('txtOneTripDate') }} -->
-                    <b-col lg="4">
-                      <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
-                        <label class="mb-1 d-flex align-items-center">
-                          <BIconCalendar class="me-2" /> {{ t('txtOneTripDate') }}
-                        </label>
-                        <CustomFlatpicker id="departureDate" placeholder="Select date" v-model="departureDate"
-                          :options="{ dateFormat: 'Y.m.d' }" />
-                        <!-- <CustomFlatpicker id="departureDate" placeholder="Select date" v-model="departureDate"
-                            :options="{ dateFormat: 'd.m.Y' }" /> -->
-                      </div>
-                    </b-col>
-
-                    <!-- {{ t('txtFindTicket') }} -->
-                    <b-col cols="12" class="text-end pt-0">
-                      <a class="btn btn-primary mb-n" :href="generateTicketUrl">
-                        <div class="d-flex align-items-center justify-content-end">
-                          <p class="mb-0">{{ t('txtFindTicket') }}</p>
-                          <BIconArrowRight class="ps-3" />
-                        </div>
-                      </a>
-                    </b-col>
-                  </b-row>
-
+              <b-col lg="3" class="ms-auto">
+                <div class="form-control-bg-light form-fs-md">
+                  <SelectFormInput id="class" v-model="selectedClass" :options="classOptions"
+                    :choice-options="{ searchEnabled: true }" />
                 </div>
+              </b-col>
 
-                <div class="tab-pane fade" :class="show == 2 && 'show active'" id="pills-round-trip" role="tabpanel"
-                  aria-labelledby="pills-round-trip-tab">
-                  <b-row class="g-4">
-                    <b-col md="6" xl="3" class="position-relative">
-                      <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
-                        <label class="mb-1">
-                          <BIconGeoAlt class="me-2" />
-                          {{ t('txtFrom') }}
-                        </label>
-                        <!-- <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
+              <b-col lg="3" class="ms-auto">
+                <div class="form-control-bg-light form-fs-md">
+                  <!-- <SelectFormInput id="travelers" v-model="selectedTravelers" :options="travelerOptions"
+                          :choice-options="{ searchEnabled: true }" /> -->
+                  <GuestAndRoomForm v-model="formValue" />
+                </div>
+              </b-col>
+            </b-row>
+
+            <div class="tab-content mt-4" id="pills-tabContent">
+              <div class="tab-pane fade" :class="show == 1 && 'show active'" id="pills-one-way" role="tabpanel"
+                aria-labelledby="pills-one-way-tab">
+                <b-row class="g-4">
+                  <!-- {{ t('txtFrom') }} -->
+                  <b-col md="6" lg="4" class="position-relative">
+                    <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
+                      <label class="mb-1 d-flex align-items-center">
+                        <BIconGeoAlt class="me-2" /> {{ t('txtFrom') }}
+                      </label>
+                      <div v-if="destinationOptions.length > 0">
+                        <AirportSelector v-model="selectedDestination" class="w-100" />
+                      </div>
+                      <div v-else class="text-muted small">{{ t('txtWaiting') }}</div>
+                    </div>
+
+                    <!-- Flip Icon -->
+                    <div class="btn-flip-icon mt-3 mt-md-0">
+                      <button class="btn btn-white shadow btn-round mb-0">
+                        <font-awesome-icon :icon="faRightLeft" />
+                      </button>
+                    </div>
+                  </b-col>
+
+                  <!-- {{ t('txtTo') }} -->
+                  <b-col md="6" lg="4">
+                    <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
+                      <label class="mb-1 d-flex align-items-center">
+                        <BIconSend class="me-2" /> {{ t('txtTo') }}
+                      </label>
+                      <div v-if="destinationOptions.length > 0">
+                        <AirportSelector v-model="selectedDestination2" class="w-100" />
+                      </div>
+                      <div v-else class="text-muted small">{{ t('txtWaiting') }}</div>
+                    </div>
+                  </b-col>
+
+                  <!-- {{ t('txtOneTripDate') }} -->
+                  <b-col lg="4">
+                    <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
+                      <label class="mb-1 d-flex align-items-center">
+                        <BIconCalendar class="me-2" /> {{ t('txtOneTripDate') }}
+                      </label>
+                      <CustomFlatpicker id="departureDate" placeholder="Select date" v-model="departureDate"
+                        :options="{ dateFormat: 'Y.m.d' }" />
+                      <!-- <CustomFlatpicker id="departureDate" placeholder="Select date" v-model="departureDate"
+                            :options="{ dateFormat: 'd.m.Y' }" /> -->
+                    </div>
+                  </b-col>
+
+                  <!-- {{ t('txtFindTicket') }} -->
+                  <b-col cols="12" class="text-end pt-0">
+                    <a class="btn btn-primary mb-n" :href="generateTicketUrl">
+                      <div class="d-flex align-items-center justify-content-end">
+                        <p class="mb-0">{{ t('txtFindTicket') }}</p>
+                        <BIconArrowRight class="ps-3" />
+                      </div>
+                    </a>
+                  </b-col>
+                </b-row>
+
+              </div>
+
+              <div class="tab-pane fade" :class="show == 2 && 'show active'" id="pills-round-trip" role="tabpanel"
+                aria-labelledby="pills-round-trip-tab">
+                <b-row class="g-4">
+                  <b-col md="6" xl="3" class="position-relative">
+                    <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
+                      <label class="mb-1">
+                        <BIconGeoAlt class="me-2" />
+                        {{ t('txtFrom') }}
+                      </label>
+                      <!-- <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
                           <AirportsFormInput id="round-from" v-model="selectedDestination3"
                             :options="destinationOptionsRound" :choice-options="{ searchEnabled: true }" />
                         </div> -->
-                        <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
-                          <AirportSelector v-model="selectedDestination" class="w-100" />
-                        </div>
-                        <div v-else>
-                          {{ t('txtWaiting') }}
-                        </div>
-
+                      <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
+                        <AirportSelector v-model="selectedDestination" class="w-100" />
+                      </div>
+                      <div v-else>
+                        {{ t('txtWaiting') }}
                       </div>
 
-                      <div class="btn-flip-icon mt-3 mt-md-0">
-                        <button class="btn btn-white shadow btn-round mb-0">
-                          <font-awesome-icon :icon="faRightLeft" />
-                        </button>
-                      </div>
-                    </b-col>
+                    </div>
 
-                    <b-col md="6" xl="3">
-                      <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
-                        <label class="mb-1">
-                          <BIconSend class="me-2" />
-                          {{ t('txtTo') }}
-                        </label>
-                        <!-- <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
+                    <div class="btn-flip-icon mt-3 mt-md-0">
+                      <button class="btn btn-white shadow btn-round mb-0">
+                        <font-awesome-icon :icon="faRightLeft" />
+                      </button>
+                    </div>
+                  </b-col>
+
+                  <b-col md="6" xl="3">
+                    <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
+                      <label class="mb-1">
+                        <BIconSend class="me-2" />
+                        {{ t('txtTo') }}
+                      </label>
+                      <!-- <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
                           <AirportsFormInput id="round-to" v-model="selectedDestination4"
                             :options="destinationOptionsRound" :choice-options="{ searchEnabled: true }" />
                         </div> -->
-                        <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
-                          <AirportSelector v-model="selectedDestination2" class="w-100" />
-                        </div>
-                        <div v-else>
-                          {{ t('txtWaiting') }}
-                        </div>
-
+                      <div v-if="destinationOptionsRound && destinationOptionsRound.length > 0">
+                        <AirportSelector v-model="selectedDestination2" class="w-100" />
                       </div>
-                    </b-col>
-
-                    <b-col md="6" xl="3">
-                      <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
-                        <label class="mb-1">
-                          <BIconCalendar class="me-2" />
-                          {{ t('txtStartDate') }}
-                        </label>
-                        <CustomFlatpicker id="round-departureDate" placeholder="Select date" v-model="departureDate"
-                          :options="{ dateFormat: 'Y.m.d' }" />
+                      <div v-else>
+                        {{ t('txtWaiting') }}
                       </div>
-                    </b-col>
 
-                    <b-col md="6" xl="3">
-                      <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
-                        <label class="mb-1">
-                          <BIconCalendar class="me-2" />
-                          {{ t('txtEndDate') }}
-                        </label>
-                        <CustomFlatpicker id="round-returnDate" placeholder="Select date" v-model="returnDate"
-                          :options="{ dateFormat: 'Y.m.d', minDate: departureDate }" />
-                      </div>
-                    </b-col>
-
-                    <b-col cols="12" class="text-end pt-0">
-                      <a class="btn btn-primary mb-n" :href="generateTicketUrlRound">
-                        <div class="d-flex  align-items-center">
-                          <p class="mb-0">{{ t('txtFindTicket') }}</p>
-                          <BIconArrowRight class="ps-3 w-auto" />
-                        </div>
-                      </a>
-                    </b-col>
-                  </b-row>
-                </div>
-
-
-                <div class="tab-pane fade" :class="show == 3 && 'show active'" id="pills-multi-trip" role="tabpanel"
-                  aria-labelledby="pills-multi-trip-tab">
-                  <b-row class="g-4">
-                    <!-- Хайлтын мөрүүд -->
-                    <div v-for="(trip, index) in trips" :key="index" class="mb-3">
-                      <b-row class="g-4 align-items-end">
-                        <!-- {{ t('txtFrom') }} -->
-                        <b-col md="6" xl="3" class="position-relative">
-                          <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
-                            <label class="mb-1">
-                              <BIconGeoAlt class="me-2" /> {{ t('txtFrom') }}
-                            </label>
-                            <div v-if="destinationOptions.length > 0">
-                              <AirportSelector v-model="trip.selectedDestination" class="w-100" />
-                            </div>
-                            <div v-else>{{ t('txtWaiting') }}</div>
-                          </div>
-                        </b-col>
-
-                        <!-- {{ t('txtTo') }} -->
-                        <b-col md="6" xl="3">
-                          <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
-                            <label class="mb-1">
-                              <BIconSend class="me-2" /> {{ t('txtTo') }}
-                            </label>
-                            <div v-if="destinationOptions.length > 0">
-                              <AirportSelector v-model="trip.selectedDestination2" class="w-100" />
-                            </div>
-                            <div v-else>{{ t('txtWaiting') }}</div>
-                          </div>
-                        </b-col>
-
-                        <!-- {{ t('txtOneTripDate') }} -->
-                        <b-col md="6" xl="3">
-                          <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
-                            <label class="mb-1">
-                              <BIconCalendar class="me-2" /> {{ t('txtOneTripDate') }}
-                            </label>
-                            <CustomFlatpicker :id="`departureDate${index}`" placeholder="Select date"
-                              v-model="trip.departureDate" :options="{ dateFormat: 'Y.m.d' }" />
-                          </div>
-                        </b-col>
-
-                        <!-- Устгах товч -->
-                        <b-col md="6" xl="3" v-if="index > 0">
-                          <button class="btn btn-danger w-100" type="button" @click="removeTrip(index)">
-                            {{ t('txtFlightDel') }}
-                          </button>
-                        </b-col>
-                      </b-row>
                     </div>
+                  </b-col>
+
+                  <b-col md="6" xl="3">
+                    <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
+                      <label class="mb-1">
+                        <BIconCalendar class="me-2" />
+                        {{ t('txtStartDate') }}
+                      </label>
+                      <CustomFlatpicker id="round-departureDate" placeholder="Select date" v-model="departureDate"
+                        :options="{ dateFormat: 'Y.m.d' }" />
+                    </div>
+                  </b-col>
+
+                  <b-col md="6" xl="3">
+                    <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
+                      <label class="mb-1">
+                        <BIconCalendar class="me-2" />
+                        {{ t('txtEndDate') }}
+                      </label>
+                      <CustomFlatpicker id="round-returnDate" placeholder="Select date" v-model="returnDate"
+                        :options="{ dateFormat: 'Y.m.d', minDate: departureDate }" />
+                    </div>
+                  </b-col>
+
+                  <b-col cols="12" class="text-end pt-0">
+                    <a class="btn btn-primary mb-n" :href="generateTicketUrlRound">
+                      <div class="d-flex  align-items-center">
+                        <p class="mb-0">{{ t('txtFindTicket') }}</p>
+                        <BIconArrowRight class="ps-3 w-auto" />
+                      </div>
+                    </a>
+                  </b-col>
+                </b-row>
+              </div>
 
 
-                    <!-- Шинэ мөр нэмэх товч -->
-                    <!-- <b-col cols="12">
+              <div class="tab-pane fade" :class="show == 3 && 'show active'" id="pills-multi-trip" role="tabpanel"
+                aria-labelledby="pills-multi-trip-tab">
+                <b-row class="g-4">
+                  <!-- Хайлтын мөрүүд -->
+                  <div v-for="(trip, index) in trips" :key="index" class="mb-3">
+                    <b-row class="g-4 align-items-end">
+                      <!-- {{ t('txtFrom') }} -->
+                      <b-col md="6" xl="3" class="position-relative">
+                        <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
+                          <label class="mb-1">
+                            <BIconGeoAlt class="me-2" /> {{ t('txtFrom') }}
+                          </label>
+                          <div v-if="destinationOptions.length > 0">
+                            <AirportSelector v-model="trip.selectedDestination" class="w-100" />
+                          </div>
+                          <div v-else>{{ t('txtWaiting') }}</div>
+                        </div>
+                      </b-col>
+
+                      <!-- {{ t('txtTo') }} -->
+                      <b-col md="6" xl="3">
+                        <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
+                          <label class="mb-1">
+                            <BIconSend class="me-2" /> {{ t('txtTo') }}
+                          </label>
+                          <div v-if="destinationOptions.length > 0">
+                            <AirportSelector v-model="trip.selectedDestination2" class="w-100" />
+                          </div>
+                          <div v-else>{{ t('txtWaiting') }}</div>
+                        </div>
+                      </b-col>
+
+                      <!-- {{ t('txtOneTripDate') }} -->
+                      <b-col md="6" xl="3">
+                        <div class="form-border-transparent form-fs-lg bg-light rounded-3 h-100 p-3">
+                          <label class="mb-1">
+                            <BIconCalendar class="me-2" /> {{ t('txtOneTripDate') }}
+                          </label>
+                          <CustomFlatpicker :id="`departureDate${index}`" placeholder="Select date"
+                            v-model="trip.departureDate" :options="{ dateFormat: 'Y.m.d' }" />
+                        </div>
+                      </b-col>
+
+                      <!-- Устгах товч -->
+                      <b-col md="6" xl="3" v-if="index > 0">
+                        <button class="btn btn-danger w-100" type="button" @click="removeTrip(index)">
+                          {{ t('txtFlightDel') }}
+                        </button>
+                      </b-col>
+                    </b-row>
+                  </div>
+
+
+                  <!-- Шинэ мөр нэмэх товч -->
+                  <!-- <b-col cols="12">
                       <button class="btn btn-secondary" @click="addTrip">
                         Шинэ хайлт нэмэх
                       </button>
                     </b-col> -->
-                    <b-col cols="12">
-                      <button class="btn btn-secondary" type="button" @click="addTrip">
-                        {{ t('txtNewFlight') }}
-                      </button>
-                    </b-col>
+                  <b-col cols="12">
+                    <button class="btn btn-secondary" type="button" @click="addTrip">
+                      {{ t('txtNewFlight') }}
+                    </button>
+                  </b-col>
 
 
-                    <!-- Хайх товч -->
-                    <b-col cols="12" class="text-end pt-0">
-                      <a class="btn btn-primary mb-n" :href="generateTicketUrlMulti">
-                        <div class="d-flex  align-items-center">
-                          <p class="mb-0">{{ t('txtFindTicket') }}</p>
-                          <BIconArrowRight class="ps-3 w-auto" />
-                        </div>
-                      </a>
-                    </b-col>
-                  </b-row>
-                </div>
+                  <!-- Хайх товч -->
+                  <b-col cols="12" class="text-end pt-0">
+                    <a class="btn btn-primary mb-n" :href="generateTicketUrlMulti">
+                      <div class="d-flex  align-items-center">
+                        <p class="mb-0">{{ t('txtFindTicket') }}</p>
+                        <BIconArrowRight class="ps-3 w-auto" />
+                      </div>
+                    </a>
+                  </b-col>
+                </b-row>
               </div>
-              <!-- </b-form> -->
-            </b-col>
-          </b-row>
-          <!-- </b-container> -->
-        </form>
-      </div>
-    </b-container>
-  </section>
+            </div>
+            <!-- </b-form> -->
+          </b-col>
+        </b-row>
+        <!-- </b-container> -->
+      </form>
+    </div>
+  </b-container>
 </template>
 
 <script lang="ts" setup>
@@ -768,3 +765,23 @@ function searchFlights() {
 
 
 </script>
+
+<style lang="css" scoped>
+.hero-section {
+  height: 350px;
+  background-image:
+    url('https://airkacc.mn/assets/01-ozKTbolh.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.main-container {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: -300px auto 50px;
+  padding: 0 20px;
+  z-index: 10;
+}
+</style>
