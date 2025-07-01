@@ -770,7 +770,7 @@ function searchFlights() {
 .hero-section {
   height: 350px;
   background-image:
-    url('https://airkacc.mn/assets/01-ozKTbolh.jpg');
+    url(bg01);
   background-size: cover;
   background-position: center;
   position: relative;
