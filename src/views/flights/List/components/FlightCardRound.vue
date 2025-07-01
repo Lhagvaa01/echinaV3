@@ -38,9 +38,9 @@
 
                     <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('asc')">{{ t('txtPriceASC')
-                                }}</a></li>
+                        }}</a></li>
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('desc')">{{ t('txtPriceDESC')
-                                }}</a>
+                        }}</a>
                         </li>
                     </ul>
                 </div>
@@ -189,7 +189,7 @@
                                                             <b-col cols="3" sm="4" md="3" class="mt-0 text-start ">
                                                                 <p class="mb-0" style="font-size: medium;">{{
                                                                     flight[0]?.Departure.Iata
-                                                                }}</p>
+                                                                    }}</p>
                                                                 <p class="mb-0 text-truncate"
                                                                     style="font-size: smaller; max-width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
                                                                     :title="StoreAirPorts.find((AirPorts: any) => AirPorts.Iata === flight[0]?.Departure.Iata)?.City">
@@ -413,13 +413,13 @@
 
                                         <!-- Баруун багана (үнэ, товч, дэлгэрэнгүй) -->
                                         <b-col cols="12" md="2" xl="3" xxl="2"
-                                            class="d-flex flex-column px-0 justify-content-between bg-md-primary bg-opacity-10"
+                                            class="d-flex flex-column px-0 justify-content-between bg-primary bg-opacity-10"
                                             :style="show == 1 ? 'border-bottom-right-radius: 1rem; border-top-right-radius: 1rem;' : moreFlights(Mainindex).length === findex + 1
                                                 ? 'border-bottom-right-radius: 1rem;'
                                                 : 'border-top-right-radius: 1rem;'">
                                             <!-- Дээшээ: Icons -->
 
-                                            <div class="d-none d-md-flex">
+                                            <div class="d-none d-md-grid">
                                                 <div v-if="moreFlights(Mainindex).length > 0 &&
                                                     (
                                                         (findex == 0)
@@ -486,7 +486,7 @@
                                             </div>
                                             <!-- Гол: Үнэ, Сонгох -->
                                             <b-row v-if="moreFlights(Mainindex).length == findex + 1"
-                                                class="justify-content-end align-content-end h-100 mx-0 rounded-0">
+                                                class="justify-content-end align-content-end h-100 mx-0 rounded-0 ">
                                                 <b-col
                                                     class="d-flex d-md-block px-4 justify-content-between align-content-end align-items-end align-content-sm-center  text-md-end py-3">
                                                     <div>
@@ -576,7 +576,7 @@
                                             </b-row>
                                             <!-- Доор: Дэлгэрэнгүй (always at bottom) -->
                                             <b-row v-if="moreFlights(Mainindex).length == findex + 1"
-                                                class="border-2 border-top  border-primary justify-content-center mx-3 mx-md-0 "
+                                                class="border-2 border-top   border-primary justify-content-center mx-3 mx-md-0 "
                                                 style="height: 42px; ">
                                                 <b-col class="text-center py-2">
                                                     <li class="list-inline-item" style="font-size: smaller;">
