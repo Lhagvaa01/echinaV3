@@ -1,5 +1,5 @@
 <template>
-  <section class="py-0 hero-section">
+  <section class="py-0 hero-section" :style="{ backgroundImage: `url(${bg01})` }">
 
     <!-- <h1 class="text-dark display-3 pt-sm-5 my-5"></h1> -->
   </section>
@@ -769,8 +769,6 @@ function searchFlights() {
 <style lang="css" scoped>
 .hero-section {
   height: 350px;
-  background-image:
-    url(bg01);
   background-size: cover;
   background-position: center;
   position: relative;
