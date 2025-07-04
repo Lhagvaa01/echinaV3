@@ -768,7 +768,7 @@ function searchFlights() {
 
 <style lang="css" scoped>
 .hero-section {
-  height: 350px;
+  height: 550px;
   background-size: cover;
   background-position: center;
   position: relative;
