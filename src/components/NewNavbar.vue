@@ -1,10 +1,13 @@
 <template>
-    <header class="navbar-light header-sticky position-absolute bg-transparent w-100"
-        :class="{ 'header-sticky-on': isSticky }">
+    <header :class="[
+        'navbar-light header-sticky',
+        isHome ? 'position-absolute bg-transparent w-100' : '',
+        isSticky ? 'header-sticky-on' : ''
+    ]">
         <nav class="navbar navbar-expand-xl ">
             <!-- <b-container :class="`${isMobileMenu ? 'me-0' : 'me-auto'}`"> -->
             <div
-                class="d-flex w-100 justify-content-between justify-content-md-evenly mx-3 mx-md-0 align-items-center bg-transparent  ">
+                class="d-flex w-100 justify-content-between justify-content-md-evenly mx-3 mx-md-0 align-items-center ">
 
                 <div class="d-flex justify-content-center align-items-center gap-0 gap-md-5">
                     <LogoBox />
@@ -253,6 +256,7 @@ import { faRightToBracket } from '@fortawesome/free-solid-svg-icons'
 import { faUser, faChevronDown, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import { useLayoutStore } from '@/stores/layout'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 
 const { t, locale } = useI18n()
 
@@ -322,6 +326,9 @@ function getFlagUrl(flag: string) {
 
 const useLayout = useLayoutStore()
 const isSticky = ref<boolean>(false)
+const route = useRoute()
+const isHome = computed(() => route.path === '/')
+
 
 const userLogin = ref(JSON.parse(sessionStorage.getItem('user') || 'false'));
 
