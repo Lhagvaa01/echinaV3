@@ -772,14 +772,41 @@ function searchFlights() {
   background-size: cover;
   background-position: center;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .main-container {
-  flex: 1;
   width: 100%;
   max-width: 1200px;
   margin: -300px auto 50px;
   padding: 0 20px;
   z-index: 10;
+  position: relative;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .main-container {
+    margin-top: -180px;
+    padding: 0 16px;
+  }
+
+  .hero-section {
+    height: 380px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .main-container {
+    margin-top: -80px;
+    padding: 0 8px;
+  }
+
+  .hero-section {
+    height: 240px;
+  }
 }
 </style>
