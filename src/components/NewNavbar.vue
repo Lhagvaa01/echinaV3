@@ -1,8 +1,10 @@
 <template>
-    <header class="navbar-light header-sticky" :class="{ 'header-sticky-on': isSticky }">
+    <header class="navbar-light header-sticky position-absolute bg-transparent w-100"
+        :class="{ 'header-sticky-on': isSticky }">
         <nav class="navbar navbar-expand-xl ">
             <!-- <b-container :class="`${isMobileMenu ? 'me-0' : 'me-auto'}`"> -->
-            <div class="d-flex w-100 justify-content-between justify-content-md-evenly mx-3 mx-md-0 align-items-center">
+            <div
+                class="d-flex w-100 justify-content-between justify-content-md-evenly mx-3 mx-md-0 align-items-center bg-transparent  ">
 
                 <div class="d-flex justify-content-center align-items-center gap-0 gap-md-5">
                     <LogoBox />

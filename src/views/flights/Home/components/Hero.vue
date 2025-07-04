@@ -1,5 +1,5 @@
 <template>
-  <section class="py-0 hero-section" :style="{ backgroundImage: `url(${bg01})` }">
+  <section class="py-0 hero-section " :style="{ backgroundImage: `url(${bg01})` }">
 
     <!-- <h1 class="text-dark display-3 pt-sm-5 my-5"></h1> -->
   </section>
