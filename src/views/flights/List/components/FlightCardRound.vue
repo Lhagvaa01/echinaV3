@@ -580,12 +580,19 @@
                                                 style="height: 42px; ">
                                                 <b-col class="text-center py-2">
                                                     <li class="list-inline-item" style="font-size: smaller;">
-                                                        <a :to="'/some-route/' + Mainindex + findex"
+                                                        <!-- <a :to="'/some-route/' + Mainindex + findex"
                                                             :id="'toggleButton' + Mainindex + findex"
                                                             :aria-controls="'flightDetail' + findex"
                                                             v-b-toggle="'flightDetail' + Mainindex + findex"
                                                             class="btn-more d-flex align-items-center collapsed p-0 mb-0 justify-content-center"
                                                             role="button">
+                                                            Дэлгэрэнгүй
+                                                            <ChevronDown />
+                                                        </a> -->
+                                                        <a href="#" :id="'toggleButton' + Mainindex + findex"
+                                                            class="btn-more d-flex align-items-center collapsed p-0 mb-0 justify-content-center"
+                                                            role="button"
+                                                            @click.prevent="showDetail(`${Mainindex}-${findex}`)">
                                                             Дэлгэрэнгүй
                                                             <ChevronDown />
                                                         </a>
@@ -596,11 +603,17 @@
 
                                         <!-- Details collapse -->
                                         <b-col cols="12" class="ps-3 ms-2 border-1 border-primary">
-                                            <b-collapse :id="'flightDetail' + Mainindex + findex"
+                                            <!-- <b-collapse :id="'flightDetail' + Mainindex + findex"
                                                 class="multi-collapse ">
                                                 <div class="pt-3">
-                                                    <!-- {{ offer }} -->
                                                     <FlightDetailTab :flight="offer" :index="Mainindex"
+                                                        :airports="StoreAirPorts" />
+                                                </div>
+                                            </b-collapse> -->
+                                            <b-collapse :id="'flightDetail' + Mainindex + findex"
+                                                v-model="detailsShown[`${Mainindex}-${findex}`]" class="multi-collapse">
+                                                <div v-if="detailsShown[`${Mainindex}-${findex}`]" class="pt-3">
+                                                    <FlightDetailTab :flight="offer" :index="2"
                                                         :airports="StoreAirPorts" />
                                                 </div>
                                             </b-collapse>
@@ -762,6 +775,12 @@ function formatDate(input: string): string {
 const flightStore = useFlightStore();
 
 
+const detailsShown = ref({});
+
+function showDetail(key) {
+    detailsShown.value[key] = !detailsShown.value[key];
+}
+
 // const filters = ref({
 //   StoreflightInfos: [],
 // });
@@ -838,40 +857,61 @@ const getFlightData = (index: number) => {
 
 let test = 1;
 
-const moreFlights = (index: number) => {
-    const data = getFlightData(index);
-    let filter: any[][] = [];  // Array of arrays to store segments for each i value
+// const moreFlights = (index: number) => {
+//     const data = getFlightData(index);
+//     let filter: any[][] = [];  
 
-    const tripCount = trips.toString();
+//     const tripCount = trips.toString();
+//     for (let i = 1; i <= trips; i++) {
+//         let currentFilter: any[] = [];
 
+//         if (data.some((offer: { Rph: string }) => offer.Rph === tripCount)) {
+//             currentFilter = data
+//                 .filter((offer: { Rph: string }) => offer.Rph === i.toString())
+//                 .flatMap((offer: { Segments: { OfferSegment: any[] } }) => offer.Segments.OfferSegment);
+//         } else {
+//             currentFilter = data
+//                 .flatMap((offer: { Segments?: { OfferSegment?: any[] } }) => offer.Segments?.OfferSegment || [])
+//                 .filter((segment: { Rph: string }) => segment.Rph === i.toString());
+//         }
 
+//         filter.push(currentFilter);
+//     }
 
-    // console.log(trips)
-    // Iterate through Rph values starting from 1, ending at `trips.value`
-    for (let i = 1; i <= trips; i++) {
-        let currentFilter: any[] = [];
+//     if (test == 1) {
+//         test = test + 1;
+//     }
 
-        if (data.some((offer: { Rph: string }) => offer.Rph === tripCount)) {
-            currentFilter = data
-                .filter((offer: { Rph: string }) => offer.Rph === i.toString())
-                .flatMap((offer: { Segments: { OfferSegment: any[] } }) => offer.Segments.OfferSegment);
-        } else {
-            currentFilter = data
-                .flatMap((offer: { Segments?: { OfferSegment?: any[] } }) => offer.Segments?.OfferSegment || [])
-                .filter((segment: { Rph: string }) => segment.Rph === i.toString());
+//     return filter;
+// };
+const moreFlightsCache = ref({});
+const moreFlights = (index) => {
+    if (!moreFlightsCache.value[index]) {
+        // Хэрвээ cache-д байхгүй бол бодоод хадгална
+        const data = getFlightData(index);
+        let filter = [];
+        const tripCount = trips.toString();
+        for (let i = 1; i <= trips; i++) {
+            let currentFilter = [];
+            if (data.some((offer) => offer.Rph === tripCount)) {
+                currentFilter = data
+                    .filter((offer) => offer.Rph === i.toString())
+                    .flatMap((offer) => offer.Segments.OfferSegment);
+            } else {
+                currentFilter = data
+                    .flatMap((offer) => offer.Segments?.OfferSegment || [])
+                    .filter((segment) => segment.Rph === i.toString());
+            }
+            filter.push(currentFilter);
         }
-
-        // Store the current filter array for each i value
-        filter.push(currentFilter);
+        moreFlightsCache.value[index] = filter;
     }
-
-    if (test == 1) {
-        // console.log(filter);
-        test = test + 1;
-    }
-
-    return filter;
+    return moreFlightsCache.value[index];
 };
+
+// watch(currentPage, () => {
+//   moreFlightsCache.value = {};
+// });
 
 
 const getFlightData2 = (index: number) => {
@@ -884,11 +924,20 @@ const getFlightData2 = (index: number) => {
 //    return getFlightData2(index).Offers.OfferInfo.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments.OfferSegment) || [];
 // };
 
-const getAllSegments = (offer: any) => {
-    // console.log(offer)
-    const offerData = offer || { Offers: { OfferInfo: [] } }
-    // console.log(offerData.Offers.OfferInfo.flatMap((offer: { Segments?: { OfferSegment?: any } }) => offer.Segments?.OfferSegment) || [])
-    return offerData.Offers.OfferInfo.flatMap((offer: { Segments?: { OfferSegment?: any } }) => offer.Segments?.OfferSegment) || [];
+// const getAllSegments = (offer: any) => {
+//     const offerData = offer || { Offers: { OfferInfo: [] } }
+//     return offerData.Offers.OfferInfo.flatMap((offer: { Segments?: { OfferSegment?: any } }) => offer.Segments?.OfferSegment) || [];
+// };
+
+const allSegmentsCache = ref({});
+
+const getAllSegments = (offer) => {
+    if (!offer?.OfferCode) return [];
+    if (!allSegmentsCache.value[offer.OfferCode]) {
+        allSegmentsCache.value[offer.OfferCode] =
+            offer.Offers.OfferInfo?.flatMap(o => o.Segments?.OfferSegment || []) || [];
+    }
+    return allSegmentsCache.value[offer.OfferCode];
 };
 
 const getTotalStops = (index: number, findex: number) => {
@@ -991,6 +1040,12 @@ const nextPage = () => {
     }
 };
 
+
+
+watch([paginatedFlights, currentPage], () => {
+    moreFlightsCache.value = {};
+    allSegmentsCache.value = {};
+}, { immediate: true });
 
 </script>
 
