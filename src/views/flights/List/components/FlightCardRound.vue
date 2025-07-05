@@ -85,7 +85,7 @@
 
                         <div>
                             <!-- <p>{{ moreFlights(Mainindex).length }}</p> -->
-                            <div v-for="(flight, findex) in moreFlights(Mainindex)" :key="findex">
+                            <div v-for="(flight, findex) in moreFlights(offer, Mainindex)" :key="findex">
                                 <!-- <span>{{ flight }}</span> -->
                                 <div v-if="flight.length > 0">
                                     <b-row class="pe-1 pe-sm-3">
@@ -100,7 +100,8 @@
                                                         <h6 class="m-3 mb-0 fw-bold d-flex align-items-center"
                                                             style="font-size: smaller;">
                                                             <PlaneTakeoff color="#009dff" :size="32" class="me-3" />
-                                                            {{ (show == 2 && moreFlights(Mainindex).length - 1 ===
+                                                            {{ (show == 2 && moreFlights(offer, Mainindex).length - 1
+                                                                ===
                                                                 findex) ?
                                                                 t('txtToFlight')
                                                                 :
@@ -176,7 +177,7 @@
                                                         <div>
                                                             <h5 class="mt-0  fw-light mb-0 pb-0 text-muted"
                                                                 style="font-size: smaller;">Нийт: {{
-                                                                    getTotalFlightTime(Mainindex, findex)
+                                                                    getTotalFlightTime(offer, Mainindex, findex)
                                                                 }}
                                                             </h5>
                                                         </div>
@@ -233,10 +234,10 @@
                                                                         style="height: 1px; background-color: #ccc;" />
 
                                                                     <!-- Голын цэгүүд болон шошго -->
-                                                                    <div v-for="(stop, index) in getStopIatas(Mainindex, findex)"
+                                                                    <div v-for="(stop, index) in getStopIatas(offer, Mainindex, findex)"
                                                                         :key="index"
                                                                         class="position-absolute text-center "
-                                                                        :style="getDotPositionStyle(index, getStopIatas(Mainindex, findex).length)">
+                                                                        :style="getDotPositionStyle(index, getStopIatas(offer, Mainindex, findex).length)">
                                                                         <div
                                                                             style="font-size: small; font-weight: bold;">
                                                                             {{ stop }}
@@ -314,7 +315,7 @@
                                                                 style="background-color: #ffe6e6; border-radius: 10px; padding: 8px 12px;">
                                                                 <p class="mb-0 text-danger"
                                                                     style="font-size: small; white-space: pre-line;">
-                                                                    {{ getTotalStops(Mainindex, findex) }} {{
+                                                                    {{ getTotalStops(offer, Mainindex, findex) }} {{
                                                                         t('txtFlightStop') }}
                                                                     {{ t('txtSelfTBag') }}<br />
                                                                     (Self-transfer baggage)
@@ -333,7 +334,7 @@
                                                 </div>
                                                 <!-- {{ moreFlights(Mainindex).length }} {{ findex + 1 }} -->
                                             </div>
-                                            <div v-if="moreFlights(Mainindex).length == findex + 1"
+                                            <div v-if="moreFlights(offer, Mainindex).length == findex + 1"
                                                 class="d-flex justify-content-end ms-0 ps-0">
                                                 <div class="d-flex ps-4 w-100 border-top border-primary justify-content-between border-2 bg-primary bg-opacity-10 "
                                                     style="height: 42px; border-bottom-left-radius: 1rem;">
@@ -414,13 +415,13 @@
                                         <!-- Баруун багана (үнэ, товч, дэлгэрэнгүй) -->
                                         <b-col cols="12" md="2" xl="3" xxl="2"
                                             class="d-flex flex-column px-0 justify-content-between bg-primary bg-opacity-10"
-                                            :style="show == 1 ? 'border-bottom-right-radius: 1rem; border-top-right-radius: 1rem;' : moreFlights(Mainindex).length === findex + 1
+                                            :style="show == 1 ? 'border-bottom-right-radius: 1rem; border-top-right-radius: 1rem;' : moreFlights(offer, Mainindex).length === findex + 1
                                                 ? 'border-bottom-right-radius: 1rem;'
                                                 : 'border-top-right-radius: 1rem;'">
                                             <!-- Дээшээ: Icons -->
 
                                             <div class="d-none d-md-grid">
-                                                <div v-if="moreFlights(Mainindex).length > 0 &&
+                                                <div v-if="moreFlights(offer, Mainindex).length > 0 &&
                                                     (
                                                         (findex == 0)
                                                     )"
@@ -443,7 +444,7 @@
                                                         <!-- <span class="text-primary ms-1"></span> -->
                                                     </div>
                                                 </div>
-                                                <div v-if="moreFlights(Mainindex).length > 0 &&
+                                                <div v-if="moreFlights(offer, Mainindex).length > 0 &&
                                                     (
                                                         (findex == 0)
                                                     )" class="d-flex gap-2 align-content-center mt-2 ms-2 ">
@@ -485,7 +486,7 @@
                                                 </div>
                                             </div>
                                             <!-- Гол: Үнэ, Сонгох -->
-                                            <b-row v-if="moreFlights(Mainindex).length == findex + 1"
+                                            <b-row v-if="moreFlights(offer, Mainindex).length == findex + 1"
                                                 class="justify-content-end align-content-end h-100 mx-0 rounded-0 ">
                                                 <b-col
                                                     class="d-flex d-md-block px-4 justify-content-between align-content-end align-items-end align-content-sm-center  text-md-end py-3">
@@ -575,7 +576,7 @@
                                                 </b-col>
                                             </b-row>
                                             <!-- Доор: Дэлгэрэнгүй (always at bottom) -->
-                                            <b-row v-if="moreFlights(Mainindex).length == findex + 1"
+                                            <b-row v-if="moreFlights(offer, Mainindex).length == findex + 1"
                                                 class="border-2 border-top   border-primary justify-content-center mx-3 mx-md-0 "
                                                 style="height: 42px; ">
                                                 <b-col class="text-center py-2">
@@ -885,28 +886,25 @@ let test = 1;
 //     return filter;
 // };
 const moreFlightsCache = ref({});
-const moreFlights = (index) => {
-    if (!moreFlightsCache.value[index]) {
-        // Хэрвээ cache-д байхгүй бол бодоод хадгална
+const moreFlights = (offer, index) => {
+    const key = offer.OfferCode || index;
+    if (!moreFlightsCache.value[key]) {
+        // ... бодоод хадгална (чиний кодоос шууд хуул)
         const data = getFlightData(index);
         let filter = [];
         const tripCount = trips.toString();
         for (let i = 1; i <= trips; i++) {
             let currentFilter = [];
-            if (data.some((offer) => offer.Rph === tripCount)) {
-                currentFilter = data
-                    .filter((offer) => offer.Rph === i.toString())
-                    .flatMap((offer) => offer.Segments.OfferSegment);
+            if (data.some((o) => o.Rph === tripCount)) {
+                currentFilter = data.filter((o) => o.Rph === i.toString()).flatMap((o) => o.Segments.OfferSegment);
             } else {
-                currentFilter = data
-                    .flatMap((offer) => offer.Segments?.OfferSegment || [])
-                    .filter((segment) => segment.Rph === i.toString());
+                currentFilter = data.flatMap((o) => o.Segments?.OfferSegment || []).filter((s) => s.Rph === i.toString());
             }
             filter.push(currentFilter);
         }
-        moreFlightsCache.value[index] = filter;
+        moreFlightsCache.value[key] = filter;
     }
-    return moreFlightsCache.value[index];
+    return moreFlightsCache.value[key];
 };
 
 // watch(currentPage, () => {
@@ -940,8 +938,8 @@ const getAllSegments = (offer) => {
     return allSegmentsCache.value[offer.OfferCode];
 };
 
-const getTotalStops = (index: number, findex: number) => {
-    return moreFlights(index)[findex].length - 1
+const getTotalStops = (offer, index: number, findex: number) => {
+    return moreFlights(offer, index)[findex].length - 1
     // if (i === 1) {
     //     return departureFlights(index).length - 1
     // } else {
@@ -949,8 +947,8 @@ const getTotalStops = (index: number, findex: number) => {
     // }
 
 };
-const getStopIatas = (index: number, findex: number) => {
-    return moreFlights(index)[findex].slice(0, -1).map((seg: { Arrival: { Iata: any } }) => seg.Arrival.Iata)
+const getStopIatas = (offer, index: number, findex: number) => {
+    return moreFlights(offer, index)[findex].slice(0, -1).map((seg: { Arrival: { Iata: any } }) => seg.Arrival.Iata)
     // if (i === 1) {
     //     return departureFlights(index).slice(0, -1).map((seg: { Arrival: { Iata: any } }) => seg.Arrival.Iata)
     // } else {
@@ -962,8 +960,8 @@ const getStopIatas = (index: number, findex: number) => {
 // const getFirstDepartureTime = (index: number) => getAllSegments(index)[0]?.Departure.Date || "N/A";
 // const getLastArrival = (index: number) => getAllSegments(index).slice(-1)[0]?.Arrival.Iata || "N/A";
 // const getLastArrivalTime = (index: number) => getAllSegments(index).slice(-1)[0]?.Arrival.Date || "N/A";
-const getTotalFlightTime = (index: number, findex: number) => {
-    const totalMinutes = moreFlights(index)[findex].reduce(
+const getTotalFlightTime = (offer, index: number, findex: number) => {
+    const totalMinutes = moreFlights(offer, index)[findex].reduce(
         (sum: number, seg: { FlightMinutes: string }) => sum + parseInt(seg.FlightMinutes, 10),
         0
     );
