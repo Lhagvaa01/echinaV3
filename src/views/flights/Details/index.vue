@@ -17,7 +17,7 @@
                   <ul class="list-inline mb-2">
                     <li class="list-inline-item me-2">
                       <h4 class="mb-0">{{ getAllSegments()[0].Departure?.City }}({{ getAllSegments()[0].Departure?.Iata
-                      }})</h4>
+                        }})</h4>
                     </li>
                     <li class="list-inline-item me-2">
                       <h3 class="mb-0">
@@ -25,13 +25,16 @@
                       </h3>
                     </li>
                     <li class="list-inline-item me-0">
-                      <h4 v-if="getAllSegments().length > 1" class="mb-0">{{ getAllSegments()[getAllSegments().length -
-                        1].Departure?.City }}({{
-                          getAllSegments()[getAllSegments().length - 1].Departure?.Iata
+                      <h4 v-if="getAllSegments().length > 1" class="mb-0">{{ goSegments[goSegments.length -
+                        1]?.Arrival?.City }}({{
+                          goSegments[goSegments.length - 1]?.Arrival?.Iata
                         }})</h4>
-                      <h4 v-else class="mb-0">{{ getAllSegments()[getAllSegments().length - 1].Arrival?.City }}({{
-                        getAllSegments()[getAllSegments().length - 1].Arrival?.Iata
-                        }})</h4>
+                      <h4 v-else class="mb-0">{{ goSegments[goSegments.length - 1]?.Arrival?.City }}({{
+                        goSegments[goSegments.length - 1]?.Arrival?.Iata
+                      }})
+                      </h4>
+                      <!-- <h4 class="mb-0">{{ goSegments[goSegments.length - 1]?.Arrival?.City }}</h4> -->
+
                     </li>
                   </ul>
                   <ul class="nav nav-divider h6 fw-normal text-body mb-0">
@@ -165,9 +168,10 @@ const getFlightData = () => {
   return infos.value || { Offers: { OfferInfo: [] } };
 };
 
+const data = getFlightData();
+const offerInfo = data.Offers?.OfferInfo || [];
+const show = ref<number>(Number(sessionStorage.getItem("flight")) || 1);
 const getAllSegments = (): any[] => {
-  const data = getFlightData();
-  const offerInfo = data.Offers?.OfferInfo || [];
 
   // OfferInfo массив биш бол шууд OfferSegment-ийг буцаах
   if (!Array.isArray(offerInfo)) {
@@ -184,6 +188,31 @@ const getAllSegments = (): any[] => {
   return offerInfo.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments?.OfferSegment || []);
 };
 
+
+function getSegmentsByRph(rph: string) {
+  // console.log('FLIGHT:', Array.isArray(OfferInfo.value));
+  // OfferInfo олон байж болно, segment бүрээс Rph-г ялгана
+  if (!Array.isArray(offerInfo)) return [];
+
+  const segmentsFlat = offerInfo.flatMap((offer: any) => offer.Segments?.OfferSegment || []);
+
+  if (show.value <= 2) {
+    if (segmentsFlat.filter((seg: any) => seg.Rph === "2").length === 0) {
+      // Хэрвээ "2" Rph-тай сегмент байхгүй бол OfferInfo array-г өөрөө шалгана
+      return offerInfo
+        .filter((offer: any) => offer.Rph === rph)
+        .flatMap((offer: any) => offer.Segments?.OfferSegment || []);
+    } else {
+      // Эсрэг тохиолдолд шууд сегментүүдээс шүүж буцаана
+      return segmentsFlat.filter((seg: any) => seg.Rph === rph);
+    }
+  } else {
+    return segmentsFlat;
+  }
+
+}
+const goSegments = computed(() => getSegmentsByRph("1"));
+const returnSegments = computed(() => getSegmentsByRph("2"));
 
 
 const getTotalStops = () => getAllSegments().length - 1;

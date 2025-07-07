@@ -47,7 +47,7 @@
                           ?.Value || 'Unknown Airline'
                       }}
                       <span class="text-muted">({{ segmentB.FlightNum || 'SA-1254'
-                      }})</span>
+                        }})</span>
                     </div>
                     <div class="d-flex align-items-center mt-1">
                       <Briefcase v-if="segmentB.Baggage" class="me-2" color="#5a2dd7" :size="16" />

@@ -38,9 +38,9 @@
 
                     <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('asc')">{{ t('txtPriceASC')
-                        }}</a></li>
+                                }}</a></li>
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('desc')">{{ t('txtPriceDESC')
-                        }}</a>
+                                }}</a>
                         </li>
                     </ul>
                 </div>
@@ -190,7 +190,7 @@
                                                             <b-col cols="3" sm="4" md="3" class="mt-0 text-start ">
                                                                 <p class="mb-0" style="font-size: medium;">{{
                                                                     flight[0]?.Departure.Iata
-                                                                    }}</p>
+                                                                }}</p>
                                                                 <p class="mb-0 text-truncate"
                                                                     style="font-size: smaller; max-width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
                                                                     :title="StoreAirPorts.find((AirPorts: any) => AirPorts.Iata === flight[0]?.Departure.Iata)?.City">
@@ -317,7 +317,7 @@
                                                                     style="font-size: small; white-space: pre-line;">
                                                                     {{ getTotalStops(offer, Mainindex, findex) }} {{
                                                                         t('txtFlightStop') }}
-                                                                    {{ t('txtSelfTBag') }}<br />
+                                                                    {{ t('txtSelfTBag') }}
                                                                     (Self-transfer baggage)
                                                                 </p>
                                                             </div>
@@ -566,13 +566,13 @@
                                                             }}</div>
                                                     </div>
                                                     <b-button block variant="outline-primary"
-                                                        class="h-sm-25 mb-0 mb-sm-2 "
-                                                        :id="`toggleOption${Mainindex}${segments.FlightNum}`"
-                                                        :aria-controls="`flightOption${segments.FlightNum}`"
-                                                        v-b-toggle="`flightOption${Mainindex}${segments.FlightNum}`"
-                                                        @click="fetchOptions(offer.OfferCode, SearchGuid)">
+                                                        class="h-sm-25 mb-0 mb-sm-2"
+                                                        :id="'flightOption' + Mainindex + findex"
+                                                        v-b-toggle="`flightOption${Mainindex}${offer.OfferCode}`"
+                                                        @click="showDetailO(`${Mainindex}-${findex}`, offer.OfferCode, SearchGuid)">
                                                         {{ t('txtChoose') }}
                                                     </b-button>
+
                                                 </b-col>
                                             </b-row>
                                             <!-- Доор: Дэлгэрэнгүй (always at bottom) -->
@@ -618,13 +618,22 @@
                                                         :airports="StoreAirPorts" />
                                                 </div>
                                             </b-collapse>
-                                            <b-collapse :id="'flightDetail' + Mainindex + findex"
+
+                                            <b-collapse :id="'flightOption' + Mainindex + findex"
+                                                v-model="detailsShowO[`${Mainindex}-${findex}`]" class="multi-collapse">
+                                                <div v-if="detailsShowO[`${Mainindex}-${findex}`]" class="pt-3">
+                                                    <OptionBooking :offerCode="offer.OfferCode"
+                                                        :searchGuid="SearchGuid" />
+                                                </div>
+                                            </b-collapse>
+
+                                            <!-- <b-collapse :id="'flightOption' + Mainindex + findex"
                                                 class="multi-collapse">
                                                 <div class="pt-3" v-if="isOptionLoaded">
                                                     <OptionBooking :offerCode="offer.OfferCode"
                                                         :searchGuid="SearchGuid" />
                                                 </div>
-                                            </b-collapse>
+                                            </b-collapse> -->
                                         </b-col>
                                     </b-row>
 
@@ -751,7 +760,6 @@ async function fetchOptions(offerCode: string, searchGuid: string) {
         sessionStorage.setItem("PreBooking", JSON.stringify(data));
         isOptionLoaded.value = true; // Show the component after fetching
         if (!optionStore.optionInfos?.result?.Body?.AeroPrebookResponse?.AeroPrebookResult?.Tariffs) {
-            // Redirect to /flights/detail if Tariffs is missing
             sessionStorage.removeItem("Option")
             router.push({ path: '/flights/detail' });
 
@@ -780,6 +788,14 @@ const detailsShown = ref({});
 
 function showDetail(key) {
     detailsShown.value[key] = !detailsShown.value[key];
+}
+
+const detailsShowO = ref({});
+
+function showDetailO(key, code, guid) {
+    fetchOptions(code, guid);
+    detailsShowO.value[key] = !detailsShowO.value[key];
+
 }
 
 // const filters = ref({

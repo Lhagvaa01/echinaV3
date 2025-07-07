@@ -30,9 +30,12 @@
                   :state="isPassportValid(traveler.document)"
                   @keydown.enter="autoFillTravelerByPassport(traveler.document, traveler)"
                   @blur="autoFillTravelerByPassport(traveler.document, traveler)" />
-                <b-form-invalid-feedback v-if="!isPassportValid(traveler.document)">
+                <!-- <b-form-invalid-feedback v-if="!isPassportValid(traveler.document)">
                   {{ t('txtPassportNumErr') }}
-                </b-form-invalid-feedback>
+                </b-form-invalid-feedback> -->
+                <div class="invalid-feedback d-block text-warning" v-if="!isPassportValid(traveler.document)">
+                  {{ t('txtPassportNumErr') }}
+                </div>
               </b-form-group>
             </b-col>
 
@@ -52,7 +55,7 @@
                   <b-form-input id="txtName" name="txtName" type="text" autocomplete="name" :placeholder="t('txtName')"
                     v-model="traveler.name" :state="isNameValid(traveler.name, traveler.surname) ? true : false" />
                 </div>
-                <div class="invalid-feedback d-block text-danger" v-if="!isNameValid(traveler.name, traveler.name)">
+                <div class="invalid-feedback d-block text-warning" v-if="!isNameValid(traveler.name, traveler.name)">
                   {{ t('txtNameErr') }}
                 </div>
               </b-form-group>
@@ -66,7 +69,7 @@
               <!-- <b-form-invalid-feedback v-if="!isNationalityValid(traveler.nationality)">
                 Харьяаллаа сонгоно уу.
               </b-form-invalid-feedback> -->
-              <div class="invalid-feedback d-block text-danger" v-if="!isNationalityValid(traveler.birthISO)">
+              <div class="invalid-feedback d-block text-warning" v-if="!isNationalityValid(traveler.birthISO)">
                 {{ t('txtBirthIsoErr') }}
               </div>
             </b-col>
@@ -112,7 +115,7 @@
               <!-- <b-form-invalid-feedback v-if="!isDateValid(traveler.dateOfBirth)">
                 Бүрэн бөглөнө үү.
               </b-form-invalid-feedback> -->
-              <div class="invalid-feedback d-block text-danger" v-if="!isDateValid(traveler.birthDay)">
+              <div class="invalid-feedback d-block text-warning" v-if="!isDateValid(traveler.birthDay)">
                 {{ t('txtBirthDateErr') }}
               </div>
             </b-col>
@@ -129,7 +132,7 @@
               <!-- <b-form-invalid-feedback v-if="!isGenderValid(traveler.gender)">
                 Хүйсээ сонгоно уу.
               </b-form-invalid-feedback> -->
-              <div class="invalid-feedback d-block text-danger" v-if="!isGenderValid(traveler.gender)">
+              <div class="invalid-feedback d-block text-warning" v-if="!isGenderValid(traveler.gender)">
                 {{ t('txtGenderErr') }}
               </div>
             </b-col>
@@ -176,7 +179,7 @@
               <!-- <b-form-invalid-feedback v-if="!isDateValid(traveler.DocumentExDate)">
                 Бүрэн бөглөнө үү.
               </b-form-invalid-feedback> -->
-              <div class="invalid-feedback d-block text-danger" v-if="!isDateValid(traveler.DocumentExDate)">
+              <div class="invalid-feedback d-block text-warning" v-if="!isDateValid(traveler.DocumentExDate)">
                 {{ t('txtPassportDateErr') }}
               </div>
             </b-col>
@@ -193,7 +196,7 @@
           <b-form-group :label="t('txtPhoneNum')">
             <b-form-input v-model="BookingInfo.phoneNumber.value" id="phone" name="phone" type="tel" autocomplete="tel"
               :placeholder="t('txtPhoneNumDes')" :state="isPhoneNumberValid" />
-            <div class="invalid-feedback d-block text-danger" v-if="!isPhoneNumberValid">
+            <div class="invalid-feedback d-block text-warning" v-if="!isPhoneNumberValid">
               {{ t('txtPhoneNumWar') }}
             </div>
           </b-form-group>
@@ -203,7 +206,7 @@
           <b-form-group :label="t('txtEmailAdd')">
             <b-form-input v-model="BookingInfo.email.value" id="mail" name="mail" type="email" autocomplete="email"
               :placeholder="t('txtEmailAddDes')" :state="isEmailValid" />
-            <div class="invalid-feedback d-block text-danger" v-if="!isEmailValid">
+            <div class="invalid-feedback d-block text-warning" v-if="!isEmailValid">
               {{ t('txtEmailAddDWar') }}
             </div>
           </b-form-group>
