@@ -1,6 +1,17 @@
 <template>
     <!-- <div>Нийт нислэгийн тоо: {{ filteredData.length > 0 ? filteredData.length : StoreflightInfos.length }}</div> -->
     <!-- <div v-if="(filteredData.length > 0 ? filteredData.length : StoreflightInfos.length) == 0"> -->
+    <b-modal v-model="showTimeoutModal" centered hide-header hide-footer :no-close-on-backdrop="true"
+        :no-close-on-esc="true">
+        <div class="text-center p-4">
+            <i class="fas fa-exclamation-circle text-danger" style="font-size: 48px;"></i>
+            <h4 class="text-danger mt-3">{{ t('txtWarning') }}</h4>
+            <p class="mt-2 mb-1">{{ t('txtTimeEndFlight') }}</p>
+            <b-button variant="danger" class="mt-3 px-4" @click="redirectToSearch">
+                {{ t('txtAgain') }}
+            </b-button>
+        </div>
+    </b-modal>
     <div v-if="(paginatedFlights.length) == 0">
 
         <div class="no-results-card">
@@ -13,6 +24,8 @@
             </p>
         </div>
     </div>
+
+
 
 
 
@@ -38,9 +51,9 @@
 
                     <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('asc')">{{ t('txtPriceASC')
-                                }}</a></li>
+                        }}</a></li>
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('desc')">{{ t('txtPriceDESC')
-                                }}</a>
+                        }}</a>
                         </li>
                     </ul>
                 </div>
@@ -90,7 +103,7 @@
                                 <div v-if="flight.length > 0">
                                     <b-row class="pe-1 pe-sm-3">
                                         <!-- Main (info) column -->
-                                        <b-col cols="12" md="10" xl="9" xxl="10"
+                                        <b-col cols="12" md="9" xl="9" xxl="9"
                                             class="d-flex flex-column pe-md-0 mb-3 mb-md-0 justify-content-between">
                                             <!-- Үндсэн контент -->
                                             <!-- <b-row> -->
@@ -190,7 +203,7 @@
                                                             <b-col cols="3" sm="4" md="3" class="mt-0 text-start ">
                                                                 <p class="mb-0" style="font-size: medium;">{{
                                                                     flight[0]?.Departure.Iata
-                                                                }}</p>
+                                                                    }}</p>
                                                                 <p class="mb-0 text-truncate"
                                                                     style="font-size: smaller; max-width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
                                                                     :title="StoreAirPorts.find((AirPorts: any) => AirPorts.Iata === flight[0]?.Departure.Iata)?.City">
@@ -336,25 +349,26 @@
                                             </div>
                                             <div v-if="moreFlights(offer, Mainindex).length == findex + 1"
                                                 class="d-flex justify-content-end ms-0 ps-0">
-                                                <div class="d-flex ps-4 w-100 border-top border-primary justify-content-between border-2 bg-primary bg-opacity-10 "
+                                                <div class="d-flex ps-4  w-100 border-top border-primary justify-content-between border-2 bg-primary bg-opacity-10 "
                                                     style="height: 42px; border-bottom-left-radius: 1rem;">
-                                                    <div class="d-none d-md-flex gap-4 gap-sm-0 ">
-                                                        <div
-                                                            class=" d-flex text-center border border-primary rounded m-2 px-3 justify-content-center small">
-                                                            <span class="text-black"><svg stroke="currentColor"
-                                                                    fill="currentColor" stroke-width="0"
-                                                                    viewBox="0 0 320 512"
+                                                    <div class="d-none d-md-flex gap-4  gap-sm-0 ">
+                                                        <div v-if="paginatedFlights[Mainindex].ChildPrice"
+                                                            class=" d-flex text-center border border-primary rounded my-2 px-3 justify-content-center small">
+                                                            <span class="text-black">
+                                                                <svg stroke="currentColor" fill="currentColor"
+                                                                    stroke-width="0" viewBox="0 0 320 512"
                                                                     class="text-black h-4 w-4 text-[#F8C5B3]"
                                                                     height="15px" width="15px"
                                                                     xmlns="http://www.w3.org/2000/svg">
                                                                     <path
                                                                         d="M112 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm40 304V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V256.9L59.4 304.5c-9.1 15.1-28.8 20-43.9 10.9s-20-28.8-10.9-43.9l58.3-97c17.4-28.9 48.6-46.6 82.3-46.6h29.7c33.7 0 64.9 17.7 82.3 46.6l58.3 97c9.1 15.1 4.2 34.8-10.9 43.9s-34.8 4.2-43.9-10.9L232 256.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V352H152z">
                                                                     </path>
-                                                                </svg>{{ Number(route.query.adults) }}<span
-                                                                    class="text-primary">: {{
-                                                                        Math.ceil((paginatedFlights[Mainindex].AdultPrice *
-                                                                            parseFloat(rate))).toLocaleString() }}{{ currency
-                                                                    }}</span>
+                                                                </svg>{{ Number(route.query.adults) }}
+                                                                <span class="text-primary">: {{
+                                                                    Math.ceil((paginatedFlights[Mainindex].AdultPrice *
+                                                                        parseFloat(rate))).toLocaleString() }}{{ currency
+                                                                    }}
+                                                                </span>
                                                             </span>
                                                         </div>
                                                         <div v-if="paginatedFlights[Mainindex].ChildPrice"
@@ -413,7 +427,7 @@
                                         </b-col>
 
                                         <!-- Баруун багана (үнэ, товч, дэлгэрэнгүй) -->
-                                        <b-col cols="12" md="2" xl="3" xxl="2"
+                                        <b-col cols="12" md="3" xl="3" xxl="3"
                                             class="d-flex flex-column px-0 justify-content-between bg-primary bg-opacity-10"
                                             :style="show == 1 ? 'border-bottom-right-radius: 1rem; border-top-right-radius: 1rem;' : moreFlights(offer, Mainindex).length === findex + 1
                                                 ? 'border-bottom-right-radius: 1rem;'
@@ -554,7 +568,7 @@
                                                             {{ Math.ceil(paginatedFlights[Mainindex].AdultPrice *
                                                                 parseFloat(rate)).toLocaleString() }}{{ currency }}
                                                         </div>
-                                                        <div
+                                                        <div v-if="totalPassengers > 1"
                                                             class="fw-light mb-1 align-content-end align-content-sm-center small text-black">
                                                             Нийт: {{ Math.ceil(paginatedFlights[Mainindex].TotalPrice *
                                                                 parseFloat(rate)).toLocaleString() }}{{ currency }}
@@ -705,7 +719,7 @@ import { faAngleDown, faPlane } from '@fortawesome/free-solid-svg-icons'
 import FlightDetailTab from '@/views/flights/List/components/FlightDetailTab.vue'
 import OptionBooking from '@/views/flights/List/components/OptionBooking.vue'
 import { currency } from '@/helpers/constants'
-import { computed, watch, ref } from 'vue'
+import { computed, watch, ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router';
 import flightLogo from '@/assets/images/element/09.svg'
 import { ChevronDown, Briefcase, Luggage, User } from 'lucide-vue-next';
@@ -739,6 +753,10 @@ function getDotPositionStyle(index, total) {
 
 const show = ref<number>(Number(sessionStorage.getItem("flight")) || 1);
 const rate = sessionStorage.getItem('eur') || '1'
+
+const travelers = JSON.parse(sessionStorage.getItem("travelers") || '{}');
+const totalPassengers = (travelers.adults || 0) + (travelers.childs || 0) + (travelers.infants || 0);
+
 // const trips = ref<number>(Number(sessionStorage.getItem("trips")) || 1);
 // const tripcount = sessionStorage.getItem("trips")?.length || 0;
 const trips = parseInt(sessionStorage.getItem("trips") || "0", 10);
@@ -1060,6 +1078,24 @@ watch([paginatedFlights, currentPage], () => {
     moreFlightsCache.value = {};
     allSegmentsCache.value = {};
 }, { immediate: true });
+;
+const showTimeoutModal = ref(false);
+
+function redirectToSearch() {
+    window.location.reload();
+}
+
+let timeoutId: number | undefined;
+
+onMounted(() => {
+    timeoutId = window.setTimeout(() => {
+        showTimeoutModal.value = true;
+    }, 200000); // 20 секунд
+});
+
+onUnmounted(() => {
+    if (timeoutId) clearTimeout(timeoutId);
+});
 
 </script>
 

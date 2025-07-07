@@ -2,13 +2,13 @@
   <section class="pt-0">
     <b-container>
       <b-row>
-        <aside class="col-xl-4 col-xxl-3">
+        <aside class="col-xl-3 col-xxl-3">
           <div class="d-none d-xl-block">
             <FlightListFilter />
           </div>
         </aside>
 
-        <b-col xl="8" xxl="9">
+        <b-col xl="9" xxl="9">
           <div class="vstack gap-4">
             <!-- <FlightCard />
 

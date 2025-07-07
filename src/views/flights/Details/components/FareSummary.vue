@@ -150,7 +150,11 @@
         </div>
       </div>
 
-
+      <transition name="fade">
+        <div v-if="errorMessage.text" class="alert-wrapper">
+          <CustomAlert :severity="errorMessage.status" :message="errorMessage.text" />
+        </div>
+      </transition>
 
 
 

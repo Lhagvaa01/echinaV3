@@ -372,7 +372,7 @@ const travelers = ref([
     id: 1,
     ageType: '',
     birthDay: { day: "", month: "", year: "" },
-    birthISO: '',
+    birthISO: 'MNG',
     document: '',
     gender: '',
     name: '',
@@ -425,7 +425,7 @@ const addTraveler = () => {
       id: travelers.value.length + 1,
       ageType: '',
       birthDay: { day: "", month: "", year: "" },
-      birthISO: '',
+      birthISO: 'MNG',
       document: '',
       gender: '',
       name: '',
@@ -754,15 +754,16 @@ function getAgeCategory(dateOfBirth: { day: string; month: string; year: string;
   }
 }
 
-travelers.value.forEach((traveler, idx) => {
-  watch(
-    () => [traveler.birthDay.day, traveler.birthDay.month, traveler.birthDay.year],
-    () => {
+watch(travelers, (newTravelers) => {
+  newTravelers.forEach((traveler, idx) => {
+    // бүрэн бөглөгдсөн үед насны төрөл бодно
+    if (traveler.birthDay.day && traveler.birthDay.month && traveler.birthDay.year) {
       const category = getAgeCategory(traveler.birthDay);
+      console.log(category)
       travelers.value[idx].ageType = category;
     }
-  );
-});
+  })
+}, { deep: true });
 
 function formatDate(input: string): string {
   const [day, month, yearAndTime] = input.split(".");
