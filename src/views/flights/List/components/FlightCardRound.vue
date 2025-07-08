@@ -51,9 +51,9 @@
 
                     <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('asc')">{{ t('txtPriceASC')
-                                }}</a></li>
+                        }}</a></li>
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('desc')">{{ t('txtPriceDESC')
-                                }}</a>
+                        }}</a>
                         </li>
                     </ul>
                 </div>
@@ -213,7 +213,7 @@
                                                             <b-col cols="3" sm="4" md="3" class="mt-0 text-start ">
                                                                 <p class="mb-0" style="font-size: medium;">{{
                                                                     flight[0]?.Departure.Iata
-                                                                }}</p>
+                                                                    }}</p>
                                                                 <p class="mb-0 text-truncate"
                                                                     style="font-size: smaller; max-width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
                                                                     :title="StoreAirPorts.find((AirPorts: any) => AirPorts.Iata === flight[0]?.Departure.Iata)?.City">
@@ -791,7 +791,7 @@ const { t, locale } = useI18n()
 // import { chevron-down } from 'bootstrap-icons-vue'
 
 import { PlaneTakeoff } from 'lucide-vue-next';
-import PlaneUp from '@/assets/images/icon/planeup.svg';
+import PlaneUp from '@/assets/images/Icon/planeup.svg';
 
 
 import { useFlightStore } from '@/stores/flight';
