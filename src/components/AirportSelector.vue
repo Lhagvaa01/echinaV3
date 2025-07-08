@@ -4,6 +4,7 @@
             <div class="dropdown-header">
                 <input type="text" v-model="searchQuery" @focus="isOpen = true" @input="handleSearch"
                     placeholder="Сонгоно уу..." class="form-control search-input" />
+                <!-- <span  >x</span> -->
                 <span class="arrow" @click="toggleDropdown">{{ isOpen ? "▲" : "▼" }}</span>
             </div>
 

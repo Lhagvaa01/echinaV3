@@ -1,7 +1,7 @@
 <template>
     <!-- <div>Нийт нислэгийн тоо: {{ filteredData.length > 0 ? filteredData.length : StoreflightInfos.length }}</div> -->
     <!-- <div v-if="(filteredData.length > 0 ? filteredData.length : StoreflightInfos.length) == 0"> -->
-    <b-modal v-model="showTimeoutModal" centered hide-header hide-footer :no-close-on-backdrop="true"
+    <!-- <b-modal v-model="showTimeoutModal" centered hide-header hide-footer :no-close-on-backdrop="true"
         :no-close-on-esc="true">
         <div class="text-center p-4">
             <i class="fas fa-exclamation-circle text-danger" style="font-size: 48px;"></i>
@@ -11,7 +11,7 @@
                 {{ t('txtAgain') }}
             </b-button>
         </div>
-    </b-modal>
+    </b-modal> -->
     <div v-if="(paginatedFlights.length) == 0">
 
         <div class="no-results-card">
@@ -109,10 +109,15 @@
                                             <!-- <b-row> -->
                                             <div class="d-flex justify-content-end">
                                                 <div class="w-100">
-                                                    <div class="d-flex justify-content-between align-items-center px-3">
-                                                        <h6 class="m-3 mb-0 fw-bold d-flex align-items-center"
+                                                    <div
+                                                        class="d-flex justify-content-between align-items-center px-3  ">
+
+
+                                                        <h6 class="m-3 mb-0 fw-bold d-flex align-items-center text-primary"
                                                             style="font-size: smaller;">
-                                                            <PlaneTakeoff color="#009dff" :size="32" class="me-3" />
+                                                            <img :src="PlaneUp" alt="Plane Down" class="me-2"
+                                                                style="width: 32px; height: 32px;" />
+
                                                             {{ (show == 2 && moreFlights(offer, Mainindex).length - 1
                                                                 ===
                                                                 findex) ?
@@ -120,14 +125,18 @@
                                                                 :
                                                                 t('txtFromFlight') }}
                                                         </h6>
-                                                        <h6 class="fw-bold mb-0" style="font-size: smaller;">{{
-                                                            flight.length >
-                                                                1 ?
-                                                                t('txtTransit') :
-                                                                t('txtDirect') }}</h6>
+                                                        <h6 class="fw-bold mb-0 text-primary"
+                                                            style="font-size: smaller;">{{
+                                                                flight.length >
+                                                                    1 ?
+                                                                    t('txtTransit') :
+                                                                    t('txtDirect') }}</h6>
+
                                                     </div>
+                                                    <div class="border-1 border-bottom border-primary ms-4"
+                                                        style="width: 70px;"></div>
                                                     <b-card-header
-                                                        class="d-flex justify-content-between align-items-center py-0 ps-4">
+                                                        class="d-flex justify-content-between align-items-center py-0 ps-4 mt-2">
 
                                                         <div class="d-flex align-items-center mb-2 mb-sm-0 "
                                                             style="font-size: smaller;">
@@ -199,7 +208,8 @@
                                                     </b-card-header>
                                                     <b-card-body class="p-4 pb-0">
                                                         <b-row
-                                                            class="g-4 justify-content-between align-content-center align-items-center">
+                                                            class="g-4 justify-content-between align-content-end align-items-end"
+                                                            style="height: 100px;">
                                                             <b-col cols="3" sm="4" md="3" class="mt-0 text-start ">
                                                                 <p class="mb-0" style="font-size: medium;">{{
                                                                     flight[0]?.Departure.Iata
@@ -212,7 +222,7 @@
                                                                     }}
                                                                 </p>
 
-                                                                <h4 class="fw-bold fs-5 mb-0"> {{
+                                                                <h4 class="fw-bold fs-4 mb-0"> {{
                                                                     flight[0]?.Departure.Date.split(" ")[1] }}
                                                                 </h4>
 
@@ -220,11 +230,7 @@
                                                                 <p class="mb-0" style="font-size: x-small;">
                                                                     {{
                                                                         formatDate(flight[0]?.Departure.Date) }}</p>
-                                                                <p style="font-size: x-small;">
-                                                                    <span v-if="flight[0]?.Departure.Terminal">Терминал:
-                                                                    </span>
-                                                                    {{ flight[0]?.Departure.Terminal || '' }}
-                                                                </p>
+
                                                                 <!-- <p class="mb-0" style="font-size: smaller;">
                                                                     {{StoreAirCompany.find((AirCompany: any) =>
                                                                         AirCompany.Code
@@ -240,8 +246,7 @@
                                                                         getTotalFlightTime(Mainindex, findex)
                                                                     }}
                                                                 </h5> -->
-                                                                <div class="position-relative my-4"
-                                                                    style="height: 80px;">
+                                                                <div class="position-relative " style="height: 80px;">
                                                                     <!-- Шугам -->
                                                                     <hr class="position-absolute top-50 start-0 end-0 m-0"
                                                                         style="height: 1px; background-color: #ccc;" />
@@ -275,9 +280,13 @@
 
 
                                                             </b-col>
+                                                            <!-- <p style="font-size: x-small;">
+                                                                <span v-if="flight[0]?.Departure.Terminal">Терминал:
+                                                                </span>
+                                                                {{ flight[0]?.Departure.Terminal || '' }}
+                                                            </p> -->
 
-                                                            <b-col cols="3" sm="4" md="3"
-                                                                class="mt-0  text-start mt-0 ">
+                                                            <b-col cols="3" sm="4" md="3" class="mt-0  text-end mt-0 ">
                                                                 <p class="mb-0" style="font-size: medium;">{{
                                                                     flight[flight.length -
                                                                         1].Arrival.Iata }}</p>
@@ -287,12 +296,10 @@
                                                                         ===
                                                                         flight[flight.length -
                                                                             1].Arrival.Iata).City}}</p>
-                                                                <h4 class=" fs-5 mb-0">
+                                                                <h4 class=" fs-4 mb-0">
                                                                     {{ flight[flight.length -
                                                                         1].Arrival.Date.split(" ")[1] }}
                                                                 </h4>
-
-
 
                                                                 <p class="mb-0" style="font-size: x-small;">
                                                                     {{
@@ -300,14 +307,62 @@
                                                                             1].Arrival.Date) }}</p>
 
 
-                                                                <p style="font-size: small;">
+                                                                <!-- <p style="font-size: small;">
                                                                     <span v-if="flight[0]?.Arrival.Terminal">Терминал:
                                                                     </span>
                                                                     {{ flight[0]?.Arrival.Terminal || '' }}
-                                                                </p>
+                                                                </p> -->
 
                                                             </b-col>
 
+                                                        </b-row>
+                                                        <b-row>
+                                                            <b-col>
+                                                                <p class="d-grid" style="font-size: small;">
+
+                                                                    <span>{{StoreAirPorts.find((AirPorts: any) =>
+                                                                        AirPorts.Iata
+                                                                        ===
+                                                                        flight[flight.length -
+                                                                            1].Departure.Iata).City}}
+                                                                        {{StoreAirPorts.find((AirPorts:
+                                                                            any) =>
+                                                                            AirPorts.Iata
+                                                                            ===
+                                                                            flight[flight.length -
+                                                                                1].Departure.Iata).Name}}
+                                                                    </span>
+                                                                    <span v-if="flight[0]?.Departure.Terminal">Терминал:
+                                                                        {{ flight[0]?.Departure.Terminal || '' }}
+                                                                    </span>
+                                                                </p>
+                                                            </b-col>
+                                                            <b-col class="text-end justify-content-start">
+                                                                <p class="d-grid" style="font-size: small;">
+
+                                                                    <span>{{StoreAirPorts.find((AirPorts: any) =>
+                                                                        AirPorts.Iata
+                                                                        ===
+                                                                        flight[flight.length -
+                                                                            1].Arrival.Iata).City}}
+                                                                        {{StoreAirPorts.find((AirPorts:
+                                                                            any) =>
+                                                                            AirPorts.Iata
+                                                                            ===
+                                                                            flight[flight.length -
+                                                                                1].Arrival.Iata).Name}}
+                                                                    </span>
+                                                                    <span v-if="flight[0]?.Arrival.Terminal">Терминал:
+                                                                        {{ flight[0]?.Arrival.Terminal || '' }}</span>
+                                                                </p>
+                                                            </b-col>
+
+
+                                                            <!-- <p style="font-size: small;">
+                                                                <span v-if="flight[0]?.Arrival.Terminal">Терминал:
+                                                                </span>
+                                                                {{ flight[0]?.Arrival.Terminal || '' }}
+                                                            </p> -->
                                                         </b-row>
 
                                                     </b-card-body>
@@ -423,7 +478,8 @@
                                             </div>
                                             <!-- </b-row> -->
 
-
+                                            <div v-if="findex !== flight.length - 1 && show !== 1"
+                                                class="border-bottom"></div>
                                         </b-col>
 
                                         <!-- Баруун багана (үнэ, товч, дэлгэрэнгүй) -->
@@ -735,6 +791,8 @@ const { t, locale } = useI18n()
 // import { chevron-down } from 'bootstrap-icons-vue'
 
 import { PlaneTakeoff } from 'lucide-vue-next';
+import PlaneUp from '/src/assets/images/icon/planeup.svg';
+
 
 import { useFlightStore } from '@/stores/flight';
 import { string } from 'yup'

@@ -20,14 +20,14 @@ configureFakeBackend()
 </script>
 <style>
 @font-face {
-  font-family: 'Exo 2';
-  src: url('/fonts/Exo2-Regular.ttf') format('truetype');
+  font-family: 'Manrope';
+  src: url('/fonts/Manrope-Regular.ttf') format('truetype');
   font-weight: 400;
 }
 
 @font-face {
-  font-family: 'Exo 2';
-  src: url('/fonts/Exo2-Bold.ttf') format('truetype');
+  font-family: 'Manrope';
+  src: url('/fonts/Manrope-ExtraBold.ttf') format('truetype');
   font-weight: 700;
 }
 
@@ -35,6 +35,6 @@ configureFakeBackend()
 html,
 body,
 #app {
-  font-family: 'Exo 2', Arial, sans-serif;
+  font-family: 'Manrope', Arial, sans-serif;
 }
 </style>
