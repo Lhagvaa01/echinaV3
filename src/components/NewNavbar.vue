@@ -1,12 +1,16 @@
 <template>
     <div>
-        <header class="main_header_arae">
+        <header class="main_header_arae" :class="[
+
+            isHome ? 'position-absolute bg-transparent' : ''
+
+        ]">
             <!-- Top Bar -->
             <div class="topbar-area">
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-6 col-md-6">
-                            <ul class="topbar-list text-white">
+                            <ul class="topbar-list text-black">
                                 <li>
                                     <a href="#!"><i class="fab fa-facebook"></i></a>
                                     <a href="#!"><i class="fab fa-twitter-square"></i></a>
@@ -18,7 +22,7 @@
                             </ul>
                         </div>
                         <div class="col-lg-6 col-md-6">
-                            <ul class="topbar-others-options text-white">
+                            <ul class="topbar-others-options text-black">
                                 <li><router-link :to="{ name: 'auth.sign-in' }">Login</router-link></li>
                                 <li><router-link :to="{ name: 'auth.sign-up' }">Sign up</router-link></li>
 
@@ -70,8 +74,8 @@
             </div>
             <!-- Navbar Bar -->
             <div class="navbar-area" :class="{ 'is-sticky': isSticky }">
-                <div class="main-responsive-nav bg-white ">
-                    <div class="container bg-primary">
+                <div class="main-responsive-nav ">
+                    <div class="container ">
                         <div class="main-responsive-menu mean-container">
                             <nav class="navbar">
                                 <div class="container">
@@ -105,7 +109,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="main-navbar  text-white">
+                <div class="main-navbar  text-black">
                     <div class="container">
                         <nav class="navbar navbar-expand-md navbar-light ">
 
@@ -122,14 +126,14 @@
 
                                 </ul>
                                 <div class="option-item">
-                                    <div class="d-flex justify-content-center align-items-center gap-1 text-white">
+                                    <div class="d-flex justify-content-center align-items-center gap-1 text-black">
                                         <i class="fas fa-euro-sign icon" title="EUR ханш"></i>
                                         <span class="value">
                                             {{ eurRate !== null ? eurRate.toLocaleString() + '₮' : 'Уншиж байна...'
                                             }}
                                         </span>
                                     </div>
-                                    <span class="date-text text-white">{{ now }}</span>
+                                    <span class="date-text text-black">{{ now }}</span>
                                 </div>
                             </div>
                         </nav>
@@ -142,7 +146,7 @@
 </template>
 <script setup lang="ts">
 import '@/assets/app.css'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { getAppMenuItems } from '@/helpers/menu'
 import { useI18n } from 'vue-i18n'
 import type { LangState, LayoutState } from '@/types/layout'
@@ -151,6 +155,7 @@ import { BIconCircleHalf, BIconMoonStars, BIconSearch, BIconSun } from 'bootstra
 
 import LogoBox from '@/components/LogoBox.vue'
 import { useLayoutStore } from '@/stores/layout'
+import { useRoute } from 'vue-router'
 const { t, locale } = useI18n()
 
 const useLayout = useLayoutStore()
@@ -165,6 +170,8 @@ const handleScroll = () => {
     isSticky.value = window.scrollY >= 200
 }
 
+const route = useRoute()
+const isHome = computed(() => route.path === '/')
 const handleClick = (e: MouseEvent) => {
     const target = e.target as HTMLElement
     if (target.classList.contains('hamburger-toggle')) {
