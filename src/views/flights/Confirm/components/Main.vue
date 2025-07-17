@@ -730,7 +730,11 @@ const moreFlights = (offer, index) => {
     const key = offer.OfferCode || index;
     if (!moreFlightsCache.value[key]) {
         // ... бодоод хадгална (чиний кодоос шууд хуул)
-        const data = [getFlightData2()];
+        let data = getFlightData2();
+
+        if (!Array.isArray(data)) {
+            data = [data]
+        }
 
         console.log('data:', data);
         let filter = [];

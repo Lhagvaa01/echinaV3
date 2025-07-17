@@ -63,7 +63,7 @@
                         flight.FlightNum
                         ||
                         'SA-1254'
-                        }})</span>
+                      }})</span>
                     </div>
                     <div class="d-flex align-items-center mt-1">
                       <Briefcase v-if="flight.Baggage" class="me-2" color="#5a2dd7" :size="16" />
@@ -76,7 +76,7 @@
             <div>
               <h5 class="mt-0  fw-light mb-0 pb-0 text-muted" style="font-size: smaller;">Нийт: {{
                 getTotalFlightTime2(segment, inx, 0)
-                }}
+              }}
               </h5>
             </div>
 
@@ -88,7 +88,7 @@
               <b-col cols="3" sm="4" md="3" class="mt-0 text-start ">
                 <p class="mb-0" style="font-size: medium;">{{
                   moreFlights(segment, inx)[0][0]?.Departure.Iata
-                }}</p>
+                  }}</p>
                 <p class="mb-0 text-truncate"
                   style="font-size: smaller; max-width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
                   :title="moreFlights(segment, inx)[0][0]?.Departure.City">
@@ -345,15 +345,12 @@ const getOptionPrice = () => {
 const getFlightData = () => {
   return infos.value || { Offers: { OfferInfo: [] } };
 };
-console.log('OfferInfo:', getFlightData());
 const getFlightData2 = () => {
   return infos.value?.Offers?.OfferInfo || [];
 };
-console.log('OfferInfo2:', getFlightData2());
 const FlightData = computed(() => getFlightData());
 const OfferInfo = computed(() => FlightData.value?.Offers?.OfferInfo ?? []); // шууд массив болго!
 
-console.log('OfferInfo:', OfferInfo.value);
 
 // Хэрвээ OfferInfo нь нэг ширхэг объект байвал массив болгож ав:
 const OfferInfoArr = computed(() => {
@@ -417,9 +414,11 @@ const moreFlights = (offer, index) => {
   const key = offer.OfferCode || index;
   if (!moreFlightsCache.value[key]) {
     // ... бодоод хадгална (чиний кодоос шууд хуул)
-    const data = [getFlightData2()];
+    let data = getFlightData2();
 
-    console.log('data:', data);
+    if (!Array.isArray(data)) {
+      data = [data]
+    }
     let filter = [];
     const tripCount = trips.toString();
     for (let i = 1; i <= trips; i++) {
