@@ -1,5 +1,5 @@
 <template>
-  <CustomStickyElement id="price-overview" data-sticky data-margin-top="100" data-sticky-for="1199">
+  <CustomStickyElement id="price-overview" data-sticky data-margin-top="100" data-sticky-for="100">
     <b-card no-body class="card-body border">
       <div class="d-sm-flex justify-content-sm-between align-items-center mb-3">
         <div>
@@ -55,8 +55,7 @@
           <b-col sm="6" md="12" lg="6">
             <b-card-body class="p-3">
               <b-card-title tag="h6">
-                <router-link :to="{ name: 'offer-detail' }" class="stretched-link"
-                  >Travel Plan
+                <router-link :to="{ name: 'offer-detail' }" class="stretched-link">Travel Plan
                 </router-link>
               </b-card-title>
               <p class="mb-0">Get up to {{ currency }}10,000 for lifetime limits</p>

@@ -17,7 +17,7 @@
                   <ul class="list-inline mb-2">
                     <li class="list-inline-item me-2">
                       <h4 class="mb-0">{{ getAllSegments()[0].Departure?.City }}({{ getAllSegments()[0].Departure?.Iata
-                        }})</h4>
+                      }})</h4>
                     </li>
                     <li class="list-inline-item me-2">
                       <h3 class="mb-0">
@@ -31,7 +31,7 @@
                         }})</h4>
                       <h4 v-else class="mb-0">{{ goSegments[goSegments.length - 1]?.Arrival?.City }}({{
                         goSegments[goSegments.length - 1]?.Arrival?.Iata
-                      }})
+                        }})
                       </h4>
                       <!-- <h4 class="mb-0">{{ goSegments[goSegments.length - 1]?.Arrival?.City }}</h4> -->
 
@@ -54,7 +54,7 @@
           </b-col>
 
           <aside class="col-xl-4">
-            <CustomStickyElement data-sticky data-margin-top="80" data-sticky-for="1199">
+            <CustomStickyElement data-sticky data-margin-top="80" data-sticky-for="100">
               <b-row class="g-4">
                 <FareSummary />
                 <!-- <OfferDiscount /> -->

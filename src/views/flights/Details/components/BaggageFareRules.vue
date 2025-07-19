@@ -70,7 +70,7 @@
                         flight.FlightNum
                         ||
                         'SA-1254'
-                        }})</span>
+                      }})</span>
                     </div>
                     <div class="d-flex align-items-center mt-1">
                       <Briefcase v-if="flight.Baggage" class="me-2" color="#5a2dd7" :size="16" />
@@ -83,7 +83,7 @@
             <div>
               <h5 class="mt-0  fw-light mb-0 pb-0 text-muted" style="font-size: smaller;">Нийт: {{
                 getTotalFlightTime2(segment, inx, 0)
-                }}
+              }}
               </h5>
             </div>
 
@@ -95,7 +95,7 @@
               <b-col cols="3" sm="4" md="3" class="mt-0 text-start ">
                 <p class="mb-0" style="font-size: medium;">{{
                   moreFlights(segment, inx)[0][0]?.Departure.Iata
-                }}</p>
+                  }}</p>
                 <p class="mb-0 text-truncate"
                   style="font-size: smaller; max-width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
                   :title="StoreAirPorts.find((AirPorts: any) => AirPorts.Iata === moreFlights(segment, inx)[0][0]?.Departure.Iata)?.City">
@@ -310,11 +310,10 @@ const getOptionPrice = () => {
 const getFlightData = () => {
   return infos.value || { Offers: { OfferInfo: [] } };
 };
-console.log(getFlightData())
+
 const getFlightData2 = () => {
   return infos.value?.Offers?.OfferInfo || [];
 };
-console.log(getFlightData2())
 
 
 const FlightData = computed(() => getFlightData());

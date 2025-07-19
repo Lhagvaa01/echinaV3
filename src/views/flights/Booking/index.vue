@@ -21,7 +21,7 @@
           </b-col>
 
           <aside class="col-xl-4">
-            <CustomStickyElement data-sticky data-margin-top="80" data-sticky-for="1199">
+            <CustomStickyElement data-sticky data-margin-top="80" data-sticky-for="100">
               <b-row class="g-4">
                 <FareSummary />
                 <!-- <YourBooking /> -->
