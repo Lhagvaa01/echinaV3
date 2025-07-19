@@ -12,7 +12,7 @@
                         <img :src="gallery4" class="rounded-top" alt="gallery4" />
                         <b-card-body class="text-center p-4">
                             <b-card-title tag="h1" class="fs-3">{{ t(getStatusClass(orderInfo?.status))
-                                }}</b-card-title>
+                            }}</b-card-title>
                             <p class="lead mb-3">Itinerary</p>
                             <h5 class="text-primary mb-4">Airkacc.mn | {{ t('txtFlightBooking') }}</h5>
                             <b-row class="justify-content-between text-start mb-4">
@@ -311,7 +311,7 @@
                                                     <b-col cols="3" sm="4" md="3" class="mt-0 text-start ">
                                                         <p class="mb-0" style="font-size: medium;">{{
                                                             moreFlights(segment, inx)[0][0]?.Departure.Iata
-                                                            }}</p>
+                                                        }}</p>
                                                         <p class="mb-0 text-truncate"
                                                             style="font-size: smaller; max-width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
                                                             :title="moreFlights(segment, inx)[0][0]?.Departure.City">
@@ -539,8 +539,27 @@ const fallbackLogo = flightLogo
 const rate = sessionStorage.getItem('eur')
 
 const formatDateFinish = (date: string): string => {
-    const [year, month, day] = date.split('.');
-    return `${day}.${month}.${year}`;
+    const [day, month, year] = date.split('.');
+
+    const monthNames: { [key: string]: string } = {
+        '01': 'JAN',
+        '02': 'FEB',
+        '03': 'MAR',
+        '04': 'APR',
+        '05': 'MAY',
+        '06': 'JUN',
+        '07': 'JUL',
+        '08': 'AUG',
+        '09': 'SEP',
+        '10': 'OCT',
+        '11': 'NOV',
+        '12': 'DEC',
+    };
+
+    const paddedMonth = month.padStart(2, '0'); // '3' → '03'
+    const monthStr = monthNames[paddedMonth] || month;
+
+    return `${day} ${monthStr} ${year}`;
 };
 
 const orderId = ref('');

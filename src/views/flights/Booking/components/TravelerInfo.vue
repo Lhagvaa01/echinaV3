@@ -66,7 +66,26 @@ function onMouseLeave(index: string) {
 
 const formatDateFinish = (date: string): string => {
     const [day, month, year] = date.split('.');
-    return `${year}.${month}.${day}`;
+
+    const monthNames: { [key: string]: string } = {
+        '01': 'JAN',
+        '02': 'FEB',
+        '03': 'MAR',
+        '04': 'APR',
+        '05': 'MAY',
+        '06': 'JUN',
+        '07': 'JUL',
+        '08': 'AUG',
+        '09': 'SEP',
+        '10': 'OCT',
+        '11': 'NOV',
+        '12': 'DEC',
+    };
+
+    const paddedMonth = month.padStart(2, '0'); // '3' → '03'
+    const monthStr = monthNames[paddedMonth] || month;
+
+    return `${day} ${monthStr} ${year}`;
 };
 
 const storedData = sessionStorage.getItem("BookingInfo") ? JSON.parse(sessionStorage.getItem("BookingInfo") || "") : null;
