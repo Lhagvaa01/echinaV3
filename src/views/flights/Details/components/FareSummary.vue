@@ -560,7 +560,7 @@ const getAllSegments = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 100;
   padding: 10px;
 }
 
@@ -574,6 +574,7 @@ const getAllSegments = () => {
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 
 /* Анхааруулга */

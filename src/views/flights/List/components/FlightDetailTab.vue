@@ -84,7 +84,7 @@
                   </div>
 
                 </div>
-                <div v-if="seg.SelfConnect && idx < goSegments.length" class="alert alert-danger py-1 px-2 mb-1 "
+                <div v-else-if="seg.SelfConnect && idx < goSegments.length" class="alert alert-danger py-1 px-2 mb-1 "
                   style="font-size:13px;">
                   <span>Ачаагаа өөрөө авч, дахин бүртгүүлнэ</span>
                 </div>

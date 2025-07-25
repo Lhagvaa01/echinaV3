@@ -16,12 +16,13 @@
         <a href="#" class="btn btn-primary-soft mb-0" @click.prevent="addTraveler">{{ t('txtAddTraveler') }}</a>
       </div>
 
-      <b-accordion class="accordion-icon accordion-bg-light">
+      <b-accordion class="accordion-icon accordion-bg-light z-0">
         <b-accordion-item v-for="(traveler, index) in travelers" :key="traveler.id" :header-tag="'h6'"
-          header-class="font-base" button-class="fw-bold"
+          header-class="font-base" button-class="fw-bold z-0"
           :title="`${index + 1}. ${traveler.ageType == 'Adult' ? 'Том хүн' : traveler.ageType == 'Child' ? 'Хүүхэд' : traveler.ageType == 'Infant' ? 'Нярай' : ''} `"
-          body-class="mt-3" class="mb-3" :visible="openedTravelerIndex === index" @show="openedTravelerIndex = index">
-          <b-row class="g-4">
+          body-class="mt-3" class="mb-3 z-0" :visible="openedTravelerIndex === index"
+          @show="openedTravelerIndex = index">
+          <b-row class="g-4 z-0">
 
             <b-col md="3">
               <b-form-group :label="t('txtPassportNum')">
@@ -48,8 +49,8 @@
             </b-col> -->
             <b-col md="9">
               <b-form-group :label="t('txtFullName')">
-                <div class="input-group">
-                  <b-form-input id="txtSureName" name="txtSureName" type="text" autocomplete="name"
+                <div class="input-group z-0">
+                  <b-form-input id="txtSureName" name="txtSureName" type="text" autocomplete="Fname"
                     :placeholder="t('txtSureName')" v-model="traveler.surname"
                     :state="isNameValid(traveler.name, traveler.surname) ? true : false" />
                   <b-form-input id="txtName" name="txtName" type="text" autocomplete="name" :placeholder="t('txtName')"
@@ -188,7 +189,7 @@
       </b-accordion>
 
 
-      <ServiceInfo />
+      <!-- <ServiceInfo /> -->
 
       <h5 class="mt-4">{{ t('txtBookingSend') }}</h5>
       <b-row class="g-3 g-md-4">

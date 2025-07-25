@@ -117,13 +117,13 @@
                 <b-button v-if="bankInfo[selectedBank].bic == 'khanbank'" size="md" variant="link" class="p-0 m-0"
                   @click="copyText('MN68000500' + bankInfo[selectedBank].acc_number.toString())">
                   <span class="h6 fw-normal text-primary mb-0 me-2">MN68000500{{ bankInfo[selectedBank].acc_number
-                  }}</span>
+                    }}</span>
                   <i class="fas fa-copy"></i>
                 </b-button>
                 <b-button v-else size="md" variant="link" class="p-0 m-0"
                   @click="copyText('MN44001500' + bankInfo[selectedBank].acc_number.toString())">
                   <span class="h6 fw-normal text-primary mb-0 me-2">MN44001500{{ bankInfo[selectedBank].acc_number
-                  }}</span>
+                    }}</span>
                   <i class="fas fa-copy"></i>
                 </b-button>
               </li>
@@ -336,7 +336,7 @@ const confirmAndPay = async () => {
           errorMessage.value.status = '';
         }, 2000);
 
-        window.location.href = `/flights/booking/confirm/${oid.value}/`;
+        //window.location.href = `/flights/booking/confirm/${oid.value}/`;
       }
     } else {
       errorMessage.value.text = `Алдаа: ${response.statusText}`;
@@ -527,7 +527,7 @@ onMounted(() => {
 
 .alert-wrapper {
   position: fixed;
-  top: 5%;
+  top: 10%;
   left: 50%;
   transform: translate(-50%, -50%);
   height: 50px;
