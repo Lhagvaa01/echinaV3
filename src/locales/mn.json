@@ -45,6 +45,8 @@
     "txtPriceSort": "Үнээр эрэмбэлэх",
     "txtPriceASC": "Үнэ өсөхөөр",
     "txtPriceDESC": "Үнэ буурахаар",
+    "txtTimeASC": "Хамгийн бага хугацаа",
+    "txtTimeDESC": "Хамгийн их хугацаа",
     "txtWaiting": "Түр хүлээнэ үү...",
     "txtFromFlight": "ЯВАХ НИСЛЭГ",
     "txtToFlight": "БУЦАХ НИСЛЭГ",

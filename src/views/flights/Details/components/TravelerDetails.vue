@@ -26,15 +26,20 @@
 
             <b-col md="3">
               <b-form-group :label="t('txtPassportNum')">
-                <b-form-input id="passwordNum" name="passwordNum" type="text" autocomplete="name"
+                <b-form-input id="passwordNum" name="passwordNum" type="text" autocomplete="off"
                   :placeholder="t('txtPassportNum')" v-model="traveler.document"
-                  :state="isPassportValid(traveler.document)"
+                  :state="isPassportValid(traveler.document) && isLatinOnlyPassport(traveler.document)"
+                  @input="(e) => onPassportInput(e, traveler)"
                   @keydown.enter="autoFillTravelerByPassport(traveler.document, traveler)"
                   @blur="autoFillTravelerByPassport(traveler.document, traveler)" />
-                <!-- <b-form-invalid-feedback v-if="!isPassportValid(traveler.document)">
-                  {{ t('txtPassportNumErr') }}
-                </b-form-invalid-feedback> -->
-                <div class="invalid-feedback d-block text-warning" v-if="!isPassportValid(traveler.document)">
+
+                <div class="invalid-feedback d-block text-warning" v-if="!isLatinOnlyPassport(traveler.document)">
+                  Зөвхөн латин үсэг болон тоо бичнэ үү!
+                </div>
+                <div class="invalid-feedback d-block text-warning" v-if="containsMongolian(traveler.document)">
+                  Монгол үсгээр бичих боломжгүй!
+                </div>
+                <div class="invalid-feedback d-block text-warning" v-else-if="!isPassportValid(traveler.document)">
                   {{ t('txtPassportNumErr') }}
                 </div>
               </b-form-group>
@@ -658,6 +663,35 @@ const autoFillTravelerByPassport = async (passportNumber: any, traveler: { name:
   }
 };
 
+// const onPassportInput = (event: Event, travelerIndex: number) => {
+//   const target = event.target as HTMLInputElement;
+//   if (containsMongolian(target.value)) {
+//     target.value = target.value.replace(/[\u0400-\u04FF\u1800-\u18AF\u2DFF]/g, '');
+//     travelers.value[travelerIndex].document = target.value;
+//   }
+// }
+
+function onPassportInput(event: Event, traveler: any) {
+  if (!traveler) return;
+  const target = event.target as HTMLInputElement;
+  const cleanValue = target.value.replace(/[^A-Za-z0-9]/g, '');
+  target.value = cleanValue;
+  traveler.document = cleanValue;
+}
+
+
+
+
+
+
+const containsMongolian = (text: string): boolean => {
+  const mongolianRegex = /[\u0400-\u04FF\u1800-\u18AF\u2DE0-\u2DFF]/;
+  return mongolianRegex.test(text);
+};
+
+const isLatinOnlyPassport = (text: string): boolean => {
+  return /^[A-Za-z0-9]*$/.test(text);
+};
 
 const isPassportValid = (passportNumber: string) => {
   const pass_regex = /^[A-Za-z0-9]{8,9}$/;

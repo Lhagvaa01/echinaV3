@@ -1,38 +1,22 @@
 <template>
-  <div v-if="(filteredData.length > 0 ? filteredData.length : StoreflightInfos.length) == 0">
-
+  <div v-if="initialLoading">
     <SkeletonLoader v-for="n in 10" :key="n" />
   </div>
+
   <div v-else>
-    <b-form class="rounded-3 shadow">
-      <!-- Popular filters -->
-      <!-- <b-card no-body class="card-body rounded-0 rounded-top p-4">
-        <h6 class="mb-2">Popular Filters</h6>
-        <b-col cols="12">
-          <div class="d-flex justify-content-between align-items-center">
-            <b-form-checkbox id="popularType1">Refundable Fare</b-form-checkbox>
-            <span class="small">(41)</span>
-          </div>
+    <!-- Шүүлтүүрийн блок -->
+    <b-form class="rounded-3 shadow position-relative">
 
-          <div class="d-flex justify-content-between align-items-center">
-            <b-form-checkbox id="popularType2">1 Stop</b-form-checkbox>
-            <span class="small">(20)</span>
-          </div>
+      <!-- Loading overlay (filter солигдоход) -->
+      <transition name="fade">
+        <div v-if="isFiltering" class="filter-overlay d-flex flex-column align-items-center justify-content-center">
+          <div class="spinner-border mb-2" role="status" aria-hidden="true"></div>
+          <div class="small">{{ t('txtWaiting') }}</div>
+        </div>
+      </transition>
 
-          <div class="d-flex justify-content-between align-items-center">
-            <b-form-checkbox id="popularType3">Late Departure</b-form-checkbox>
-            <span class="small">(4)</span>
-          </div>
-
-          <div class="d-flex justify-content-between align-items-center">
-            <b-form-checkbox id="popularType4">Non-Stop</b-form-checkbox>
-            <span class="small">(2)</span>
-          </div>
-        </b-col>
-      </b-card> -->
+      <!-- Stops -->
       <hr class="my-0" />
-
-      <!-- Onward stops -->
       <b-card no-body class="card-body rounded-0 p-4">
         <div class="d-flex justify-content-between align-items-center p-2 p-xl-0  mb-2">
           <h6 class="mb-0">Зогсолт</h6>
@@ -43,29 +27,28 @@
             <input class="form-check-input" type="checkbox" id="btn-check-c1" :value="1"
               v-model="filters.preferredStops" />
             <label class="form-check-label ms-2" for="btn-check-c1">
-              {{ t('txtDirect') }} ({{ direct.length }})
+              {{ t('txtDirect') }} ({{ stopsCounts.direct }})
             </label>
           </div>
           <div class="form-check mb-2">
             <input class="form-check-input" type="checkbox" id="btn-check-c2" :value="2"
               v-model="filters.preferredStops" />
             <label class="form-check-label ms-2" for="btn-check-c2">
-              {{ t('txt1Stop') }} ({{ OneStop.length }})
+              {{ t('txt1Stop') }} ({{ stopsCounts.one }})
             </label>
           </div>
           <div class="form-check">
             <input class="form-check-input" type="checkbox" id="btn-check-c3" :value="3"
               v-model="filters.preferredStops" />
             <label class="form-check-label ms-2" for="btn-check-c3">
-              {{ t('txt2PlusStop') }} ({{ TwoStop.length }})
+              {{ t('txt2PlusStop') }} ({{ stopsCounts.twoPlus }})
             </label>
           </div>
         </b-col>
       </b-card>
 
-      <hr class="my-0" />
-
       <!-- Price -->
+      <hr class="my-0" />
       <b-card no-body class="card-body rounded-0 p-4">
         <div class="d-flex justify-content-between align-items-center p-2 p-xl-0 mb-2">
           <h6 class="mb-0">Үнэ</h6>
@@ -76,22 +59,17 @@
             <span>{{ value[0].toLocaleString() }} {{ currency }}</span>
             <span>{{ value[1].toLocaleString() }} {{ currency }}</span>
           </div>
-          <VueSlider v-model="value" :min="Math.ceil(minPrice * rate)" :max="Math.ceil(maxPrice * rate)" :interval="1"
+          <VueSlider v-model="value" :min="Math.floor(minPrice * rate)" :max="Math.ceil(maxPrice * rate)" :interval="1"
             :dotSize="19" :dotStyle="dotStyle" :processStyle="processStyle" :railStyle="railStyle" tooltip="none" />
         </div>
       </b-card>
 
-
-
-
-
-      <hr class="my-0" />
-
       <!-- Хөөрөх цагууд -->
+      <hr class="my-0" />
       <b-card no-body class="card-body rounded-0 p-4">
         <div class="d-flex justify-content-between align-items-center p-2 p-xl-0 mb-2">
           <h6 class="mb-0">Хөөрөх цагууд</h6>
-          <b-button variant="link" class="p-0 mb-0" style="font-size: small;" @click="resetPrice">Цэвэрлэх</b-button>
+          <b-button variant="link" class="p-0 mb-0" style="font-size: small;" @click="resetDepDate">Цэвэрлэх</b-button>
         </div>
         <b-col cols="12">
           <div v-for="option in departOptions" :key="option.value" class="form-check">
@@ -105,10 +83,11 @@
         </b-col>
       </b-card>
 
+      <!-- Газардалт -->
       <b-card no-body class="card-body rounded-0 p-4 mt-3">
         <div class="d-flex justify-content-between align-items-center p-2 p-xl-0 mb-2">
           <h6 class="mb-0">Газардaх цагууд</h6>
-          <b-button variant="link" class="p-0 mb-0" style="font-size: small;" @click="resetPrice">Цэвэрлэх</b-button>
+          <b-button variant="link" class="p-0 mb-0" style="font-size: small;" @click="resetArrDate">Цэвэрлэх</b-button>
         </div>
         <b-col cols="12">
           <div v-for="option in arrivalOptions" :key="option.value" class="form-check">
@@ -122,84 +101,33 @@
         </b-col>
       </b-card>
 
-
-      <!-- Return Stops -->
-      <!-- <b-card no-body class="card-body rounded-0 p-4">
-        <h6 class="mb-2">Return Stops</h6>
-        <ul class="list-inline mb-0 g-3">
-          <li class="list-inline-item mb-0">
-            <input type="checkbox" class="btn-check" id="btn-check-6" />
-            <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-6">Direct</label>
-          </li>
-          <li class="list-inline-item mb-0">
-            <input type="checkbox" class="btn-check" id="btn-check-7" />
-            <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-7">1 Stop</label>
-          </li>
-          <li class="list-inline-item mb-0">
-            <input type="checkbox" class="btn-check" id="btn-check-8" />
-            <label class="btn btn-sm btn-light btn-primary-soft-check" for="btn-check-8">2+ Stops</label>
-          </li>
-        </ul>
-      </b-card> -->
-
-
-
-      <!-- <hr class="my-0" />
-      <b-card no-body class="card-body rounded-0 p-4">
-        <h6 class="mb-2">Preferred Airline</h6>
-        <b-col cols="12">
-          <div v-if="Array.isArray(StoreAirCompany)">
-            <div v-for="(comp, index) in StoreAirCompany.slice(0, 5)" :key="index" class="form-check">
-              <div v-if="comp">
-                <input class="form-check-input" type="checkbox" :value="comp.Code" :id="'airlineType' + index"
-                  v-model="flightStore.filters.preferredAirline" />
-                <label class="form-check-label" :for="'airlineType' + index">
-                  <img :src="comp.Code ? 'https://api.echina.mn/assets/d/' + comp.Code + '.png' : element12"
-                    alt="Airline logo" class="h-15px fa-fw me-2" />
-                  {{ comp.Value }}
-                </label>
-              </div>
-            </div>
-          </div>
-        </b-col>
-      </b-card> -->
-
-
-      <hr class="my-0" />
-
       <!-- Preferred Airline -->
+      <hr class="my-0" />
       <b-card no-body class="card-body rounded-0 p-4">
         <h6 class="mb-2">Preferred Airline</h6>
         <b-col cols="12">
-
           <div v-if="Array.isArray(StoreAirCompany)">
             <div v-for="(comp, index) in StoreAirCompany.slice(0, 5)" :key="index" class="form-check">
               <div v-if="comp">
-                <!-- <input class="form-check-input" type="checkbox" :value="comp.Code" :id="'airlineType' + index" />
-                <label class="form-check-label" for="airlineType1"> -->
                 <input class="form-check-input" type="checkbox" :value="comp.Code" :id="'airlineType' + index"
                   v-model="filters.preferredAirlines" />
                 <label :for="'airlineType' + index">
-                  <img :src="comp.Code
-                    ? 'https://api.echina.mn/assets/d/' + comp.Code + '.png'
-                    : element12" alt="Airline logo" class="h-15px fa-fw me-2" />{{ comp.Value }}
-                  <!-- <img :src="element12" class="h-15px fa-fw me-2" alt="" />{{ comp.Value }} -->
+                  <img :src="comp.Code ? 'https://api.echina.mn/assets/d/' + comp.Code + '.png' : element12"
+                    alt="Airline logo" class="h-15px fa-fw me-2" />{{ comp.Value }}
                 </label>
               </div>
             </div>
           </div>
-
 
           <b-collapse class="multi-collapse" id="airlineCollapse">
             <div v-if="Array.isArray(StoreAirCompany)">
               <div v-for="(comp, index) in StoreAirCompany.slice(5)" :key="'collapsed-' + index" class="form-check">
                 <div v-if="comp">
-                  <input class="form-check-input" type="checkbox" :value="comp.Code" :id="'airlineType' + index"
+                  <input class="form-check-input" type="checkbox" :value="comp.Code" :id="'airlineType-c' + index"
                     v-model="filters.preferredAirlines" />
-                  <label :for="'airlineType' + index">
-                    <img :src="comp.Code
-                      ? 'https://api.echina.mn/assets/d/' + comp.Code + '.png'
-                      : element12" alt="Airline logo" class="h-15px fa-fw me-2" />{{ comp.Value }}
+                  <label :for="'airlineType-c' + index">
+                    <img :src="comp.Code ? 'https://api.echina.mn/assets/d/' + comp.Code + '.png' : element12"
+                      alt="Airline logo" class="h-15px fa-fw me-2" />{{ comp.Value }}
                   </label>
                 </div>
               </div>
@@ -207,50 +135,39 @@
           </b-collapse>
 
           <a v-b-toggle.airlineCollapse class="p-0 mb-to mt-2 btn-more d-flex align-items-center collapsed"
-            data-bs-toggle="collapse" href="#airlineCollapes" role="button" aria-expanded="false"
-            aria-controls="airlineCollapes">
+            role="button" aria-expanded="false" aria-controls="airlineCollapse">
             See <span class="see-more ms-1">more</span><span class="see-less ms-1">less</span>
             <font-awesome-icon :icon="faAngleDown" class="ms-2" />
           </a>
         </b-col>
       </b-card>
 
-      <hr class="my-0" />
-
       <!-- Layover Airport -->
+      <hr class="my-0" />
       <b-card no-body class="card-body rounded-0 rounded-bottom p-0">
         <h6 class="mb-2 p-4">Layover Airport</h6>
         <b-col cols="12">
-
           <div v-if="Array.isArray(StoreAirport)">
             <div v-for="(comp, index) in StoreAirport.slice(0, 5)" :key="index" class="form-check">
-              <div v-if="comp" class=" px-4">
+              <div v-if="comp" class="px-4">
                 <input class="form-check-input" type="checkbox" :value="comp.Iata" :id="'airportType' + index"
                   v-model="filters.preferredAirPorts" />
                 <div class="d-flex justify-content-between align-items-center">
-
-                  <label :for="'airportType' + index">
-                    {{ comp.Name }}
-                  </label>
-
+                  <label :for="'airportType' + index">{{ comp.Name }}</label>
                   {{ comp.Iata }}
                 </div>
               </div>
             </div>
           </div>
 
-          <b-collapse class="multi-collapse" id="lauoverCollapse">
+          <b-collapse class="multi-collapse" id="layoverCollapse">
             <div v-if="Array.isArray(StoreAirport)">
-              <div v-for="(comp, index) in StoreAirport.slice(5)" :key="index" class="form-check">
-                <div v-if="comp" class=" px-4">
-                  <input class="form-check-input" type="checkbox" :value="comp.Iata" :id="'airportType' + index"
+              <div v-for="(comp, index) in StoreAirport.slice(5)" :key="'ap-c' + index" class="form-check">
+                <div v-if="comp" class="px-4">
+                  <input class="form-check-input" type="checkbox" :value="comp.Iata" :id="'airportType-c' + index"
                     v-model="filters.preferredAirPorts" />
                   <div class="d-flex justify-content-between align-items-center">
-
-                    <label :for="'airportType' + index">
-                      {{ comp.Name }}
-                    </label>
-
+                    <label :for="'airportType-c' + index">{{ comp.Name }}</label>
                     {{ comp.Iata }}
                   </div>
                 </div>
@@ -258,8 +175,8 @@
             </div>
           </b-collapse>
 
-          <a class="btn-more d-flex align-items-center collapsed p-4 mb-0 mt-2" v-b-toggle.lauoverCollapse
-            href="#lauoverCollapes" role="button" aria-expanded="false" aria-controls="lauoverCollapes">
+          <a class="btn-more d-flex align-items-center collapsed p-4 mb-0 mt-2" v-b-toggle.layoverCollapse role="button"
+            aria-expanded="false" aria-controls="layoverCollapse">
             See <span class="see-more ms-1">more</span><span class="see-less ms-1">less</span>
             <font-awesome-icon :icon="faAngleDown" class="me-2" />
           </a>
@@ -269,297 +186,252 @@
 
     <div class="d-flex justify-content-between p-2 p-xl-0 mt-xl-4">
       <b-button variant="link" class="p-0 mb-0 ms-3" style="font-size: small;" @click="resetFilters">Цэвэрлэх</b-button>
-      <!-- <b-button variant="primary" class="mb-0" @click="applyFilter('223')">Filter Result</b-button> -->
     </div>
-    <!-- <p>Сонгогдсон Airlines: {{ selectedAirlines }}</p>
-    <p>Сонгогдсон AirPorts: {{ selectedAirPorts }}</p>
-    <p>Сонгогдсон stops: {{ selectedStops }}</p> -->
   </div>
 </template>
 
+
 <script lang="ts" setup>
 import element12 from '@/assets/images/element/12.svg'
-import element13 from '@/assets/images/element/13.svg'
-import element14 from '@/assets/images/element/14.svg'
-import element15 from '@/assets/images/element/15.svg'
-
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, nextTick } from 'vue'
 import VueSlider from 'vue-3-slider-component'
 import { currency } from '@/helpers/constants'
-import { useFlightStore } from '@/stores/flight';
+import { useFlightStore } from '@/stores/flight'
 import SkeletonLoader from './Skeleton.vue'
 import { useI18n } from 'vue-i18n'
 import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+dayjs.extend(customParseFormat)
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
+const flightStore = useFlightStore()
 
-const flightStore = useFlightStore();
-type AirCompany = {
-  Code: string;
-  Value: string;
-};
-type Airport = {
-  Code: string;
-  Iata: string;
-  Name: string;
-};
+type AirCompany = { Code: string; Value: string }
+type Airport = { Code: string; Iata: string; Name: string }
 
-const StoreAirCompany = computed<AirCompany[]>(() => flightStore.AirCompany || []);
-const StoreAirport = computed<Airport[]>(() => flightStore.AirPorts || []);
-const StoreflightInfos = computed(() => flightStore.flightInfos || []);
-
-const direct = ref<any[]>([]);
-const OneStop = ref<any[]>([]);
-const TwoStop = ref<any[]>([]);
-
-StoreflightInfos.value.forEach((flight: any, index: number) => {
-  if (flight.Offers) {
-    const segments = getAllSegments(index);
-    const stops = segments.length;
-    if (stops === 1) direct.value.push(flight);
-    else if (stops === 2) OneStop.value.push(flight);
-    else TwoStop.value.push(flight);
-  }
-});
-
-const filters = ref({
-  preferredAirlines: [],
-  preferredAirPorts: [],
-  preferredStops: [],
-});
-
-const selectedAirlines = computed(() => filters.value.preferredAirlines);
-const selectedAirPorts = computed(() => filters.value.preferredAirPorts);
-const selectedStops = computed(() => filters.value.preferredStops);
+const StoreAirCompany = computed<AirCompany[]>(() => flightStore.AirCompany || [])
+const StoreAirport = computed<Airport[]>(() => flightStore.AirPorts || [])
+const StoreflightInfos = computed<any[]>(() => flightStore.flightInfos || [])
 
 const rate = parseFloat(sessionStorage.getItem('eur') || '1')
 
-// Dynamic min/max price:
+// --- Loading төлөвүүд ---
+const initialLoading = computed(() => (StoreflightInfos.value ?? []).length === 0)
+const isFiltering = ref(false)
+let filterTimer: number | null = null
+function startFilterLoading() {
+  if (filterTimer) window.clearTimeout(filterTimer)
+  isFiltering.value = true
+  // богино timeout ашиглаж UI-г амь оруулах
+  filterTimer = window.setTimeout(() => { isFiltering.value = false }, 250)
+}
+
+// --- Үнийн min-max ---
 const minPrice = computed(() => {
-  const prices = StoreflightInfos.value.map(f =>
-    Number(f.AdultPrice || f.TotalPrice || 0)
-  ).filter(p => p > 0)
+  const prices = (StoreflightInfos.value ?? [])
+    .map(f => Number(f.AdultPrice || f.TotalPrice || f?.TariffInfo?.AdultPrice || 0))
+    .filter(p => p > 0)
   return prices.length ? Math.min(...prices) : 0
 })
 const maxPrice = computed(() => {
-  const prices = StoreflightInfos.value.map(f =>
-    Number(f.AdultPrice || f.TotalPrice || 0)
-  ).filter(p => p > 0)
+  const prices = (StoreflightInfos.value ?? [])
+    .map(f => Number(f.AdultPrice || f.TotalPrice || f?.TariffInfo?.AdultPrice || 0))
+    .filter(p => p > 0)
   return prices.length ? Math.max(...prices) : 0
 })
-
-// Slider-ын value (анхны утга нь валютын ханшаар хөрвүүлсэн):
-const value = ref([
-  Math.ceil(minPrice.value * rate),
-  Math.ceil(maxPrice.value * rate)
-])
-
-// min/max өөрчлөгдөхөд value шинэчлэх:
+const value = ref([Math.floor(minPrice.value * rate), Math.ceil(maxPrice.value * rate)])
 watch([minPrice, maxPrice], ([min, max]) => {
-  value.value = [Math.ceil(min * rate), Math.ceil(max * rate)]
+  value.value = [Math.floor(min * rate), Math.ceil(max * rate)]
 })
 
-
-function resetStops() {
-  filters.value = {
-    preferredAirlines: [],
-    preferredAirPorts: [],
-    preferredStops: [],
-  }
-}
-
-function resetPrice() {
-  value.value = [Math.ceil(minPrice.value * rate), Math.ceil(maxPrice.value * rate)]
-}
-
-function resetArrDate() {
-  selectedArrivalTimes.value = []
-}
-
-function resetDepDate() {
-  selectedDepartTimes.value = []
-}
-
-// Filter reset:
-function resetFilters() {
-  filters.value = {
-    preferredAirlines: [],
-    preferredAirPorts: [],
-    preferredStops: [],
-  }
-  selectedDepartTimes.value = []
-  selectedArrivalTimes.value = []
-  value.value = [Math.ceil(minPrice.value * rate), Math.ceil(maxPrice.value * rate)]
-}
-
-const dotStyle = {
-  backgroundColor: '#5143d9',
-  border: '5px solid #fff',
-  boxShadow: '0px 0px 0px 1px #5143d9'
-}
-const processStyle = {
-  backgroundColor: '#5143d9'
-}
-const railStyle = {
-  backgroundColor: 'rgb(81, 67, 217, 0.1)'
-}
-
-// Хөөрөх/Газардалтын цагийн сонголтууд
-const departOptions = [
-  { value: "morn", label: "00:00 - 12:00", caption: "Өглөө", range: [0, 720] },
-  { value: "day", label: "12:00 - 18:00", caption: "Өдөр", range: [720, 1080] },
-  { value: "eve", label: "18:00 - 00:00", caption: "Орой", range: [1080, 1440] }
-]
-const arrivalOptions = [
-  { value: "morn", label: "00:00 - 12:00", caption: "Өглөө", range: [0, 720] },
-  { value: "day", label: "12:00 - 18:00", caption: "Өдөр", range: [720, 1080] },
-  { value: "eve", label: "18:00 - 00:00", caption: "Орой", range: [1080, 1440] }
-]
-
+// --- Сонголтууд ---
+const filters = ref({
+  preferredAirlines: [] as string[],
+  preferredAirPorts: [] as string[],
+  preferredStops: [] as number[],
+})
 const selectedDepartTimes = ref<string[]>([])
 const selectedArrivalTimes = ref<string[]>([])
 
-// Utility functions
-function getFlightData(index: number) {
-  return StoreflightInfos.value[index] || { Offers: { OfferInfo: [] } };
+function resetStops() {
+  filters.value.preferredStops = []
 }
-function getAllSegments(index: number) {
-  return getFlightData(index).Offers.OfferInfo.flatMap((offer: { Segments: { OfferSegment: any } }) => offer.Segments.OfferSegment) || [];
+function resetPrice() {
+  value.value = [Math.floor(minPrice.value * rate), Math.ceil(maxPrice.value * rate)]
+}
+function resetArrDate() {
+  selectedArrivalTimes.value = []
+}
+function resetDepDate() {
+  selectedDepartTimes.value = []
+}
+function resetFilters() {
+  filters.value = { preferredAirlines: [], preferredAirPorts: [], preferredStops: [] }
+  selectedDepartTimes.value = []
+  selectedArrivalTimes.value = []
+  resetPrice()
+}
+
+// --- Цагийн сонголтууд ---
+const departOptions = [
+  { value: 'night', label: '00:00 - 06:00', caption: 'Шөнө', range: [0, 360] },
+  { value: 'morn', label: '06:00 - 12:00', caption: 'Өглөө', range: [360, 720] },
+  { value: 'day', label: '12:00 - 18:00', caption: 'Өдөр', range: [720, 1080] },
+  { value: 'eve', label: '18:00 - 00:00', caption: 'Орой', range: [1080, 1440] }
+]
+
+const arrivalOptions = [...departOptions]
+
+// --- Utils ---
+function getAllSegmentsFromFlight(flight: any) {
+  const infos = flight?.Offers?.OfferInfo ?? []
+  const segs: any[] = []
+  for (const oi of infos) {
+    const s = oi?.Segments?.OfferSegment ?? []
+    if (Array.isArray(s)) segs.push(...s)
+  }
+  return segs
 }
 function getFirstSegment(flight: any) {
-  return flight.Offers?.OfferInfo?.[0]?.Segments?.OfferSegment?.[0] ?? null
+  const segs = getAllSegmentsFromFlight(flight)
+  return segs[0] ?? null
 }
 function getLastSegment(flight: any) {
-  const segs = flight.Offers?.OfferInfo?.[0]?.Segments?.OfferSegment ?? []
+  const segs = getAllSegmentsFromFlight(flight)
   return segs[segs.length - 1] ?? null
 }
-import customParseFormat from 'dayjs/plugin/customParseFormat'
-dayjs.extend(customParseFormat)
 function timeToMinutes(dateStr: string) {
-  const d = dayjs(dateStr, "DD.MM.YYYY HH:mm")
-  // console.log(d)
-  return d.hour() * 60 + d.minute()
+  const d = dayjs(dateStr, 'DD.MM.YYYY HH:mm')
+  return d.isValid() ? d.hour() * 60 + d.minute() : null
+}
+function getStopsCount(flight: any) {
+  const segs = getAllSegmentsFromFlight(flight)
+  return segs.length
+}
+function getPriceInUIRate(flight: any) {
+  const p = Number(flight.AdultPrice || flight.TotalPrice || flight?.TariffInfo?.AdultPrice || 0)
+  return (isNaN(p) ? 0 : p) * rate
 }
 
-// БҮГДИЙГ нэгтгэсэн FilteredData (хамгийн гол нь энэ хэсэг)
-const filteredData = computed(() => {
+// --- 1) Price + Airline + Airport + Time шүүлт (суурь)
+const baseFiltered = computed(() => {
   const flights = StoreflightInfos.value || []
-
-  return flights.filter(flight => {
-    // 1. Онгоцны компани filter
-    if (
-      filters.value.preferredAirlines.length > 0 &&
-      !flight.Offers.OfferInfo.some((offer: any) =>
-        offer.Segments.OfferSegment.some(
-          (segment: any) =>
-            filters.value.preferredAirlines.includes(segment.MarketingAirline)
-        )
-      )
-    ) {
-      return false
+  return flights.filter((flight) => {
+    // Airline
+    if (filters.value.preferredAirlines.length > 0) {
+      const segs = getAllSegmentsFromFlight(flight)
+      const hit = segs.some(s => filters.value.preferredAirlines.includes(s?.MarketingAirline))
+      if (!hit) return false
     }
 
-    // 2. Буудаг буудал filter
-    if (
-      filters.value.preferredAirPorts.length > 0 &&
-      !flight.Offers.OfferInfo.some((offer: any) =>
-        offer.Segments.OfferSegment.some(
-          (segment: any) =>
-            filters.value.preferredAirPorts.includes(segment.Arrival.Iata)
-        )
-      )
-    ) {
-      return false
+    // Layover airport (arrival IATA)
+    if (filters.value.preferredAirPorts.length > 0) {
+      const segs = getAllSegmentsFromFlight(flight)
+      const hit = segs.some(s => filters.value.preferredAirPorts.includes(s?.Arrival?.Iata))
+      if (!hit) return false
     }
 
-    // 3. Зогсолтын filter
-    const segs = flight.Offers.OfferInfo[0]?.Segments?.OfferSegment || []
-    const stops = segs.length
-    if (
-      filters.value.preferredStops.length > 0 &&
-      !filters.value.preferredStops.includes(stops)
-    ) {
-      return false
-    }
-    // console.log(StoreflightInfos.value)
+    // Price (UI валют)
+    const uiPrice = getPriceInUIRate(flight)
+    if (uiPrice < value.value[0] || uiPrice > value.value[1]) return false
 
-    if (!Array.isArray(StoreflightInfos.value)) return;
+    // Time filter
+    // Depart
+    const departSeg = getFirstSegment(flight)
+    const departMin = departSeg ? timeToMinutes(departSeg?.Departure?.Date) : null
+    const departOK =
+      selectedDepartTimes.value.length === 0 ||
+      selectedDepartTimes.value.some(key => {
+        const r = departOptions.find(o => o.value === key)?.range
+        return r && departMin !== null && departMin >= r[0] && departMin < r[1]
+      })
+    if (!departOK) return false
 
-    // Тоолуурын утгыг эхлүүлэх
-    direct.value = [];
-    OneStop.value = [];
-    TwoStop.value = [];
-
-    StoreflightInfos.value.forEach((flight: any, index: number) => {
-      if (flight.Offers) {
-        const segments = getAllSegments(index);
-        const stops = segments.length;  // Зогсолтын тоо
-
-        if (stops === 1) {
-          direct.value.push(flight); // Шууд нислэг
-        } else if (stops === 2) {
-          OneStop.value.push(flight); // 1 зогсолттой нислэг
-        } else {
-          TwoStop.value.push(flight); // 2+ зогсолттой нислэг
-        }
-      }
-    });
-
-    // 4. Үнэний filter
-    // const price = Number(flight.AdultPrice || flight.TotalPrice || 0)
-    // if (price < value.value[0] || price > value.value[1]) {
-    //   return false
-    // }
-    // const price = Number(flight.TotalPrice || 0) * rate
-    // if (price < value.value[0] || price > value.value[1]) {
-    //   return false
-    // }
+    // Arrival
+    const arrivalSeg = getLastSegment(flight)
+    const arrivalMin = arrivalSeg ? timeToMinutes(arrivalSeg?.Arrival?.Date) : null
+    const arrivalOK =
+      selectedArrivalTimes.value.length === 0 ||
+      selectedArrivalTimes.value.some(key => {
+        const r = arrivalOptions.find(o => o.value === key)?.range
+        return r && arrivalMin !== null && arrivalMin >= r[0] && arrivalMin < r[1]
+      })
+    if (!arrivalOK) return false
 
     return true
   })
 })
 
-
-// Хөөрөх/Газардалтын цагийн filter-ийг бүх filter-тэй нийлүүлсэн байдлаар
-const timeFilteredFlights = computed(() => {
-  const data = filteredData.value.length ? filteredData.value : []
-  console.log(filteredData.value.length)
-  console.log(data.length)
-  return data.filter(flight => {
-    // Хөөрөх цагаар шүүх
-    const departSeg = getFirstSegment(flight)
-    const departMin = departSeg ? timeToMinutes(departSeg.Departure.Date) : null
-    // console.log(departSeg.Departure.Date)
-    const departMatch =
-      !selectedDepartTimes.value.length ||
-      selectedDepartTimes.value.some(val => {
-        const range = departOptions.find(o => o.value === val)?.range
-        return range && departMin !== null && departMin >= range[0] && departMin < range[1]
-      })
-
-    // Газардалт цагаар шүүх
-    const arrivalSeg = getLastSegment(flight)
-    const arrivalMin = arrivalSeg ? timeToMinutes(arrivalSeg.Arrival.Date) : null
-    const arrivalMatch =
-      !selectedArrivalTimes.value.length ||
-      selectedArrivalTimes.value.some(val => {
-        const range = arrivalOptions.find(o => o.value === val)?.range
-        return range && arrivalMin !== null && arrivalMin >= range[0] && arrivalMin < range[1]
-      })
-
-    return departMatch && arrivalMatch
-  })
+// --- 2) Stops filter (суурь шүүлтийн ДЭЭР)
+const filteredData = computed(() => {
+  const src = baseFiltered.value
+  if (filters.value.preferredStops.length === 0) return src
+  return src.filter(f => filters.value.preferredStops.includes(getStopsCount(f)))
 })
 
-watch(timeFilteredFlights, (newData) => {
-  // Шүүлтүүрдсэн нислэгүүдийг store-д хадгална
-  // console.log(newData)
-  flightStore.filterAirline = newData
+// --- Зогсолтын тоолуур (суурь шүүлтээр динамик)
+const stopsCounts = computed(() => {
+  const src = baseFiltered.value
+  let direct = 0, one = 0, twoPlus = 0
+  for (const f of src) {
+    const n = getStopsCount(f)
+    if (n === 1) direct++
+    else if (n === 2) one++
+    else if (n >= 3) twoPlus++
+  }
+  return { direct, one, twoPlus }
 })
+
+// Store-д дамжуулах (хүсвэл энд sort бас хийж болно)
+watch(filteredData, (rows) => {
+  flightStore.filterAirline = rows
+})
+
+// --- Loading trigger: ямар нэг filter өөрчлөгдөх бүрт богино хугацаанд overlay үзүүлнэ
+watch(
+  [
+    () => filters.value.preferredAirlines.slice(),
+    () => filters.value.preferredAirPorts.slice(),
+    () => filters.value.preferredStops.slice(),
+    () => value.value.slice(),
+    () => selectedDepartTimes.value.slice(),
+    () => selectedArrivalTimes.value.slice(),
+    StoreflightInfos
+  ],
+  async () => {
+    startFilterLoading()
+    await nextTick() // UI refresh
+  },
+  { deep: true }
+)
+
+// --- Slider styles
+const dotStyle = { backgroundColor: '#5143d9', border: '5px solid #fff', boxShadow: '0px 0px 0px 1px #5143d9' }
+const processStyle = { backgroundColor: '#5143d9' }
+const railStyle = { backgroundColor: 'rgb(81, 67, 217, 0.1)' }
 </script>
 
-<style lang="css" scoped>
+
+<style scoped>
+.filter-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, .75);
+  z-index: 10;
+  border-radius: inherit;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .15s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .section-title {
   font-weight: 600;
   margin-bottom: 8px;

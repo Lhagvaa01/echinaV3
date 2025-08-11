@@ -49,13 +49,30 @@
                         </div>
                     </button>
 
-                    <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
+                    <!-- <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('asc')">{{ t('txtPriceASC')
                                 }}</a></li>
                         <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('desc')">{{ t('txtPriceDESC')
                                 }}</a>
                         </li>
+                    </ul> -->
+                    <ul class="dropdown-menu w-100" aria-labelledby="sortDropdown">
+                        <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('asc')">
+                                {{ t('txtPriceASC') }}
+                            </a></li>
+                        <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('desc')">
+                                {{ t('txtPriceDESC') }}
+                            </a></li>
+
+                        <!-- Нэмэгдсэн: Хугацаагаар эрэмжлэх -->
+                        <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('timeAsc')">
+                                {{ t('txtTimeASC') /* ж: Хамгийн бага хугацаа */ }}
+                            </a></li>
+                        <li><a class="dropdown-item" href="#" @click.prevent="setSortOrder('timeDesc')">
+                                {{ t('txtTimeDESC') /* ж: Хамгийн их хугацаа */ }}
+                            </a></li>
                     </ul>
+
                 </div>
             </b-col>
             <!-- <b-col>
@@ -897,11 +914,39 @@ const setSortOrder = (order) => {
     sortOrder.value = order
 }
 
+// const selectedSortLabel = computed(() => {
+//     if (sortOrder.value === 'asc') return t('txtPriceASC')
+//     if (sortOrder.value === 'desc') return t('txtPriceDESC')
+//     return t('txtPriceSort')
+// })
 const selectedSortLabel = computed(() => {
     if (sortOrder.value === 'asc') return t('txtPriceASC')
     if (sortOrder.value === 'desc') return t('txtPriceDESC')
+    if (sortOrder.value === 'timeAsc') return t('txtTimeASC')   // Хамгийн бага хугацаа
+    if (sortOrder.value === 'timeDesc') return t('txtTimeDESC') // Хамгийн их хугацаа
     return t('txtPriceSort')
 })
+
+
+const getTotalMinutes = (item) => {
+    // Хэрэв backend өөр талбар хэрэглэдэг бол эндээс нэг л газраас засахад болно
+    try {
+        const offerInfos = item?.Offers?.OfferInfo || []
+        let total = 0
+        for (const oi of offerInfos) {
+            const segs = oi?.Segments?.OfferSegment || []
+            for (const s of segs) {
+                const m = parseInt(s?.FlightMinutes, 10)
+                if (!isNaN(m)) total += m
+            }
+        }
+        return total
+    } catch (_) {
+        return 0
+    }
+}
+
+
 
 const filteredData = computed(() => {
     const source = flightStore.firstAdultPrice.length > 0
@@ -911,10 +956,28 @@ const filteredData = computed(() => {
     // console.log(source)
     if (!sortOrder.value) return source
 
+    // return [...source].sort((a, b) => {
+    //     const priceA = a.AdultPrice || 0
+    //     const priceB = b.AdultPrice || 0
+    //     return sortOrder.value === 'asc' ? priceA - priceB : priceB - priceA
+    // })
+
     return [...source].sort((a, b) => {
-        const priceA = a.AdultPrice || 0
-        const priceB = b.AdultPrice || 0
-        return sortOrder.value === 'asc' ? priceA - priceB : priceB - priceA
+        // Үнийн тооцоо – string байх магадлалтай тул parseFloat
+        const priceA = parseFloat(a.AdultPrice ?? a?.TariffInfo?.AdultPrice ?? 0) || 0
+        const priceB = parseFloat(b.AdultPrice ?? b?.TariffInfo?.AdultPrice ?? 0) || 0
+
+        // Хугацааны тооцоо (нийт минут)
+        const timeA = getTotalMinutes(a)
+        const timeB = getTotalMinutes(b)
+
+        switch (sortOrder.value) {
+            case 'asc': return priceA - priceB            // Үнэ өсөх
+            case 'desc': return priceB - priceA            // Үнэ буурах
+            case 'timeAsc': return timeA - timeB              // Хугацаа бага → эхэнд
+            case 'timeDesc': return timeB - timeA              // Хугацаа их → эхэнд
+            default: return 0
+        }
     })
 })
 
@@ -1032,20 +1095,11 @@ const getAllSegments = (offer) => {
 
 const getTotalStops = (offer, index: number, findex: number) => {
     return moreFlights(offer, index)[findex].length - 1
-    // if (i === 1) {
-    //     return departureFlights(index).length - 1
-    // } else {
-    //     return returnFlights(index).length - 1
-    // }
 
 };
 const getStopIatas = (offer, index: number, findex: number) => {
     return moreFlights(offer, index)[findex].slice(0, -1).map((seg: { Arrival: { Iata: any } }) => seg.Arrival.Iata)
-    // if (i === 1) {
-    //     return departureFlights(index).slice(0, -1).map((seg: { Arrival: { Iata: any } }) => seg.Arrival.Iata)
-    // } else {
-    //     return returnFlights(index).slice(0, -1).map((seg: { Arrival: { Iata: any } }) => seg.Arrival.Iata)
-    // };
+
 }
 
 // const getFirstDeparture = (index: number) => getAllSegments(index)[0]?.Departure.Iata || "N/A";
@@ -1062,27 +1116,6 @@ const getTotalFlightTime = (offer, index: number, findex: number) => {
     const minutes = totalMinutes % 60; // Үлдсэн минутыг олно
 
     return `${hours} ${t('txtHour')} ${minutes} ${t('txtMin')}`; // Цаг, минутын форматаар буцаана
-    // if (i === 1) {
-    //     const totalMinutes = moreFlights(index)[findex].reduce(
-    //         (sum: number, seg: { FlightMinutes: string }) => sum + parseInt(seg.FlightMinutes, 10),
-    //         0
-    //     );
-
-    //     const hours = Math.floor(totalMinutes / 60); // Бүтэн цагийг олно
-    //     const minutes = totalMinutes % 60; // Үлдсэн минутыг олно
-
-    //     return `${hours} цаг ${minutes} мин`; // Цаг, минутын форматаар буцаана
-    // } else {
-    //     const totalMinutes = returnFlights(index).reduce(
-    //         (sum: number, seg: { FlightMinutes: string }) => sum + parseInt(seg.FlightMinutes, 10),
-    //         0
-    //     );
-
-    //     const hours = Math.floor(totalMinutes / 60); // Бүтэн цагийг олно
-    //     const minutes = totalMinutes % 60; // Үлдсэн минутыг олно
-
-    //     return `${hours} цаг ${minutes} мин`; // Цаг, минутын форматаар буцаана
-    // }
 
 };
 

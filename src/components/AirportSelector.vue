@@ -1,11 +1,25 @@
 <template>
     <div class="dropdown-wrapper" ref="dropdownRef">
         <div class="dropdown">
-            <div class="dropdown-header">
+            <div class="dropdown-header  rounded-1">
                 <input type="text" v-model="searchQuery" @focus="isOpen = true" @input="handleSearch"
-                    placeholder="Сонгоно уу..." class="form-control search-input" />
+                    placeholder="Сонгоно уу..." class="form-control search-input  " />
                 <!-- <span  >x</span> -->
-                <span class="arrow" @click="toggleDropdown">{{ isOpen ? "▲" : "▼" }}</span>
+                <svg v-if="searchQuery" @click="clearSearch" class="icon-btn" xmlns="http://www.w3.org/2000/svg"
+                    width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+
+                <!-- Arrow Icon -->
+                <svg @click="toggleDropdown" class="icon-btn" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline v-if="!isOpen" points="6 9 12 15 18 9"></polyline>
+                    <polyline v-else points="18 15 12 9 6 15"></polyline>
+                </svg>
             </div>
 
             <div v-if="isOpen" class="dropdown-body p-0 border-0 shadow bg-white text-black" style="min-width: 800px;">
@@ -226,6 +240,10 @@ export default {
             });
             // Object → Array
             return Object.values(groupMap);
+        },
+        clearSearch() {
+            this.searchQuery = "";
+            this.searchResults = [];
         }
     },
 
@@ -341,5 +359,29 @@ export default {
         min-width: 120px;
         font-size: 15px;
     }
+}
+
+.clear-btn {
+    cursor: pointer;
+    font-size: 18px;
+    color: #999;
+    margin-right: 4px;
+}
+
+.clear-btn:hover {
+    color: #333;
+}
+
+.icon-btn {
+    cursor: pointer;
+    color: #999;
+    padding: 3px;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+}
+
+.icon-btn:hover {
+    background: #f0f0f0;
+    color: #333;
 }
 </style>
