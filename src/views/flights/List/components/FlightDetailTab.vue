@@ -280,38 +280,47 @@
       </b-tab>
       <b-tab>
         <template #title style="font-size: smaller;"> {{ t('txtCancelationRule') }} </template>
-        <b-card no-body class="border">
-          <b-card-header class="d-flex align-items-center border-bottom bg-body-secondary">
-            <img :src="element9" class="h-20px me-1" alt="" />
-            <b-card-title tag="h5" class="mb-0">BOM - CDG</b-card-title>
-          </b-card-header>
+        <div v-if="Array.isArray(StoreflightInfos) && StoreflightInfos[index]">
 
-          <b-card-body>
-            <div class="table-responsive-lg">
-              <table class="table caption-bottom mb-0">
-                <caption class="pb-0">
-                  *From The Date Of Departure
-                </caption>
-                <thead class="table-dark">
-                  <tr>
-                    <th scope="col" class="border-0 rounded-start">Time Frame</th>
-                    <th scope="col" class="border-0 rounded-end">Air Free + MMT Free</th>
-                  </tr>
-                </thead>
-                <tbody class="border-top-0">
-                  <tr>
-                    <td>0 hours to 24 hours</td>
-                    <td>Non Refundable</td>
-                  </tr>
-                  <tr>
-                    <td>24 hours to 365 days</td>
-                    <td>{{ currency }}16,325 + {{ currency }}250</td>
-                  </tr>
-                </tbody>
-              </table>
+
+
+          <div v-if="Array.isArray(StoreflightInfos[index].Offers.OfferInfo)">
+            <div v-for="(offer, idx) in StoreflightInfos[index].Offers.OfferInfo" :key="idx">
+              <div v-if="Array.isArray(offer.Segments.OfferSegment)">
+                <div
+                  v-if="StoreflightInfos[index].Offers.OfferInfo.length === 1 && StoreflightInfos[index].Offers.OfferInfo[0].Segments.OfferSegment.length === 1"
+                  v-for="(offerSegment, segidx) in offer.Segments.OfferSegment" :key="segidx">
+
+                  <b-card no-body class="border mb-3">
+                    <b-card-header class="d-flex align-items-center border-bottom bg-body-secondary">
+                      <img :src="offerSegment.MarketingAirline
+                        ? 'https://api.echina.mn/assets/d/' + offerSegment.MarketingAirline + '.png'
+                        : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
+                      <b-card-title tag="h5" class="mb-0">{{
+                        offerSegment.Departure.Iata }} -
+                        {{ offerSegment.Arrival.Iata }}</b-card-title>
+                    </b-card-header>
+
+
+                  </b-card>
+                </div>
+                <div v-else v-for="(offerSegment, segidxs) in offer.Segments.OfferSegment" :key="segidxs">
+                  <b-card no-body class="border mb-3">
+                    <b-card-header class="d-flex align-items-center border-bottom bg-body-secondary">
+                      <img :src="offerSegment.MarketingAirline
+                        ? 'https://api.echina.mn/assets/d/' + offerSegment.MarketingAirline + '.png'
+                        : fallbackLogo" alt="Airline logo" class="me-2" style="width: 30px; height: auto;" />
+                      <b-card-title tag="h5" class="mb-0">{{
+                        offerSegment.Departure.Iata }} -
+                        {{ offerSegment.Arrival.Iata }}</b-card-title>
+                    </b-card-header>
+
+                  </b-card>
+                </div>
+              </div>
             </div>
-          </b-card-body>
-        </b-card>
+          </div>
+        </div>
       </b-tab>
     </b-tabs>
   </div>

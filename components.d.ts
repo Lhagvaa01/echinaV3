@@ -64,6 +64,7 @@ declare module 'vue' {
     CustomTinySlider: typeof import('./src/components/CustomTinySlider.vue')['default']
     CustomTravelers: typeof import('./src/components/CustomTravelers.vue')['default']
     ErrorToastAlert: typeof import('./src/components/ErrorToastAlert.vue')['default']
+    FlightOfferCard: typeof import('./src/components/FlightOfferCard.vue')['default']
     GuestAndRoomForm: typeof import('./src/components/GuestAndRoomForm.vue')['default']
     LogoBox: typeof import('./src/components/LogoBox.vue')['default']
     MenuItem: typeof import('./src/components/navbar/MenuItem.vue')['default']
