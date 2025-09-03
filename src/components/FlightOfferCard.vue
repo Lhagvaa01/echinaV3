@@ -9,7 +9,6 @@
                                 <!-- Зүүн: үндсэн мэдээлэл -->
                                 <b-col cols="12" md="9" xl="9" xxl="9"
                                     class="d-flex flex-column pe-md-0 mb-3 mb-md-0 justify-content-between">
-
                                     <div class="d-flex justify-content-end">
                                         <div class="w-100">
                                             <div class="d-flex justify-content-between align-items-center px-3">
@@ -20,7 +19,7 @@
                                                     {{
                                                         (show == 2 && moreFlights(offer, index).length - 1 === findex)
                                                             ? t('txtToFlight')
-                                                            : t('txtFromFlight')
+                                                    : t('txtFromFlight')
                                                     }}
                                                 </h6>
                                                 <h6 class="fw-bold mb-0 text-primary" style="font-size: smaller;">
@@ -37,13 +36,14 @@
                                                     style="font-size: smaller;">
                                                     <img :src="flight[0]?.MarketingAirline
                                                         ? 'https://api.echina.mn/assets/d/' + flight[0]?.MarketingAirline + '.png'
-                                                        : fallbackLogo" alt="Airline logo" class="me-2"
-                                                        style="width:30px;height:auto" />
+                                                        : fallbackLogo" alt="Airline logo" class="me-2" style="width:30px;height:auto" />
                                                     <h6 class="fw-normal mb-0" style="font-size: smaller;">
-                                                        {{Array.isArray(StoreAirCompany) && StoreAirCompany.length > 0
-                                                            ? (StoreAirCompany.find((airline: any) => airline.Code ===
-                                                                flight[0]?.MarketingAirline)?.Value || 'Airline Not Found')
-                                                            : 'No Air Companies Available'
+                                                        {{
+                                                            AirCompanies.length > 0
+                                                                ? (AirCompanies.find((airline: any) => airline.Code ===
+                                                                    flight[0]?.MarketingAirline)?.Value
+                                                        || 'Airline Not Found')
+                                                        : 'No Air Companies Available'
                                                         }}
                                                         ({{ flight[0]?.FlightNum || 'SA-1254' }})
                                                     </h6>
@@ -68,9 +68,9 @@
                                                                 <div class="fw-semibold text-dark"
                                                                     style="font-size:14px;">
                                                                     {{
-                                                                        StoreAirCompany.find((airline: any) => airline.Code
-                                                                            === segment.MarketingAirline)
-                                                                            ?.Value || 'Unknown Airline'
+                                                                        AirCompanies.find((airline: any) => airline.Code ===
+                                                                            segment.MarketingAirline)?.Value
+                                                                    || 'Unknown Airline'
                                                                     }}
                                                                     <span class="text-muted">({{ segment.FlightNum ||
                                                                         'SA-1254' }})</span>
@@ -104,11 +104,8 @@
                                                             flight[0]?.Departure.Iata }}</p>
                                                         <p class="mb-0 text-truncate"
                                                             style="font-size:smaller;max-width:120px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"
-                                                            :title="StoreAirPorts.find((a: any) => a.Iata === flight[0]?.Departure.Iata)?.City">
-                                                            {{
-                                                                StoreAirPorts.find((a: any) => a.Iata ===
-                                                                    flight[0]?.Departure.Iata)?.City
-                                                            }}
+                                                            :title="getAirport(flight[0]?.Departure.Iata)?.City || ''">
+                                                            {{ getAirport(flight[0]?.Departure.Iata)?.City || '' }}
                                                         </p>
                                                         <h4 class="fw-bold fs-4 mb-0">{{
                                                             flight[0]?.Departure.Date.split(' ')[1] }}</h4>
@@ -125,11 +122,9 @@
                                                                 :key="i" class="position-absolute text-center"
                                                                 :style="getDotPositionStyle(i, getStopIatas(offer, index, findex).length)">
                                                                 <div style="font-size:small;font-weight:bold;">{{ stop
-                                                                }}</div>
+                                                                    }}</div>
                                                                 <div style="font-size:small;color:gray;">({{
-                                                                    StoreAirPorts.find(a => a.Iata === stop)?.City ||
-                                                                    ''}})
-                                                                </div>
+                                                                    getAirport(stop)?.City || '' }})</div>
                                                                 <div class="rounded-circle bg-primary mx-auto"
                                                                     style="width:8px;height:8px;top:50%;left:0;transform:translateY(120%);">
                                                                 </div>
@@ -145,17 +140,14 @@
 
                                                     <!-- Arrival -->
                                                     <b-col cols="3" sm="4" md="3" class="mt-0 text-end">
-                                                        <p class="mb-0" style="font-size:medium">{{
-                                                            flight[flight.length - 1].Arrival.Iata }}</p>
+                                                        <p class="mb-0" style="font-size:medium">{{ flight[flight.length
+                                                            - 1].Arrival.Iata }}</p>
                                                         <p class="mb-0" style="font-size:smaller">
-                                                            {{
-                                                                StoreAirPorts.find((a:
-                                                                    any) => a.Iata === flight[flight.length -
-                                                                        1].Arrival.Iata).City
-                                                            }}
+                                                            {{ getAirport(flight[flight.length - 1]?.Arrival.Iata)?.City
+                                                            || '' }}
                                                         </p>
-                                                        <h4 class="fs-4 mb-0">{{
-                                                            flight[flight.length - 1].Arrival.Date.split(' ')[1] }}</h4>
+                                                        <h4 class="fs-4 mb-0">{{ flight[flight.length -
+                                                            1].Arrival.Date.split(' ')[1] }}</h4>
                                                         <p class="mb-0" style="font-size:x-small">{{
                                                             formatDate(flight[flight.length - 1].Arrival.Date) }}</p>
                                                     </b-col>
@@ -165,14 +157,10 @@
                                                     <b-col>
                                                         <p class="d-grid" style="font-size:small">
                                                             <span>
-                                                                {{
-                                                                    StoreAirPorts.find((a: any) => a.Iata ===
-                                                                        flight[flight.length - 1].Departure.Iata).City
-                                                                }}
-                                                                {{
-                                                                    StoreAirPorts.find((a: any) => a.Iata ===
-                                                                        flight[flight.length - 1].Departure.Iata).Name
-                                                                }}
+                                                                {{ getAirport(flight[flight.length -
+                                                                1]?.Departure.Iata)?.City || '' }}
+                                                                {{ getAirport(flight[flight.length -
+                                                                1]?.Departure.Iata)?.Name || '' }}
                                                             </span>
                                                             <span v-if="flight[0]?.Departure.Terminal">Терминал: {{
                                                                 flight[0]?.Departure.Terminal }}</span>
@@ -181,14 +169,10 @@
                                                     <b-col class="text-end">
                                                         <p class="d-grid" style="font-size:small">
                                                             <span>
-                                                                {{
-                                                                    StoreAirPorts.find((a: any) => a.Iata ===
-                                                                        flight[flight.length - 1].Arrival.Iata).City
-                                                                }}
-                                                                {{
-                                                                    StoreAirPorts.find((a: any) => a.Iata ===
-                                                                        flight[flight.length - 1].Arrival.Iata).Name
-                                                                }}
+                                                                {{ getAirport(flight[flight.length -
+                                                                1]?.Arrival.Iata)?.City || '' }}
+                                                                {{ getAirport(flight[flight.length -
+                                                                1]?.Arrival.Iata)?.Name || '' }}
                                                             </span>
                                                             <span v-if="flight[0]?.Arrival.Terminal">Терминал: {{
                                                                 flight[0]?.Arrival.Terminal }}</span>
@@ -213,7 +197,7 @@
                                                         <p class="mb-0 text-danger"
                                                             style="font-size:small;white-space:pre-line;">
                                                             {{ getTotalStops(offer, index, findex) }} {{
-                                                                t('txtFlightStop') }} {{ t('txtSelfTBag') }} (Self-transfer
+                                                            t('txtFlightStop') }} {{ t('txtSelfTBag') }} (Self-transfer
                                                             baggage)
                                                         </p>
                                                     </div>
@@ -234,27 +218,31 @@
                                                 <div v-if="offer.ChildPrice"
                                                     class="d-flex text-center border border-primary rounded my-2 px-3 justify-content-center small">
                                                     <span class="text-black">
-                                                        👤 {{ adults }} <span class="text-primary">: {{
+                                                        👤 {{ adults }}
+                                                        <span class="text-primary">: {{
                                                             adultPriceConverted.toLocaleString() }}{{ currency }}</span>
                                                     </span>
                                                 </div>
                                                 <div v-if="offer.ChildPrice"
                                                     class="d-flex text-center border border-primary rounded m-2 px-3 justify-content-center small">
-                                                    <span class="text-black">🧒 {{ childs }}<span class="text-primary">:
-                                                            {{ childPriceConverted.toLocaleString() }}{{ currency
-                                                            }}</span></span>
+                                                    <span class="text-black">🧒 {{ childs }}
+                                                        <span class="text-primary">: {{
+                                                            childPriceConverted.toLocaleString() }}{{ currency }}</span>
+                                                    </span>
                                                 </div>
                                                 <div v-if="offer.InfantPrice"
                                                     class="d-flex text-center border border-primary rounded m-2 px-3 justify-content-center small">
-                                                    <span class="text-black">👶 {{ infants }}<span
-                                                            class="text-primary">: {{
-                                                                infantPriceConverted.toLocaleString() }}{{ currency
-                                                            }}</span></span>
+                                                    <span class="text-black">👶 {{ infants }}
+                                                        <span class="text-primary">: {{
+                                                            infantPriceConverted.toLocaleString() }}{{ currency
+                                                            }}</span>
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div class="text-center py-2 me-3">
-                                                <span class="text-primary small">{{ t('txtAvailableSeat') }}: {{
-                                                    segments.ResBookDesigQuantity }}</span>
+                                                <span class="text-primary small">
+                                                    {{ t('txtAvailableSeat') }}: {{ segments.ResBookDesigQuantity }}
+                                                </span>
                                             </div>
                                         </div>
                                         <div>
@@ -318,7 +306,7 @@
                                                     </div>
                                                     <div class="d-flex gap-2 mt-2">
                                                         <div class="border border-primary rounded-2 px-1">👤 {{ adults
-                                                        }}</div>
+                                                            }}</div>
                                                         <div v-if="childs > 0"
                                                             class="border border-primary rounded-2 px-1">🧒 {{ childs }}
                                                         </div>
@@ -399,8 +387,6 @@ import { useOptionStore } from '@/stores/optionStore'
 import PlaneUp from '@/assets/images/Icon/planeup.svg'
 import flightLogo from '@/assets/images/element/09.svg'
 
-
-
 /** Props */
 const props = defineProps<{
     offer: any
@@ -411,10 +397,8 @@ const props = defineProps<{
     childs: number
     infants: number
     searchGuid: string
-    showOverride?: number // optionally pass 1/2; defaults to sessionStorage
-    /** Зарим цонхонд баруун талын “үнэ/сонгох” баганыг бүрэн нуух */
+    showOverride?: number
     hideSummaryColumn?: boolean
-    /** Зөвхөн “Сонгох” товчыг нуух (багана үзэгдсэн байж болно) */
     hideChooseButton?: boolean
 }>()
 
@@ -428,8 +412,22 @@ const totalPassengers = computed(() => (props.adults || 0) + (props.childs || 0)
 const show = computed(() => props.showOverride ?? Number(sessionStorage.getItem('flight') || 1))
 
 /** Stores */
-const StoreAirCompany = computed(() => flightStore.AirCompany)
-const StoreAirPorts = computed(() => flightStore.AirPorts)
+const AirCompanies = computed(() =>
+    Array.isArray(flightStore.AirCompany) ? flightStore.AirCompany : []
+)
+const StoreAirPorts = computed(() =>
+    Array.isArray(flightStore.AirPorts) ? flightStore.AirPorts : []
+)
+
+/** Airport helpers (null-safe, хурдан) */
+const airportsByIata = computed<Record<string, any>>(() => {
+    const m: Record<string, any> = {}
+    for (const a of StoreAirPorts.value) if (a?.Iata) m[a.Iata] = a
+    return m
+})
+function getAirport(iata?: string) {
+    return iata ? airportsByIata.value[iata] : undefined
+}
 
 /** Tooltip */
 const isHovered = ref<{ [k: string]: boolean }>({})
@@ -449,56 +447,84 @@ function getDotPositionStyle(index: number, total: number) {
     return { left: `${percent}%`, transform: 'translate(-50%, -20%)', top: '0', bottom: '20px' }
 }
 
-/** Segment helpers (scoped to this offer) */
+/** Segment helpers (энэ offer-д хамааруулж) */
 const allSegmentsCache = ref<Record<string, any[]>>({})
 function getAllSegments(offer: any) {
     const key = offer?.OfferCode ?? 'k'
     if (!allSegmentsCache.value[key]) {
-        allSegmentsCache.value[key] = offer?.Offers?.OfferInfo?.flatMap((o: any) => o.Segments?.OfferSegment || []) || []
+        if (offer?.Offers?.OfferInfo) {
+            const oi = Array.isArray(offer.Offers.OfferInfo) ? offer.Offers.OfferInfo : [offer.Offers.OfferInfo]
+            allSegmentsCache.value[key] = oi.flatMap(o => o?.Segments?.OfferSegment || [])
+        } else if (offer?.Segments?.OfferSegment) {
+            const seg = Array.isArray(offer.Segments.OfferSegment) ? offer.Segments.OfferSegment : [offer.Segments.OfferSegment]
+            allSegmentsCache.value[key] = seg
+        } else {
+            allSegmentsCache.value[key] = []
+        }
     }
     return allSegmentsCache.value[key]
 }
-const trips = parseInt(sessionStorage.getItem('trips') || '0', 10)
+
 const moreFlightsCache = ref<Record<string, any[][]>>({})
 function moreFlights(offer: any, _index: number) {
     const key = offer?.OfferCode ?? _index
     if (!moreFlightsCache.value[key]) {
-        const data = offer?.Offers?.OfferInfo || []
-        const result: any[] = []
-        const tripCount = trips.toString()
-        for (let i = 1; i <= trips; i++) {
-            let current: any[] = []
-            if (data.some((o: any) => o.Rph === tripCount)) {
-                current = data.filter((o: any) => o.Rph === i.toString()).flatMap((o: any) => o.Segments?.OfferSegment || [])
-            } else {
-                current = data.flatMap((o: any) => o.Segments?.OfferSegment || []).filter((s: any) => s.Rph === i.toString())
+        const tripsCount = Math.max(parseInt(sessionStorage.getItem('trips') || '1', 10), 1)
+
+        if (offer?.Offers?.OfferInfo) {
+            const data = Array.isArray(offer.Offers.OfferInfo) ? offer.Offers.OfferInfo : [offer.Offers.OfferInfo]
+            const result: any[][] = []
+            const tripCountStr = String(tripsCount)
+
+            for (let i = 1; i <= tripsCount; i++) {
+                const iStr = String(i)
+                const hasRphOnOffer = data.some(o => o.Rph === tripCountStr)
+                const current = hasRphOnOffer
+                    ? data.filter(o => o.Rph === iStr).flatMap(o => o.Segments?.OfferSegment || [])
+                    : data.flatMap(o => o.Segments?.OfferSegment || []).filter(s => s.Rph === iStr)
+                result.push(current)
             }
-            result.push(current)
+            moreFlightsCache.value[key] = result
+        } else if (offer?.Segments?.OfferSegment) {
+            const segs = Array.isArray(offer.Segments.OfferSegment) ? offer.Segments.OfferSegment : [offer.Segments.OfferSegment]
+            moreFlightsCache.value[key] = [segs]
+        } else {
+            moreFlightsCache.value[key] = [[]]
         }
-        moreFlightsCache.value[key] = result
     }
     return moreFlightsCache.value[key]
 }
-function getTotalStops(offer: any, idx: number, findex: number) { return moreFlights(offer, idx)[findex].length - 1 }
+
+function getTotalStops(offer: any, idx: number, findex: number) {
+    return moreFlights(offer, idx)[findex].length - 1
+}
 function getStopIatas(offer: any, idx: number, findex: number) {
     return moreFlights(offer, idx)[findex].slice(0, -1).map((seg: any) => seg.Arrival.Iata)
 }
 function getTotalFlightTime(offer: any, idx: number, findex: number) {
-    const total = moreFlights(offer, idx)[findex]
-        .reduce((sum: number, seg: any) => sum + parseInt(seg.FlightMinutes, 10), 0)
+    const total = moreFlights(offer, idx)[findex].reduce((sum: number, seg: any) => sum + parseInt(seg.FlightMinutes, 10), 0)
     const h = Math.floor(total / 60), m = total % 60
     return `${h} ${t('txtHour')} ${m} ${t('txtMin')}`
 }
 
 /** Prices (use props.offer fields) */
-const adultPriceConverted = computed(() => Math.ceil((parseFloat(props.offer?.AdultPrice ?? 0) || 0) * rateNum.value))
-const childPriceConverted = computed(() => Math.ceil((parseFloat(props.offer?.ChildPrice ?? 0) || 0) * rateNum.value))
-const infantPriceConverted = computed(() => Math.ceil((parseFloat(props.offer?.InfantPrice ?? 0) || 0) * rateNum.value))
-const totalConverted = computed(() => Math.ceil((parseFloat(props.offer?.TotalPrice ?? 0) || 0) * rateNum.value))
+const adultPriceConverted = computed(() =>
+    Math.ceil((parseFloat(props.offer?.AdultPrice ?? 0) || 0) * rateNum.value)
+)
+const childPriceConverted = computed(() =>
+    Math.ceil((parseFloat(props.offer?.ChildPrice ?? 0) || 0) * rateNum.value)
+)
+const infantPriceConverted = computed(() =>
+    Math.ceil((parseFloat(props.offer?.InfantPrice ?? 0) || 0) * rateNum.value)
+)
+const totalConverted = computed(() =>
+    Math.ceil((parseFloat(props.offer?.TotalPrice ?? 0) || 0) * rateNum.value)
+)
 
 /** Collapses */
 const detailsShown = ref<Record<string, boolean>>({})
 function showDetail(key: string) { detailsShown.value[key] = !detailsShown.value[key] }
+
 const detailsShowO = ref<Record<string, boolean>>({})
 async function fetchOptions(offerCode: string, searchGuid: string) {
     if (!offerCode || !searchGuid) return

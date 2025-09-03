@@ -108,8 +108,8 @@
                 </div>
             </b-col> -->
         </b-row>
-        <FlightOfferCard v-for="(offer, idx) in paginatedFlights" :key="offer.OfferCode || idx" :offer="offer"
-            :index="idx" :rate="rate" :currency="currency" :adults="Number(route.query.adults)"
+        <FlightOfferCard class="pb-3" v-for="(offer, idx) in paginatedFlights" :key="offer.OfferCode || idx"
+            :offer="offer" :index="idx" :rate="rate" :currency="currency" :adults="Number(route.query.adults)"
             :childs="Number(route.query.childs)" :infants="Number(route.query.infants)" :searchGuid="SearchGuid"
             :showOverride="show" />
 
