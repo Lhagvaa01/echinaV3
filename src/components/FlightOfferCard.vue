@@ -19,7 +19,7 @@
                                                     {{
                                                         (show == 2 && moreFlights(offer, index).length - 1 === findex)
                                                             ? t('txtToFlight')
-                                                    : t('txtFromFlight')
+                                                            : t('txtFromFlight')
                                                     }}
                                                 </h6>
                                                 <h6 class="fw-bold mb-0 text-primary" style="font-size: smaller;">
@@ -36,14 +36,15 @@
                                                     style="font-size: smaller;">
                                                     <img :src="flight[0]?.MarketingAirline
                                                         ? 'https://api.echina.mn/assets/d/' + flight[0]?.MarketingAirline + '.png'
-                                                        : fallbackLogo" alt="Airline logo" class="me-2" style="width:30px;height:auto" />
+                                                        : fallbackLogo" alt="Airline logo" class="me-2"
+                                                        style="width:30px;height:auto" />
                                                     <h6 class="fw-normal mb-0" style="font-size: smaller;">
                                                         {{
                                                             AirCompanies.length > 0
                                                                 ? (AirCompanies.find((airline: any) => airline.Code ===
                                                                     flight[0]?.MarketingAirline)?.Value
-                                                        || 'Airline Not Found')
-                                                        : 'No Air Companies Available'
+                                                                    || 'Airline Not Found')
+                                                                : 'No Air Companies Available'
                                                         }}
                                                         ({{ flight[0]?.FlightNum || 'SA-1254' }})
                                                     </h6>
@@ -70,7 +71,7 @@
                                                                     {{
                                                                         AirCompanies.find((airline: any) => airline.Code ===
                                                                             segment.MarketingAirline)?.Value
-                                                                    || 'Unknown Airline'
+                                                                        || 'Unknown Airline'
                                                                     }}
                                                                     <span class="text-muted">({{ segment.FlightNum ||
                                                                         'SA-1254' }})</span>
@@ -122,7 +123,7 @@
                                                                 :key="i" class="position-absolute text-center"
                                                                 :style="getDotPositionStyle(i, getStopIatas(offer, index, findex).length)">
                                                                 <div style="font-size:small;font-weight:bold;">{{ stop
-                                                                    }}</div>
+                                                                }}</div>
                                                                 <div style="font-size:small;color:gray;">({{
                                                                     getAirport(stop)?.City || '' }})</div>
                                                                 <div class="rounded-circle bg-primary mx-auto"
@@ -144,7 +145,7 @@
                                                             - 1].Arrival.Iata }}</p>
                                                         <p class="mb-0" style="font-size:smaller">
                                                             {{ getAirport(flight[flight.length - 1]?.Arrival.Iata)?.City
-                                                            || '' }}
+                                                                || '' }}
                                                         </p>
                                                         <h4 class="fs-4 mb-0">{{ flight[flight.length -
                                                             1].Arrival.Date.split(' ')[1] }}</h4>
@@ -158,9 +159,9 @@
                                                         <p class="d-grid" style="font-size:small">
                                                             <span>
                                                                 {{ getAirport(flight[flight.length -
-                                                                1]?.Departure.Iata)?.City || '' }}
+                                                                    1]?.Departure.Iata)?.City || '' }}
                                                                 {{ getAirport(flight[flight.length -
-                                                                1]?.Departure.Iata)?.Name || '' }}
+                                                                    1]?.Departure.Iata)?.Name || '' }}
                                                             </span>
                                                             <span v-if="flight[0]?.Departure.Terminal">Терминал: {{
                                                                 flight[0]?.Departure.Terminal }}</span>
@@ -170,9 +171,9 @@
                                                         <p class="d-grid" style="font-size:small">
                                                             <span>
                                                                 {{ getAirport(flight[flight.length -
-                                                                1]?.Arrival.Iata)?.City || '' }}
+                                                                    1]?.Arrival.Iata)?.City || '' }}
                                                                 {{ getAirport(flight[flight.length -
-                                                                1]?.Arrival.Iata)?.Name || '' }}
+                                                                    1]?.Arrival.Iata)?.Name || '' }}
                                                             </span>
                                                             <span v-if="flight[0]?.Arrival.Terminal">Терминал: {{
                                                                 flight[0]?.Arrival.Terminal }}</span>
@@ -197,7 +198,7 @@
                                                         <p class="mb-0 text-danger"
                                                             style="font-size:small;white-space:pre-line;">
                                                             {{ getTotalStops(offer, index, findex) }} {{
-                                                            t('txtFlightStop') }} {{ t('txtSelfTBag') }} (Self-transfer
+                                                                t('txtFlightStop') }} {{ t('txtSelfTBag') }} (Self-transfer
                                                             baggage)
                                                         </p>
                                                     </div>
@@ -218,7 +219,7 @@
                                                 <div v-if="offer.ChildPrice"
                                                     class="d-flex text-center border border-primary rounded my-2 px-3 justify-content-center small">
                                                     <span class="text-black">
-                                                        👤 {{ adults }}
+                                                        🧑 {{ adults }}
                                                         <span class="text-primary">: {{
                                                             adultPriceConverted.toLocaleString() }}{{ currency }}</span>
                                                     </span>
@@ -306,7 +307,7 @@
                                                     </div>
                                                     <div class="d-flex gap-2 mt-2">
                                                         <div class="border border-primary rounded-2 px-1">👤 {{ adults
-                                                            }}</div>
+                                                        }}</div>
                                                         <div v-if="childs > 0"
                                                             class="border border-primary rounded-2 px-1">🧒 {{ childs }}
                                                         </div>
