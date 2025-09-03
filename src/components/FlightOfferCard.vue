@@ -123,7 +123,7 @@
                                                                 :key="i" class="position-absolute text-center"
                                                                 :style="getDotPositionStyle(i, getStopIatas(offer, index, findex).length)">
                                                                 <div style="font-size:small;font-weight:bold;">{{ stop
-                                                                }}</div>
+                                                                    }}</div>
                                                                 <div style="font-size:small;color:gray;">({{
                                                                     getAirport(stop)?.City || '' }})</div>
                                                                 <div class="rounded-circle bg-primary mx-auto"
@@ -279,7 +279,7 @@
                                         </div>
                                         <div v-if="moreFlights(offer, index).length > 0 && (findex == 0)"
                                             class="d-flex gap-2 mt-2 ms-2">
-                                            <div class="border border-primary rounded-2 px-1">👤 {{ adults }}</div>
+                                            <div class="border border-primary rounded-2 px-1">🧑 {{ adults }}</div>
                                             <div v-if="childs > 0" class="border border-primary rounded-2 px-1">🧒 {{
                                                 childs }}</div>
                                             <div v-if="infants > 0" class="border border-primary rounded-2 px-1">👶 {{
@@ -306,8 +306,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="d-flex gap-2 mt-2">
-                                                        <div class="border border-primary rounded-2 px-1">👤 {{ adults
-                                                        }}</div>
+                                                        <div class="border border-primary rounded-2 px-1">🧑 {{ adults
+                                                            }}</div>
                                                         <div v-if="childs > 0"
                                                             class="border border-primary rounded-2 px-1">🧒 {{ childs }}
                                                         </div>
